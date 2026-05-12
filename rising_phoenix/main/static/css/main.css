@@ -1,0 +1,882 @@
+/* ============================================
+   SAAF - Color Variables & Customization
+   ============================================ */
+
+:root {
+    --saaf-bg: #F1E8D5;                    /* Light beige — main background */
+    --saaf-beige: #E0D2B4;                 /* Medium beige — sections, badges */
+    --saaf-brown-light: #B08C5A;           /* Light brown — secondary visuals */
+    --saaf-brown: #6B4826;                 /* Regular brown — buttons, headings */
+    --saaf-text-muted: #8B6841;            /* Muted brown — secondary text */
+    --saaf-white: #ffffff;
+    --saaf-border: rgba(107, 72, 38, 0.12);
+}
+
+/* ============================================
+   Global Styles
+   ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Manrope', sans-serif;
+    background-color: var(--saaf-bg);
+    color: #333;
+    line-height: 1.6;
+    text-align: left;
+}
+
+h1, h2, h3, h4, h5, h6,
+.brand-name {
+    font-family: 'Playfair Display', 'Georgia', serif;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: var(--saaf-brown);
+}
+
+p, span, button {
+    font-family: 'Manrope', sans-serif;
+}
+
+a {
+    color: var(--saaf-brown);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: var(--saaf-brown-light);
+}
+
+/* ============================================
+   NAVBAR STYLES
+   ============================================ */
+
+.saaf-navbar,
+.saaf-nav-wrapper {
+    background-color: var(--saaf-bg);
+    border-bottom: 1px solid var(--saaf-border);
+    padding: 1rem 0;
+}
+
+.saaf-nav-wrapper .saaf-nav-container {
+    display: flex;
+    align-items: center;
+}
+
+.saaf-nav-wrapper .navbar-collapse {
+    align-items: center;
+}
+
+.saaf-nav-wrapper .navbar-nav {
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.saaf-logo {
+    width: 40px;
+    height: 40px;
+    background-color: var(--saaf-brown);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--saaf-white);
+    font-size: 1.3rem;
+}
+
+.brand-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--saaf-brown);
+}
+
+.saaf-nav-link {
+    color: var(--saaf-brown);
+    font-weight: 500;
+    position: relative;
+    padding-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.saaf-nav-link:hover {
+    color: var(--saaf-brown-light);
+}
+
+.saaf-nav-link.active {
+    color: var(--saaf-brown);
+    border-bottom: 2px solid var(--saaf-brown);
+    padding-bottom: calc(0.5rem - 2px);
+}
+
+.saaf-account-toggle {
+    border: 0.5px solid var(--saaf-brown);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.saaf-account-toggle:hover,
+.saaf-account-toggle:focus,
+.saaf-account-toggle:active {
+    background-color: var(--saaf-beige);
+    color: var(--saaf-brown);
+    border-color: var(--saaf-brown);
+}
+
+.saaf-account-menu {
+    border: 0.5px solid var(--saaf-border);
+    border-radius: 14px;
+    background-color: var(--saaf-white);
+    min-width: 180px;
+    padding: 0.35rem;
+}
+
+.saaf-account-menu .dropdown-item {
+    border-radius: 10px;
+    color: var(--saaf-brown);
+    font-weight: 500;
+    padding: 0.45rem 0.75rem;
+}
+
+.saaf-account-menu .dropdown-item:hover,
+.saaf-account-menu .dropdown-item:focus {
+    background-color: var(--saaf-beige);
+    color: var(--saaf-brown);
+}
+
+/* ============================================
+   BUTTON STYLES
+   ============================================ */
+
+.btn {
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-saaf-primary {
+    background-color: var(--saaf-brown);
+    color: var(--saaf-white);
+    border: none;
+    font-weight: 500;
+    box-shadow: 0 2px 0 var(--saaf-text-muted);
+}
+
+.btn-saaf-primary:hover {
+    background-color: var(--saaf-brown-light);
+    color: var(--saaf-white);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 0 var(--saaf-text-muted);
+}
+
+.btn-saaf-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 0 var(--saaf-text-muted);
+}
+
+.btn-saaf-outline {
+    background-color: transparent;
+    color: var(--saaf-brown);
+    border: 1px solid var(--saaf-brown);
+    font-weight: 500;
+}
+
+.btn-saaf-outline:hover {
+    background-color: var(--saaf-beige);
+    border-color: var(--saaf-brown);
+    color: var(--saaf-brown);
+}
+
+.rounded-pill {
+    border-radius: 50px;
+    padding: 0.65rem 1.5rem;
+}
+
+/* ============================================
+   SECTION STYLES
+   ============================================ */
+
+.saaf-hero {
+    background-color: var(--saaf-bg);
+    padding-top: 6rem;
+    padding-bottom: 5rem;
+}
+
+.saaf-section {
+    padding: 4rem 0;
+    background-color: var(--saaf-white);
+}
+
+.saaf-eyebrow {
+    font-size: 0.85rem;
+    color: var(--saaf-text-muted);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.saaf-section-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--saaf-brown);
+}
+
+/* ============================================
+   LAYOUT & SIDEBAR
+   ============================================ */
+
+.saaf-layout {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    min-height: calc(100vh - 80px);
+}
+
+.saaf-sidebar {
+    width: 68px;
+    flex-shrink: 0;
+    background-color: var(--saaf-bg);
+    padding: 18px 12px;
+    position: sticky;
+    top: 80px;
+    height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    border-right: 0.5px solid var(--saaf-border);
+}
+
+.saaf-main {
+    flex-grow: 1;
+    padding: 24px;
+}
+
+.sidebar-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    border: 0.5px solid var(--saaf-border);
+    background-color: var(--saaf-white);
+    color: var(--saaf-brown);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-size: 19px;
+}
+
+.sidebar-label {
+    font-size: 0.75rem;
+    color: var(--saaf-text-muted);
+    margin: 0 0 0.5rem;
+}
+
+.sidebar-btn i {
+    font-size: 19px;
+}
+
+.sidebar-btn:hover {
+    background-color: var(--saaf-beige);
+    color: var(--saaf-brown);
+}
+
+.sidebar-btn-active {
+    background-color: var(--saaf-beige);
+}
+
+.sidebar-active-indicator {
+    position: absolute;
+    left: -8px;
+    width: 3px;
+    height: 18px;
+    background-color: var(--saaf-brown);
+    border-radius: 4px;
+}
+
+.sidebar-badge {
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background-color: var(--saaf-brown);
+    color: var(--saaf-white);
+    font-size: 0.65rem;
+    line-height: 18px;
+    text-align: center;
+}
+
+.sidebar-badge-brown {
+    background-color: var(--saaf-brown);
+    color: var(--saaf-white);
+}
+
+.sidebar-badge-light {
+    background-color: var(--saaf-beige);
+    color: var(--saaf-brown);
+}
+
+.sidebar-divider {
+    width: 28px;
+    height: 1px;
+    background-color: var(--saaf-border);
+    margin: 6px 0;
+}
+
+.sidebar-btn-new {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background-color: var(--saaf-brown);
+    color: var(--saaf-bg);
+    box-shadow: 0 2px 0 var(--saaf-text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+    border: none;
+}
+
+.sidebar-btn-new i {
+    font-size: 19px;
+}
+
+.sidebar-btn-new:hover {
+    background-color: var(--saaf-brown-light);
+    color: var(--saaf-white);
+}
+
+.saaf-dashboard-card {
+    border: 0.5px solid var(--saaf-border);
+    background-color: var(--saaf-white);
+}
+
+.saaf-see-all {
+    color: var(--saaf-brown);
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding-top: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+.saaf-see-all:hover {
+    color: var(--saaf-brown-light);
+}
+
+/* ============================================
+   HERO SECTION
+   ============================================ */
+
+.saaf-hero-text {
+    max-width: 560px;
+}
+
+.saaf-hero-title {
+    font-size: 3.1rem;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+}
+
+.saaf-text-accent {
+    font-style: italic;
+    color: var(--saaf-brown-light);
+}
+
+.saaf-description {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 2rem;
+}
+
+/* Hero Grid Layout */
+.saaf-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 1rem;
+    max-width: 100%;
+}
+
+.saaf-hero-card {
+    border-radius: 18px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.saaf-hero-card-large {
+    grid-row: span 2;
+    background: linear-gradient(135deg, var(--saaf-brown) 0%, var(--saaf-text-muted) 100%);
+    color: var(--saaf-white);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.saaf-card-icon-large {
+    font-size: 4rem;
+    opacity: 0.15;
+    margin-bottom: 1rem;
+}
+
+.saaf-card-badge {
+    display: inline-block;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--saaf-white);
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    width: fit-content;
+}
+
+.saaf-card-content h5 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--saaf-white);
+}
+
+.saaf-card-content p {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.saaf-hero-card-small {
+    background-color: var(--saaf-beige);
+    border: 1px solid var(--saaf-border);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.saaf-card-icon-small {
+    font-size: 2.5rem;
+    color: var(--saaf-text-muted);
+    opacity: 0.2;
+}
+
+.saaf-hero-card-stats {
+    background: linear-gradient(135deg, var(--saaf-brown-light) 0%, var(--saaf-beige) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.saaf-card-stats-text p {
+    color: var(--saaf-text-muted);
+    margin-bottom: 0.2rem;
+    font-size: 0.85rem;
+}
+
+.saaf-card-stats-text h6 {
+    color: var(--saaf-brown);
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+/* ============================================
+   TRENDING CARDS SECTION
+   ============================================ */
+
+.saaf-trending-card {
+    border-radius: 18px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.saaf-trending-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.saaf-card-image {
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.saaf-trending-brown .saaf-card-image {
+    background: linear-gradient(135deg, var(--saaf-brown) 0%, var(--saaf-text-muted) 100%);
+}
+
+.saaf-trending-beige .saaf-card-image {
+    background: linear-gradient(135deg, var(--saaf-beige) 0%, var(--saaf-brown-light) 100%);
+}
+
+.saaf-trending-light-brown .saaf-card-image {
+    background: linear-gradient(135deg, var(--saaf-brown-light) 0%, var(--saaf-beige) 100%);
+}
+
+.saaf-card-icon {
+    font-size: 2.5rem;
+    opacity: 0.15;
+}
+
+.saaf-trending-brown .saaf-card-icon {
+    color: var(--saaf-white);
+}
+
+.saaf-trending-beige .saaf-card-icon {
+    color: var(--saaf-brown);
+}
+
+.saaf-trending-light-brown .saaf-card-icon {
+    color: var(--saaf-brown);
+}
+
+.saaf-rank-badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    background-color: var(--saaf-brown);
+    color: var(--saaf-white);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.saaf-card-meta {
+    padding: 1rem;
+    background-color: var(--saaf-white);
+}
+
+.saaf-card-meta h6 {
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+}
+
+/* ============================================
+   ARTISAN CARD SECTION
+   ============================================ */
+
+.saaf-artisan-card {
+    background-color: var(--saaf-brown-light);
+    border-radius: 20px;
+    padding: 3rem;
+    color: var(--saaf-white);
+}
+
+.saaf-artisan-quote {
+    font-size: 1.8rem;
+    font-style: italic;
+    color: var(--saaf-white);
+    line-height: 1.4;
+}
+
+.saaf-artisan-card p {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.saaf-artisan-card .btn-saaf-outline {
+    background-color: transparent;
+    color: var(--saaf-white);
+    border-color: var(--saaf-white);
+}
+
+.saaf-artisan-card .btn-saaf-outline:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--saaf-white);
+    color: var(--saaf-white);
+}
+
+.saaf-artisan-portrait {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.saaf-portrait-image {
+    width: 220px;
+    height: 220px;
+    background-color: var(--saaf-brown);
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    color: var(--saaf-white);
+    position: relative;
+    z-index: 2;
+}
+
+.saaf-artisan-badge {
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--saaf-brown);
+    color: var(--saaf-white);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    z-index: 3;
+    white-space: nowrap;
+}
+
+.saaf-artisan-decor {
+    position: absolute;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    z-index: 1;
+}
+
+.saaf-artisan-decor-tl {
+    top: -20px;
+    left: -20px;
+}
+
+.saaf-artisan-decor-br {
+    bottom: -20px;
+    right: -20px;
+}
+
+/* ============================================
+   MOOD CARDS SECTION
+   ============================================ */
+
+.saaf-mood-card {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    border-radius: 18px;
+    background-color: var(--saaf-white);
+    border: 1px solid var(--saaf-border);
+    transition: all 0.3s ease;
+}
+
+.saaf-mood-card:hover {
+    border-color: var(--saaf-brown);
+    box-shadow: 0 4px 16px rgba(107, 72, 38, 0.1);
+}
+
+.saaf-mood-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin: 0 auto;
+    color: var(--saaf-white);
+}
+
+.saaf-mood-brown {
+    background-color: var(--saaf-brown);
+}
+
+.saaf-mood-light-brown {
+    background-color: var(--saaf-brown-light);
+}
+
+.saaf-mood-card h6 {
+    font-size: 1rem;
+    color: var(--saaf-brown);
+}
+
+/* ============================================
+   HOW IT WORKS SECTION
+   ============================================ */
+
+.saaf-how-works-box {
+    background-color: var(--saaf-beige);
+    border-radius: 20px;
+    padding: 3rem;
+}
+
+.saaf-step {
+    text-align: center;
+}
+
+.saaf-step-number {
+    font-size: 2.25rem;
+    font-family: 'Playfair Display', 'Georgia', serif;
+    color: var(--saaf-brown);
+    margin-bottom: 1rem;
+}
+
+.saaf-step-number.saaf-step-accent {
+    color: var(--saaf-brown-light);
+}
+
+.saaf-step h5 {
+    color: var(--saaf-brown);
+    font-weight: 600;
+}
+
+/* ============================================
+   FOOTER STYLES
+   ============================================ */
+
+.saaf-footer {
+    background-color: var(--saaf-white);
+    border-top: 1px solid var(--saaf-border);
+    color: #555;
+}
+
+.saaf-footer h6 {
+    color: var(--saaf-brown);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.saaf-footer-link {
+    color: var(--saaf-text-muted);
+    transition: color 0.3s ease;
+}
+
+.saaf-footer-link:hover {
+    color: var(--saaf-brown);
+}
+
+.saaf-social-icon {
+    width: 40px;
+    height: 40px;
+    background-color: var(--saaf-beige);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--saaf-brown);
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.saaf-social-icon:hover {
+    background-color: var(--saaf-brown);
+    color: var(--saaf-white);
+}
+
+.saaf-border-hr {
+    border-color: var(--saaf-border);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 991px) {
+    .saaf-nav-wrapper .navbar-collapse {
+        padding-top: 0.9rem;
+    }
+
+    .saaf-nav-wrapper .navbar-nav {
+        align-items: flex-start;
+        margin-bottom: 0.8rem;
+    }
+
+    .saaf-section-title {
+        font-size: 1.7rem;
+    }
+
+    .saaf-hero-title {
+        font-size: 1.8rem;
+    }
+
+    .saaf-artisan-card {
+        padding: 2rem;
+    }
+
+    .saaf-how-works-box {
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .saaf-sidebar {
+        display: none;
+    }
+
+    .saaf-main {
+        padding: 16px;
+    }
+
+    .saaf-hero-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+
+    .saaf-hero-card-large {
+        grid-row: span 1;
+    }
+
+    .saaf-section-title {
+        font-size: 1.5rem;
+    }
+
+    .saaf-hero-title {
+        font-size: 1.5rem;
+    }
+
+    .saaf-artisan-quote {
+        font-size: 1.4rem;
+    }
+
+    .saaf-hero-text .d-flex.gap-3 {
+        flex-direction: column;
+    }
+
+    .saaf-hero-text .d-flex.gap-3 .btn {
+        width: 100%;
+    }
+
+    .saaf-artisan-card {
+        padding: 1.5rem;
+    }
+
+    .saaf-artisan-card .row {
+        flex-direction: column;
+    }
+
+    .saaf-how-works-box {
+        padding: 1.5rem;
+    }
+
+    .saaf-footer {
+        text-align: center;
+    }
+
+    .saaf-footer .row {
+        text-align: center;
+    }
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.text-muted {
+    color: var(--saaf-text-muted) !important;
+}
+
+.container-lg {
+    max-width: 1200px;
+}

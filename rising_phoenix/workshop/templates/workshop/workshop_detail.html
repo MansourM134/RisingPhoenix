@@ -1,0 +1,154 @@
+{% extends "main/base.html" %}
+
+{% block title %}{{ workshop.workshop_name }}{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <!-- Cover Image -->
+                {% if workshop.cover_image %}
+                <div class="mb-4">
+                    <img src="{{ workshop.cover_image.url }}" alt="{{ workshop.workshop_name }}"
+                        class="img-fluid rounded" style="max-height: 400px; width: 100%; object-fit: cover;">
+                </div>
+                {% endif %}
+
+                <!-- Workshop Header -->
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <h1 class="h2 mb-1">{{ workshop.workshop_name }}</h1>
+                                {% if workshop.tagline %}
+                                <p class="text-muted mb-0">{{ workshop.tagline }}</p>
+                                {% endif %}
+                            </div>
+                            {% if request.user == artisan.user %}
+                            <a href="{% url 'workshop:create_workshop_view' %}" class="btn btn-outline-primary">
+                                Edit
+                            </a>
+                            {% endif %}
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-3 mb-3">
+                                <small class="text-muted d-block">Rating</small>
+                                <strong>{{ artisan.average_rating }}/5.0</strong>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <small class="text-muted d-block">Completed Jobs</small>
+                                <strong>{{ artisan.completed_jobs }}</strong>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <small class="text-muted d-block">Status</small>
+                                <strong>
+                                    {% if artisan.is_verified %}
+                                    <span class="badge bg-success">Verified</span>
+                                    {% else %}
+                                    <span class="badge bg-warning">Unverified</span>
+                                    {% endif %}
+                                </strong>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <small class="text-muted d-block">Published</small>
+                                <strong>
+                                    {% if workshop.is_published %}
+                                    <span class="badge bg-success">Yes</span>
+                                    {% else %}
+                                    <span class="badge bg-secondary">No</span>
+                                    {% endif %}
+                                </strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About Section -->
+                {% if workshop.description %}
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-body p-4">
+                        <h3 class="h5 mb-3">About</h3>
+                        <p class="text-muted">{{ workshop.description }}</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Services Section -->
+                {% if workshop.services %}
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-body p-4">
+                        <h3 class="h5 mb-3">Services</h3>
+                        <div class="lh-lg">
+                            {% for service in workshop.services.split %}
+                            {% if service %}
+                            <div class="mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                {{ service }}
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Contact Section -->
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-body p-4">
+                        <h3 class="h5 mb-3">Contact Information</h3>
+                        {% if workshop.location %}
+                        <div class="mb-3">
+                            <small class="text-muted d-block">Location</small>
+                            <strong>{{ workshop.location }}</strong>
+                        </div>
+                        {% endif %}
+                        {% if workshop.phone %}
+                        <div class="mb-3">
+                            <small class="text-muted d-block">Phone</small>
+                            <strong><a href="tel:{{ workshop.phone }}">{{ workshop.phone }}</a></strong>
+                        </div>
+                        {% endif %}
+                        {% if artisan.phone %}
+                        <div class="mb-3">
+                            <small class="text-muted d-block">Artisan Phone</small>
+                            <strong><a href="tel:{{ artisan.phone }}">{{ artisan.phone }}</a></strong>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Artisan Info -->
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-4">
+                        <h3 class="h5 mb-3">About the Artisan</h3>
+                        <div class="d-flex align-items-center mb-3">
+                            {% if artisan.avatar %}
+                            <img src="{{ artisan.avatar.url }}" alt="{{ artisan.user.first_name }}"
+                                class="rounded-circle me-3" width="60" height="60">
+                            {% endif %}
+                            <div>
+                                <h6 class="mb-0">{{ artisan.user.first_name }} {{ artisan.user.last_name }}</h6>
+                                <small class="text-muted">@{{ artisan.user.username }}</small>
+                            </div>
+                        </div>
+                        {% if artisan.bio %}
+                        <p class="text-muted mb-0">{{ artisan.bio }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

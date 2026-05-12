@@ -1,0 +1,139 @@
+{% extends 'main/base.html' %}
+
+{% block sidebar %}
+{% if request.user.is_authenticated %}
+<aside class="saaf-sidebar">
+    <p class="sidebar-label">My Space</p>
+
+    <button class="sidebar-btn sidebar-btn-active" aria-label="Dashboard">
+        <i class="bi bi-grid-1x2-fill"></i>
+        <span class="sidebar-active-indicator"></span>
+    </button>
+
+    <button class="sidebar-btn" aria-label="My Requests">
+        <i class="bi bi-file-text"></i>
+        <span class="sidebar-badge sidebar-badge-brown">2</span>
+    </button>
+
+    <button class="sidebar-btn" aria-label="Saved">
+        <i class="bi bi-bookmark"></i>
+        <span class="sidebar-badge sidebar-badge-light">12</span>
+    </button>
+
+    <button class="sidebar-btn" aria-label="Messages">
+        <i class="bi bi-chat-dots"></i>
+    </button>
+
+    <button class="sidebar-btn" aria-label="Following Artisans">
+        <i class="bi bi-heart"></i>
+    </button>
+
+    <div class="sidebar-divider"></div>
+
+    <button class="sidebar-btn" aria-label="Settings">
+        <i class="bi bi-gear"></i>
+    </button>
+
+    <button class="sidebar-btn sidebar-btn-new" aria-label="Post New Request">
+        <i class="bi bi-plus-lg"></i>
+    </button>
+</aside>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<!-- Section 1: Hero -->
+<section id="discover" class="saaf-hero">
+    <div class="container-lg">
+        <div class="row align-items-center g-4">
+            <!-- Left Column: Visual Cards -->
+            <div class="col-lg-5">
+                <div class="saaf-hero-grid">
+                    <!-- Big Card (spans 2 rows) -->
+                    <div class="saaf-hero-card saaf-hero-card-large">
+                        <div class="saaf-card-icon-large">
+                            <i class="bi bi-droplet"></i>
+                        </div>
+                        <div class="saaf-card-badge">Custom Orders Open</div>
+                        <div class="saaf-card-content">
+                            <h5>Handcrafted With Saudi Identity</h5>
+                            <p class="mb-0">From pottery and woodwork to textile art, discover one-of-a-kind pieces made by skilled local artisans.</p>
+                        </div>
+                    </div>
+
+                    <!-- Small Card 1 -->
+                    <div class="saaf-hero-card saaf-hero-card-small">
+                        <div class="saaf-card-icon-small">
+                            <i class="bi bi-pen"></i>
+                        </div>
+                        <p class="mb-0 small fw-semibold mt-3">Share your idea in minutes</p>
+                    </div>
+
+                    <!-- Small Card 2 -->
+                    <div class="saaf-hero-card saaf-hero-card-small saaf-hero-card-stats">
+                        <div class="saaf-card-stats-text">
+                            <p class="mb-0 text-muted">Avg first offer in</p>
+                            <h6>24 Hours</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Text -->
+            <div class="col-lg-7">
+                <div class="saaf-hero-text">
+                    <p class="saaf-eyebrow">- Saudi craftsmanship, made by real hands</p>
+                    <h1 id="artisans" class="saaf-hero-title mb-4">
+                        Your idea, shaped by a nearby <span class="saaf-text-accent">artisan</span>.
+                    </h1>
+                    <p class="saaf-description mb-4">
+                        Saaf connects people with trusted Saudi artisans for custom handmade pieces. Share your request, receive tailored offers within 24 hours, and choose the artisan that fits your style and budget.
+                    </p>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <a href="{% url 'account:signup_view' %}" class="btn btn-saaf-primary rounded-pill">Get Started Free</a>
+                        <a href="{% url 'account:artisan_signup_view' %}" class="btn btn-saaf-outline rounded-pill">Browse Artisans</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section 5: How It Works -->
+<section id="how-works" class="saaf-section py-5">
+    <div class="container-lg">
+        <div class="saaf-how-works-box">
+            <p class="saaf-eyebrow text-center mb-3">- How Saaf Works</p>
+
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <!-- Step 1 -->
+                <div class="col">
+                    <div class="saaf-step">
+                        <h3 class="saaf-step-number">1</h3>
+                        <h5 class="mb-3">Post Your Idea</h5>
+                        <p class="text-muted small">Describe your piece, upload references, and set your budget.</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="col">
+                    <div class="saaf-step">
+                        <h3 class="saaf-step-number">2</h3>
+                        <h5 class="mb-3">Receive Offers</h5>
+                        <p class="text-muted small">Verified artisans send proposals within 24 hours.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="col">
+                    <div class="saaf-step">
+                        <h3 class="saaf-step-number saaf-step-accent">3</h3>
+                        <h5 class="mb-3">Choose and Receive Safely</h5>
+                        <p class="text-muted small">Secure payment is released only after you confirm delivery.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends "main/base.html" %}
+
+{% block title %}{% if is_edit %}Edit{% else %}Create{% endif %} Workshop{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-4 p-md-5">
+                        <div class="text-center mb-4">
+                            <h1 class="h3 mb-2">{% if is_edit %}Edit{% else %}Create{% endif %} Workshop Profile</h1>
+                            <p class="text-muted">Tell users about your workshop and services</p>
+                        </div>
+
+                        {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="mb-3">
+                                <label for="id_workshop_name" class="form-label">Workshop Name</label>
+                                {{ form.workshop_name }}
+                                {% if form.workshop_name.errors %}
+                                <div class="invalid-feedback d-block">{{ form.workshop_name.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="id_tagline" class="form-label">Tagline</label>
+                                {{ form.tagline }}
+                                {% if form.tagline.errors %}
+                                <div class="invalid-feedback d-block">{{ form.tagline.errors }}</div>
+                                {% endif %}
+                                <small class="text-muted">A short description (max 200 characters)</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="id_description" class="form-label">Description</label>
+                                {{ form.description }}
+                                {% if form.description.errors %}
+                                <div class="invalid-feedback d-block">{{ form.description.errors }}</div>
+                                {% endif %}
+                                <small class="text-muted">Tell people about your workshop</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="id_services" class="form-label">Services</label>
+                                {{ form.services }}
+                                {% if form.services.errors %}
+                                <div class="invalid-feedback d-block">{{ form.services.errors }}</div>
+                                {% endif %}
+                                <small class="text-muted">List the services you offer (one per line)</small>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="id_location" class="form-label">Location</label>
+                                    {{ form.location }}
+                                    {% if form.location.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.location.errors }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="id_phone" class="form-label">Phone</label>
+                                    {{ form.phone }}
+                                    {% if form.phone.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.phone.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="id_cover_image" class="form-label">Cover Image</label>
+                                {{ form.cover_image }}
+                                {% if form.cover_image.errors %}
+                                <div class="invalid-feedback d-block">{{ form.cover_image.errors }}</div>
+                                {% endif %}
+                                <small class="text-muted">Upload a cover image for your workshop</small>
+                            </div>
+
+                            <div class="mb-4 form-check">
+                                <label for="id_is_published" class="form-check-label">
+                                    {{ form.is_published }}
+                                    <span>Publish your workshop profile</span>
+                                </label>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    {% if is_edit %}Save Changes{% else %}Create Workshop{% endif %}
+                                </button>
+                            </div>
+
+                            {% if is_edit %}
+                            <div class="mt-3">
+                                <a href="{% url 'workshop:workshop_detail_view' artisan_id=request.user.id %}"
+                                    class="btn btn-secondary w-100">
+                                    Cancel
+                                </a>
+                            </div>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

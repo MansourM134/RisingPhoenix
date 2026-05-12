@@ -58,6 +58,7 @@ def artisan_signup_view(request:HttpRequest):
 def login_view(request:HttpRequest):
     if request.user.is_authenticated:
         return redirect('main:home_view')
+
     if request.method == 'POST':
         user = authenticate(request, username = request.POST['username'], password = request.POST['password'])
 
@@ -69,7 +70,7 @@ def login_view(request:HttpRequest):
                 return redirect('staff:dashboard_view')
             if user.groups.filter(name='artisan').exists():
                 print('artisan')
-                return redirect('main:home_view')
+                return redirect('workshop:create_workshop_view')
             return redirect('main:home_view')
         else:
             messages.error(request, "Your Username or Password is wrong, try again")
