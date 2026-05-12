@@ -67,6 +67,9 @@ def login_view(request:HttpRequest):
         if user:
             login(request,user)
             messages.success(request, "Logged in successufly")
+            #redirect to the staff id the user is staff
+            if user.is_staff:
+                return redirect('staff:staff_dashboard_view')
             if user.groups.filter(name='artisan').exists():
                 print('artisan')
                 return redirect('workshop:create_workshop_view')

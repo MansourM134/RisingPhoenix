@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
     'account',
+    'staff',
     'workshop',
     'request',
     'phonenumber_field',

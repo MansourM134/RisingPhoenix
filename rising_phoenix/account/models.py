@@ -11,6 +11,9 @@ class Profile(models.Model):
     phone = PhoneNumberField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    is_banned = models.BooleanField(default=False)
+    ban_reason = models.TextField(blank=True)
+    is_phone_verified = models.BooleanField(default=False)  
     def __str__(self):
         return f"Profile {self.user.username}"
 
@@ -24,6 +27,10 @@ class ArtisanProfile(models.Model):
     is_verified = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    is_banned = models.BooleanField(default=False)
+    ban_reason = models.TextField(blank=True)
+    is_featured = models.BooleanField(default=False)
+    is_phone_verified = models.BooleanField(default=False)
 
     def __str__(self):
         return f"ArtisanProfile - {self.user.username}"
