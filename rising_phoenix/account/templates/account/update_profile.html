@@ -1,0 +1,163 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<section class="profile-edit-section">
+    <div class="container">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="row justify-content-center">
+                <div class="col-xl-10">
+                    <div class="profile-edit-shell">
+
+                        <div class="row g-4">
+                            <div class="col-lg-4">
+                                <div class="profile-edit-side h-100">
+                                    <span class="profile-edit-badge">Edit Profile</span>
+                                    <h1 class="profile-edit-title">Update your profile</h1>
+                                    <p class="profile-edit-text">
+                                        Keep your Planteer profile fresh with your latest details, bio, and avatar.
+                                    </p>
+
+                                    <div class="profile-current-avatar-wrap">
+                                        {% if user_profile.avatar %}
+                                            <img src="{{ user_profile.avatar.url }}" alt="{{ user_profile.user.username }}" class="profile-current-avatar">
+                                        {% else %}
+                                            <div class="profile-current-avatar-placeholder">
+                                                {{ user_profile.user.username|first|upper }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="profile-mini-info">
+                                        <p class="mb-1"><strong>@{{ user_profile.user.username }}</strong></p>
+                                        <p class="mb-0 text-muted">{{ user_profile.user.email }}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-8">
+                                <div class="profile-edit-card">
+                                    <div class="profile-edit-head">
+                                        <span class="profile-edit-eyebrow">Personal Details</span>
+                                        <h2>Manage your account</h2>
+                                        <p>Update your public info and profile image.</p>
+                                    </div>
+
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label for="first_name" class="form-label">First Name</label>
+                                            <input
+                                                type="text"
+                                                class="form-control signup-input"
+                                                id="first_name"
+                                                name="first_name"
+                                                value="{{ user_form.first_name.value|default:user_profile.user.first_name }}"
+                                                placeholder="Enter your first name"
+                                            >
+                                            {% for error in user_form.first_name.errors %}
+                                                <div class="invalid-feedback d-block">{{ error }}</div>
+                                            {% endfor %}
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label for="last_name" class="form-label">Last Name</label>
+                                            <input
+                                                type="text"
+                                                class="form-control signup-input"
+                                                id="last_name"
+                                                name="last_name"
+                                                value="{{ user_form.last_name.value|default:user_profile.user.last_name }}"
+                                                placeholder="Enter your last name"
+                                            >
+                                            {% for error in user_form.last_name.errors %}
+                                                <div class="invalid-feedback d-block">{{ error }}</div>
+                                            {% endfor %}
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label for="username" class="form-label">Username</label>
+                                            <input
+                                                type="text"
+                                                class="form-control signup-input"
+                                                id="username"
+                                                name="username"
+                                                value="{{ user_form.username.value|default:user_profile.user.username }}"
+                                                placeholder="Choose a username"
+                                            >
+                                            {% for error in user_form.username.errors %}
+                                                <div class="invalid-feedback d-block">{{ error }}</div>
+                                            {% endfor %}
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label for="email" class="form-label">Email</label>
+                                            <input
+                                                type="email"
+                                                class="form-control signup-input"
+                                                id="email"
+                                                name="email"
+                                                value="{{ user_form.email.value|default:user_profile.user.email }}"
+                                                placeholder="Enter your email"
+                                            >
+                                            {% for error in user_form.email.errors %}
+                                                <div class="invalid-feedback d-block">{{ error }}</div>
+                                            {% endfor %}
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label for="about" class="form-label">About You</label>
+                                            <textarea
+                                                name="about"
+                                                id="about"
+                                                class="form-control profile-edit-textarea"
+                                                placeholder="Write a short bio about yourself..."
+                                            >{{ profile_form.about.value|default:user_profile.bio }}</textarea>
+                                            {% for error in profile_form.about.errors %}
+                                                <div class="invalid-feedback d-block">{{ error }}</div>
+                                            {% endfor %}
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="avatar-upload-card">
+                                                <label for="avatar" class="form-label">Profile Avatar</label>
+
+                                                {% if user_profile.avatar %}
+                                                    <div class="current-avatar-preview">
+                                                        <img src="{{ user_profile.avatar.url }}" alt="{{ user_profile.user.username }}">
+                                                        <div>
+                                                            <p class="mb-1 fw-semibold">Current avatar</p>
+                                                            <small class="text-muted">Upload a new one if you want to replace it.</small>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+
+                                                <input type="file" name="avatar" id="avatar" class="form-control">
+                                                {% for error in profile_form.avatar.errors %}
+                                                    <div class="invalid-feedback d-block">{{ error }}</div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 pt-2">
+                                            <div class="profile-edit-actions">
+                                                <button type="submit" class="btn btn-brand profile-save-btn">
+                                                    Save Changes
+                                                </button>
+                                                <a href="{% url 'account:profile_view' user_profile.user.username %}" class="btn btn-outline-soft profile-cancel-btn">
+                                                    Cancel
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

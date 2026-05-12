@@ -1,0 +1,47 @@
+{% extends "main/base.html" %}
+
+{% block title %}User Profile{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="bg-primary text-white p-4 p-md-5">
+                    <div class="row align-items-center">
+                        <div class="col-md-3 text-center mb-4 mb-md-0">
+                            {% if user_profile.avatar %}
+                                <img src="{{ user_profile.avatar.url }}"
+                                     alt="{{ user_profile.user.username }}"
+                                     class="rounded-circle img-fluid border border-3 border-white"
+                                     style="width:140px;height:140px;object-fit:cover;">
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-9">
+                            <h2 class="mb-2">{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</h2>
+                            <p class="mb-1">@{{ user_profile.user.username }}</p>
+                            <p class="mb-0">{{ user_profile.user.email }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body p-4">
+                    <h4 class="mb-3">Profile Info</h4>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2"><strong>Phone:</strong> {{ user_profile.phone|default:"Not provided" }}</li>
+                        <li class="mb-2"><strong>City:</strong> {{ user_profile.city|default:"Not provided" }}</li>
+                        <li class="mb-2"><strong>Joined:</strong> {{ user_profile.user.date_joined|date:"F d, Y" }}</li>
+                    </ul>
+
+                    {% if request.user == user_profile.user %}
+                        <div class="mt-4 text-end">
+                            <a href="#" class="btn btn-primary">Edit Profile</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,10 +1,10 @@
-from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm, ProfileForm, ArtisanProfileForm
+from django.shortcuts import get_object_or_404, render, redirect
+from .forms import CustomUserCreationForm, ProfileForm, ArtisanProfileForm, CustomUserUpdateForm
 from django.http import HttpRequest, HttpResponse
 from django.contrib import messages
 from django.db import transaction
 from django.contrib.auth import authenticate, login,logout
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 
 # Create your views here.
 
@@ -83,4 +83,38 @@ def logout_view(request:HttpRequest):
     #response = redirect(request.GET.get("next"))
     #return response
     return redirect('main:home_view')
+
+
+def profile_view(request:HttpRequest, user_name):
+    user = get_object_or_404(User, username = user_name)
+    if user.groups.filter(name='artisan').exists():
+        messages.warning(request, 'Your are not allowed')
+        return redirect('main:home_view')
+    user_profile = user.profile
+    return render(request,'account/profile.html',{'user_profile': user_profile})
+
+def update_profile_view(request:HttpRequest,user_name):
+    if user_name != request.user.username:
+        messages.warning(request,'Your are not allowed')
+        return redirect('main:home_view')
+    user = User.objects.get(username = user_name)
+    if user.groups.filter(name='artisan').exists():
+        messages.warning(request, 'Your are not allowed')
+        redirect('main:home_view')
+    user_profile = user.profile
+    if request.method == 'POST':
+        user_form = CustomUserUpdateForm(request.POST,instance=request.user)
+        profile_form = ProfileForm(request.POST,request.FILES,instance=user_profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            with transaction.atomic():
+                user_form.save()
+                profile_form.save()
+                messages.success(request, "Your profile has been update it")
+            return redirect('account:profile_view', user_name = request.user.username)
+        else:
+            print(user_form.errors)
+            messages.error(request, "something goes Wrong")
+            return render(request, 'account/update_profile.html', {'user_form': user_form, 'user_profile': user_profile})
+    return render(request, 'account/update_profile.html',{'user_profile': user_profile})
+
 
