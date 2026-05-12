@@ -1,0 +1,79 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+
+{% block title %}Create Request{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/request.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="request-shell">
+  <div class="request-form-wrap">
+    <header class="request-hero">
+      <p class="request-eyebrow">Post Your Idea</p>
+      <h1 class="mb-2">Create a New Request</h1>
+      <p class="request-sub">Share your concept, budget in SAR, and timeline so artisans can submit proposals.</p>
+    </header>
+
+    <div class="request-form-card">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+          {% for error in form.non_field_errors %}
+            <p class="request-error">{{ error }}</p>
+          {% endfor %}
+        {% endif %}
+
+        <div class="request-form-grid">
+          <div class="field-full">
+            <label class="request-label" for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+            {{ form.title }}
+            {% for error in form.title.errors %}<p class="request-error">{{ error }}</p>{% endfor %}
+          </div>
+
+          <div class="field-full">
+            <label class="request-label" for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+            {{ form.description }}
+            {% for error in form.description.errors %}<p class="request-error">{{ error }}</p>{% endfor %}
+          </div>
+
+          <div>
+            <label class="request-label" for="{{ form.category.id_for_label }}">{{ form.category.label }}</label>
+            {{ form.category }}
+            {% for error in form.category.errors %}<p class="request-error">{{ error }}</p>{% endfor %}
+          </div>
+
+          <div>
+            <label class="request-label" for="{{ form.deadline.id_for_label }}">{{ form.deadline.label }}</label>
+            {{ form.deadline }}
+            {% for error in form.deadline.errors %}<p class="request-error">{{ error }}</p>{% endfor %}
+          </div>
+
+          <div>
+            <label class="request-label" for="{{ form.budget_min.id_for_label }}">{{ form.budget_min.label }}</label>
+            {{ form.budget_min }}
+            {% for error in form.budget_min.errors %}<p class="request-error">{{ error }}</p>{% endfor %}
+          </div>
+
+          <div>
+            <label class="request-label" for="{{ form.budget_max.id_for_label }}">{{ form.budget_max.label }}</label>
+            {{ form.budget_max }}
+            {% for error in form.budget_max.errors %}<p class="request-error">{{ error }}</p>{% endfor %}
+          </div>
+
+          <div class="field-full">
+            <label class="request-label" for="{{ form.reference_image.id_for_label }}">{{ form.reference_image.label }}</label>
+            {{ form.reference_image }}
+            {% for error in form.reference_image.errors %}<p class="request-error">{{ error }}</p>{% endfor %}
+          </div>
+        </div>
+
+        <button type="submit" class="request-submit">Post request</button>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

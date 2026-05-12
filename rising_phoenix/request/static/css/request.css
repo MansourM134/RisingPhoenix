@@ -1,0 +1,256 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+	--sand: #f5efe4;
+	--sand-dark: #eae0cc;
+	--clay: #c2724f;
+	--clay-dark: #a55a38;
+	--ink: #1c1712;
+	--ink-mid: #4a3f33;
+	--ink-light: #8c7b6b;
+	--cream: #fdfaf5;
+	--white: #ffffff;
+	--border: #d8ccba;
+	--success: #4a7c59;
+}
+
+body {
+	background: var(--cream);
+	color: var(--ink);
+	font-family: 'DM Sans', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+	font-family: 'Cormorant Garamond', serif;
+}
+
+.request-shell {
+	padding: 3rem 1rem;
+}
+
+.request-container {
+	max-width: 1100px;
+	margin: 0 auto;
+}
+
+.request-hero {
+	background: var(--ink);
+	color: var(--cream);
+	border-radius: 14px;
+	padding: 2rem;
+	margin-bottom: 1.5rem;
+	border: 1px solid #312920;
+}
+
+.request-eyebrow {
+	color: var(--clay);
+	font-size: 0.72rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	font-weight: 700;
+	margin-bottom: 0.35rem;
+}
+
+.request-sub {
+	color: #afa094;
+	margin-bottom: 0;
+}
+
+.request-action {
+	background: var(--clay);
+	color: var(--white);
+	border: none;
+	border-radius: 8px;
+	padding: 0.7rem 1rem;
+	text-decoration: none;
+	font-size: 0.9rem;
+	font-weight: 600;
+}
+
+.request-action:hover {
+	background: var(--clay-dark);
+	color: var(--white);
+}
+
+.request-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+	gap: 1rem;
+}
+
+.request-card {
+	background: var(--white);
+	border: 1.5px solid var(--border);
+	border-radius: 10px;
+	padding: 1rem;
+	height: 100%;
+}
+
+.request-card-title {
+	font-size: 1.35rem;
+	margin-bottom: 0.45rem;
+}
+
+.request-card-desc {
+	color: var(--ink-mid);
+	font-size: 0.9rem;
+	line-height: 1.65;
+	margin-bottom: 0.9rem;
+}
+
+.request-meta {
+	font-size: 0.82rem;
+	color: var(--ink-light);
+	display: flex;
+	flex-direction: column;
+	gap: 0.3rem;
+}
+
+.request-row {
+	display: flex;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+.request-tag {
+	display: inline-block;
+	background: #ede4d6;
+	color: var(--ink-mid);
+	font-size: 0.7rem;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	border-radius: 999px;
+	padding: 0.28rem 0.55rem;
+	margin-bottom: 0.6rem;
+}
+
+.status-pill {
+	font-size: 0.67rem;
+	font-weight: 700;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+	border-radius: 999px;
+	padding: 0.25rem 0.55rem;
+}
+
+.status-open {
+	background: #eef5f1;
+	color: var(--success);
+}
+
+.status-in-review {
+	background: #fff3ee;
+	color: var(--clay);
+}
+
+.status-closed {
+	background: #ede4d6;
+	color: var(--ink-mid);
+}
+
+.request-empty {
+	background: var(--white);
+	border: 1.5px solid var(--border);
+	border-radius: 10px;
+	padding: 1rem;
+	color: var(--ink-light);
+}
+
+.request-form-wrap {
+	max-width: 860px;
+	margin: 0 auto;
+}
+
+.request-form-card {
+	background: var(--white);
+	border: 1.5px solid var(--border);
+	border-radius: 12px;
+	padding: 1.4rem;
+}
+
+.request-form-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 0.95rem;
+}
+
+.field-full {
+	grid-column: 1 / -1;
+}
+
+.request-label {
+	font-size: 0.72rem;
+	text-transform: uppercase;
+	letter-spacing: 0.07em;
+	color: var(--ink-mid);
+	font-weight: 700;
+	margin-bottom: 0.3rem;
+	display: block;
+}
+
+.request-input,
+.request-select,
+.request-textarea,
+.request-file {
+	width: 100%;
+	border: 1.5px solid var(--border);
+	border-radius: 8px;
+	padding: 0.65rem 0.8rem;
+	font-size: 0.9rem;
+	background: var(--white);
+	color: var(--ink);
+}
+
+.request-textarea {
+	min-height: 130px;
+	resize: vertical;
+}
+
+.request-input:focus,
+.request-select:focus,
+.request-textarea:focus,
+.request-file:focus {
+	outline: none;
+	border-color: var(--clay);
+}
+
+.request-submit {
+	margin-top: 1rem;
+	width: 100%;
+	background: var(--clay);
+	border: none;
+	color: var(--white);
+	border-radius: 8px;
+	padding: 0.75rem;
+	font-size: 0.92rem;
+	font-weight: 600;
+}
+
+.request-submit:hover {
+	background: var(--clay-dark);
+}
+
+.request-error {
+	color: #b53030;
+	font-size: 0.78rem;
+	margin-top: 0.2rem;
+}
+
+@media (max-width: 768px) {
+	.request-shell {
+		padding: 2rem 0.8rem;
+	}
+
+	.request-hero {
+		padding: 1.3rem;
+	}
+
+	.request-form-grid {
+		grid-template-columns: 1fr;
+	}
+}
