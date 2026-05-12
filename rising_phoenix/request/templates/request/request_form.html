@@ -37,6 +37,32 @@
           <div class="field-full">
             <label class="request-label" for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
             {{ form.description }}
+            <div class="ai-refine-row">
+              <button type="button" id="ai-refine-btn" class="ai-refine-btn">Refine with AI</button>
+              <span id="ai-refine-status" class="ai-refine-status" aria-live="polite"></span>
+            </div>
+            <div id="ai-review-panel" class="ai-review-panel" hidden>
+              <p class="ai-review-title">AI Suggestion Review</p>
+              <div class="ai-diff-grid">
+                <div>
+                  <label class="request-label" for="ai-original-text">Current description</label>
+                  <textarea id="ai-original-text" class="request-textarea ai-readonly" readonly></textarea>
+                </div>
+                <div>
+                  <label class="request-label" for="ai-suggested-text">AI suggestion (editable)</label>
+                  <textarea id="ai-suggested-text" class="request-textarea"></textarea>
+                </div>
+              </div>
+              <div>
+                <p class="request-label">What changed</p>
+                <div id="ai-diff-output" class="ai-diff-output"></div>
+              </div>
+              <div class="ai-actions">
+                <button type="button" id="ai-accept-btn" class="ai-refine-btn">Accept</button>
+                <button type="button" id="ai-retry-btn" class="ai-refine-btn ai-secondary-btn">Send back to AI</button>
+                <button type="button" id="ai-reject-btn" class="ai-refine-btn ai-danger-btn">Reject</button>
+              </div>
+            </div>
             {% for error in form.description.errors %}<p class="request-error">{{ error }}</p>{% endfor %}
           </div>
 
@@ -76,4 +102,140 @@
     </div>
   </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  (function () {
+    const refineBtn = document.getElementById('ai-refine-btn');
+    const statusEl = document.getElementById('ai-refine-status');
+    const descriptionEl = document.getElementById('id_description');
+    const panelEl = document.getElementById('ai-review-panel');
+    const originalEl = document.getElementById('ai-original-text');
+    const suggestedEl = document.getElementById('ai-suggested-text');
+    const diffOutputEl = document.getElementById('ai-diff-output');
+    const acceptBtn = document.getElementById('ai-accept-btn');
+    const retryBtn = document.getElementById('ai-retry-btn');
+    const rejectBtn = document.getElementById('ai-reject-btn');
+
+    if (!refineBtn || !statusEl || !descriptionEl || !panelEl || !originalEl || !suggestedEl || !diffOutputEl || !acceptBtn || !retryBtn || !rejectBtn) {
+      return;
+    }
+
+    const escapeHtml = function (value) {
+      return value
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    };
+
+    const renderDiff = function (sourceText, suggestedText) {
+      const sourceWords = sourceText.split(/\s+/).filter(Boolean);
+      const suggestedWords = suggestedText.split(/\s+/).filter(Boolean);
+      const sourceSet = new Set(sourceWords);
+      const suggestedSet = new Set(suggestedWords);
+
+      const removed = sourceWords
+        .filter(function (word) { return !suggestedSet.has(word); })
+        .map(function (word) { return '<span class="diff-removed">-' + escapeHtml(word) + '</span>'; })
+        .join(' ');
+
+      const added = suggestedWords
+        .filter(function (word) { return !sourceSet.has(word); })
+        .map(function (word) { return '<span class="diff-added">+' + escapeHtml(word) + '</span>'; })
+        .join(' ');
+
+      const sections = [];
+      if (added) {
+        sections.push('<p class="mb-2"><strong>Added:</strong> ' + added + '</p>');
+      }
+      if (removed) {
+        sections.push('<p class="mb-0"><strong>Removed:</strong> ' + removed + '</p>');
+      }
+      if (!sections.length) {
+        sections.push('<p class="mb-0">No visible word changes found yet.</p>');
+      }
+
+      diffOutputEl.innerHTML = sections.join('');
+    };
+
+    const setBusy = function (isBusy) {
+      refineBtn.disabled = isBusy;
+      retryBtn.disabled = isBusy;
+      acceptBtn.disabled = isBusy;
+      rejectBtn.disabled = isBusy;
+      if (isBusy) {
+        refineBtn.textContent = 'Processing...';
+      } else {
+        refineBtn.textContent = 'Refine with AI';
+      }
+    };
+
+    const refineText = async function (text) {
+      if (!text) {
+        statusEl.textContent = 'Write a short description first.';
+        statusEl.classList.add('error');
+        return;
+      }
+
+      setBusy(true);
+      statusEl.textContent = 'Thinking...';
+      statusEl.classList.remove('error');
+
+      try {
+        const response = await fetch('{% url "request:refine_request_view" %}', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          body: JSON.stringify({ text })
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || 'Refinement failed.');
+        }
+
+        originalEl.value = descriptionEl.value;
+        suggestedEl.value = data.refined_text;
+        panelEl.hidden = false;
+        renderDiff(originalEl.value, suggestedEl.value);
+        statusEl.textContent = 'Review AI changes below, then accept, reject, or send back.';
+      } catch (error) {
+        statusEl.textContent = error.message || 'Something went wrong.';
+        statusEl.classList.add('error');
+      } finally {
+        setBusy(false);
+      }
+    };
+
+    refineBtn.addEventListener('click', async function () {
+      await refineText(descriptionEl.value.trim());
+    });
+
+    suggestedEl.addEventListener('input', function () {
+      renderDiff(originalEl.value, suggestedEl.value);
+    });
+
+    acceptBtn.addEventListener('click', function () {
+      descriptionEl.value = suggestedEl.value.trim();
+      panelEl.hidden = true;
+      statusEl.textContent = 'AI suggestion accepted. You can still edit before posting.';
+      statusEl.classList.remove('error');
+    });
+
+    rejectBtn.addEventListener('click', function () {
+      panelEl.hidden = true;
+      statusEl.textContent = 'AI suggestion rejected. Your original description is unchanged.';
+      statusEl.classList.remove('error');
+    });
+
+    retryBtn.addEventListener('click', async function () {
+      await refineText(suggestedEl.value.trim());
+    });
+  })();
+</script>
 {% endblock %}
