@@ -7,7 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['bio','avatar']
+        fields = ['phone','bio','avatar']
 
 class ArtisanProfileForm(forms.ModelForm):
     class Meta:

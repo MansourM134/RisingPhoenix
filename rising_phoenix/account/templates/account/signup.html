@@ -133,21 +133,22 @@
                                 {% endfor %}
                             </div>
 
-                            <div class="col-12">
-                                <label for="about" class="form-label">About You</label>
-                                <textarea
-                                    name="about"
-                                    id="about"
-                                    rows="4"
-                                    class="form-control {% if profile_form.about.errors %}is-invalid{% endif %}"
-                                    placeholder="Write something about yourself"
-                                >{{ profile_form.about.value|default:'' }}</textarea>
-                                {% for error in profile_form.about.errors %}
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Phone</label>
+                                <input
+                                    type="text"
+                                    class="form-control {% if profile_form.phone.errors %}is-invalid{% endif %}"
+                                    id="phone"
+                                    name="phone"
+                                    placeholder="Enter your phone number"
+                                    value="{{ profile_form.phone.value|default:'' }}"
+                                >
+                                {% for error in profile_form.phone.errors %}
                                     <div class="invalid-feedback d-block">{{ error }}</div>
                                 {% endfor %}
                             </div>
 
-                            <div class="col-12">
+                            <div class="col-md-6">
                                 <label for="avatar" class="form-label">Upload Your Avatar</label>
                                 <input
                                     type="file"
@@ -156,6 +157,20 @@
                                     class="form-control {% if profile_form.avatar.errors %}is-invalid{% endif %}"
                                 >
                                 {% for error in profile_form.avatar.errors %}
+                                    <div class="invalid-feedback d-block">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-12">
+                                <label for="bio" class="form-label">Bio</label>
+                                <textarea
+                                    name="bio"
+                                    id="bio"
+                                    rows="4"
+                                    class="form-control {% if profile_form.bio.errors %}is-invalid{% endif %}"
+                                    placeholder="Write something about yourself"
+                                >{{ profile_form.bio.value|default:'' }}</textarea>
+                                {% for error in profile_form.bio.errors %}
                                     <div class="invalid-feedback d-block">{{ error }}</div>
                                 {% endfor %}
                             </div>
