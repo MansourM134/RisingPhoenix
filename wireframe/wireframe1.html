@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Made in House — Wireframe v3</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sand:#F5EFE4;--sand-dark:#EAE0CC;--clay:#C2724F;--clay-dark:#A55A38;
+  --ink:#1C1712;--ink-mid:#4A3F33;--ink-light:#8C7B6B;
+  --cream:#FDFAF5;--white:#FFFFFF;--border:#D8CCBA;
+  --success:#4A7C59;--tag-bg:#EDE4D6;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"DM Sans",sans-serif;background:var(--cream);color:var(--ink);font-size:14px;line-height:1.6;}
+h1,h2,h3,h4{font-family:"Cormorant Garamond",serif;font-weight:600;}
+.page{display:none;min-height:calc(100vh - 58px);}.page.active{display:block;}
+nav{background:var(--ink);padding:0 40px;display:flex;align-items:center;justify-content:space-between;height:58px;position:sticky;top:0;z-index:200;}
+.nav-logo{font-family:"Cormorant Garamond",serif;font-size:22px;font-weight:700;color:var(--cream);cursor:pointer;letter-spacing:.04em;}
+.nav-logo span{color:var(--clay);}
+.nav-links{display:flex;align-items:center;gap:24px;}
+.nav-links a{color:#AFA094;font-size:13px;text-decoration:none;cursor:pointer;transition:color .15s;}
+.nav-links a:hover{color:var(--cream);}
+.nav-btn{background:var(--clay);color:white!important;padding:8px 18px;border-radius:6px;font-weight:600;font-size:13px;}
+.nav-ghost{background:transparent;border:1px solid #4A3F33;color:var(--cream)!important;padding:7px 16px;border-radius:6px;}
+.wfb{display:inline-block;background:var(--ink);color:var(--clay);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:4px;margin-bottom:8px;}
+.btn-primary{background:var(--clay);color:white;border:none;padding:11px 24px;border-radius:7px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:"DM Sans",sans-serif;transition:background .15s;}
+.btn-primary:hover{background:var(--clay-dark);}
+.btn-ink{background:var(--ink);color:white;border:none;padding:11px 24px;border-radius:7px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:"DM Sans",sans-serif;}
+.btn-outline{background:transparent;border:1.5px solid var(--border);padding:10px 22px;border-radius:7px;font-size:13px;cursor:pointer;font-family:"DM Sans",sans-serif;transition:all .15s;}
+.btn-outline:hover{border-color:var(--ink);}
+.btn-danger{background:transparent;border:1.5px solid #EBCCC9;color:#C0392B;padding:10px 20px;border-radius:7px;font-size:13px;cursor:pointer;font-family:"DM Sans",sans-serif;}
+.btn-success{background:var(--success);color:white;border:none;padding:11px 24px;border-radius:7px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:"DM Sans",sans-serif;}
+.btn-ghost{background:none;border:none;color:var(--clay);font-size:13px;cursor:pointer;font-family:"DM Sans",sans-serif;text-decoration:underline;}
+.fw-btn{width:100%;background:var(--clay);color:white;border:none;padding:12px;border-radius:7px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:"DM Sans",sans-serif;margin-bottom:8px;}
+.fw-btn-o{width:100%;background:transparent;border:1.5px solid var(--border);color:var(--ink);padding:11px;border-radius:7px;font-size:13px;cursor:pointer;font-family:"DM Sans",sans-serif;margin-bottom:8px;}
+.form-input{width:100%;border:1.5px solid var(--border);border-radius:7px;padding:10px 14px;font-size:13.5px;font-family:"DM Sans",sans-serif;background:white;color:var(--ink);outline:none;transition:border-color .15s;}
+.form-input:focus{border-color:var(--clay);}
+.form-label{font-size:12px;font-weight:600;color:var(--ink-mid);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em;}
+.form-group{margin-bottom:16px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-hint{font-size:11px;color:var(--ink-light);margin-top:4px;}
+textarea.form-input{resize:vertical;min-height:100px;}
+.form-select{width:100%;border:1.5px solid var(--border);border-radius:7px;padding:10px 14px;font-size:13.5px;font-family:"DM Sans",sans-serif;background:white;color:var(--ink);outline:none;}
+.filter-select{border:1.5px solid var(--border);border-radius:6px;padding:7px 12px;font-size:13px;font-family:"DM Sans",sans-serif;background:white;color:var(--ink);outline:none;}
+.chips-wrap{display:flex;flex-wrap:wrap;gap:8px;}
+.chip{padding:7px 16px;border-radius:20px;border:1.5px solid var(--border);font-size:12.5px;cursor:pointer;transition:all .15s;background:white;}
+.chip.selected,.chip.active{background:var(--clay);color:white;border-color:var(--clay);}
+.tag{background:var(--tag-bg);color:var(--ink-mid);padding:3px 10px;border-radius:10px;font-size:11px;font-weight:500;}
+.filter-pill{padding:7px 16px;border-radius:20px;border:1.5px solid var(--border);font-size:12.5px;cursor:pointer;background:white;}
+.filter-pill.active{background:var(--ink);color:var(--cream);border-color:var(--ink);}
+.pill{font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:4px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
+.pill-open{background:#EEF5F1;color:var(--success);}
+.pill-progress{background:#FFF3EE;color:var(--clay);}
+.pill-done{background:#EDE4D6;color:var(--ink-mid);}
+.pill-pending{background:#FFF9EE;color:#A07828;}
+.pill-accepted{background:#EEF5F1;color:var(--success);}
+.pill-rejected{background:#FBEAE9;color:#C0392B;}
+.pill-withdrawn{background:var(--tag-bg);color:var(--ink-mid);}
+.upload-zone{border:2px dashed var(--border);border-radius:8px;padding:24px;text-align:center;cursor:pointer;transition:border-color .15s;}
+.upload-zone:hover{border-color:var(--clay);}
+.upload-icon{font-size:26px;margin-bottom:8px;}
+.upload-label{font-size:13px;font-weight:600;color:var(--ink-mid);}
+.upload-sub{font-size:11px;color:var(--ink-light);margin-top:3px;}
+.search-bar{display:flex;border:1.5px solid var(--border);border-radius:7px;overflow:hidden;background:white;}
+.search-bar input{flex:1;border:none;padding:10px 14px;font-size:13.5px;font-family:"DM Sans",sans-serif;outline:none;background:transparent;}
+.search-bar-btn{background:var(--clay);color:white;border:none;padding:0 16px;cursor:pointer;font-size:15px;}
+.page-indicator{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:var(--ink);padding:9px 20px;border-radius:14px;font-size:11px;z-index:999;box-shadow:0 4px 24px rgba(0,0,0,.35);white-space:nowrap;display:flex;gap:8px;align-items:center;}
+.page-indicator a{color:#5A4A3A;text-decoration:none;cursor:pointer;padding:2px 4px;transition:color .15s;border-radius:3px;}
+.page-indicator a:hover{color:#CCC;}
+.page-indicator a.pi-active{color:var(--clay);font-weight:700;}
+.pi-sep{color:#3A2E26;margin:0 3px;}
+.pi-role{color:#7A6A5A;font-size:10px;margin-right:2px;}
+.hero{background:var(--ink);padding:80px 60px;min-height:480px;display:flex;align-items:center;gap:60px;position:relative;}
+.hero-text{flex:1;z-index:1;}
+.hero-eyebrow{color:var(--clay);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px;}
+.hero h1{font-size:56px;color:var(--cream);line-height:1.1;margin-bottom:20px;}
+.hero h1 em{color:var(--clay);font-style:normal;}
+.hero-sub{color:#AFA094;font-size:15px;line-height:1.7;max-width:480px;margin-bottom:32px;}
+.hero-cta{display:flex;gap:14px;align-items:center;}
+.hero-img{flex:1;background:var(--sand-dark);border-radius:12px;height:340px;display:flex;align-items:center;justify-content:center;font-size:60px;opacity:.4;}
+.hero-trust{display:flex;gap:30px;margin-top:28px;flex-wrap:wrap;}
+.trust-item{color:#7A6A5A;font-size:12px;display:flex;align-items:center;gap:6px;}
+.trust-item span{color:#AFA094;}
+.section{padding:64px 60px;}
+.section-title{text-align:center;font-size:40px;margin-bottom:8px;}
+.section-sub{text-align:center;color:var(--ink-light);font-size:15px;margin-bottom:48px;}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+.step-card{text-align:center;padding:28px 20px;}
+.step-num{width:44px;height:44px;border-radius:50%;background:var(--clay);color:white;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;margin:0 auto 16px;}
+.step-icon{font-size:32px;margin-bottom:12px;}
+.step-title{font-size:16px;font-weight:600;margin-bottom:8px;}
+.step-desc{font-size:13px;color:var(--ink-light);line-height:1.7;}
+.cat-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
+.cat-card{background:white;border:1.5px solid var(--border);border-radius:10px;padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;}
+.cat-card:hover{border-color:var(--clay);box-shadow:0 4px 16px rgba(0,0,0,.07);}
+.cat-icon{font-size:28px;margin-bottom:10px;}
+.cat-name{font-size:13px;font-weight:600;}
+.cat-count{font-size:11px;color:var(--ink-light);margin-top:2px;}
+.artisan-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+.artisan-card{background:white;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer;transition:box-shadow .2s;}
+.artisan-card:hover{box-shadow:0 6px 24px rgba(0,0,0,.1);}
+.artisan-banner{height:80px;display:flex;align-items:center;justify-content:center;font-size:24px;}
+.artisan-body{padding:16px;}
+.a-avatar{width:46px;height:46px;border-radius:50%;background:var(--clay);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;margin-bottom:10px;border:2.5px solid white;margin-top:-28px;}
+.artisan-name{font-size:15px;font-weight:600;margin-bottom:2px;}
+.artisan-meta{font-size:11.5px;color:var(--ink-light);margin-bottom:10px;}
+.artisan-footer{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--border);}
+.filter-col{background:white;border-right:1.5px solid var(--border);padding:24px 18px;}
+.filter-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-mid);margin-bottom:12px;}
+.browse-tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:24px;}
+.btab{padding:11px 20px;cursor:pointer;font-size:14px;color:var(--ink-light);border-bottom:2.5px solid transparent;margin-bottom:-2px;}
+.btab.active{color:var(--clay);border-bottom-color:var(--clay);font-weight:600;}
+.profile-banner{height:160px;background:var(--sand-dark);border-radius:12px;margin-bottom:-50px;display:flex;align-items:center;justify-content:center;font-size:48px;position:relative;}
+.profile-avatar{width:80px;height:80px;border-radius:50%;background:var(--clay);color:white;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;border:4px solid white;margin-left:32px;}
+.portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.portfolio-img{background:var(--sand-dark);border-radius:8px;height:130px;display:flex;align-items:center;justify-content:center;font-size:30px;cursor:pointer;position:relative;}
+.review-item{padding:16px 0;border-bottom:1px solid var(--border);}
+.review-item:last-child{border-bottom:none;}
+.review-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;}
+.review-stars{color:#F4A623;font-size:13px;}
+.review-verified{font-size:10.5px;color:var(--success);font-weight:600;margin-top:4px;}
+.sticky-card{background:white;border:1.5px solid var(--border);border-radius:12px;padding:22px;position:sticky;top:78px;}
+.s-stat{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.s-stat:last-child{border-bottom:none;}
+.s-stat-lbl{color:var(--ink-light);}
+.s-stat-val{font-weight:600;}
+.escrow-note{font-size:11.5px;color:var(--ink-light);line-height:1.6;background:var(--sand);padding:10px;border-radius:6px;margin-top:12px;}
+.auth-wrap{min-height:calc(100vh - 58px);background:var(--sand);display:flex;align-items:center;justify-content:center;padding:40px 20px;}
+.auth-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:40px;width:100%;max-width:480px;}
+.auth-title{font-size:34px;margin-bottom:6px;}
+.auth-sub{font-size:13.5px;color:var(--ink-light);margin-bottom:28px;}
+.auth-divider{display:flex;align-items:center;gap:12px;margin:18px 0;}
+.auth-divider span{color:var(--ink-light);font-size:12px;white-space:nowrap;}
+.auth-divider::before,.auth-divider::after{content:"";flex:1;height:1px;background:var(--border);}
+.google-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:11px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:14px;font-family:"DM Sans",sans-serif;background:white;margin-bottom:6px;transition:border-color .15s;}
+.google-btn:hover{border-color:var(--ink);}
+.auth-footer{text-align:center;margin-top:20px;font-size:13px;color:var(--ink-light);}
+.auth-link{color:var(--clay);cursor:pointer;text-decoration:none;}
+.role-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+.role-card{border:2px solid var(--border);border-radius:10px;padding:20px;cursor:pointer;transition:all .2s;text-align:center;}
+.role-card:hover,.role-card.selected{border-color:var(--clay);background:#FFF9F6;}
+.role-card-icon{font-size:32px;margin-bottom:10px;}
+.role-card-title{font-size:14.5px;font-weight:700;margin-bottom:4px;}
+.role-card-desc{font-size:12px;color:var(--ink-light);line-height:1.5;}
+.otp-row{display:flex;gap:10px;justify-content:center;margin:20px 0;}
+.otp-box{width:48px;height:56px;border:2px solid var(--border);border-radius:8px;text-align:center;font-size:22px;font-weight:700;font-family:"DM Sans",sans-serif;outline:none;transition:border-color .15s;}
+.otp-box:focus{border-color:var(--clay);}
+.ob-steps{display:flex;align-items:center;margin-bottom:28px;}
+.ob-step{display:flex;flex-direction:column;align-items:center;gap:5px;}
+.ob-step .ob-dot{width:28px;height:28px;border-radius:50%;background:var(--sand-dark);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;}
+.ob-step.done .ob-dot{background:var(--success);border-color:var(--success);color:white;}
+.ob-step.curr .ob-dot{background:var(--clay);border-color:var(--clay);color:white;}
+.ob-step .ob-label{font-size:10px;color:var(--ink-light);text-align:center;white-space:nowrap;}
+.ob-line{width:50px;height:2px;background:var(--border);margin-bottom:18px;}
+.ob-line.done{background:var(--success);}
+.dash-layout{display:grid;grid-template-columns:230px 1fr;min-height:calc(100vh - 58px);}
+.sidebar{background:var(--white);border-right:1.5px solid var(--border);padding:20px 0;position:sticky;top:58px;height:calc(100vh - 58px);overflow-y:auto;}
+.sb-user{display:flex;align-items:center;gap:12px;padding:0 18px 18px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+.sb-avatar{width:40px;height:40px;border-radius:50%;background:var(--ink);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0;}
+.sb-name{font-size:13.5px;font-weight:600;line-height:1.3;}
+.sb-role{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:3px;display:inline-block;margin-top:3px;}
+.role-req{background:#EEF5F1;color:var(--success);}
+.role-art{background:#FFF3EE;color:var(--clay);}
+.role-adm{background:var(--tag-bg);color:var(--ink-mid);}
+.sb-nav{padding:0 8px;}
+.sb-nav a{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:7px;font-size:13px;color:var(--ink-mid);cursor:pointer;text-decoration:none;margin-bottom:2px;transition:background .15s;}
+.sb-nav a:hover{background:var(--sand);}
+.sb-nav a.active{background:var(--sand);color:var(--ink);font-weight:600;}
+.sb-icon{font-size:14px;width:20px;text-align:center;}
+.sb-badge{margin-left:auto;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;background:var(--tag-bg);color:var(--ink-mid);}
+.sb-badge.hot{background:var(--clay);color:white;}
+.sb-divider{border:none;border-top:1px solid var(--border);margin:10px 0;}
+.dash-main{padding:28px 32px 80px;background:var(--cream);}
+.dash-topbar{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;}
+.stat-tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
+.stat-tile{background:white;border:1.5px solid var(--border);border-radius:10px;padding:18px;}
+.stat-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:12px;}
+.stat-val{font-size:26px;font-family:"Cormorant Garamond",serif;font-weight:700;line-height:1;margin-bottom:4px;}
+.stat-label{font-size:12.5px;font-weight:600;margin-bottom:2px;}
+.stat-sub{font-size:11px;color:var(--ink-light);}
+.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.sh h3{font-size:20px;}
+.sh a{font-size:12.5px;color:var(--clay);cursor:pointer;}
+.card{background:white;border:1.5px solid var(--border);border-radius:10px;padding:20px;margin-bottom:12px;}
+.order-snap{background:white;border:1.5px solid var(--border);border-radius:10px;padding:16px 20px;display:flex;align-items:center;gap:18px;cursor:pointer;transition:box-shadow .2s;margin-bottom:8px;}
+.order-snap:hover{box-shadow:0 3px 14px rgba(0,0,0,.07);}
+.snap-icon{font-size:26px;flex-shrink:0;}
+.snap-info{flex:1;min-width:0;}
+.snap-title{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.snap-meta{font-size:11.5px;color:var(--ink-light);}
+.row-item{background:white;border:1.5px solid var(--border);border-radius:8px;padding:14px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;margin-bottom:8px;transition:box-shadow .15s;}
+.row-item:hover{box-shadow:0 3px 10px rgba(0,0,0,.06);}
+.ri-cat{font-size:11px;font-weight:600;color:var(--ink-light);flex-shrink:0;white-space:nowrap;}
+.ri-title{font-size:13.5px;font-weight:500;flex:1;}
+.ri-meta{font-size:11px;color:var(--ink-light);white-space:nowrap;}
+.emt{display:flex;align-items:center;}
+.emt-dot{font-size:14px;display:flex;flex-direction:column;align-items:center;}
+.emt-dot .lbl{font-size:9px;color:var(--ink-light);margin-top:3px;white-space:nowrap;}
+.emt-dot.done{color:var(--success);}
+.emt-dot.curr{color:var(--clay);}
+.emt-line{width:16px;height:2px;background:var(--border);margin-bottom:14px;}
+.emt-line.done{background:var(--success);}
+.escrow-track{display:flex;align-items:flex-end;}
+.et-step{display:flex;flex-direction:column;align-items:center;}
+.et-dot{width:38px;height:38px;border-radius:50%;background:var(--sand-dark);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:6px;}
+.et-step.done .et-dot{background:#EEF5F1;border-color:var(--success);}
+.et-step.curr .et-dot{background:#FFF3EE;border-color:var(--clay);}
+.et-lbl{font-size:10px;color:var(--ink-light);text-align:center;max-width:60px;line-height:1.4;}
+.et-date{font-size:9.5px;color:var(--ink-light);margin-top:3px;}
+.et-line{width:36px;height:2px;background:var(--border);margin-bottom:30px;}
+.et-line.done{background:var(--success);}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(194,114,79,.4)}50%{box-shadow:0 0 0 6px rgba(194,114,79,0)}}
+.et-step.curr .et-dot{animation:pulse 1.5s infinite;}
+.chat-win{background:var(--sand);border-radius:8px;padding:16px;margin-bottom:12px;display:flex;flex-direction:column;gap:12px;min-height:140px;}
+.chat-msg.me{display:flex;flex-direction:column;align-items:flex-end;}
+.chat-msg.them{display:flex;flex-direction:column;align-items:flex-start;}
+.bubble{padding:10px 14px;border-radius:12px;font-size:13px;max-width:75%;line-height:1.6;}
+.bubble.me{background:var(--clay);color:white;border-radius:12px 12px 2px 12px;}
+.bubble.them{background:white;color:var(--ink);border:1px solid var(--border);border-radius:12px 12px 12px 2px;}
+.chat-time{font-size:10px;color:var(--ink-light);margin-top:3px;}
+.chat-input-row{display:flex;gap:10px;}
+.proposal-card{background:white;border:1.5px solid var(--border);border-radius:10px;padding:20px;position:relative;margin-bottom:14px;}
+.proposal-card.best{border-color:var(--clay);}
+.best-badge{position:absolute;top:-1px;left:20px;background:var(--clay);color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:0 0 6px 6px;}
+.pc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;margin-top:8px;}
+.pc-avatar{width:46px;height:46px;border-radius:50%;color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;flex-shrink:0;}
+.pc-name{font-size:15px;font-weight:600;margin-bottom:3px;}
+.pc-meta{font-size:12px;color:var(--ink-light);}
+.pc-price{font-size:22px;font-family:"Cormorant Garamond",serif;font-weight:700;color:var(--clay);text-align:right;}
+.pc-timeline{font-size:12px;color:var(--ink-light);}
+.pc-msg{font-size:13px;color:var(--ink-mid);line-height:1.7;background:var(--sand);padding:12px 14px;border-radius:6px;margin-bottom:14px;}
+.pc-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.update-block{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:12px;}
+.update-header{padding:14px 18px;display:flex;gap:12px;align-items:flex-start;background:white;}
+.update-photo{width:70px;height:56px;background:var(--sand-dark);border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.update-body{flex:1;}
+.update-title{font-size:13.5px;font-weight:600;margin-bottom:3px;}
+.update-date{font-size:11px;color:var(--ink-light);}
+.update-text{font-size:13px;color:var(--ink-mid);margin-top:6px;line-height:1.6;}
+.comment-thread{background:var(--sand);padding:12px 18px;border-top:1px solid var(--border);}
+.comment{display:flex;gap:10px;margin-bottom:10px;}
+.comment-avatar{width:26px;height:26px;border-radius:50%;background:var(--ink-light);color:white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+.comment-bubble{background:white;border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:12.5px;flex:1;line-height:1.5;}
+.comment-who{font-size:10.5px;font-weight:700;color:var(--ink-mid);margin-bottom:2px;}
+.comment-add{display:flex;gap:8px;margin-top:8px;}
+.comment-add input{flex:1;border:1.5px solid var(--border);border-radius:6px;padding:7px 12px;font-size:12.5px;font-family:"DM Sans",sans-serif;outline:none;background:white;}
+.star-row{display:flex;gap:6px;margin:10px 0;}
+.star{font-size:26px;cursor:pointer;color:var(--border);}
+.star.lit{color:#F4A623;}
+.notif-list{background:white;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;}
+.notif-item{display:flex;gap:12px;align-items:flex-start;padding:14px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;}
+.notif-item:last-child{border-bottom:none;}
+.notif-item:hover{background:var(--sand);}
+.notif-item.unread{background:#FFF9F6;}
+.notif-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+.notif-body{flex:1;}
+.notif-title{font-size:13px;font-weight:600;margin-bottom:2px;}
+.notif-sub{font-size:12px;color:var(--ink-light);line-height:1.5;}
+.notif-time{font-size:10.5px;color:var(--ink-light);flex-shrink:0;}
+.notif-dot{width:6px;height:6px;border-radius:50%;background:var(--clay);flex-shrink:0;margin-top:7px;}
+.msg-list{background:white;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;}
+.msg-row{display:flex;gap:12px;align-items:center;padding:13px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;}
+.msg-row:last-child{border-bottom:none;}
+.msg-row:hover{background:var(--sand);}
+.msg-av{width:38px;height:38px;border-radius:50%;background:var(--ink);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;}
+.msg-body{flex:1;min-width:0;}
+.msg-name{font-size:13px;font-weight:600;}
+.msg-preview{font-size:12px;color:var(--ink-light);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.msg-time{font-size:10.5px;color:var(--ink-light);flex-shrink:0;}
+.msg-unread{width:8px;height:8px;border-radius:50%;background:var(--clay);flex-shrink:0;}
+.settings-tabs{display:flex;border-bottom:2px solid var(--border);margin-bottom:24px;}
+.stab{padding:10px 18px;font-size:13.5px;cursor:pointer;color:var(--ink-light);border-bottom:2.5px solid transparent;margin-bottom:-2px;transition:all .15s;}
+.stab.active{color:var(--clay);border-bottom-color:var(--clay);font-weight:600;}
+.settings-panel{display:none;}.settings-panel.active{display:block;}
+.toggle-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--border);}
+.toggle-row:last-child{border-bottom:none;}
+.toggle{width:40px;height:22px;background:var(--border);border-radius:11px;position:relative;cursor:pointer;flex-shrink:0;}
+.toggle.on{background:var(--clay);}
+.toggle::after{content:"";width:18px;height:18px;background:white;border-radius:50%;position:absolute;top:2px;left:2px;transition:left .15s;}
+.toggle.on::after{left:20px;}
+.toggle-label{font-size:13.5px;font-weight:500;}
+.toggle-sub{font-size:12px;color:var(--ink-light);}
+.req-card{background:white;border:1.5px solid var(--border);border-radius:10px;padding:20px;margin-bottom:14px;}
+.req-card.featured{border-color:var(--clay);}
+.req-title{font-size:16px;font-weight:600;margin-bottom:4px;}
+.req-desc{font-size:13px;color:var(--ink-mid);line-height:1.7;background:var(--sand);padding:12px;border-radius:6px;margin:12px 0;}
+.req-footer{display:flex;gap:10px;align-items:center;padding-top:12px;border-top:1px solid var(--border);flex-wrap:wrap;}
+.bar-chart{display:flex;align-items:flex-end;gap:10px;height:120px;padding:0 4px;}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;}
+.bar{width:100%;border-radius:4px 4px 0 0;background:var(--sand-dark);}
+.bar.curr{background:var(--clay);opacity:.8;}
+.bar-lbl{font-size:10px;color:var(--ink-light);}
+.deposit-block{background:#EEF5F1;border:1.5px solid #C2D9C9;border-radius:8px;padding:14px;}
+.deposit-amount{font-size:22px;font-family:"Cormorant Garamond",serif;font-weight:700;color:var(--success);}
+.admin-table{width:100%;border-collapse:collapse;background:white;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;}
+.admin-table th{background:var(--sand);padding:11px 14px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-mid);}
+.admin-table td{padding:12px 14px;font-size:13px;border-top:1px solid var(--border);vertical-align:middle;}
+.admin-table tr:hover td{background:var(--sand);}
+.queue-card{background:white;border:1.5px solid var(--border);border-radius:10px;padding:18px;margin-bottom:10px;display:flex;gap:16px;align-items:flex-start;}
+.qc-icon{font-size:26px;flex-shrink:0;}
+.qc-body{flex:1;}
+.qc-title{font-size:14px;font-weight:600;margin-bottom:3px;}
+.qc-meta{font-size:12px;color:var(--ink-light);margin-bottom:10px;}
+.qc-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.dash-section{margin-bottom:24px;}
+</style>
+</head>
+<body>
+<nav id="main-nav">
+  <div class="nav-logo" onclick="showPage('home')">Made in <span>House</span></div>
+  <div class="nav-links">
+    <a onclick="showPage('browse')">Browse Artisans</a>
+    <a onclick="showPage('request')">Post a Request</a>
+    <a onclick="showPage('signin')" class="nav-ghost">Sign In</a>
+    <a onclick="showPage('signup')" class="nav-btn">Get Started</a>
+  </div>
+</nav>
+
+<!-- PAGE 1 HOME -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-text">
+      <div class="wfb">Page 1 of 16 — Home (Guest)</div>
+      <div class="hero-eyebrow">Saudi Arabia's Custom Marketplace</div>
+      <h1>Crafted for you,<br>by <em>local hands.</em></h1>
+      <p class="hero-sub">Post a custom request and let Saudi artisans compete to bring your idea to life. Every project protected by escrow.</p>
+      <div class="hero-cta">
+        <button class="btn-primary" style="font-size:15px;padding:13px 28px;" onclick="showPage('request')">Post a Request</button>
+        <button class="btn-outline" style="color:var(--cream);border-color:#4A3F33;padding:12px 24px;" onclick="showPage('browse')">Browse Artisans</button>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-item"><span>&#x1F512;</span> Escrow-protected payments</div>
+        <div class="trust-item"><span>&#x1F6E1;&#xFE0F;</span> Item deposit insurance</div>
+        <div class="trust-item"><span>&#x2B50;</span> Verified artisan reviews</div>
+        <div class="trust-item"><span>&#x1F1F8;&#x1F1E6;</span> Saudi artisans only</div>
+      </div>
+    </div>
+    <div class="hero-img">&#x1FA91;</div>
+  </div>
+  <div class="section" style="background:white;">
+    <div class="section-title">How Made in House works</div>
+    <div class="section-sub">From idea to finished item in 4 steps</div>
+    <div class="steps-grid">
+      <div class="step-card"><div class="step-num">1</div><div class="step-icon">&#x1F4DD;</div><div class="step-title">Post your request</div><div class="step-desc">Describe what you want — add photos, budget, deadline, and category.</div></div>
+      <div class="step-card"><div class="step-num">2</div><div class="step-icon">&#x1F4EC;</div><div class="step-title">Receive proposals</div><div class="step-desc">Verified artisans submit proposals with their price and timeline.</div></div>
+      <div class="step-card"><div class="step-num">3</div><div class="step-icon">&#x1F512;</div><div class="step-title">Pay into escrow</div><div class="step-desc">Accept the best proposal. Your payment is held securely until you approve.</div></div>
+      <div class="step-card"><div class="step-num">4</div><div class="step-icon">&#x2705;</div><div class="step-title">Approve &amp; release</div><div class="step-desc">Inspect the finished work, approve it, and the artisan receives payment.</div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">What can you get made?</div>
+    <div class="section-sub">Browse by category or post any custom idea</div>
+    <div class="cat-grid">
+      <div class="cat-card" onclick="showPage('browse')"><div class="cat-icon">&#x1FA91;</div><div class="cat-name">Furniture</div><div class="cat-count">142 artisans</div></div>
+      <div class="cat-card" onclick="showPage('browse')"><div class="cat-icon">&#x1F457;</div><div class="cat-name">Fashion</div><div class="cat-count">98 artisans</div></div>
+      <div class="cat-card" onclick="showPage('browse')"><div class="cat-icon">&#x1F381;</div><div class="cat-name">Custom Gifts</div><div class="cat-count">76 artisans</div></div>
+      <div class="cat-card" onclick="showPage('browse')"><div class="cat-icon">&#x1F5BC;&#xFE0F;</div><div class="cat-name">Wall Art</div><div class="cat-count">61 artisans</div></div>
+      <div class="cat-card" onclick="showPage('browse')"><div class="cat-icon">&#x1F45F;</div><div class="cat-name">Sneaker Mods</div><div class="cat-count">44 artisans</div></div>
+      <div class="cat-card" onclick="showPage('browse')"><div class="cat-icon">&#x2736;</div><div class="cat-name">View all</div><div class="cat-count">400+ artisans</div></div>
+    </div>
+  </div>
+  <div class="section" style="background:var(--sand);padding-bottom:80px;">
+    <div class="section-title">Featured artisans</div>
+    <div class="section-sub">Handpicked by our team for quality and reliability</div>
+    <div class="artisan-grid">
+      <div class="artisan-card" onclick="showPage('profile')"><div class="artisan-banner" style="background:#2A201A;">&#x1FA9A;</div><div class="artisan-body"><div class="a-avatar">A</div><div class="artisan-name">Ahmad Al-Harbi <span style="color:var(--clay);">&#x2713;</span></div><div class="artisan-meta">Woodworking &middot; Riyadh</div><div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;"><span class="tag">Tables</span><span class="tag">Drawers</span></div><div class="artisan-footer"><span style="font-size:12.5px;font-weight:600;">&#x2B50; 4.9</span><span style="font-size:11px;color:var(--ink-light);">142 orders</span></div></div></div>
+      <div class="artisan-card" onclick="showPage('profile')"><div class="artisan-banner" style="background:#3D2D4A;">&#x2702;&#xFE0F;</div><div class="artisan-body"><div class="a-avatar" style="background:#6B5B95;">F</div><div class="artisan-name">Fatima Al-Zahraa <span style="color:var(--clay);">&#x2713;</span></div><div class="artisan-meta">Fashion &middot; Jeddah</div><div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;"><span class="tag">Abayas</span><span class="tag">Embroidery</span></div><div class="artisan-footer"><span style="font-size:12.5px;font-weight:600;">&#x2B50; 4.8</span><span style="font-size:11px;color:var(--ink-light);">89 orders</span></div></div></div>
+      <div class="artisan-card" onclick="showPage('profile')"><div class="artisan-banner" style="background:#1A2A2A;">&#x1F3A8;</div><div class="artisan-body"><div class="a-avatar" style="background:#4A7C59;">K</div><div class="artisan-name">Khalid Art Studio</div><div class="artisan-meta">Wall Art &middot; Riyadh</div><div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;"><span class="tag">Calligraphy</span><span class="tag">Murals</span></div><div class="artisan-footer"><span style="font-size:12.5px;font-weight:600;">&#x2B50; 4.7</span><span style="font-size:11px;color:var(--ink-light);">55 orders</span></div></div></div>
+      <div class="artisan-card" onclick="showPage('profile')"><div class="artisan-banner" style="background:#2A1A1A;">&#x1F45F;</div><div class="artisan-body"><div class="a-avatar">S</div><div class="artisan-name">Sneaker Souq</div><div class="artisan-meta">Sneaker Mods &middot; Riyadh</div><div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;"><span class="tag">Custom Paint</span></div><div class="artisan-footer"><span style="font-size:12.5px;font-weight:600;">&#x2B50; 4.6</span><span style="font-size:11px;color:var(--ink-light);">38 orders</span></div></div></div>
+    </div>
+    <div style="margin-top:40px;background:var(--ink);border-radius:12px;padding:36px;display:flex;justify-content:space-between;align-items:center;">
+      <div><h2 style="font-size:28px;color:var(--cream);margin-bottom:8px;">Are you an artisan?</h2><p style="color:#AFA094;font-size:14px;max-width:460px;">Join 400+ Saudi craftspeople earning from their skills. Create your workshop profile and start receiving requests today.</p></div>
+      <button class="btn-primary" style="font-size:14px;padding:13px 28px;flex-shrink:0;" onclick="showPage('signup')">Open Your Workshop</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2 BROWSE -->
+<div class="page" id="page-browse">
+  <div style="padding:32px 48px 80px;">
+    <div class="wfb">Page 2 of 16 — Browse: keywords, category, rating, city filters + Completed Projects tab</div>
+    <h2 style="font-size:34px;margin:8px 0 20px;">Browse artisans</h2>
+    <div class="browse-tabs">
+      <div class="btab active">Artisan Workshops</div>
+      <div class="btab">Completed Projects &#x2713;</div>
+    </div>
+    <div style="display:grid;grid-template-columns:220px 1fr;gap:28px;">
+      <div>
+        <div class="card">
+          <div class="filter-section-title">Filters</div>
+          <div class="form-group">
+            <label class="form-label">Search keywords</label>
+            <div class="search-bar"><input type="text" placeholder="e.g. walnut, embroidery..."><button class="search-bar-btn">&#x1F50D;</button></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <label style="font-size:13px;display:flex;gap:8px;cursor:pointer;align-items:center;"><input type="checkbox" checked> Furniture</label>
+              <label style="font-size:13px;display:flex;gap:8px;cursor:pointer;align-items:center;"><input type="checkbox"> Fashion</label>
+              <label style="font-size:13px;display:flex;gap:8px;cursor:pointer;align-items:center;"><input type="checkbox"> Custom Gifts</label>
+              <label style="font-size:13px;display:flex;gap:8px;cursor:pointer;align-items:center;"><input type="checkbox"> Wall Art</label>
+              <label style="font-size:13px;display:flex;gap:8px;cursor:pointer;align-items:center;"><input type="checkbox"> Sneaker Mods</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">City</label>
+            <select class="form-select"><option>All cities</option><option>Riyadh</option><option>Jeddah</option><option>Dammam</option></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Minimum rating</label>
+            <select class="form-select"><option>Any rating</option><option>4.0+</option><option>4.5+</option><option>4.8+</option></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Options</label>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <label style="font-size:13px;display:flex;gap:8px;cursor:pointer;align-items:center;"><input type="checkbox"> Verified only</label>
+              <label style="font-size:13px;display:flex;gap:8px;cursor:pointer;align-items:center;"><input type="checkbox"> Item drop-off accepted</label>
+            </div>
+          </div>
+          <button class="btn-primary" style="width:100%;">Apply Filters</button>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <div style="font-size:13.5px;color:var(--ink-light);">Showing <strong style="color:var(--ink);">48 artisans</strong></div>
+          <select class="filter-select"><option>Sort: Best Match</option><option>Sort: Highest Rated</option><option>Sort: Most Orders</option></select>
+        </div>
+        <div class="artisan-grid">
+          <div class="artisan-card" onclick="showPage('profile')"><div class="artisan-banner" style="background:#2A201A;">&#x1FA9A;</div><div class="artisan-body"><div class="a-avatar">A</div><div class="artisan-name">Ahmad Al-Harbi <span style="color:var(--clay);">&#x2713;</span></div><div class="artisan-meta">Woodworking &middot; Riyadh</div><div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;"><span class="tag">Tables</span><span class="tag">Restoration</span></div><div class="artisan-footer"><span style="font-size:12.5px;font-weight:600;">&#x2B50; 4.9</span><span style="font-size:11px;color:var(--ink-light);">142 orders</span></div></div></div>
+          <div class="artisan-card" onclick="showPage('profile')"><div class="artisan-banner" style="background:#1E2A20;">&#x1FAB5;</div><div class="artisan-body"><div class="a-avatar" style="background:#4A7C59;">M</div><div class="artisan-name">Mansour Furniture <span style="color:var(--clay);">&#x2713;</span></div><div class="artisan-meta">Furniture &middot; Riyadh</div><div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;"><span class="tag">Beds</span><span class="tag">Sofas</span></div><div class="artisan-footer"><span style="font-size:12.5px;font-weight:600;">&#x2B50; 4.8</span><span style="font-size:11px;color:var(--ink-light);">97 orders</span></div></div></div>
+          <div class="artisan-card" onclick="showPage('profile')"><div class="artisan-banner" style="background:#26221C;">&#x1F528;</div><div class="artisan-body"><div class="a-avatar" style="background:#7B6FA0;">N</div><div class="artisan-name">Nasser Crafts</div><div class="artisan-meta">Carpentry &middot; Riyadh</div><div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;"><span class="tag">Cabinets</span></div><div class="artisan-footer"><span style="font-size:12.5px;font-weight:600;">&#x2B50; 4.5</span><span style="font-size:11px;color:var(--ink-light);">61 orders</span></div></div></div>
+          <div class="artisan-card" onclick="showPage('profile')"><div class="artisan-banner" style="background:#1A2028;">&#x1F6E0;&#xFE0F;</div><div class="artisan-body"><div class="a-avatar" style="background:#456080;">S</div><div class="artisan-name">Saleh Workshop</div><div class="artisan-meta">Furniture Mods &middot; Riyadh</div><div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;"><span class="tag">Modifications</span></div><div class="artisan-footer"><span style="font-size:12.5px;font-weight:600;">&#x2B50; 4.3</span><span style="font-size:11px;color:var(--ink-light);">29 orders</span></div></div></div>
+        </div>
+        <div style="display:flex;justify-content:center;gap:8px;margin-top:28px;">
+          <button class="btn-outline" style="padding:8px 16px;font-size:13px;" disabled>&larr; Prev</button>
+          <button class="btn-primary" style="padding:8px 14px;font-size:13px;">1</button>
+          <button class="btn-outline" style="padding:8px 14px;font-size:13px;">2</button>
+          <button class="btn-outline" style="padding:8px 14px;font-size:13px;">3</button>
+          <button class="btn-outline" style="padding:8px 16px;font-size:13px;">Next &rarr;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3 POST REQUEST -->
+<div class="page" id="page-request">
+  <div style="padding:36px 60px 80px;">
+    <div class="wfb">Page 3 of 16 — Post a Request (Requester): category, title, images, budget, deadline, city, item flag, suggested artisans</div>
+    <h2 style="font-size:34px;margin-bottom:4px;">Post a Custom Request</h2>
+    <p style="color:var(--ink-light);margin-bottom:32px;font-size:14px;">Describe your idea and let artisans come to you with proposals.</p>
+    <div style="display:grid;grid-template-columns:1fr 300px;gap:32px;">
+      <div>
+        <div class="card" style="margin-bottom:20px;">
+          <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-light);margin-bottom:12px;">Step 1 — Category</div>
+          <div class="chips-wrap">
+            <div class="chip active">&#x1FA91; Furniture</div><div class="chip">&#x1F457; Fashion</div><div class="chip">&#x1F381; Custom Gifts</div>
+            <div class="chip">&#x1F5BC;&#xFE0F; Wall Art</div><div class="chip">&#x1F45F; Sneaker Mods</div><div class="chip">&#x2736; Other</div>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:20px;">
+          <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-light);margin-bottom:16px;">Step 2 — Request Details</div>
+          <div class="form-group"><label class="form-label">Request Title</label><input class="form-input" type="text" placeholder="e.g. Hidden drawer added to my walnut side table"></div>
+          <div class="form-group"><label class="form-label">Description</label><textarea class="form-input" style="min-height:120px;" placeholder="Describe what you need in detail..."></textarea></div>
+          <div class="form-group"><label class="form-label">Reference Images</label><div class="upload-zone"><div class="upload-icon">&#x1F4CE;</div><div class="upload-label">Upload photos or references</div><div class="upload-sub">PNG, JPG — up to 10 images</div></div></div>
+        </div>
+        <div class="card" style="margin-bottom:20px;">
+          <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-light);margin-bottom:16px;">Step 3 — Budget, Timeline &amp; Location</div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Budget min (SAR)</label><input class="form-input" type="number" placeholder="300"></div>
+            <div class="form-group"><label class="form-label">Budget max (SAR)</label><input class="form-input" type="number" placeholder="600"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Preferred Deadline</label><input class="form-input" type="date"></div>
+            <div class="form-group"><label class="form-label">Your City</label><select class="form-select"><option>Riyadh</option><option>Jeddah</option><option>Dammam</option></select></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Do artisans need to handle a physical item?</label>
+            <div style="display:flex;gap:12px;margin-top:6px;">
+              <label style="font-size:13.5px;display:flex;gap:8px;cursor:pointer;align-items:center;"><input type="radio" name="item" checked> Yes — I have an item to drop off</label>
+              <label style="font-size:13.5px;display:flex;gap:8px;cursor:pointer;align-items:center;"><input type="radio" name="item"> No — build from scratch</label>
+            </div>
+          </div>
+        </div>
+        <button class="btn-primary" style="font-size:15px;padding:14px 32px;" onclick="showPage('user-dashboard')">Post Request</button>
+      </div>
+      <div>
+        <div class="sticky-card">
+          <div style="font-size:13px;font-weight:700;margin-bottom:4px;">Suggested Artisans</div>
+          <div style="font-size:12px;color:var(--ink-light);margin-bottom:16px;">Based on your category selection</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;gap:12px;align-items:center;padding:12px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;" onclick="showPage('profile')">
+              <div class="a-avatar" style="margin:0;width:38px;height:38px;font-size:15px;">A</div>
+              <div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;">Ahmad Al-Harbi <span style="color:var(--clay);">&#x2713;</span></div><div style="font-size:11px;color:var(--ink-light);">&#x2B50; 4.9 &middot; 142 orders &middot; Riyadh</div></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:center;padding:12px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;" onclick="showPage('profile')">
+              <div class="a-avatar" style="margin:0;width:38px;height:38px;font-size:15px;background:#4A7C59;">M</div>
+              <div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;">Mansour Furniture <span style="color:var(--clay);">&#x2713;</span></div><div style="font-size:11px;color:var(--ink-light);">&#x2B50; 4.8 &middot; 97 orders &middot; Riyadh</div></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:center;padding:12px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;" onclick="showPage('profile')">
+              <div class="a-avatar" style="margin:0;width:38px;height:38px;font-size:15px;background:#7B6FA0;">N</div>
+              <div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;">Nasser Crafts</div><div style="font-size:11px;color:var(--ink-light);">&#x2B50; 4.5 &middot; 61 orders &middot; Riyadh</div></div>
+            </div>
+            <button class="btn-ghost" onclick="showPage('browse')" style="font-size:12px;">Browse all artisans &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4 WORKSHOP PROFILE -->
+<div class="page" id="page-profile">
+  <div style="padding:32px 60px 80px;max-width:1080px;margin:0 auto;">
+    <div class="wfb">Page 4 of 16 — Workshop Profile: pinned portfolio, verified reviews, before/after, sticky booking card</div>
+    <div class="profile-banner" style="background:#2A201A;">&#x1FA9A;
+      <div style="position:absolute;bottom:12px;right:16px;background:var(--clay);color:white;font-size:10.5px;font-weight:700;padding:4px 12px;border-radius:5px;">&#x2713; Verified Artisan</div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;padding:0 0 20px;border-bottom:1px solid var(--border);margin-bottom:28px;">
+      <div style="display:flex;align-items:flex-end;gap:16px;margin-top:12px;">
+        <div class="profile-avatar">A</div>
+        <div>
+          <h2 style="font-size:28px;">Ahmad Al-Harbi</h2>
+          <div style="color:var(--ink-light);font-size:13px;">Woodworking &middot; Riyadh &middot; Member since Jan 2023</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;"><span class="tag">Custom Tables</span><span class="tag">Shelving</span><span class="tag">Drawers</span><span class="tag">Restoration</span></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 280px;gap:28px;">
+      <div>
+        <div class="card" style="margin-bottom:18px;">
+          <h3 style="font-size:22px;margin-bottom:12px;">About Ahmad's Workshop</h3>
+          <p style="color:var(--ink-mid);font-size:13.5px;line-height:1.8;">Woodworking specialist with 8 years of experience in custom furniture, modifications, and restoration. I work exclusively with solid hardwoods. Every joint is hand-cut and every surface is hand-finished with food-safe oils.</p>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px;">
+            <div style="text-align:center;padding:12px;background:var(--sand);border-radius:8px;"><div style="font-size:20px;font-family:'Cormorant Garamond',serif;font-weight:700;">142</div><div style="font-size:11px;color:var(--ink-light);">Completed orders</div></div>
+            <div style="text-align:center;padding:12px;background:var(--sand);border-radius:8px;"><div style="font-size:20px;font-family:'Cormorant Garamond',serif;font-weight:700;">&#x2B50; 4.9</div><div style="font-size:11px;color:var(--ink-light);">Average rating</div></div>
+            <div style="text-align:center;padding:12px;background:var(--sand);border-radius:8px;"><div style="font-size:20px;font-family:'Cormorant Garamond',serif;font-weight:700;">~2h</div><div style="font-size:11px;color:var(--ink-light);">Avg. response time</div></div>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:18px;">
+          <h3 style="font-size:22px;margin-bottom:14px;">Portfolio</h3>
+          <div class="portfolio-grid">
+            <div class="portfolio-img">&#x1FA91;<span style="position:absolute;top:6px;left:6px;background:var(--clay);color:white;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;">Pinned</span></div>
+            <div class="portfolio-img">&#x1F5C4;&#xFE0F;<span style="position:absolute;top:6px;left:6px;background:var(--clay);color:white;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;">Pinned</span></div>
+            <div class="portfolio-img">&#x1F6E0;&#xFE0F;</div>
+            <div class="portfolio-img">&#x1FAB5;</div><div class="portfolio-img">&#x1FAA9;</div><div class="portfolio-img">&#x1F529;</div>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:18px;">
+          <h3 style="font-size:22px;margin-bottom:14px;">Completed Projects</h3>
+          <div style="border:1.5px solid var(--border);border-radius:8px;overflow:hidden;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;">
+              <div style="background:var(--sand-dark);height:100px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;"><div style="font-size:22px;">&#x1F4F8;</div><div style="font-size:10px;color:var(--ink-light);">Before</div></div>
+              <div style="background:var(--sand);height:100px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;"><div style="font-size:22px;">&#x1F4F8;</div><div style="font-size:10px;color:var(--ink-light);">After</div></div>
+            </div>
+            <div style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center;">
+              <div><div style="font-size:13px;font-weight:600;">Hidden drawer &mdash; walnut side table</div><div style="font-size:11px;color:var(--ink-light);">Furniture Modification &middot; May 2025</div></div>
+              <span style="font-size:10px;font-weight:700;color:var(--success);background:#EEF5F1;padding:3px 9px;border-radius:10px;">&#x2713; Verified Project</span>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <h3 style="font-size:22px;">Reviews <span style="font-size:14px;font-weight:400;color:var(--ink-light);font-family:'DM Sans',sans-serif;">(142)</span></h3>
+            <div style="font-size:20px;font-weight:700;">&#x2B50; 4.9</div>
+          </div>
+          <div class="review-item">
+            <div class="review-head"><div><div style="font-size:13.5px;font-weight:600;">Tariq Al-Mansouri</div><div class="review-stars">&#x2B50;&#x2B50;&#x2B50;&#x2B50;&#x2B50;</div></div><div style="font-size:11px;color:var(--ink-light);">May 2025</div></div>
+            <p style="font-size:13px;color:var(--ink-mid);line-height:1.7;">Exceptional work. The drawer is completely flush and the grain match is perfect. Ahmad communicated every step with photos.</p>
+            <div class="review-verified">&#x2713; Verified Project</div>
+          </div>
+          <div class="review-item">
+            <div class="review-head"><div><div style="font-size:13.5px;font-weight:600;">Hessa Al-Anzi</div><div class="review-stars">&#x2B50;&#x2B50;&#x2B50;&#x2B50;&#x2B50;</div></div><div style="font-size:11px;color:var(--ink-light);">Apr 2025</div></div>
+            <p style="font-size:13px;color:var(--ink-mid);line-height:1.7;">Built a custom TV unit with geometric inlay. Craftsmanship is museum-quality. Delivered exactly on time.</p>
+            <div class="review-verified">&#x2713; Verified Project</div>
+          </div>
+          <button class="btn-ghost" style="margin-top:10px;">Load more reviews &rarr;</button>
+        </div>
+      </div>
+      <div>
+        <div class="sticky-card">
+          <div style="font-size:18px;font-weight:700;margin-bottom:4px;">Ahmad Al-Harbi</div>
+          <div style="font-size:12px;color:var(--ink-light);margin-bottom:16px;">Woodworking &middot; Riyadh</div>
+          <div class="s-stat"><span class="s-stat-lbl">Response time</span><span class="s-stat-val">~2 hours</span></div>
+          <div class="s-stat"><span class="s-stat-lbl">Typical turnaround</span><span class="s-stat-val">3&ndash;10 days</span></div>
+          <div class="s-stat"><span class="s-stat-lbl">Active orders</span><span class="s-stat-val">2 (available)</span></div>
+          <div class="s-stat"><span class="s-stat-lbl">Item drop-off</span><span class="s-stat-val">&#x2705; Accepted</span></div>
+          <div class="s-stat" style="border:none;"><span class="s-stat-lbl">Ships KSA</span><span class="s-stat-val">&#x2705; Yes</span></div>
+          <div style="border-top:1px solid var(--border);margin:14px 0;"></div>
+          <button class="fw-btn" onclick="showPage('request')">Request Custom Work</button>
+          <button class="fw-btn-o">&#x1F4AC; Send Message</button>
+          <div class="escrow-note">&#x1F512; All payments held in escrow and released only when you approve the finished work.</div>
+          <div style="margin-top:10px;padding:12px;background:var(--tag-bg);border-radius:6px;"><div style="font-size:10.5px;font-weight:700;color:var(--ink-mid);margin-bottom:5px;">ITEM PROTECTION</div><div style="font-size:12px;color:var(--ink-light);line-height:1.6;">Ahmad must deposit your item's value before work starts. Your item is insured against damage or loss.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 5 SIGN UP -->
+<div class="page" id="page-signup">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="wfb">Page 5 of 16 &mdash; Sign Up: Google OAuth, role selection, terms</div>
+      <h2 class="auth-title" style="margin-top:10px;">Create your account</h2>
+      <p class="auth-sub">Join Made in House &mdash; order custom work or offer your craft.</p>
+      <button class="google-btn"><span style="font-size:18px;font-weight:700;">G</span> Continue with Google</button>
+      <div class="auth-divider"><span>or sign up with email</span></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">First Name</label><input class="form-input" type="text" placeholder="Tariq"></div>
+        <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" type="text" placeholder="Al-Mansouri"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="tariq@email.com"></div>
+      <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="At least 8 characters"></div>
+      <div style="font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-mid);margin-bottom:12px;">I want to&hellip;</div>
+      <div class="role-cards">
+        <div class="role-card selected">
+          <div class="role-card-icon">&#x1F4CB;</div>
+          <div class="role-card-title">Get work made</div>
+          <div class="role-card-desc">Post requests and receive proposals from artisans.</div>
+        </div>
+        <div class="role-card">
+          <div class="role-card-icon">&#x1FA9A;</div>
+          <div class="role-card-title">Offer my craft</div>
+          <div class="role-card-desc">Create a workshop profile and receive commissions.</div>
+        </div>
+      </div>
+      <div style="font-size:11.5px;color:var(--ink-light);margin-bottom:14px;text-align:center;">You can do both &mdash; switch roles anytime from your account.</div>
+      <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:18px;">
+        <input type="checkbox" id="terms" style="margin-top:3px;flex-shrink:0;">
+        <label for="terms" style="font-size:13px;color:var(--ink-mid);cursor:pointer;">I agree to the <a class="auth-link">Terms of Service</a> and <a class="auth-link">Privacy Policy</a></label>
+      </div>
+      <button class="fw-btn" onclick="showPage('verify')">Create Account &rarr;</button>
+      <div class="auth-footer">Already have an account? <a class="auth-link" onclick="showPage('signin')">Sign in</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 6 SIGN IN -->
+<div class="page" id="page-signin">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="wfb">Page 6 of 16 &mdash; Sign In: Google OAuth + inline password reset</div>
+      <h2 class="auth-title" style="margin-top:10px;">Welcome back</h2>
+      <p class="auth-sub">Sign in to your Made in House account.</p>
+      <button class="google-btn"><span style="font-size:18px;font-weight:700;">G</span> Continue with Google</button>
+      <div class="auth-divider"><span>or sign in with email</span></div>
+      <div id="signin-form">
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="tariq@email.com"></div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input class="form-input" type="password" placeholder="Your password">
+          <div style="margin-top:6px;"><a class="auth-link" style="font-size:12.5px;" onclick="document.getElementById('signin-form').style.display='none';document.getElementById('reset-panel').style.display='block';">Forgot password?</a></div>
+        </div>
+        <button class="fw-btn" onclick="showPage('user-dashboard')">Sign In</button>
+      </div>
+      <div id="reset-panel" style="display:none;">
+        <div style="background:var(--sand);border-radius:8px;padding:16px;margin-bottom:16px;">
+          <div style="font-size:13px;font-weight:700;margin-bottom:4px;">Reset your password</div>
+          <div style="font-size:12.5px;color:var(--ink-light);margin-bottom:14px;">Enter your email and we'll send you a reset link.</div>
+          <div class="form-group" style="margin-bottom:12px;"><input class="form-input" type="email" placeholder="tariq@email.com"></div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn-primary" style="padding:9px 20px;font-size:13px;">Send Reset Link</button>
+            <button class="btn-outline" style="padding:9px 16px;font-size:13px;" onclick="document.getElementById('reset-panel').style.display='none';document.getElementById('signin-form').style.display='block';">Cancel</button>
+          </div>
+        </div>
+      </div>
+      <div class="auth-footer">New to Made in House? <a class="auth-link" onclick="showPage('signup')">Create an account</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 7 VERIFY -->
+<div class="page" id="page-verify">
+  <div class="auth-wrap" style="align-items:flex-start;padding-top:60px;">
+    <div class="auth-card" style="max-width:540px;">
+      <div class="wfb">Page 7 of 16 &mdash; Phone Verification (OTP) + resend timer</div>
+      <div class="ob-steps" style="margin-top:16px;justify-content:center;">
+        <div class="ob-step done"><div class="ob-dot">&#x2713;</div><div class="ob-label">Account<br>created</div></div>
+        <div class="ob-line done"></div>
+        <div class="ob-step curr"><div class="ob-dot">2</div><div class="ob-label">Verify<br>phone</div></div>
+        <div class="ob-line"></div>
+        <div class="ob-step"><div class="ob-dot">3</div><div class="ob-label">Workshop<br>setup</div></div>
+        <div class="ob-line"></div>
+        <div class="ob-step"><div class="ob-dot">4</div><div class="ob-label">All<br>done!</div></div>
+      </div>
+      <h3 style="font-size:26px;margin-bottom:6px;">Verify your phone number</h3>
+      <p style="font-size:13.5px;color:var(--ink-light);margin-bottom:20px;">A 6-digit code will be sent to your mobile number. Verified accounts are shown as trusted on the platform.</p>
+      <div class="form-group"><label class="form-label">Saudi Mobile Number</label>
+        <div style="display:flex;gap:8px;"><div style="background:var(--sand);border:1.5px solid var(--border);border-radius:7px;padding:10px 14px;font-size:13.5px;color:var(--ink-mid);white-space:nowrap;">+966</div><input class="form-input" type="tel" placeholder="5X XXX XXXX"></div>
+      </div>
+      <button class="fw-btn" style="margin-bottom:0;">Send Verification Code</button>
+      <div style="background:var(--sand);border-radius:10px;padding:20px;margin-top:20px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:12px;">Enter the 6-digit code</div>
+        <div class="otp-row" style="margin:0 0 14px;">
+          <input class="otp-box" maxlength="1" value="3"><input class="otp-box" maxlength="1" value="7"><input class="otp-box" maxlength="1" value="4">
+          <input class="otp-box" maxlength="1" style="border-color:var(--clay);"><input class="otp-box" maxlength="1"><input class="otp-box" maxlength="1">
+        </div>
+        <div style="font-size:12px;color:var(--ink-light);">Resend code in <strong>00:42</strong> &middot; <a class="auth-link">Resend now</a></div>
+      </div>
+      <button class="fw-btn" style="margin-top:14px;" onclick="showPage('verify-workshop')">Verify &amp; Continue &rarr;</button>
+      <div style="text-align:center;margin-top:12px;"><a class="auth-link" style="font-size:12.5px;" onclick="showPage('user-dashboard')">Skip for now &mdash; I'll verify later</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 7b ARTISAN ONBOARDING -->
+<div class="page" id="page-verify-workshop">
+  <div class="auth-wrap" style="align-items:flex-start;padding-top:60px;">
+    <div class="auth-card" style="max-width:560px;">
+      <div class="wfb">Page 7b of 16 &mdash; Artisan Workshop Setup: name, bio, categories, city, portfolio upload (min 3)</div>
+      <div class="ob-steps" style="margin-top:16px;justify-content:center;">
+        <div class="ob-step done"><div class="ob-dot">&#x2713;</div><div class="ob-label">Account<br>created</div></div>
+        <div class="ob-line done"></div>
+        <div class="ob-step done"><div class="ob-dot">&#x2713;</div><div class="ob-label">Phone<br>verified</div></div>
+        <div class="ob-line done"></div>
+        <div class="ob-step curr"><div class="ob-dot">3</div><div class="ob-label">Workshop<br>setup</div></div>
+        <div class="ob-line"></div>
+        <div class="ob-step"><div class="ob-dot">4</div><div class="ob-label">All<br>done!</div></div>
+      </div>
+      <h3 style="font-size:26px;margin-bottom:6px;">Set up your workshop</h3>
+      <p style="font-size:13.5px;color:var(--ink-light);margin-bottom:20px;">This is your public artisan profile. You can update it any time.</p>
+      <div class="form-group"><label class="form-label">Workshop Name</label><input class="form-input" type="text" placeholder="e.g. Ahmad's Woodworks"></div>
+      <div class="form-group"><label class="form-label">Bio &amp; Description</label><textarea class="form-input" placeholder="Tell requesters about your craft, experience, and style..."></textarea></div>
+      <div class="form-group">
+        <label class="form-label">Craft Categories</label>
+        <div class="chips-wrap" style="margin-top:8px;">
+          <div class="chip active">&#x1FA91; Furniture</div><div class="chip">&#x1F6E0;&#xFE0F; Furniture Mods</div><div class="chip">&#x1F504; Restoration</div>
+          <div class="chip">&#x1F381; Custom Gifts</div><div class="chip">&#x1F457; Fashion</div><div class="chip">&#x1F5BC;&#xFE0F; Wall Art</div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">City</label><select class="form-select"><option>Riyadh</option><option>Jeddah</option><option>Dammam</option></select></div>
+        <div class="form-group"><label class="form-label">Item Drop-off</label><select class="form-select"><option>Accepted</option><option>Not accepted</option></select></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Banner Photo</label>
+        <div class="upload-zone" style="padding:16px;"><div class="upload-icon">&#x1F5BC;&#xFE0F;</div><div class="upload-label">Upload a workshop banner</div><div class="upload-sub">Recommended: 1200&times;400px</div></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Portfolio Images <span style="color:var(--clay);">*</span></label>
+        <div style="font-size:12px;color:var(--ink-light);margin-bottom:8px;">Upload at least 3 images. These appear on your public profile.</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+          <div style="background:var(--sand);border-radius:8px;height:80px;display:flex;align-items:center;justify-content:center;font-size:22px;">&#x1F4F8;</div>
+          <div style="background:var(--sand);border-radius:8px;height:80px;display:flex;align-items:center;justify-content:center;font-size:22px;">&#x1F4F8;</div>
+          <div style="background:var(--sand);border-radius:8px;height:80px;display:flex;align-items:center;justify-content:center;font-size:22px;">&#x1F4F8;</div>
+          <div class="upload-zone" style="padding:0;height:80px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:3px;"><div style="font-size:18px;">+</div><div style="font-size:10px;color:var(--ink-light);">Add more</div></div>
+        </div>
+        <div style="font-size:11px;margin-top:6px;color:var(--success);">&#x2713; 3 images uploaded &mdash; minimum met</div>
+      </div>
+      <button class="fw-btn" onclick="showPage('artisan-dashboard')">Finish Setup &rarr;</button>
+      <div style="text-align:center;margin-top:10px;"><a class="auth-link" style="font-size:12.5px;" onclick="showPage('user-dashboard')">Skip &mdash; I'll complete this later</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 8 REQUESTER DASHBOARD -->
+<div class="page" id="page-user-dashboard">
+  <div class="dash-layout">
+    <div class="sidebar">
+      <div class="sb-user"><div class="sb-avatar">T</div><div><div class="sb-name">Tariq Al-Mansouri</div><span class="sb-role role-req">Requester</span></div></div>
+      <div class="sb-nav">
+        <a class="active" onclick="showPage('user-dashboard')"><span class="sb-icon">&#x1F3E0;</span> Dashboard</a>
+        <a onclick="showPage('user-bids')"><span class="sb-icon">&#x1F4EC;</span> My Requests <span class="sb-badge hot">2</span></a>
+        <a onclick="showPage('user-order')"><span class="sb-icon">&#x1F4E6;</span> Active Orders <span class="sb-badge">1</span></a>
+        <a><span class="sb-icon">&#x2705;</span> Completed</a>
+        <a><span class="sb-icon">&#x1F4AC;</span> Messages <span class="sb-badge hot">3</span></a>
+        <hr class="sb-divider">
+        <a onclick="showPage('settings')"><span class="sb-icon">&#x2699;&#xFE0F;</span> Settings</a>
+        <a onclick="showPage('signin')" style="color:var(--ink-light);"><span class="sb-icon">&#x1F6AA;</span> Sign Out</a>
+        <hr class="sb-divider">
+        <a onclick="showPage('request')" style="color:var(--clay);font-weight:700;"><span class="sb-icon">+</span> New Request</a>
+      </div>
+    </div>
+    <div class="dash-main">
+      <div class="dash-topbar">
+        <div><div class="wfb">Page 8 of 16 &mdash; Requester Dashboard: stats, notifications, active order, requests, messages</div><h2 style="font-size:28px;margin-top:4px;">Good morning, Tariq</h2><div style="color:var(--ink-light);font-size:13px;">You have 8 new proposals waiting for review.</div></div>
+        <button class="btn-primary" onclick="showPage('request')">+ Post New Request</button>
+      </div>
+      <div class="stat-tiles">
+        <div class="stat-tile"><div class="stat-icon" style="background:#EEF5F1;">&#x1F4CB;</div><div class="stat-val">3</div><div class="stat-label">Active Requests</div><div class="stat-sub">2 have new proposals</div></div>
+        <div class="stat-tile"><div class="stat-icon" style="background:#FFF3EE;">&#x1F4EC;</div><div class="stat-val">8</div><div class="stat-label">Proposals Received</div><div class="stat-sub">Awaiting review</div></div>
+        <div class="stat-tile"><div class="stat-icon" style="background:#EEF5F1;">&#x1F512;</div><div class="stat-val">SAR 650</div><div class="stat-label">In Escrow</div><div class="stat-sub">1 active order</div></div>
+        <div class="stat-tile"><div class="stat-icon" style="background:var(--tag-bg);">&#x2705;</div><div class="stat-val">7</div><div class="stat-label">Completed Orders</div><div class="stat-sub">Avg. rating given: 4.7</div></div>
+      </div>
+      <div class="dash-section">
+        <div class="sh"><h3>Notifications</h3><a onclick="showPage('settings')">Manage preferences &rarr;</a></div>
+        <div class="notif-list">
+          <div class="notif-item unread"><div class="notif-dot"></div><div class="notif-icon">&#x1F4EC;</div><div class="notif-body"><div class="notif-title">5 new proposals on your Walnut Drawer request</div><div class="notif-sub">Ahmad Al-Harbi &middot; Khalid Woodworks &middot; and 3 others</div></div><div class="notif-time">2h ago</div></div>
+          <div class="notif-item unread"><div class="notif-dot"></div><div class="notif-icon">&#x1F4F8;</div><div class="notif-body"><div class="notif-title">Ahmad posted a progress update</div><div class="notif-sub">Order #MH-2847 &mdash; Routing started, photo attached</div></div><div class="notif-time">5h ago</div></div>
+          <div class="notif-item unread"><div class="notif-dot"></div><div class="notif-icon">&#x1F4AC;</div><div class="notif-body"><div class="notif-title">New message from Fatima Al-Zahraa</div><div class="notif-sub">"Could you share the dimensions of the frame you want?"</div></div><div class="notif-time">5h ago</div></div>
+          <div class="notif-item"><div class="notif-icon" style="margin-left:13px;">&#x2705;</div><div class="notif-body"><div class="notif-title">Order #MH-2811 completed</div><div class="notif-sub">Sneaker custom paint &mdash; payment released</div></div><div class="notif-time">2 days ago</div></div>
+        </div>
+      </div>
+      <div class="dash-section">
+        <div class="sh"><h3>Active Order</h3><a onclick="showPage('user-order')">View details &rarr;</a></div>
+        <div class="order-snap" onclick="showPage('user-order')" style="border-left:3px solid var(--clay);">
+          <div class="snap-icon">&#x1FA91;</div>
+          <div class="snap-info"><div class="snap-title">Hidden drawer added to walnut side table</div><div class="snap-meta">Ahmad Al-Harbi &middot; Woodworking</div></div>
+          <div class="emt">
+            <div class="emt-dot done">&#x1F4B3;<div class="lbl">Paid</div></div><div class="emt-line done"></div>
+            <div class="emt-dot done">&#x1F512;<div class="lbl">Escrowed</div></div><div class="emt-line done"></div>
+            <div class="emt-dot curr">&#x1F3A8;<div class="lbl">In Progress</div></div><div class="emt-line"></div>
+            <div class="emt-dot">&#x1F50D;<div class="lbl">Review</div></div><div class="emt-line"></div>
+            <div class="emt-dot">&#x2705;<div class="lbl">Done</div></div>
+          </div>
+          <div style="text-align:right;"><div style="font-size:14px;font-weight:700;color:var(--clay);">SAR 650</div><div style="font-size:11px;color:var(--ink-light);">Due ~May 17</div></div>
+          <span class="pill pill-progress">In Progress</span>
+        </div>
+      </div>
+      <div class="dash-section">
+        <div class="sh"><h3>My Requests</h3><a onclick="showPage('user-bids')">View all &rarr;</a></div>
+        <div class="row-item" onclick="showPage('user-bids')"><div class="ri-cat">&#x1FA91; Furniture</div><div class="ri-title">Hidden drawer added to walnut side table</div><div class="ri-meta">3 days ago &middot; <strong>5 proposals</strong></div><span class="pill pill-open">Open</span></div>
+        <div class="row-item" onclick="showPage('user-bids')"><div class="ri-cat">&#x1F381; Gift</div><div class="ri-title">Engraved wooden photo frame for wedding gift</div><div class="ri-meta">1 day ago &middot; <strong>3 proposals</strong></div><span class="pill pill-open">Open</span></div>
+        <div class="row-item" style="opacity:.6;"><div class="ri-cat">&#x1F45F; Sneakers</div><div class="ri-title">Custom paint on Jordan 1s &mdash; desert theme</div><div class="ri-meta">8 days ago &middot; <strong>0 proposals</strong></div><span class="pill pill-done">No proposals yet</span></div>
+      </div>
+      <div class="dash-section">
+        <div class="sh"><h3>Recent Messages</h3></div>
+        <div class="msg-list">
+          <div class="msg-row"><div class="msg-av" style="background:var(--clay);">A</div><div class="msg-body"><div class="msg-name">Ahmad Al-Harbi</div><div class="msg-preview">I've started on the drawer mechanism. Will send a progress photo tomorrow.</div></div><div class="msg-time">2h ago</div><div class="msg-unread"></div></div>
+          <div class="msg-row"><div class="msg-av" style="background:#6B5B95;">F</div><div class="msg-body"><div class="msg-name">Fatima Al-Zahraa</div><div class="msg-preview">Could you share the dimensions of the frame you want?</div></div><div class="msg-time">5h ago</div><div class="msg-unread"></div></div>
+          <div class="msg-row"><div class="msg-av" style="background:#4A7C59;">R</div><div class="msg-body"><div class="msg-name">Rami Designs</div><div class="msg-preview">Proposal submitted on your photo frame request.</div></div><div class="msg-time">Yesterday</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 9 REVIEW PROPOSALS -->
+<div class="page" id="page-user-bids">
+  <div class="dash-layout">
+    <div class="sidebar">
+      <div class="sb-user"><div class="sb-avatar">T</div><div><div class="sb-name">Tariq Al-Mansouri</div><span class="sb-role role-req">Requester</span></div></div>
+      <div class="sb-nav">
+        <a onclick="showPage('user-dashboard')"><span class="sb-icon">&#x1F3E0;</span> Dashboard</a>
+        <a class="active"><span class="sb-icon">&#x1F4EC;</span> My Requests <span class="sb-badge hot">2</span></a>
+        <a onclick="showPage('user-order')"><span class="sb-icon">&#x1F4E6;</span> Active Orders <span class="sb-badge">1</span></a>
+        <a><span class="sb-icon">&#x2705;</span> Completed</a>
+        <a><span class="sb-icon">&#x1F4AC;</span> Messages <span class="sb-badge hot">3</span></a>
+        <hr class="sb-divider">
+        <a onclick="showPage('settings')"><span class="sb-icon">&#x2699;&#xFE0F;</span> Settings</a>
+        <hr class="sb-divider">
+        <a onclick="showPage('request')" style="color:var(--clay);font-weight:700;"><span class="sb-icon">+</span> New Request</a>
+      </div>
+    </div>
+    <div class="dash-main">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;"><button onclick="showPage('user-dashboard')" style="background:none;border:none;cursor:pointer;color:var(--ink-light);font-size:13px;">&larr; Back</button><div class="wfb">Page 9 of 16 &mdash; Review Proposals: multiple, accept, negotiate, reject, close request, edit request</div></div>
+      <div class="card" style="margin-bottom:24px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
+          <div><div style="font-size:11px;font-weight:700;color:var(--ink-light);margin-bottom:6px;">FURNITURE</div><h2 style="font-size:26px;">Hidden drawer added to walnut side table</h2><div style="font-size:13px;color:var(--ink-light);margin-top:4px;">Posted 3 days ago &middot; Budget: SAR 300&ndash;600 &middot; Deadline: 2 weeks &middot; Riyadh</div></div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><span class="pill pill-open">Open</span><button class="btn-outline" style="padding:8px 16px;font-size:12.5px;color:var(--ink);">Edit Request</button><button class="btn-danger" style="padding:8px 16px;font-size:12.5px;">Close Request</button></div>
+        </div>
+      </div>
+      <div class="sh"><h3>Proposals Received <span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;color:var(--ink-light);">(5)</span></h3>
+        <select class="filter-select"><option>Sort: Best Match</option><option>Sort: Lowest Price</option><option>Sort: Highest Rating</option><option>Sort: Fastest</option></select>
+      </div>
+      <div class="proposal-card best">
+        <div class="best-badge">&#x2B50; Best Match</div>
+        <div class="pc-top">
+          <div style="display:flex;gap:14px;align-items:flex-start;">
+            <div class="pc-avatar" style="background:var(--clay);">A</div>
+            <div><div class="pc-name">Ahmad Al-Harbi <span style="color:var(--clay);font-size:12px;">&#x2713;</span></div><div class="pc-meta">Woodworking &middot; Riyadh &middot; &#x2B50; 4.9 &middot; 142 orders</div><div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:6px;"><span class="tag">Custom Tables</span><span class="tag">Drawers</span></div></div>
+          </div>
+          <div style="text-align:right;"><div class="pc-price">SAR 580</div><div class="pc-timeline">7 days</div></div>
+        </div>
+        <div class="pc-msg">"I can add a dovetail-jointed hidden drawer using matching walnut veneer. I'll route the rails flush so the exterior is completely seamless. Happy to send a material sample first."</div>
+        <div class="pc-actions">
+          <button class="btn-primary" style="padding:9px 20px;font-size:13px;" onclick="showPage('user-order')">Accept &amp; Pay into Escrow</button>
+          <button class="btn-outline" style="padding:9px 18px;font-size:13px;color:var(--ink);">&#x1F4AC; Negotiate</button>
+          <button class="btn-outline" style="padding:9px 18px;font-size:13px;color:var(--ink);" onclick="showPage('profile')">View Portfolio</button>
+          <button class="btn-danger" style="padding:9px 16px;font-size:12.5px;margin-left:auto;">Reject</button>
+        </div>
+      </div>
+      <div class="proposal-card">
+        <div class="pc-top">
+          <div style="display:flex;gap:14px;align-items:flex-start;">
+            <div class="pc-avatar" style="background:#4A7C59;">K</div>
+            <div><div class="pc-name">Khalid Woodworks</div><div class="pc-meta">Furniture &middot; Riyadh &middot; &#x2B50; 4.6 &middot; 58 orders</div></div>
+          </div>
+          <div style="text-align:right;"><div class="pc-price">SAR 420</div><div class="pc-timeline">5 days</div></div>
+        </div>
+        <div class="pc-msg">"Sliding drawer using birch ply with walnut veneer facing to match. I'm in Riyadh so pickup is easy."</div>
+        <div class="pc-actions">
+          <button class="btn-ink" style="padding:9px 20px;font-size:13px;" onclick="showPage('user-order')">Accept Proposal</button>
+          <button class="btn-outline" style="padding:9px 18px;font-size:13px;color:var(--ink);">&#x1F4AC; Negotiate</button>
+          <button class="btn-danger" style="padding:9px 16px;font-size:12.5px;margin-left:auto;">Reject</button>
+        </div>
+      </div>
+      <div class="proposal-card" style="opacity:.5;">
+        <div class="pc-top">
+          <div style="display:flex;gap:14px;align-items:flex-start;">
+            <div class="pc-avatar" style="background:#7B6FA0;">N</div>
+            <div><div class="pc-name">Nasser Crafts</div><div class="pc-meta">Carpentry &middot; Dammam &middot; &#x2B50; 4.4</div></div>
+          </div>
+          <div style="text-align:right;"><div class="pc-price">SAR 300</div><div class="pc-timeline">10 days</div><span class="pill pill-rejected" style="display:block;margin-top:4px;">Rejected</span></div>
+        </div>
+        <div class="pc-msg">"Remote order &mdash; ship the table to me and I'll return it with the drawer installed."</div>
+      </div>
+      <div style="text-align:center;padding:14px;border:1.5px dashed var(--border);border-radius:8px;font-size:13px;color:var(--ink-light);cursor:pointer;">+ Show 2 more proposals</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 10 ORDER TRACKING REQUESTER -->
+<div class="page" id="page-user-order">
+  <div class="dash-layout">
+    <div class="sidebar">
+      <div class="sb-user"><div class="sb-avatar">T</div><div><div class="sb-name">Tariq Al-Mansouri</div><span class="sb-role role-req">Requester</span></div></div>
+      <div class="sb-nav">
+        <a onclick="showPage('user-dashboard')"><span class="sb-icon">&#x1F3E0;</span> Dashboard</a>
+        <a onclick="showPage('user-bids')"><span class="sb-icon">&#x1F4EC;</span> My Requests</a>
+        <a class="active"><span class="sb-icon">&#x1F4E6;</span> Active Orders <span class="sb-badge">1</span></a>
+        <a><span class="sb-icon">&#x2705;</span> Completed</a>
+        <a><span class="sb-icon">&#x1F4AC;</span> Messages <span class="sb-badge hot">3</span></a>
+        <hr class="sb-divider">
+        <a onclick="showPage('settings')"><span class="sb-icon">&#x2699;&#xFE0F;</span> Settings</a>
+        <hr class="sb-divider">
+        <a onclick="showPage('request')" style="color:var(--clay);font-weight:700;"><span class="sb-icon">+</span> New Request</a>
+      </div>
+    </div>
+    <div class="dash-main">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;"><button onclick="showPage('user-dashboard')" style="background:none;border:none;cursor:pointer;color:var(--ink-light);font-size:13px;">&larr; Back</button><div class="wfb">Page 10 of 16 &mdash; Order Tracking: escrow tracker, progress comments (threaded), chat, review form</div></div>
+      <div style="display:grid;grid-template-columns:1fr 280px;gap:24px;">
+        <div>
+          <div class="card" style="margin-bottom:18px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
+              <div><div style="font-size:11px;font-weight:700;color:var(--ink-light);margin-bottom:6px;">FURNITURE</div><h2 style="font-size:24px;">Hidden drawer &mdash; walnut side table</h2><div style="font-size:12.5px;color:var(--ink-light);margin-top:4px;">Order #MH-2847 &middot; May 3, 2025 &middot; With Ahmad Al-Harbi</div></div>
+              <span class="pill pill-progress">In Progress</span>
+            </div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-light);margin-bottom:14px;">Escrow Status</div>
+            <div class="escrow-track">
+              <div class="et-step done"><div class="et-dot">&#x1F4B3;</div><div class="et-lbl">Payment locked</div><div class="et-date">May 3</div></div><div class="et-line done"></div>
+              <div class="et-step done"><div class="et-dot">&#x1F4E6;</div><div class="et-lbl">Item received</div><div class="et-date">May 5</div></div><div class="et-line done"></div>
+              <div class="et-step curr"><div class="et-dot">&#x1F3A8;</div><div class="et-lbl">Work in progress</div><div class="et-date">Now</div></div><div class="et-line"></div>
+              <div class="et-step"><div class="et-dot">&#x1F50D;</div><div class="et-lbl">Your review</div><div class="et-date">~May 12</div></div><div class="et-line"></div>
+              <div class="et-step"><div class="et-dot">&#x2705;</div><div class="et-lbl">Payment released</div><div class="et-date">&mdash;</div></div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:18px;">
+              <div style="flex:1;padding:12px;background:var(--sand);border-radius:8px;"><div style="font-size:10.5px;color:var(--ink-light);text-transform:uppercase;letter-spacing:.05em;font-weight:700;">In Escrow</div><div style="font-size:22px;font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--clay);">SAR 650</div></div>
+              <div style="flex:1;padding:12px;background:var(--sand);border-radius:8px;"><div style="font-size:10.5px;color:var(--ink-light);text-transform:uppercase;letter-spacing:.05em;font-weight:700;">Item Deposit (Ahmad)</div><div style="font-size:22px;font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--success);">SAR 800 &#x2713;</div></div>
+            </div>
+          </div>
+          <div class="dash-section">
+            <div class="sh"><h3>Progress Updates</h3></div>
+            <div class="update-block">
+              <div class="update-header">
+                <div class="update-photo">&#x1F4F8;</div>
+                <div class="update-body"><div class="update-title">Routing started &mdash; dovetail jig set up</div><div class="update-date">Ahmad Al-Harbi &middot; May 7, 9:02 AM</div><div class="update-text">Started the router setup. Gap will be under 0.5mm. Looking good so far.</div></div>
+              </div>
+              <div class="comment-thread">
+                <div class="comment"><div class="comment-avatar">T</div><div class="comment-bubble"><div class="comment-who">Tariq (you)</div>Great progress! Make sure the exterior stays seamless.</div></div>
+                <div class="comment"><div class="comment-avatar" style="background:var(--clay);">A</div><div class="comment-bubble"><div class="comment-who">Ahmad</div>Absolutely &mdash; that's my priority. Will share the next photo soon.</div></div>
+                <div class="comment-add"><input placeholder="Add a comment on this update&hellip;"><button class="btn-primary" style="padding:7px 14px;font-size:12.5px;">Post</button></div>
+              </div>
+            </div>
+            <div class="update-block">
+              <div class="update-header">
+                <div class="update-photo">&#x1F4F8;</div>
+                <div class="update-body"><div class="update-title">Table received &mdash; surface inspected</div><div class="update-date">Ahmad Al-Harbi &middot; May 5, 10:14 AM</div><div class="update-text">Table arrived safely. Grain pattern assessed &mdash; I have matching walnut veneer in stock.</div></div>
+              </div>
+              <div class="comment-thread">
+                <div class="comment"><div class="comment-avatar">T</div><div class="comment-bubble"><div class="comment-who">Tariq (you)</div>Thanks for confirming receipt!</div></div>
+                <div class="comment-add"><input placeholder="Add a comment&hellip;"><button class="btn-primary" style="padding:7px 14px;font-size:12.5px;">Post</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="margin-bottom:18px;">
+            <h3 style="font-size:20px;margin-bottom:14px;">Messages with Ahmad</h3>
+            <div class="chat-win">
+              <div class="chat-msg them"><div class="bubble them">I've received the table safely. Will start routing tomorrow.</div><div class="chat-time">May 5, 10:14 AM</div></div>
+              <div class="chat-msg me"><div class="bubble me">Great, thanks! Please make sure the exterior stays seamless.</div><div class="chat-time">May 5, 11:32 AM</div></div>
+              <div class="chat-msg them"><div class="bubble them">Using a dovetail jig &mdash; gap under 0.5mm, invisible when closed.</div><div class="chat-time">May 7, 9:02 AM</div></div>
+            </div>
+            <div class="chat-input-row"><input class="form-input" style="flex:1;" type="text" placeholder="Type a message or attach an image&hellip;"><button class="btn-primary" style="padding:10px 18px;">Send</button></div>
+          </div>
+          <div class="card" style="border:2px solid var(--sand-dark);">
+            <div style="font-size:10.5px;font-weight:700;color:var(--ink-light);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;">Available after project completion</div>
+            <h3 style="font-size:20px;margin-bottom:8px;">Leave a Review for Ahmad</h3>
+            <div style="font-size:13px;color:var(--ink-light);margin-bottom:14px;">You'll be able to rate and review after approving the finished work.</div>
+            <div class="star-row"><span class="star">&#x2605;</span><span class="star">&#x2605;</span><span class="star">&#x2605;</span><span class="star">&#x2605;</span><span class="star">&#x2605;</span></div>
+            <textarea class="form-input" style="opacity:.5;" placeholder="Tell others about your experience with Ahmad's workshop&hellip;" disabled></textarea>
+            <div style="font-size:11px;color:var(--success);margin-top:8px;">&#x2713; Your review will show as a Verified Project review on Ahmad's profile.</div>
+          </div>
+        </div>
+        <div>
+          <div class="sticky-card" style="margin-bottom:14px;">
+            <h3 style="font-size:18px;margin-bottom:14px;">Order Actions</h3>
+            <button class="fw-btn" style="background:var(--success);">&#x2705; Approve &amp; Release Payment</button>
+            <div style="font-size:11px;color:var(--ink-light);text-align:center;margin-bottom:10px;">Only use when satisfied with the finished work.</div>
+            <button class="fw-btn-o" style="color:#C0392B;border-color:#EBCCC9;">&#x1F6A9; Raise a Dispute</button>
+            <div class="escrow-note">&#x1F512; SAR 650 held in escrow. Released only when you approve.</div>
+          </div>
+          <div class="sticky-card">
+            <h3 style="font-size:17px;margin-bottom:12px;">Contract Summary</h3>
+            <div class="s-stat"><span class="s-stat-lbl">Agreed price</span><span class="s-stat-val">SAR 650</span></div>
+            <div class="s-stat"><span class="s-stat-lbl">Platform fee (7.5%)</span><span class="s-stat-val">SAR 48.75</span></div>
+            <div class="s-stat"><span class="s-stat-lbl">Ahmad receives</span><span class="s-stat-val">SAR 601.25</span></div>
+            <div class="s-stat"><span class="s-stat-lbl">Deadline</span><span class="s-stat-val">May 17, 2025</span></div>
+            <div class="s-stat" style="border:none;"><span class="s-stat-lbl">Days remaining</span><span class="s-stat-val" style="color:var(--clay);">7 days</span></div>
+            <div style="margin-top:12px;padding:10px;background:var(--sand);border-radius:6px;font-size:12px;color:var(--ink-mid);">Acceptance criteria: Drawer flush, no visible gaps, grain match within 15% variance.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 11 SETTINGS -->
+<div class="page" id="page-settings">
+  <div class="dash-layout">
+    <div class="sidebar">
+      <div class="sb-user"><div class="sb-avatar">T</div><div><div class="sb-name">Tariq Al-Mansouri</div><span class="sb-role role-req">Requester</span></div></div>
+      <div class="sb-nav">
+        <a onclick="showPage('user-dashboard')"><span class="sb-icon">&#x1F3E0;</span> Dashboard</a>
+        <a onclick="showPage('user-bids')"><span class="sb-icon">&#x1F4EC;</span> My Requests</a>
+        <a onclick="showPage('user-order')"><span class="sb-icon">&#x1F4E6;</span> Active Orders</a>
+        <a><span class="sb-icon">&#x2705;</span> Completed</a>
+        <a><span class="sb-icon">&#x1F4AC;</span> Messages</a>
+        <hr class="sb-divider">
+        <a class="active"><span class="sb-icon">&#x2699;&#xFE0F;</span> Settings</a>
+        <a onclick="showPage('signin')" style="color:var(--ink-light);"><span class="sb-icon">&#x1F6AA;</span> Sign Out</a>
+      </div>
+    </div>
+    <div class="dash-main">
+      <div class="wfb">Page 11 of 16 &mdash; Settings: profile update, avatar upload, notification preferences, security / sign out</div>
+      <h2 style="font-size:28px;margin-top:8px;margin-bottom:4px;">Account Settings</h2>
+      <p style="color:var(--ink-light);font-size:13.5px;margin-bottom:24px;">Manage your profile, notifications, and security.</p>
+      <div class="settings-tabs">
+        <div class="stab active" onclick="switchTab(event,'tab-profile')">Profile</div>
+        <div class="stab" onclick="switchTab(event,'tab-notif')">Notifications</div>
+        <div class="stab" onclick="switchTab(event,'tab-security')">Security</div>
+      </div>
+      <div class="settings-panel active" id="tab-profile">
+        <div style="display:grid;grid-template-columns:1fr 240px;gap:28px;">
+          <div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">First Name</label><input class="form-input" type="text" value="Tariq"></div>
+              <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" type="text" value="Al-Mansouri"></div>
+            </div>
+            <div class="form-group"><label class="form-label">Email Address</label><input class="form-input" type="email" value="tariq@email.com"></div>
+            <div class="form-group">
+              <label class="form-label">Phone Number</label>
+              <div style="display:flex;gap:8px;align-items:center;"><input class="form-input" type="tel" value="+966 5X XXX XXXX" style="flex:1;"><span style="font-size:11px;color:var(--success);white-space:nowrap;">&#x2713; Verified</span></div>
+            </div>
+            <div class="form-group"><label class="form-label">City</label><select class="form-select"><option selected>Riyadh</option><option>Jeddah</option><option>Dammam</option></select></div>
+            <button class="btn-primary" style="padding:11px 24px;">Save Changes</button>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-mid);margin-bottom:12px;">Profile Picture</div>
+            <div style="text-align:center;">
+              <div style="width:90px;height:90px;border-radius:50%;background:var(--ink);color:white;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;margin:0 auto 14px;">T</div>
+              <div class="upload-zone" style="padding:14px;"><div style="font-size:18px;">&#x1F4F7;</div><div style="font-size:12.5px;font-weight:600;margin-top:4px;">Upload Photo</div><div style="font-size:11px;color:var(--ink-light);margin-top:3px;">JPG or PNG, max 5MB</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="settings-panel" id="tab-notif">
+        <div class="card">
+          <div style="font-size:13px;font-weight:600;color:var(--ink-mid);margin-bottom:16px;">Email Notifications</div>
+          <div class="toggle-row"><div><div class="toggle-label">New proposals on my requests</div><div class="toggle-sub">Get notified when an artisan submits a proposal</div></div><div class="toggle on"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">Messages</div><div class="toggle-sub">New messages from artisans</div></div><div class="toggle on"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">Progress updates</div><div class="toggle-sub">When an artisan posts a new milestone</div></div><div class="toggle on"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">Comments on updates</div><div class="toggle-sub">When someone comments on a progress update</div></div><div class="toggle"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">Order status changes</div><div class="toggle-sub">When your order moves to a new stage</div></div><div class="toggle on"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">Platform announcements</div><div class="toggle-sub">News and feature updates</div></div><div class="toggle"></div></div>
+        </div>
+        <div class="card">
+          <div style="font-size:13px;font-weight:600;color:var(--ink-mid);margin-bottom:16px;">Push Notifications</div>
+          <div class="toggle-row"><div><div class="toggle-label">All push notifications</div><div class="toggle-sub">Control all mobile push alerts at once</div></div><div class="toggle on"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">Urgent alerts only</div><div class="toggle-sub">Disputes, deadline warnings, payment actions</div></div><div class="toggle on"></div></div>
+        </div>
+        <button class="btn-primary" style="padding:11px 24px;">Save Preferences</button>
+      </div>
+      <div class="settings-panel" id="tab-security">
+        <div class="card">
+          <div style="font-size:13px;font-weight:600;margin-bottom:16px;">Change Password</div>
+          <div class="form-group"><label class="form-label">Current Password</label><input class="form-input" type="password" placeholder="Enter current password"></div>
+          <div class="form-group"><label class="form-label">New Password</label><input class="form-input" type="password" placeholder="At least 8 characters"></div>
+          <div class="form-group"><label class="form-label">Confirm New Password</label><input class="form-input" type="password" placeholder="Repeat new password"></div>
+          <button class="btn-primary" style="padding:11px 24px;">Update Password</button>
+        </div>
+        <div class="card">
+          <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Sign out everywhere</div>
+          <div style="font-size:13px;color:var(--ink-light);margin-bottom:14px;">Signs you out on all devices, including this one.</div>
+          <button class="btn-danger" style="padding:11px 24px;" onclick="showPage('signin')">Sign Out of All Devices</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 12 ARTISAN DASHBOARD -->
+<div class="page" id="page-artisan-dashboard">
+  <div class="dash-layout">
+    <div class="sidebar">
+      <div class="sb-user"><div class="sb-avatar" style="background:var(--clay);">A</div><div><div class="sb-name">Ahmad Al-Harbi</div><span class="sb-role role-art">Artisan</span></div></div>
+      <div class="sb-nav">
+        <a class="active" onclick="showPage('artisan-dashboard')"><span class="sb-icon">&#x1F3E0;</span> Dashboard</a>
+        <a onclick="showPage('artisan-requests')"><span class="sb-icon">&#x1F50D;</span> Browse Requests <span class="sb-badge hot">12</span></a>
+        <a onclick="showPage('artisan-order')"><span class="sb-icon">&#x1F3A8;</span> Active Orders <span class="sb-badge">2</span></a>
+        <a onclick="showPage('artisan-bids')"><span class="sb-icon">&#x1F4E4;</span> My Proposals <span class="sb-badge">4</span></a>
+        <a><span class="sb-icon">&#x2705;</span> Completed</a>
+        <a><span class="sb-icon">&#x1F4AC;</span> Messages <span class="sb-badge hot">2</span></a>
+        <a><span class="sb-icon">&#x1F5BC;&#xFE0F;</span> My Portfolio</a>
+        <a><span class="sb-icon">&#x1F4B3;</span> Earnings</a>
+        <hr class="sb-divider">
+        <a onclick="showPage('settings')"><span class="sb-icon">&#x2699;&#xFE0F;</span> Settings</a>
+        <a onclick="showPage('signin')" style="color:var(--ink-light);"><span class="sb-icon">&#x1F6AA;</span> Sign Out</a>
+      </div>
+    </div>
+    <div class="dash-main">
+      <div class="dash-topbar">
+        <div><div class="wfb" style="background:#3D2B1F;">Page 12 of 16 &mdash; Artisan Dashboard: earnings, orders, proposals preview, matching requests feed</div><h2 style="font-size:28px;margin-top:4px;">Welcome back, Ahmad</h2><div style="color:var(--ink-light);font-size:13px;">12 open requests match your skills right now.</div></div>
+        <button class="btn-primary" onclick="showPage('artisan-requests')">Browse Open Requests &rarr;</button>
+      </div>
+      <div class="stat-tiles">
+        <div class="stat-tile"><div class="stat-icon" style="background:#EEF5F1;">&#x1F4B0;</div><div class="stat-val">SAR 4,820</div><div class="stat-label">Earned This Month</div><div class="stat-sub">&#x2191; 18% vs last month</div></div>
+        <div class="stat-tile"><div class="stat-icon" style="background:#FFF3EE;">&#x1F3A8;</div><div class="stat-val">2</div><div class="stat-label">Active Orders</div><div class="stat-sub">1 awaiting photo upload</div></div>
+        <div class="stat-tile"><div class="stat-icon" style="background:var(--tag-bg);">&#x2B50;</div><div class="stat-val">4.9</div><div class="stat-label">Your Rating</div><div class="stat-sub">Based on 142 reviews</div></div>
+        <div class="stat-tile"><div class="stat-icon" style="background:#EEF5F1;">&#x1F4EC;</div><div class="stat-val">12</div><div class="stat-label">Open Requests</div><div class="stat-sub">Matching your skills</div></div>
+      </div>
+      <div class="dash-section">
+        <div class="sh"><h3>Earnings (6 months)</h3></div>
+        <div class="card" style="padding:20px 24px 12px;">
+          <div class="bar-chart">
+            <div class="bar-col"><div class="bar" style="height:60px;"></div><div class="bar-lbl">Dec</div></div>
+            <div class="bar-col"><div class="bar" style="height:75px;"></div><div class="bar-lbl">Jan</div></div>
+            <div class="bar-col"><div class="bar" style="height:88px;"></div><div class="bar-lbl">Feb</div></div>
+            <div class="bar-col"><div class="bar" style="height:70px;"></div><div class="bar-lbl">Mar</div></div>
+            <div class="bar-col"><div class="bar" style="height:92px;"></div><div class="bar-lbl">Apr</div></div>
+            <div class="bar-col"><div class="bar curr" style="height:120px;"></div><div class="bar-lbl" style="color:var(--clay);font-weight:600;">May</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="dash-section">
+        <div class="sh"><h3>Active Orders</h3><a onclick="showPage('artisan-order')">Manage all &rarr;</a></div>
+        <div class="order-snap" onclick="showPage('artisan-order')" style="border-left:3px solid var(--clay);">
+          <div class="snap-icon">&#x1FA91;</div>
+          <div class="snap-info"><div class="snap-title">Hidden drawer &mdash; walnut side table</div><div class="snap-meta">Tariq Al-Mansouri &middot; SAR 650 &middot; Due May 17</div></div>
+          <div style="font-size:11.5px;color:var(--clay);font-weight:600;">&#x26A0;&#xFE0F; Upload progress photo</div>
+          <span class="pill pill-progress">In Progress</span>
+        </div>
+        <div class="order-snap">
+          <div class="snap-icon">&#x1F5C4;&#xFE0F;</div>
+          <div class="snap-info"><div class="snap-title">Custom TV unit &mdash; geometric inlay</div><div class="snap-meta">Hessa Al-Anzi &middot; SAR 1,800 &middot; Due May 25</div></div>
+          <span class="pill pill-done">Sourcing Materials</span>
+        </div>
+      </div>
+      <div class="dash-section">
+        <div class="sh"><h3>My Proposals</h3><a onclick="showPage('artisan-bids')">View all &rarr;</a></div>
+        <div class="row-item" onclick="showPage('artisan-bids')"><div class="ri-cat">&#x1FA91;</div><div class="ri-title">Custom bookshelf &mdash; floor to ceiling, solid walnut</div><div class="ri-meta">Bid: SAR 820</div><span class="pill pill-pending">Pending</span></div>
+        <div class="row-item" onclick="showPage('artisan-bids')"><div class="ri-cat">&#x1F6E0;&#xFE0F;</div><div class="ri-title">Cable management + monitor arm for standing desk</div><div class="ri-meta">Bid: SAR 220</div><span class="pill pill-rejected">Rejected</span></div>
+        <div class="row-item" onclick="showPage('artisan-bids')"><div class="ri-cat">&#x1FA91;</div><div class="ri-title">Antique writing desk restoration</div><div class="ri-meta">Bid: SAR 950</div><span class="pill pill-pending">Pending</span></div>
+      </div>
+      <div class="dash-section">
+        <div class="sh"><h3>Requests Matching Your Skills</h3><a onclick="showPage('artisan-requests')">See all 12 &rarr;</a></div>
+        <div class="row-item"><div class="ri-cat">&#x1FA91;</div><div class="ri-title">Build custom bookshelf with adjustable shelves &mdash; walnut or oak</div><div class="ri-meta">Riyadh &middot; SAR 400&ndash;900 &middot; 2 proposals</div><button class="btn-primary" style="padding:7px 16px;font-size:12px;flex-shrink:0;" onclick="showPage('artisan-requests')">Bid Now</button></div>
+        <div class="row-item"><div class="ri-cat">&#x1F6E0;&#xFE0F;</div><div class="ri-title">Add cable management to standing desk</div><div class="ri-meta">Riyadh &middot; SAR 150&ndash;300 &middot; 0 proposals</div><button class="btn-primary" style="padding:7px 16px;font-size:12px;flex-shrink:0;" onclick="showPage('artisan-requests')">Bid Now</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 13 ARTISAN BROWSE REQUESTS -->
+<div class="page" id="page-artisan-requests">
+  <div class="dash-layout">
+    <div class="sidebar">
+      <div class="sb-user"><div class="sb-avatar" style="background:var(--clay);">A</div><div><div class="sb-name">Ahmad Al-Harbi</div><span class="sb-role role-art">Artisan</span></div></div>
+      <div class="sb-nav">
+        <a onclick="showPage('artisan-dashboard')"><span class="sb-icon">&#x1F3E0;</span> Dashboard</a>
+        <a class="active"><span class="sb-icon">&#x1F50D;</span> Browse Requests <span class="sb-badge hot">12</span></a>
+        <a onclick="showPage('artisan-order')"><span class="sb-icon">&#x1F3A8;</span> Active Orders <span class="sb-badge">2</span></a>
+        <a onclick="showPage('artisan-bids')"><span class="sb-icon">&#x1F4E4;</span> My Proposals <span class="sb-badge">4</span></a>
+        <a><span class="sb-icon">&#x1F4AC;</span> Messages <span class="sb-badge hot">2</span></a>
+        <hr class="sb-divider">
+        <a onclick="showPage('settings')"><span class="sb-icon">&#x2699;&#xFE0F;</span> Settings</a>
+      </div>
+    </div>
+    <div class="dash-main">
+      <div class="dash-topbar">
+        <div><div class="wfb" style="background:#3D2B1F;">Page 13 of 16 &mdash; Browse &amp; Filter Requests: category, city, budget, inline proposal form, ask question</div><h2 style="font-size:28px;margin-top:4px;">Open Requests</h2><div style="color:var(--ink-light);font-size:13px;">12 requests match your skills. Submit a proposal to get started.</div></div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:20px;">
+        <div class="search-bar" style="max-width:260px;"><input type="text" placeholder="Search requests&hellip;"><button class="search-bar-btn">&#x1F50D;</button></div>
+        <div class="filter-pill active">All</div>
+        <div class="filter-pill">Woodworking</div>
+        <div class="filter-pill">Furniture Mods</div>
+        <div class="filter-pill">Restoration</div>
+        <div class="filter-pill">Gifts</div>
+        <select class="filter-select"><option>Riyadh</option><option>All Cities</option><option>Jeddah</option></select>
+        <select class="filter-select"><option>Sort: Newest</option><option>No proposals yet</option><option>Highest Budget</option></select>
+      </div>
+      <div class="req-card featured">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+          <div>
+            <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;"><span style="font-size:11px;font-weight:700;color:var(--ink-light);">FURNITURE</span><span style="background:#EEF5F1;color:var(--success);font-size:10px;padding:3px 9px;border-radius:10px;font-weight:600;">Only 2 proposals</span></div>
+            <div class="req-title">Build a custom bookshelf with adjustable shelves &mdash; floor-to-ceiling, solid wood</div>
+            <div style="font-size:12px;color:var(--ink-light);">Riyadh &middot; Posted 1 hour ago &middot; Deadline: 3 weeks</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0;"><div style="font-size:20px;font-weight:700;color:var(--clay);font-family:'Cormorant Garamond',serif;">SAR 400&ndash;900</div></div>
+        </div>
+        <div class="req-desc">"I have a 3m wall and I want a floor-to-ceiling bookshelf, adjustable shelves for books and decor. Prefer walnut or oak, natural finish. Should handle ~50kg per shelf."</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;"><span class="tag">Solid wood</span><span class="tag">Floor-to-ceiling</span><span class="tag">Adjustable shelves</span></div>
+        <div style="background:var(--sand);border-radius:8px;padding:16px;margin-bottom:12px;">
+          <div style="font-size:13px;font-weight:700;margin-bottom:12px;">Submit Your Proposal</div>
+          <div class="form-row" style="margin-bottom:10px;">
+            <div class="form-group" style="margin-bottom:0;"><label class="form-label">Your Price (SAR)</label><input class="form-input" type="number" placeholder="820"></div>
+            <div class="form-group" style="margin-bottom:0;"><label class="form-label">Timeline (days)</label><input class="form-input" type="number" placeholder="14"></div>
+          </div>
+          <div class="form-group"><label class="form-label">Your Message</label><textarea class="form-input" style="min-height:80px;" placeholder="Describe your approach, materials, and why you're the right fit&hellip;"></textarea></div>
+          <div style="display:flex;gap:10px;">
+            <button class="btn-primary" style="padding:10px 22px;font-size:13.5px;" onclick="showPage('artisan-bids')">Submit Proposal</button>
+            <button class="btn-outline" style="padding:10px 18px;font-size:13px;color:var(--ink);">Ask Requester a Question</button>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--ink-light);">23 artisans viewed &middot; 2 proposals submitted</div>
+      </div>
+      <div class="req-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <div><span style="font-size:11px;font-weight:700;color:var(--ink-light);">FURNITURE MODS</span><span style="background:var(--tag-bg);color:var(--ink-mid);font-size:10px;padding:3px 9px;border-radius:10px;font-weight:600;margin-left:8px;">No proposals yet</span><div class="req-title" style="margin-top:6px;">Add cable management and monitor arm mount to existing standing desk</div><div style="font-size:12px;color:var(--ink-light);">Riyadh &middot; 3h ago &middot; Deadline: 1 week</div></div>
+          <div style="text-align:right;flex-shrink:0;"><div style="font-size:18px;font-weight:700;color:var(--clay);font-family:'Cormorant Garamond',serif;">SAR 150&ndash;300</div></div>
+        </div>
+        <div class="req-footer"><button class="btn-primary" style="padding:9px 18px;font-size:13px;">Submit a Proposal</button><button style="background:none;border:none;color:var(--ink-light);font-size:13px;cursor:pointer;">Expand details &darr;</button></div>
+      </div>
+      <div class="req-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <div><span style="font-size:11px;font-weight:700;color:var(--ink-light);">RESTORATION</span><div class="req-title" style="margin-top:6px;">Restore antique writing desk &mdash; refinish surface and replace brass handles</div><div style="font-size:12px;color:var(--ink-light);">Jeddah &middot; Ships to artisan &middot; 6h ago</div></div>
+          <div style="text-align:right;flex-shrink:0;"><div style="font-size:18px;font-weight:700;color:var(--clay);font-family:'Cormorant Garamond',serif;">SAR 500&ndash;1,200</div></div>
+        </div>
+        <div class="req-footer"><button class="btn-primary" style="padding:9px 18px;font-size:13px;">Submit a Proposal</button><button style="background:none;border:none;color:var(--ink-light);font-size:13px;cursor:pointer;">Expand details &darr;</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 14 ARTISAN ACTIVE ORDER WORKSPACE -->
+<div class="page" id="page-artisan-order">
+  <div class="dash-layout">
+    <div class="sidebar">
+      <div class="sb-user"><div class="sb-avatar" style="background:var(--clay);">A</div><div><div class="sb-name">Ahmad Al-Harbi</div><span class="sb-role role-art">Artisan</span></div></div>
+      <div class="sb-nav">
+        <a onclick="showPage('artisan-dashboard')"><span class="sb-icon">&#x1F3E0;</span> Dashboard</a>
+        <a onclick="showPage('artisan-requests')"><span class="sb-icon">&#x1F50D;</span> Browse Requests</a>
+        <a class="active"><span class="sb-icon">&#x1F3A8;</span> Active Orders <span class="sb-badge">2</span></a>
+        <a onclick="showPage('artisan-bids')"><span class="sb-icon">&#x1F4E4;</span> My Proposals</a>
+        <a><span class="sb-icon">&#x1F4AC;</span> Messages <span class="sb-badge hot">2</span></a>
+        <hr class="sb-divider">
+        <a onclick="showPage('settings')"><span class="sb-icon">&#x2699;&#xFE0F;</span> Settings</a>
+      </div>
+    </div>
+    <div class="dash-main">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;"><button onclick="showPage('artisan-dashboard')" style="background:none;border:none;cursor:pointer;color:var(--ink-light);font-size:13px;">&larr; Back</button><div class="wfb" style="background:#3D2B1F;">Page 14 of 16 &mdash; Artisan Active Order: progress uploads, threaded comments, chat, mark complete</div></div>
+      <div style="display:grid;grid-template-columns:1fr 280px;gap:24px;">
+        <div>
+          <div class="card" style="margin-bottom:18px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
+              <div><div style="font-size:11px;font-weight:700;color:var(--ink-light);margin-bottom:6px;">FURNITURE</div><h2 style="font-size:24px;">Hidden drawer &mdash; walnut side table</h2><div style="font-size:12.5px;color:var(--ink-light);margin-top:4px;">Order #MH-2847 &middot; Requester: Tariq Al-Mansouri &middot; Riyadh</div></div>
+              <span class="pill pill-progress">In Progress</span>
+            </div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-light);margin-bottom:14px;">Escrow Status (Your View)</div>
+            <div class="escrow-track">
+              <div class="et-step done"><div class="et-dot">&#x1F4B3;</div><div class="et-lbl">Requester paid</div></div><div class="et-line done"></div>
+              <div class="et-step done"><div class="et-dot">&#x1F512;</div><div class="et-lbl">Your deposit locked</div></div><div class="et-line done"></div>
+              <div class="et-step curr"><div class="et-dot">&#x1F3A8;</div><div class="et-lbl">You're working</div></div><div class="et-line"></div>
+              <div class="et-step"><div class="et-dot">&#x1F4E4;</div><div class="et-lbl">Submit for review</div></div><div class="et-line"></div>
+              <div class="et-step"><div class="et-dot">&#x1F4B0;</div><div class="et-lbl">Paid out to you</div></div>
+            </div>
+            <div style="margin-top:16px;background:#FFF3EE;border:1.5px solid #F0C5A8;border-radius:8px;padding:12px;display:flex;gap:10px;">
+              <span style="font-size:16px;">&#x26A0;&#xFE0F;</span>
+              <div style="font-size:12.5px;color:#7A3A1A;line-height:1.6;"><strong>Action needed:</strong> Upload a progress photo to keep Tariq informed. Orders without updates for 48+ hours are flagged by our team.</div>
+            </div>
+          </div>
+          <div class="card" style="margin-bottom:18px;">
+            <h3 style="font-size:20px;margin-bottom:12px;">Acceptance Criteria</h3>
+            <div style="background:var(--sand);border-radius:8px;padding:14px;font-size:13px;color:var(--ink-mid);line-height:1.8;">
+              <p>&#x2705; Drawer must open and close flush with the table surface.</p>
+              <p>&#x2705; No visible gaps on the exterior when drawer is closed.</p>
+              <p>&#x2705; Walnut grain must match existing surface within 15% visual variance.</p>
+            </div>
+            <div style="font-size:12px;color:var(--ink-light);margin-top:8px;">These criteria were agreed at contract signing. Tariq will use them to approve or dispute your work.</div>
+          </div>
+          <div class="card" style="margin-bottom:18px;">
+            <h3 style="font-size:20px;margin-bottom:6px;">Post a Progress Update</h3>
+            <div style="font-size:13px;color:var(--ink-light);margin-bottom:14px;">Upload photos at each stage. This builds trust and protects you in disputes.</div>
+            <div class="form-group"><label class="form-label">Update Title</label><input class="form-input" type="text" placeholder="e.g. Drawer routing complete"></div>
+            <div class="form-group"><label class="form-label">Description</label><textarea class="form-input" placeholder="Describe what was done at this stage&hellip;"></textarea></div>
+            <div class="form-group">
+              <label class="form-label">Milestone Photo</label>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px;">
+                <div style="background:var(--sand);border-radius:8px;height:80px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-direction:column;gap:4px;">&#x1F4F8;<div style="font-size:9px;color:var(--ink-light);">May 5 &#x2713;</div></div>
+                <div style="background:var(--sand);border-radius:8px;height:80px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-direction:column;gap:4px;">&#x1F4F8;<div style="font-size:9px;color:var(--ink-light);">May 7 &#x2713;</div></div>
+                <div class="upload-zone" style="padding:0;height:80px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;"><div style="font-size:18px;">+</div><div style="font-size:10px;color:var(--ink-light);">New photo</div></div>
+              </div>
+            </div>
+            <button class="btn-primary" style="padding:10px 22px;">Post Update</button>
+          </div>
+          <div class="update-block">
+            <div class="update-header">
+              <div class="update-photo">&#x1F4F8;</div>
+              <div class="update-body"><div class="update-title">Routing started &mdash; dovetail jig set up</div><div class="update-date">May 7, 9:02 AM</div><div class="update-text">Router set up with dovetail jig. Gap will be under 0.5mm.</div></div>
+            </div>
+            <div class="comment-thread">
+              <div class="comment"><div class="comment-avatar">T</div><div class="comment-bubble"><div class="comment-who">Tariq (requester)</div>Great progress! Please keep the exterior seamless.</div></div>
+              <div class="comment-add"><input placeholder="Reply to Tariq's comment&hellip;"><button class="btn-primary" style="padding:7px 14px;font-size:12.5px;">Post</button></div>
+            </div>
+          </div>
+          <div class="card">
+            <h3 style="font-size:20px;margin-bottom:14px;">Messages with Tariq</h3>
+            <div class="chat-win">
+              <div class="chat-msg me"><div class="bubble me">I've received the table safely. Will start routing tomorrow.</div><div class="chat-time">May 5, 10:14 AM</div></div>
+              <div class="chat-msg them"><div class="bubble them">Great! Please keep the exterior seamless.</div><div class="chat-time">May 5, 11:32 AM</div></div>
+              <div class="chat-msg me"><div class="bubble me">Using a dovetail jig &mdash; gap under 0.5mm. Invisible when closed.</div><div class="chat-time">May 7, 9:02 AM</div></div>
+            </div>
+            <div class="chat-input-row"><input class="form-input" style="flex:1;" type="text" placeholder="Type a message or attach an image&hellip;"><button class="btn-primary" style="padding:10px 18px;">Send</button></div>
+          </div>
+        </div>
+        <div>
+          <div class="sticky-card" style="margin-bottom:14px;">
+            <h3 style="font-size:18px;margin-bottom:14px;">Order Summary</h3>
+            <div class="s-stat"><span class="s-stat-lbl">Your payout</span><span class="s-stat-val" style="color:var(--success);">SAR 601.25</span></div>
+            <div class="s-stat"><span class="s-stat-lbl">Platform fee (7.5%)</span><span class="s-stat-val">SAR 48.75</span></div>
+            <div class="s-stat"><span class="s-stat-lbl">Your item deposit</span><span class="s-stat-val">SAR 800 &#x1F512;</span></div>
+            <div class="s-stat"><span class="s-stat-lbl">Deadline</span><span class="s-stat-val">May 17, 2025</span></div>
+            <div class="s-stat" style="border:none;"><span class="s-stat-lbl">Days remaining</span><span class="s-stat-val" style="color:var(--clay);">7 days</span></div>
+            <div style="border-top:1px solid var(--border);margin:14px 0;"></div>
+            <button class="fw-btn" style="background:var(--success);">&#x1F4E4; Mark as Complete &amp; Request Review</button>
+            <div style="font-size:11px;color:var(--ink-light);text-align:center;">Tariq gets notified to inspect. Your payout + deposit released after approval.</div>
+          </div>
+          <div class="sticky-card">
+            <h3 style="font-size:16px;margin-bottom:10px;">Your Deposit</h3>
+            <div class="deposit-block"><div class="deposit-amount">SAR 800</div><div style="font-size:12px;color:var(--success);margin-top:2px;">Locked safely in escrow &#x2713;</div></div>
+            <div style="font-size:12px;color:var(--ink-light);margin-top:10px;line-height:1.7;">Released back to you automatically when Tariq approves the order.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 15 ARTISAN MY PROPOSALS -->
+<div class="page" id="page-artisan-bids">
+  <div class="dash-layout">
+    <div class="sidebar">
+      <div class="sb-user"><div class="sb-avatar" style="background:var(--clay);">A</div><div><div class="sb-name">Ahmad Al-Harbi</div><span class="sb-role role-art">Artisan</span></div></div>
+      <div class="sb-nav">
+        <a onclick="showPage('artisan-dashboard')"><span class="sb-icon">&#x1F3E0;</span> Dashboard</a>
+        <a onclick="showPage('artisan-requests')"><span class="sb-icon">&#x1F50D;</span> Browse Requests <span class="sb-badge hot">12</span></a>
+        <a onclick="showPage('artisan-order')"><span class="sb-icon">&#x1F3A8;</span> Active Orders <span class="sb-badge">2</span></a>
+        <a class="active"><span class="sb-icon">&#x1F4E4;</span> My Proposals <span class="sb-badge">4</span></a>
+        <a><span class="sb-icon">&#x1F4AC;</span> Messages <span class="sb-badge hot">2</span></a>
+        <hr class="sb-divider">
+        <a onclick="showPage('settings')"><span class="sb-icon">&#x2699;&#xFE0F;</span> Settings</a>
+      </div>
+    </div>
+    <div class="dash-main">
+      <div class="dash-topbar">
+        <div><div class="wfb" style="background:#3D2B1F;">Page 15 of 16 &mdash; My Proposals: track status (pending/accepted/rejected/withdrawn), edit &amp; withdraw</div><h2 style="font-size:28px;margin-top:4px;">My Proposals</h2><div style="color:var(--ink-light);font-size:13px;">Track the status of all your submitted proposals.</div></div>
+      </div>
+      <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+        <div class="filter-pill active">All (7)</div>
+        <div class="filter-pill">Pending (3)</div>
+        <div class="filter-pill">Accepted (2)</div>
+        <div class="filter-pill">Rejected (1)</div>
+        <div class="filter-pill">Withdrawn (1)</div>
+      </div>
+      <div class="card" style="margin-bottom:12px;border-left:3px solid #A07828;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+          <div><div style="font-size:11px;font-weight:700;color:var(--ink-light);margin-bottom:4px;">FURNITURE &middot; Noura Al-Rashidi</div><div style="font-size:15px;font-weight:600;">Custom bookshelf &mdash; floor-to-ceiling, solid walnut</div><div style="font-size:12px;color:var(--ink-light);margin-top:3px;">Riyadh &middot; Budget: SAR 400&ndash;900 &middot; Deadline: 3 weeks</div></div>
+          <span class="pill pill-pending">Pending</span>
+        </div>
+        <div style="background:var(--sand);border-radius:6px;padding:12px;margin-bottom:12px;font-size:13px;color:var(--ink-mid);"><strong>Your bid:</strong> SAR 820 &middot; 14 days &middot; <em>"I specialize in floor-to-ceiling walnut shelving..."</em></div>
+        <div style="font-size:12px;color:var(--ink-light);margin-bottom:10px;">Submitted 2 hours ago &middot; 4 other proposals &middot; Requester last seen 30 min ago</div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn-outline" style="padding:8px 16px;font-size:12.5px;color:var(--ink);">&#x270F;&#xFE0F; Edit Proposal</button>
+          <button class="btn-danger" style="padding:8px 14px;font-size:12.5px;">Withdraw</button>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:12px;border-left:3px solid var(--success);">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+          <div><div style="font-size:11px;font-weight:700;color:var(--ink-light);margin-bottom:4px;">FURNITURE &middot; Tariq Al-Mansouri</div><div style="font-size:15px;font-weight:600;">Hidden drawer added to walnut side table</div><div style="font-size:12px;color:var(--ink-light);margin-top:3px;">Order #MH-2847 &middot; In Progress</div></div>
+          <span class="pill pill-accepted">&#x2713; Accepted</span>
+        </div>
+        <div style="font-size:13px;color:var(--ink-mid);margin-bottom:10px;"><strong>Your bid:</strong> SAR 580 &middot; 7 days &middot; Accepted May 3</div>
+        <button class="btn-success" style="padding:9px 20px;font-size:13px;" onclick="showPage('artisan-order')">View Active Order &rarr;</button>
+      </div>
+      <div class="card" style="margin-bottom:12px;border-left:3px solid var(--success);">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+          <div><div style="font-size:11px;font-weight:700;color:var(--ink-light);margin-bottom:4px;">FURNITURE &middot; Hessa Al-Anzi</div><div style="font-size:15px;font-weight:600;">Custom TV unit &mdash; Arabic geometric inlay</div><div style="font-size:12px;color:var(--ink-light);margin-top:3px;">Order #MH-2831 &middot; Sourcing Materials</div></div>
+          <span class="pill pill-accepted">&#x2713; Accepted</span>
+        </div>
+        <div style="font-size:13px;color:var(--ink-mid);margin-bottom:10px;"><strong>Your bid:</strong> SAR 1,800 &middot; 18 days &middot; Accepted Apr 28</div>
+        <button class="btn-success" style="padding:9px 20px;font-size:13px;" onclick="showPage('artisan-order')">View Active Order &rarr;</button>
+      </div>
+      <div class="card" style="margin-bottom:12px;border-left:3px solid #A07828;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+          <div><div style="font-size:11px;font-weight:700;color:var(--ink-light);margin-bottom:4px;">RESTORATION &middot; Salim Al-Ghamdi</div><div style="font-size:15px;font-weight:600;">Restore antique writing desk &mdash; refinish and new brass handles</div><div style="font-size:12px;color:var(--ink-light);margin-top:3px;">Jeddah (ships) &middot; SAR 500&ndash;1,200</div></div>
+          <span class="pill pill-pending">Pending</span>
+        </div>
+        <div style="background:var(--sand);border-radius:6px;padding:12px;margin-bottom:12px;font-size:13px;color:var(--ink-mid);"><strong>Your bid:</strong> SAR 950 &middot; 12 days</div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn-outline" style="padding:8px 16px;font-size:12.5px;color:var(--ink);">&#x270F;&#xFE0F; Edit Proposal</button>
+          <button class="btn-danger" style="padding:8px 14px;font-size:12.5px;">Withdraw</button>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:12px;opacity:.55;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+          <div><div style="font-size:11px;font-weight:700;color:var(--ink-light);margin-bottom:4px;">FURNITURE MODS</div><div style="font-size:15px;font-weight:600;">Cable management + monitor arm to standing desk</div></div>
+          <span class="pill pill-rejected">&#x2715; Rejected</span>
+        </div>
+        <div style="font-size:12.5px;color:var(--ink-light);">Your bid: SAR 220 &middot; Rejected Apr 30 &mdash; requester selected another artisan.</div>
+      </div>
+      <div class="card" style="opacity:.45;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+          <div><div style="font-size:11px;font-weight:700;color:var(--ink-light);margin-bottom:4px;">CUSTOM GIFTS</div><div style="font-size:15px;font-weight:600;">Engraved wooden wedding gift box</div></div>
+          <span class="pill pill-withdrawn">&mdash; Withdrawn</span>
+        </div>
+        <div style="font-size:12.5px;color:var(--ink-light);">You withdrew this proposal on Apr 25.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 16 ADMIN DASHBOARD -->
+<div class="page" id="page-admin">
+  <div class="dash-layout">
+    <div class="sidebar">
+      <div class="sb-user"><div class="sb-avatar" style="background:var(--ink-mid);">&#x2699;</div><div><div class="sb-name">Platform Admin</div><span class="sb-role role-adm">Admin</span></div></div>
+      <div class="sb-nav">
+        <a class="active"><span class="sb-icon">&#x1F4CA;</span> Overview</a>
+        <a><span class="sb-icon">&#x1F6A9;</span> Disputes <span class="sb-badge hot">3</span></a>
+        <a><span class="sb-icon">&#x2705;</span> Verify Artisans <span class="sb-badge hot">5</span></a>
+        <a><span class="sb-icon">&#x1F465;</span> Users</a>
+        <a><span class="sb-icon">&#x2B50;</span> Featured Artisans</a>
+        <a><span class="sb-icon">&#x1F3F7;&#xFE0F;</span> Categories</a>
+        <a><span class="sb-icon">&#x1F6AB;</span> Reports <span class="sb-badge hot">7</span></a>
+        <a><span class="sb-icon">&#x1F4AC;</span> Review Removal</a>
+        <hr class="sb-divider">
+        <a onclick="showPage('signin')" style="color:var(--ink-light);"><span class="sb-icon">&#x1F6AA;</span> Sign Out</a>
+      </div>
+    </div>
+    <div class="dash-main">
+      <div class="dash-topbar">
+        <div><div class="wfb">Page 16 of 16 &mdash; Admin: stats, disputes, artisan verification, users, featured artisans, categories, reports, review removal</div><h2 style="font-size:28px;margin-top:4px;">Platform Overview</h2><div style="color:var(--ink-light);font-size:13px;">May 11, 2025</div></div>
+      </div>
+      <div class="stat-tiles">
+        <div class="stat-tile"><div class="stat-icon" style="background:var(--tag-bg);">&#x1F465;</div><div class="stat-val">2,841</div><div class="stat-label">Total Users</div><div class="stat-sub">&#x2191; 12% this month</div></div>
+        <div class="stat-tile"><div class="stat-icon" style="background:#FFF3EE;">&#x1FA9A;</div><div class="stat-val">416</div><div class="stat-label">Active Workshops</div><div class="stat-sub">28 pending verification</div></div>
+        <div class="stat-tile"><div class="stat-icon" style="background:#EEF5F1;">&#x1F4B0;</div><div class="stat-val">SAR 284K</div><div class="stat-label">GMV This Month</div><div class="stat-sub">&#x2191; 22% vs April</div></div>
+        <div class="stat-tile"><div class="stat-icon" style="background:#FFF9EE;">&#x1F4CB;</div><div class="stat-val">342</div><div class="stat-label">Open Requests</div><div class="stat-sub">91% get at least 1 proposal</div></div>
+      </div>
+      <div class="dash-section">
+        <div class="sh"><h3>Open Disputes <span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;color:var(--ink-light);">(3)</span></h3></div>
+        <div class="queue-card">
+          <div class="qc-icon">&#x1F6A9;</div>
+          <div class="qc-body">
+            <div class="qc-title">Order #MH-2802 &mdash; Custom sneaker paint job</div>
+            <div class="qc-meta">Filed by: Omar Al-Sayed &middot; Against: Rami Designs &middot; Filed: May 9 &middot; Amount: SAR 320</div>
+            <div style="font-size:13px;color:var(--ink-mid);background:var(--sand);padding:10px 12px;border-radius:6px;margin-bottom:10px;">"The paint is peeling at the toe box. Colours are wrong too."</div>
+            <div class="qc-actions">
+              <button class="btn-primary" style="padding:9px 18px;font-size:13px;">Review Evidence</button>
+              <button class="btn-outline" style="padding:9px 18px;font-size:13px;color:var(--ink);">Access Communication</button>
+              <button class="btn-outline" style="padding:9px 14px;font-size:12.5px;color:var(--success);border-color:#C2D9C9;">Resolve for Requester</button>
+              <button class="btn-outline" style="padding:9px 14px;font-size:12.5px;color:var(--clay);border-color:#F0C5A8;">Resolve for Artisan</button>
+            </div>
+          </div>
+        </div>
+        <div class="queue-card">
+          <div class="qc-icon">&#x1F6A9;</div>
+          <div class="qc-body">
+            <div class="qc-title">Order #MH-2791 &mdash; Custom abaya embroidery</div>
+            <div class="qc-meta">Filed by: Fatima Al-Zahraa &middot; Against: Lina Al-Qahtani &middot; Filed: May 8 &middot; Amount: SAR 780</div>
+            <div style="font-size:13px;color:var(--ink-mid);background:var(--sand);padding:10px 12px;border-radius:6px;margin-bottom:10px;">"Requester is claiming they never received it. I have shipping photos."</div>
+            <div class="qc-actions">
+              <button class="btn-primary" style="padding:9px 18px;font-size:13px;">Review Evidence</button>
+              <button class="btn-outline" style="padding:9px 18px;font-size:13px;color:var(--ink);">Access Communication</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dash-section">
+        <div class="sh"><h3>Artisan Verification Queue <span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;color:var(--ink-light);">(5 pending)</span></h3></div>
+        <div class="queue-card">
+          <div class="qc-icon">&#x1FA9A;</div>
+          <div class="qc-body">
+            <div class="qc-title">Waleed Al-Dossari &mdash; Woodworking</div>
+            <div class="qc-meta">Applied: May 10 &middot; Portfolio: 6 images &middot; Phone: Verified &middot; Riyadh</div>
+            <div class="qc-actions">
+              <button class="btn-outline" style="padding:8px 16px;font-size:12.5px;color:var(--ink);">Review Portfolio</button>
+              <button class="btn-success" style="padding:8px 16px;font-size:12.5px;">&#x2713; Approve &amp; Verify</button>
+              <button class="btn-danger" style="padding:8px 14px;font-size:12.5px;">Reject</button>
+            </div>
+          </div>
+        </div>
+        <div class="queue-card">
+          <div class="qc-icon">&#x2702;&#xFE0F;</div>
+          <div class="qc-body">
+            <div class="qc-title">Sara Al-Mutairi &mdash; Fashion &amp; Embroidery</div>
+            <div class="qc-meta">Applied: May 9 &middot; Portfolio: 4 images (min 3 &#x2713;) &middot; Phone: Verified &middot; Jeddah</div>
+            <div class="qc-actions">
+              <button class="btn-outline" style="padding:8px 16px;font-size:12.5px;color:var(--ink);">Review Portfolio</button>
+              <button class="btn-success" style="padding:8px 16px;font-size:12.5px;">&#x2713; Approve &amp; Verify</button>
+              <button class="btn-danger" style="padding:8px 14px;font-size:12.5px;">Reject</button>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center;padding:12px;font-size:13px;color:var(--ink-light);cursor:pointer;">+ Show 3 more pending verifications</div>
+      </div>
+      <div class="dash-section">
+        <div class="sh"><h3>Users</h3><div style="display:flex;gap:8px;"><div class="search-bar" style="max-width:200px;"><input type="text" placeholder="Search user&hellip;"><button class="search-bar-btn" style="padding:0 12px;">&#x1F50D;</button></div><select class="filter-select"><option>All roles</option><option>Requesters</option><option>Artisans</option></select></div></div>
+        <table class="admin-table">
+          <thead><tr><th>User</th><th>Role</th><th>City</th><th>Phone</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Tariq Al-Mansouri</strong><div style="font-size:11px;color:var(--ink-light);">tariq@email.com</div></td><td>Requester</td><td>Riyadh</td><td><span style="color:var(--success);font-size:12px;">&#x2713; Verified</span></td><td><span class="pill pill-open" style="font-size:10px;">Active</span></td><td><button class="btn-outline" style="padding:5px 12px;font-size:11.5px;color:var(--ink);">Suspend</button></td></tr>
+            <tr><td><strong>Ahmad Al-Harbi</strong><div style="font-size:11px;color:var(--ink-light);">ahmad@woodshop.sa</div></td><td>Artisan &#x2713;</td><td>Riyadh</td><td><span style="color:var(--success);font-size:12px;">&#x2713; Verified</span></td><td><span class="pill pill-open" style="font-size:10px;">Active</span></td><td><button class="btn-outline" style="padding:5px 12px;font-size:11.5px;color:var(--ink);">Suspend</button></td></tr>
+            <tr><td><strong>Omar Al-Sayed</strong><div style="font-size:11px;color:var(--ink-light);">omar@email.com</div></td><td>Requester</td><td>Riyadh</td><td><span style="color:var(--success);font-size:12px;">&#x2713; Verified</span></td><td><span class="pill pill-pending" style="font-size:10px;">Dispute open</span></td><td><button class="btn-outline" style="padding:5px 12px;font-size:11.5px;color:var(--ink);">View</button></td></tr>
+            <tr><td><strong>Spam User 99</strong><div style="font-size:11px;color:var(--ink-light);">sp4m@fake.com</div></td><td>&mdash;</td><td>Unknown</td><td><span style="color:#C0392B;font-size:12px;">&#x2717; Unverified</span></td><td><span class="pill pill-rejected" style="font-size:10px;">Flagged</span></td><td><button class="btn-danger" style="padding:5px 12px;font-size:11.5px;">Ban</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <div class="dash-section">
+          <div class="sh"><h3>Featured Artisans</h3></div>
+          <div class="card">
+            <div style="font-size:12px;color:var(--ink-light);margin-bottom:14px;">Homepage slots: <strong>4 of 4 filled</strong></div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);"><div><strong style="font-size:13px;">Ahmad Al-Harbi</strong><div style="font-size:11px;color:var(--ink-light);">Woodworking &middot; &#x2B50; 4.9</div></div><button class="btn-danger" style="padding:5px 12px;font-size:11.5px;">Remove</button></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);"><div><strong style="font-size:13px;">Fatima Al-Zahraa</strong><div style="font-size:11px;color:var(--ink-light);">Fashion &middot; &#x2B50; 4.8</div></div><button class="btn-danger" style="padding:5px 12px;font-size:11.5px;">Remove</button></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);"><div><strong style="font-size:13px;">Khalid Art Studio</strong><div style="font-size:11px;color:var(--ink-light);">Wall Art &middot; &#x2B50; 4.7</div></div><button class="btn-danger" style="padding:5px 12px;font-size:11.5px;">Remove</button></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;"><div><strong style="font-size:13px;">Sneaker Souq</strong><div style="font-size:11px;color:var(--ink-light);">Sneakers &middot; &#x2B50; 4.6</div></div><button class="btn-danger" style="padding:5px 12px;font-size:11.5px;">Remove</button></div>
+            </div>
+            <div style="border-top:1px solid var(--border);margin-top:12px;padding-top:12px;"><div class="search-bar" style="margin-bottom:8px;"><input type="text" placeholder="Search artisan to feature&hellip;"><button class="search-bar-btn" style="padding:0 12px;">&#x1F50D;</button></div><button class="btn-primary" style="width:100%;padding:10px;">+ Add Featured Artisan</button></div>
+          </div>
+        </div>
+        <div class="dash-section">
+          <div class="sh"><h3>Categories</h3></div>
+          <div class="card">
+            <table class="admin-table">
+              <thead><tr><th>Category</th><th>Requests</th><th>Artisans</th><th>Status</th><th></th></tr></thead>
+              <tbody>
+                <tr><td>&#x1FA91; Furniture</td><td>142</td><td>86</td><td><span class="pill pill-open" style="font-size:10px;">Visible</span></td><td><button class="btn-outline" style="padding:4px 10px;font-size:11px;color:var(--ink);">Edit</button></td></tr>
+                <tr><td>&#x1F457; Fashion</td><td>98</td><td>62</td><td><span class="pill pill-open" style="font-size:10px;">Visible</span></td><td><button class="btn-outline" style="padding:4px 10px;font-size:11px;color:var(--ink);">Edit</button></td></tr>
+                <tr><td>&#x1F381; Custom Gifts</td><td>76</td><td>44</td><td><span class="pill pill-open" style="font-size:10px;">Visible</span></td><td><button class="btn-outline" style="padding:4px 10px;font-size:11px;color:var(--ink);">Edit</button></td></tr>
+                <tr><td>&#x1F5BC;&#xFE0F; Wall Art</td><td>61</td><td>38</td><td><span class="pill pill-open" style="font-size:10px;">Visible</span></td><td><button class="btn-outline" style="padding:4px 10px;font-size:11px;color:var(--ink);">Edit</button></td></tr>
+                <tr><td>&#x1F45F; Sneaker Mods</td><td>44</td><td>22</td><td><span class="pill pill-done" style="font-size:10px;">Hidden</span></td><td><button class="btn-outline" style="padding:4px 10px;font-size:11px;color:var(--ink);">Edit</button></td></tr>
+              </tbody>
+            </table>
+            <button class="btn-primary" style="margin-top:12px;padding:9px 18px;font-size:13px;">+ Add Category</button>
+          </div>
+        </div>
+      </div>
+      <div class="dash-section">
+        <div class="sh"><h3>Reports Queue <span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;color:var(--ink-light);">(7 open)</span></h3></div>
+        <div class="queue-card">
+          <div class="qc-icon">&#x1F6D1;</div>
+          <div class="qc-body">
+            <div class="qc-title">Reported Portfolio Image &mdash; Khalid Art Studio</div>
+            <div class="qc-meta">Reported by: 2 users &middot; Reason: Misleading / stolen image &middot; Filed: May 10</div>
+            <div class="qc-actions">
+              <button class="btn-primary" style="padding:8px 16px;font-size:12.5px;">Review Content</button>
+              <button class="btn-danger" style="padding:8px 14px;font-size:12.5px;">Remove Image</button>
+              <button class="btn-outline" style="padding:8px 14px;font-size:12.5px;color:var(--ink);">Dismiss Report</button>
+            </div>
+          </div>
+        </div>
+        <div class="queue-card">
+          <div class="qc-icon">&#x2B50;</div>
+          <div class="qc-body">
+            <div class="qc-title">Reported Review &mdash; Ahmad Al-Harbi (1 star)</div>
+            <div class="qc-meta">Reported by: Ahmad &middot; Reason: Fake / no project relationship &middot; Filed: May 9</div>
+            <div style="font-size:13px;color:var(--ink-mid);background:var(--sand);padding:10px 12px;border-radius:6px;margin-bottom:10px;">"Terrible. Worst artisan in Riyadh." &mdash; anonymous_user_9821</div>
+            <div class="qc-actions">
+              <button class="btn-primary" style="padding:8px 16px;font-size:12.5px;">Verify Project Link</button>
+              <button class="btn-danger" style="padding:8px 14px;font-size:12.5px;">Remove Review</button>
+              <button class="btn-outline" style="padding:8px 14px;font-size:12.5px;color:var(--ink);">Keep Review</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE INDICATOR -->
+<div class="page-indicator">
+  <span class="pi-role">Guest</span>
+  <a onclick="showPage('home')" id="pi-home" class="pi-active">Home</a>
+  <a onclick="showPage('browse')" id="pi-browse">Browse</a>
+  <a onclick="showPage('request')" id="pi-request">Request</a>
+  <a onclick="showPage('profile')" id="pi-profile">Profile</a>
+  <span class="pi-sep">|</span>
+  <span class="pi-role">Auth</span>
+  <a onclick="showPage('signup')" id="pi-signup">Sign Up</a>
+  <a onclick="showPage('signin')" id="pi-signin">Sign In</a>
+  <a onclick="showPage('verify')" id="pi-verify">Verify</a>
+  <a onclick="showPage('verify-workshop')" id="pi-verify-workshop">Onboard</a>
+  <span class="pi-sep">|</span>
+  <span class="pi-role">Requester</span>
+  <a onclick="showPage('user-dashboard')" id="pi-user-dashboard">Dashboard</a>
+  <a onclick="showPage('user-bids')" id="pi-user-bids">Proposals</a>
+  <a onclick="showPage('user-order')" id="pi-user-order">Order</a>
+  <a onclick="showPage('settings')" id="pi-settings">Settings</a>
+  <span class="pi-sep">|</span>
+  <span class="pi-role">Artisan</span>
+  <a onclick="showPage('artisan-dashboard')" id="pi-artisan-dashboard">Dashboard</a>
+  <a onclick="showPage('artisan-requests')" id="pi-artisan-requests">Requests</a>
+  <a onclick="showPage('artisan-order')" id="pi-artisan-order">Order</a>
+  <a onclick="showPage('artisan-bids')" id="pi-artisan-bids">My Proposals</a>
+  <span class="pi-sep">|</span>
+  <span class="pi-role">Admin</span>
+  <a onclick="showPage('admin')" id="pi-admin">Admin</a>
+</div>
+
+<script>
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.page-indicator a').forEach(a=>a.classList.remove('pi-active'));
+  var pg=document.getElementById('page-'+name);
+  if(pg) pg.classList.add('active');
+  var ind=document.getElementById('pi-'+name);
+  if(ind) ind.classList.add('pi-active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function switchTab(e,tabId){
+  var parent=e.target.closest('.dash-main');
+  parent.querySelectorAll('.stab').forEach(t=>t.classList.remove('active'));
+  parent.querySelectorAll('.settings-panel').forEach(p=>p.classList.remove('active'));
+  e.target.classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+}
+document.querySelectorAll('.filter-pill').forEach(pill=>{
+  pill.addEventListener('click',function(){
+    var parent=this.parentNode;
+    parent.querySelectorAll('.filter-pill').forEach(p=>p.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+document.querySelectorAll('.chip').forEach(chip=>{
+  chip.addEventListener('click',function(){this.classList.toggle('selected');this.classList.toggle('active');});
+});
+document.querySelectorAll('.role-card').forEach(card=>{
+  card.addEventListener('click',function(){
+    this.closest('.role-cards').querySelectorAll('.role-card').forEach(c=>c.classList.remove('selected'));
+    this.classList.add('selected');
+  });
+});
+document.querySelectorAll('.toggle').forEach(toggle=>{
+  toggle.addEventListener('click',function(){this.classList.toggle('on');});
+});
+document.querySelectorAll('.btab').forEach(tab=>{
+  tab.addEventListener('click',function(){
+    this.closest('.browse-tabs').querySelectorAll('.btab').forEach(t=>t.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
