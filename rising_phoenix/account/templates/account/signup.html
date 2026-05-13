@@ -14,17 +14,6 @@
 
                         <form action="" method="post" enctype="multipart/form-data" class="row g-3">
                             {% csrf_token %}
-
-                            {% if messages %}
-                                {% for message in messages %}
-                                    <div class="col-12">
-                                        <div class="alert alert-{{ message.tags }} mb-0">
-                                            {{ message }}
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
-
                             {% if user_form.non_field_errors %}
                                 <div class="col-12">
                                     <div class="alert alert-danger mb-0">
@@ -188,6 +177,9 @@
                                     Already have an account?
                                     <a href="{% url 'account:login_view' %}">Sign in</a>
                                 </p>
+                            <p class="text-center mb-0">
+                                <a href="{% url 'account:artisan_signup_view' %}">Are your artisan?</a>
+                            </p>
                             </div>
                         </form>
                     </div>
