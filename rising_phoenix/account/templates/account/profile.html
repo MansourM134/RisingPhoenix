@@ -42,9 +42,17 @@
                         </div>
 
                         {% if request.user == user_profile.user %}
-                            <a href="{% url 'account:update_profile_view' request.user.username %}" class="btn btn-primary rounded-pill px-4">
-                                Edit Profile
-                            </a>
+                            <div class="d-flex flex-wrap gap-2">
+                                <a href="{% url 'payment:my_cards' %}" class="btn btn-outline-primary rounded-pill px-4 d-inline-flex align-items-center gap-2">
+                                    <i class="bi bi-credit-card-2-front"></i>
+                                    My Cards
+                                </a>
+
+                                <a href="{% url 'account:update_profile_view' request.user.username %}" class="btn btn-primary rounded-pill px-4 d-inline-flex align-items-center gap-2">
+                                    <i class="bi bi-pencil-square"></i>
+                                    Edit Profile
+                                </a>
+                            </div>
                         {% endif %}
                     </div>
 

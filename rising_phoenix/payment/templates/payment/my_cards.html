@@ -1,0 +1,40 @@
+{% extends "main/base.html" %}
+
+{% block title %}My Cards{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">My Cards</h2>
+        <a href="{% url 'payment:add_card' %}" class="btn btn-primary">Add New Card</a>
+    </div>
+
+    {% if cards %}
+        <div class="row g-4">
+            {% for card in cards %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <h5 class="mb-2 text-capitalize">{{ card.brand }}</h5>
+                        <p class="mb-2">**** **** **** {{ card.last4 }}</p>
+                        <p class="text-muted mb-2">Expires {{ card.exp_month }}/{{ card.exp_year }}</p>
+
+                        {% if card.is_default %}
+                            <span class="badge bg-success">Default</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="card shadow-sm border-0">
+            <div class="card-body text-center py-5">
+                <h4 class="mb-3">No saved cards</h4>
+                <p class="text-muted">Add a card to use it later during checkout.</p>
+                <a href="{% url 'payment:add_card' %}" class="btn btn-primary">Add Card</a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
