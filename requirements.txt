@@ -3,6 +3,7 @@ Django==6.0.5
 django-phonenumber-field==8.4.0
 dotenv==0.9.9
 phonenumberslite==9.0.30
+openai==1.82.0
 pillow==12.2.0
 python-dotenv==1.2.2
 sqlparse==0.5.5

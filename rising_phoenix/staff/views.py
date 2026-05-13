@@ -30,6 +30,7 @@ def staff_dashboard_view(request: HttpRequest):
     context = {
         'profiles': profiles,
         'artisan_profiles': artisan_profiles,
+        'artisan_requests': artisan_profiles.filter(is_verified=False, is_banned=False),
  
         'total_users': profiles.count(),
         'banned_users': profiles.filter(is_banned=True).count(),
@@ -99,6 +100,18 @@ def feature_artisan_view(request: HttpRequest, user_id: int):
     artisan.save()
  
     state = 'featured' if artisan.is_featured else 'unfeatured'
+    messages.success(request, f'{artisan.user.username} has been {state}.')
+ 
+    return redirect('staff:staff_dashboard_view')
+
+@staff_required
+@require_POST
+def verify_artisan_view(request: HttpRequest, user_id: int):
+    artisan = get_object_or_404(ArtisanProfile, user__id=user_id)
+    artisan.is_verified = not artisan.is_verified
+    artisan.save()
+ 
+    state = 'verified' if artisan.is_verified else 'not verified'
     messages.success(request, f'{artisan.user.username} has been {state}.')
  
     return redirect('staff:staff_dashboard_view')

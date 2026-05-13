@@ -39,6 +39,7 @@
             {{ form.description }}
             <div class="ai-refine-row">
               <button type="button" id="ai-refine-btn" class="ai-refine-btn">Refine with AI</button>
+              <span id="ai-refine-loader" class="ai-refine-loader" aria-hidden="true" hidden></span>
               <span id="ai-refine-status" class="ai-refine-status" aria-live="polite"></span>
             </div>
             <div id="ai-review-panel" class="ai-review-panel" hidden>
@@ -117,8 +118,9 @@
     const acceptBtn = document.getElementById('ai-accept-btn');
     const retryBtn = document.getElementById('ai-retry-btn');
     const rejectBtn = document.getElementById('ai-reject-btn');
+    const loaderEl = document.getElementById('ai-refine-loader');
 
-    if (!refineBtn || !statusEl || !descriptionEl || !panelEl || !originalEl || !suggestedEl || !diffOutputEl || !acceptBtn || !retryBtn || !rejectBtn) {
+    if (!refineBtn || !statusEl || !descriptionEl || !panelEl || !originalEl || !suggestedEl || !diffOutputEl || !acceptBtn || !retryBtn || !rejectBtn || !loaderEl) {
       return;
     }
 
@@ -166,6 +168,7 @@
       retryBtn.disabled = isBusy;
       acceptBtn.disabled = isBusy;
       rejectBtn.disabled = isBusy;
+      loaderEl.hidden = !isBusy;
       if (isBusy) {
         refineBtn.textContent = 'Processing...';
       } else {

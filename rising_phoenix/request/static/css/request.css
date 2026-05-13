@@ -263,6 +263,22 @@ h5 {
 	cursor: not-allowed;
 }
 
+.ai-refine-loader {
+	width: 16px;
+	height: 16px;
+	border: 2px solid #d8ccba;
+	border-top-color: var(--clay);
+	border-radius: 50%;
+	display: inline-block;
+	animation: ai-spin 0.8s linear infinite;
+}
+
+@keyframes ai-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
 .ai-refine-status {
 	font-size: 0.78rem;
 	color: var(--ink-light);
