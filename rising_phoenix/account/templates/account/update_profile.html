@@ -52,7 +52,7 @@
                                     class="form-control {% if user_form.first_name.errors %}is-invalid{% endif %}"
                                     id="first_name"
                                     name="first_name"
-                                    value="{{ user_form.first_name.value|default:user.first_name|default:'' }}"
+                                    value="{{ user_profile.first_name.value|default:user.first_name|default:'' }}"
                                 >
                                 {% for error in user_form.first_name.errors %}
                                     <div class="invalid-feedback d-block">{{ error }}</div>
@@ -109,7 +109,7 @@
                                     id="phone"
                                     name="phone"
                                     placeholder="+966501234567"
-                                    value="{{ profile_form.phone.value|default:'' }}"
+                                    value="{{ user_profile.phone|default:'' }}"
                                     
                                     title="Enter a valid phone number, for example +966501234567"
                                 >
