@@ -4,21 +4,25 @@ from .models import Request
 
 
 class RequestForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['category'].queryset = self.fields['category'].queryset.order_by('name')
+
     class Meta:
         model = Request
-        fields = ['title', 'description', 'reference_image', 'budget_min', 'budget_max', 'category', 'deadline']
+        fields = ['title', 'description', 'budget_min', 'budget_max', 'category', 'deadline']
         labels = {
-            'budget_min': 'Minimum budget (SAR)',
-            'budget_max': 'Maximum budget (SAR)',
+            'budget_min': 'Minimum budget (SAR) - optional',
+            'budget_max': 'Maximum budget (SAR) - optional',
+            'deadline': 'Preferred deadline - optional',
         }
         widgets = {
             'title': forms.TextInput(attrs={'class': 'request-input'}),
             'description': forms.Textarea(attrs={'class': 'request-textarea'}),
             'category': forms.Select(attrs={'class': 'request-select'}),
             'deadline': forms.DateInput(attrs={'type': 'date', 'class': 'request-input'}),
-            'budget_min': forms.NumberInput(attrs={'class': 'request-input', 'placeholder': 'e.g. 500'}),
-            'budget_max': forms.NumberInput(attrs={'class': 'request-input', 'placeholder': 'e.g. 2000'}),
-            'reference_image': forms.ClearableFileInput(attrs={'class': 'request-file'}),
+            'budget_min': forms.NumberInput(attrs={'class': 'request-input', 'placeholder': 'e.g. 500 (optional)'}),
+            'budget_max': forms.NumberInput(attrs={'class': 'request-input', 'placeholder': 'e.g. 2000 (optional)'}),
         }
 
     def clean(self):

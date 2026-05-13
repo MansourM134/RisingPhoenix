@@ -1,0 +1,79 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}{{ project_request.title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/request.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="request-shell">
+  <div class="request-container">
+    <div class="request-detail-card">
+      <div class="request-detail-head">
+        <div>
+          <p class="request-tag">{{ project_request.category.name }}</p>
+          <h1 class="request-detail-title">{{ project_request.title }}</h1>
+          <p class="request-sub mb-0">Requested by {{ project_request.requester.username }}</p>
+        </div>
+        <div class="request-detail-actions">
+          <a href="{% url 'request:request_list_view' %}" class="page-link">Back to browse</a>
+          {% if user.is_authenticated and user == project_request.requester and project_request.status != 'closed' and project_request.status != 'time_ended' %}
+            <a href="{% url 'request:request_edit_view' project_request.id %}" class="request-action">Edit request</a>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="request-detail-meta">
+        <div class="request-detail-meta-item">
+          <span class="request-label">Budget</span>
+          <p class="mb-0">{% if project_request.budget_min or project_request.budget_max %}{{ project_request.budget_min|default:'?' }} SAR - {{ project_request.budget_max|default:'?' }} SAR{% else %}Flexible{% endif %}</p>
+        </div>
+        <div class="request-detail-meta-item">
+          <span class="request-label">Deadline</span>
+          <p class="mb-0">{{ project_request.deadline|default:'Flexible' }}</p>
+        </div>
+        <div class="request-detail-meta-item">
+          <span class="request-label">Status</span>
+          <p class="mb-0">
+            {% if project_request.status == 'open' %}
+              <span class="status-pill status-open">{{ project_request.get_status_display }}</span>
+            {% elif project_request.status == 'in_review' %}
+              <span class="status-pill status-in-review">{{ project_request.get_status_display }}</span>
+            {% elif project_request.status == 'time_ended' %}
+              <span class="status-pill status-time-ended">{{ project_request.get_status_display }}</span>
+            {% else %}
+              <span class="status-pill status-closed">{{ project_request.get_status_display }}</span>
+            {% endif %}
+          </p>
+        </div>
+      </div>
+
+      <div class="request-detail-body">
+        <h2 class="request-detail-subtitle">Project Description</h2>
+        <p class="request-detail-description">{{ project_request.description|linebreaksbr }}</p>
+      </div>
+
+      {% if project_request.status == 'time_ended' and project_request.deadline %}
+        <div class="request-time-ended-note" role="status">
+          This request was automatically marked as time ended because the deadline ({{ project_request.deadline }}) has passed.
+        </div>
+      {% endif %}
+
+      {% if has_images %}
+        <div class="request-detail-body">
+          <h2 class="request-detail-subtitle">Reference Images</h2>
+          <div class="request-detail-gallery">
+            {% for image in images %}
+              <a href="{{ image.image.url }}" target="_blank" rel="noopener" class="request-detail-gallery-item">
+                <img src="{{ image.image.url }}" alt="Reference image {{ forloop.counter }} for {{ project_request.title }}">
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

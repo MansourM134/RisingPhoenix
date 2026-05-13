@@ -24,31 +24,110 @@
       </div>
     </header>
 
+    <form method="get" class="browse-filters">
+      <div class="browse-filters-grid">
+        <div>
+          <label class="request-label" for="id_q">Search</label>
+          <input id="id_q" type="text" name="q" value="{{ current_q }}" class="request-input" placeholder="Title, description, or requester">
+        </div>
+
+        <div>
+          <label class="request-label" for="id_category">Category</label>
+          <select id="id_category" name="category" class="request-select">
+            <option value="">All categories</option>
+            {% for category_item in category_choices %}
+              <option value="{{ category_item.id }}" {% if current_category == category_item.id|stringformat:'s' %}selected{% endif %}>{{ category_item.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div>
+          <label class="request-label" for="id_status">Status</label>
+          <select id="id_status" name="status" class="request-select">
+            <option value="">All statuses</option>
+            {% for value, label in status_choices %}
+              <option value="{{ value }}" {% if current_status == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div>
+          <label class="request-label" for="id_sort">Sort by</label>
+          <select id="id_sort" name="sort" class="request-select">
+            <option value="newest" {% if current_sort == 'newest' %}selected{% endif %}>Newest first</option>
+            <option value="oldest" {% if current_sort == 'oldest' %}selected{% endif %}>Oldest first</option>
+            <option value="deadline_soon" {% if current_sort == 'deadline_soon' %}selected{% endif %}>Deadline soonest</option>
+            <option value="budget_high" {% if current_sort == 'budget_high' %}selected{% endif %}>Highest budget</option>
+            <option value="budget_low" {% if current_sort == 'budget_low' %}selected{% endif %}>Lowest budget</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="browse-filter-actions">
+        <button type="submit" class="request-action browse-btn">Apply filters</button>
+        <a href="{% url 'request:request_list_view' %}" class="browse-reset">Reset</a>
+        <span class="browse-result-count">{{ total_count }} request{{ total_count|pluralize }} found</span>
+      </div>
+    </form>
+
     <div class="request-grid">
       {% for project_request in project_requests %}
         <article class="request-card">
-          <p class="request-tag">{{ project_request.get_category_display }}</p>
-          <h2 class="request-card-title">{{ project_request.title }}</h2>
+          {% with project_request.images.first as cover %}
+            {% if cover %}
+              <a href="{% url 'request:request_detail_view' project_request.id %}" class="request-card-link-media">
+                <img src="{{ cover.image.url }}" alt="Reference image for {{ project_request.title }}" class="request-card-img">
+              </a>
+            {% endif %}
+          {% endwith %}
+          <p class="request-tag">{{ project_request.category.name }}</p>
+          <h2 class="request-card-title">
+            <a href="{% url 'request:request_detail_view' project_request.id %}" class="request-card-title-link">{{ project_request.title }}</a>
+          </h2>
           <p class="request-card-desc">{{ project_request.description|truncatewords:24 }}</p>
           <div class="request-meta">
-            <p class="mb-0"><strong>Budget:</strong> {{ project_request.budget_min }} SAR - {{ project_request.budget_max }} SAR</p>
-            <p class="mb-0"><strong>Deadline:</strong> {{ project_request.deadline }}</p>
+	            <p class="mb-0"><strong>Budget:</strong> {% if project_request.budget_min or project_request.budget_max %}{{ project_request.budget_min|default:'?' }} SAR - {{ project_request.budget_max|default:'?' }} SAR{% else %}Flexible{% endif %}</p>
+	            <p class="mb-0"><strong>Deadline:</strong> {{ project_request.deadline|default:'Flexible' }}</p>
             <p class="mb-0">
               <strong>Status:</strong>
               {% if project_request.status == 'open' %}
                 <span class="status-pill status-open">{{ project_request.get_status_display }}</span>
               {% elif project_request.status == 'in_review' %}
                 <span class="status-pill status-in-review">{{ project_request.get_status_display }}</span>
+              {% elif project_request.status == 'time_ended' %}
+                <span class="status-pill status-time-ended">{{ project_request.get_status_display }}</span>
               {% else %}
                 <span class="status-pill status-closed">{{ project_request.get_status_display }}</span>
               {% endif %}
             </p>
+            {% if user.is_authenticated and user == project_request.requester and project_request.status != 'closed' and project_request.status != 'time_ended' %}
+              <p class="mb-0 request-owner-actions">
+                <a href="{% url 'request:request_edit_view' project_request.id %}" class="request-action request-action-small">Edit request</a>
+              </p>
+            {% endif %}
+            <p class="mb-0 request-owner-actions">
+              <a href="{% url 'request:request_detail_view' project_request.id %}" class="page-link">View details</a>
+            </p>
           </div>
         </article>
       {% empty %}
-        <div class="request-empty">No requests posted yet.</div>
+        <div class="request-empty">No requests match your filters yet.</div>
       {% endfor %}
     </div>
+
+    {% if page_obj.has_other_pages %}
+      <nav class="browse-pagination" aria-label="Requests pagination">
+        {% if page_obj.has_previous %}
+          <a class="page-link" href="?q={{ current_q|urlencode }}&category={{ current_category|urlencode }}&status={{ current_status|urlencode }}&sort={{ current_sort|urlencode }}&page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span class="page-current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+          <a class="page-link" href="?q={{ current_q|urlencode }}&category={{ current_category|urlencode }}&status={{ current_status|urlencode }}&sort={{ current_sort|urlencode }}&page={{ page_obj.next_page_number }}">Next</a>
+        {% endif %}
+      </nav>
+    {% endif %}
   </div>
 </section>
 {% endblock %}
