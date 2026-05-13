@@ -3,9 +3,11 @@ from django.http import HttpRequest, HttpResponse
 from django.contrib.auth.decorators import login_required
 # from django.contrib.admin.views.decorators import staff_member_required
 from account.models import Profile, ArtisanProfile
+from workshop.models import Category, WorkshopProfile
 from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
+from django.db.models import Count
 
 
 # Create your views here.
@@ -26,12 +28,19 @@ def staff_required(view_func):
 def staff_dashboard_view(request: HttpRequest):
     profiles = Profile.objects.select_related('user').order_by('-created_at')
     artisan_profiles = ArtisanProfile.objects.select_related('user').order_by('-created_at')
+    categories = Category.objects.all()
+    
+    categories = Category.objects.annotate(
+    workshop_count=Count('workshopprofile')
+    )
  
     context = {
         'profiles': profiles,
         'artisan_profiles': artisan_profiles,
         'artisan_requests': artisan_profiles.filter(is_verified=False, is_banned=False),
- 
+        'categories': categories,
+        
+        
         'total_users': profiles.count(),
         'banned_users': profiles.filter(is_banned=True).count(),
         'total_artisans': artisan_profiles.count(),
@@ -116,3 +125,14 @@ def verify_artisan_view(request: HttpRequest, user_id: int):
  
     return redirect('staff:staff_dashboard_view')
 
+@staff_required
+@require_POST
+def add_category_view(request: HttpRequest):
+    name = request.POST.get('name', '').strip()
+    description = request.POST.get('description', '').strip()
+    if name:
+        Category.objects.create(name=name, description=description)
+        messages.success(request, f'Category "{name}" has been added.')
+    else:
+        messages.error(request, 'Category name cannot be empty.')
+    return redirect('staff:staff_dashboard_view')

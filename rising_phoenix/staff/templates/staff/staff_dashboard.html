@@ -298,7 +298,7 @@
             
         </div>
     </div>
-
+    <!--verify requests-->
     <div class="card shadow-sm border-0">
         <div class="card-header bg-dark text-white">
             <h5 class="mb-0">Verify Requests</h5>
@@ -350,6 +350,45 @@
             </table>
 
             
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Categories</h5>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+
+                <thead class="table-light">
+                    <tr>
+                        <th>Category Name</th>
+                        <th>Description</th>
+                        <th>Workshops</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td colspan="3">
+                            <form method="POST" action="{% url 'staff:add_category_view' %}" class="d-flex gap-2">
+                                {% csrf_token %}
+                                <input type="text" name="name" class="form-control form-control-sm" placeholder="Category Name" required>
+                                <input type="text" name="description" class="form-control form-control-sm" placeholder="Description">
+                                <button class="btn btn-sm btn-primary">Add Category</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% for category in categories %}
+                    <tr>
+                        <td>{{ category.name }}</td>
+                        <td>{{ category.description }}</td>
+                        <td>{{ category.workshop_count }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 
