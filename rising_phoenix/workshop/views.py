@@ -53,6 +53,7 @@ def create_workshop_view(request):
     return render(request, 'workshop/create_workshop.html', context)
 
 
+
 def workshop_detail_view(request, artisan_id):
     """View public workshop profile."""
     try:
@@ -64,11 +65,38 @@ def workshop_detail_view(request, artisan_id):
     except WorkshopProfile.DoesNotExist:
         messages.error(request, "Workshop profile not found. The artisan hasn't created a workshop yet.")
         return redirect('main:home_view')
+
+    can_edit_portfolio = request.user.is_authenticated and request.user == artisan_profile.user
+
+    if request.method == 'POST' and can_edit_portfolio:
+        # Handle caption update
+        if 'caption' in request.POST and 'portfolio_image_id' in request.POST:
+            image_id = request.POST.get('portfolio_image_id')
+            caption = request.POST.get('caption', '').strip()
+            portfolio_image = workshop.portfolio_images.filter(id=image_id).first()
+            if portfolio_image:
+                portfolio_image.caption = caption
+                portfolio_image.save(update_fields=['caption'])
+                messages.success(request, "Portfolio description updated successfully.")
+            else:
+                messages.error(request, "Portfolio image not found.")
+            return redirect('workshop:workshop_detail_view', artisan_id=artisan_id)
+        # Handle image delete
+        elif 'delete_portfolio_image_id' in request.POST:
+            image_id = request.POST.get('delete_portfolio_image_id')
+            portfolio_image = workshop.portfolio_images.filter(id=image_id).first()
+            if portfolio_image:
+                portfolio_image.delete()
+                messages.success(request, "Portfolio image deleted successfully.")
+            else:
+                messages.error(request, "Portfolio image not found.")
+            return redirect('workshop:workshop_detail_view', artisan_id=artisan_id)
     
     context = {
         'workshop': workshop,
         'artisan': artisan_profile,
         'portfolio_images': workshop.portfolio_images.all(),
+        'can_edit_portfolio': can_edit_portfolio,
     }
     return render(request, 'workshop/workshop_detail.html', context)
 

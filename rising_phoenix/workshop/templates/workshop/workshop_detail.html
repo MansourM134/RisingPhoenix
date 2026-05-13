@@ -257,6 +257,45 @@
         overflow: hidden;
     }
 
+    .portfolio-delete-btn {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        z-index: 2;
+        background: rgba(255, 255, 255, 0.92);
+        color: #c96f52;
+        border: none;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        font-weight: bold;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+
+    .portfolio-delete-btn:hover {
+        background: #ffe5d7;
+        color: #a34d1e;
+    }
+
+    .portfolio-trigger {
+        all: unset;
+        display: block;
+        width: 100%;
+        height: 100%;
+        cursor: zoom-in;
+    }
+
+    .portfolio-trigger:focus-visible {
+        outline: 3px solid rgba(201, 111, 82, 0.45);
+        outline-offset: -3px;
+    }
+
     .portfolio-item img {
         width: 100%;
         height: 100%;
@@ -283,6 +322,89 @@
         font-size: 0.75rem;
         font-weight: 700;
     }
+
+    .portfolio-modal .modal-content {
+        border: none;
+        border-radius: 18px;
+        overflow: hidden;
+    }
+
+    .portfolio-modal .modal-header {
+        border-bottom: 1px solid var(--border-light);
+        background: #fff;
+    }
+
+    .portfolio-modal .modal-body {
+        background: #fcf8f4;
+    }
+
+    .portfolio-modal-image {
+        width: 100%;
+        max-height: 70vh;
+        object-fit: contain;
+        border-radius: 14px;
+        background: #fff;
+    }
+
+    .portfolio-modal-caption {
+        margin-top: 14px;
+        color: #3d3430;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        white-space: pre-line;
+    }
+
+    .portfolio-edit-form {
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border-light);
+    }
+
+    .portfolio-edit-form label {
+        display: block;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #2c1f1a;
+    }
+
+    .portfolio-edit-form textarea {
+        width: 100%;
+        min-height: 110px;
+        resize: vertical;
+        border: 1px solid #e1d5c9;
+        border-radius: 12px;
+        padding: 12px 14px;
+        font: inherit;
+        background: #fff;
+    }
+
+    .portfolio-edit-form textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(201, 111, 82, 0.15);
+    }
+
+    .portfolio-edit-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 12px;
+    }
+
+    .portfolio-edit-actions button,
+    .portfolio-edit-actions .btn-link {
+        border-radius: 10px;
+        padding: 10px 14px;
+        font-weight: 700;
+    }
+
+    .portfolio-edit-actions .btn-link {
+        text-decoration: none;
+    }
+
+    .portfolio-modal-empty {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+    }
 </style>
 {% endblock %}
 
@@ -300,7 +422,14 @@
     <div class="workshop-header">
         <div class="artisan-avatar">{{ artisan.user.first_name|slice:":1"|default:'A' }}</div>
         <div class="artisan-info flex-grow-1">
-            <h3>{{ workshop.workshop_name }}</h3>
+            <h3>{{ workshop.workshop_name }}
+                {% if can_edit_portfolio %}
+                <a href="{% url 'workshop:create_workshop_view' %}" class="btn btn-sm btn-outline-primary ms-2"
+                    style="font-size:0.95rem;vertical-align:middle;">
+                    <i class="bi bi-pencil-square"></i> Edit
+                </a>
+                {% endif %}
+            </h3>
             <p>{{ artisan.user.first_name }} · {{ workshop.location|default:"Riyadh" }} · Member since Jan 2023</p>
             {% if workshop.categories %}
             {% for category in workshop.categories.all %}
@@ -341,13 +470,29 @@
             {% if portfolio_images %}
             <div class="portfolio-section">
                 <h2>Portfolio</h2>
+                <a href="{% url 'workshop:upload_portfolio_view'%}">add images</a>
                 <div class="portfolio-grid">
                     {% for img in portfolio_images|slice:":6" %}
-                    <div class="portfolio-item">
-                        <img src="{{ img.image.url }}" alt="{{ img.caption }}">
-                        {% if img.is_pinned %}
-                        <span class="portfolio-badge">Pinned</span>
+                    <div class="portfolio-item" style="position:relative;">
+                        {% if can_edit_portfolio %}
+                        <form method="post" style="position:absolute;top:0;right:0;z-index:3;"
+                            onsubmit="return confirm('Are you sure you want to delete this image?');">
+                            {% csrf_token %}
+                            <input type="hidden" name="delete_portfolio_image_id" value="{{ img.id }}">
+                            <button type="submit" class="portfolio-delete-btn" title="Delete image"
+                                aria-label="Delete image">&times;</button>
+                        </form>
                         {% endif %}
+                        <button type="button" class="portfolio-trigger" data-bs-toggle="modal"
+                            data-bs-target="#portfolioImageModal" data-image="{{ img.image.url }}"
+                            data-id="{{ img.id }}" data-caption="{{ img.caption|default:''|escapejs }}"
+                            data-title="{{ workshop.workshop_name|escapejs }}">
+                            <img src="{{ img.image.url }}" alt="{{ img.caption|default:workshop.workshop_name }}">
+
+                            {% if img.is_pinned %}
+                            <span class="portfolio-badge">Pinned</span>
+                            {% endif %}
+                        </button>
                     </div>
                     {% endfor %}
                 </div>
@@ -355,6 +500,7 @@
             {% else %}
             <div class="portfolio-section">
                 <h2>Portfolio</h2>
+                <a href="{% url 'workshop:upload_portfolio_view'%}">add images</a>
                 <div class="portfolio-empty">
                     No portfolio images uploaded yet.
                 </div>
@@ -409,4 +555,94 @@
         </div>
     </div>
 </div>
+
+<!-- Portfolio Modal -->
+<div class="modal fade portfolio-modal" id="portfolioImageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title mb-1" id="portfolioModalTitle">Portfolio Image</h5>
+                    <small class="text-muted">Click outside or press Esc to close</small>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-3 p-md-4">
+                <img src="" alt="Portfolio image preview" id="portfolioModalImage" class="portfolio-modal-image">
+                <div class="portfolio-modal-caption" id="portfolioModalCaption"></div>
+
+                {% if can_edit_portfolio %}
+                <form method="post" class="portfolio-edit-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="portfolio_image_id" id="portfolioImageId" value="">
+                    <label for="portfolioCaption">Edit description</label>
+                    <textarea name="caption" id="portfolioCaption"
+                        placeholder="Write a short description for this image..."></textarea>
+                    <div class="portfolio-edit-actions">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    (function () {
+        const modal = document.getElementById('portfolioImageModal');
+        const modalImage = document.getElementById('portfolioModalImage');
+        const modalCaption = document.getElementById('portfolioModalCaption');
+        const modalTitle = document.getElementById('portfolioModalTitle');
+        const portfolioImageId = document.getElementById('portfolioImageId');
+        const portfolioCaption = document.getElementById('portfolioCaption');
+
+        if (!modal || !modalImage || !modalCaption || !modalTitle) {
+            return;
+        }
+
+        modal.addEventListener('show.bs.modal', function (event) {
+            const trigger = event.relatedTarget;
+            if (!trigger) {
+                return;
+            }
+
+            const image = trigger.getAttribute('data-image');
+            const caption = trigger.getAttribute('data-caption') || '';
+            const title = trigger.getAttribute('data-title') || 'Portfolio Image';
+            const imageId = trigger.getAttribute('data-id') || '';
+
+            modalImage.src = image;
+            modalImage.alt = caption || title;
+            modalCaption.textContent = caption || 'No description provided.';
+            modalTitle.textContent = title;
+
+            if (portfolioImageId) {
+                portfolioImageId.value = imageId;
+            }
+
+            if (portfolioCaption) {
+                portfolioCaption.value = caption;
+            }
+        });
+
+        modal.addEventListener('hidden.bs.modal', function () {
+            modalImage.src = '';
+            modalImage.alt = 'Portfolio image preview';
+            modalCaption.textContent = '';
+            modalTitle.textContent = 'Portfolio Image';
+
+            if (portfolioImageId) {
+                portfolioImageId.value = '';
+            }
+
+            if (portfolioCaption) {
+                portfolioCaption.value = '';
+            }
+        });
+    })();
+</script>
 {% endblock %}
