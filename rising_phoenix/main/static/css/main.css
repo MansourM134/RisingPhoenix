@@ -736,6 +736,34 @@ a:hover {
    FOOTER STYLES
    ============================================ */
 
+/* Toast notifications */
+.saaf-toast-container {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 1090;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    max-width: 360px;
+    width: calc(100% - 3rem);
+}
+
+.saaf-toast {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #2a1a0e;
+    animation: saaf-toast-in 0.25s ease;
+}
+
+@keyframes saaf-toast-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
 .saaf-footer {
     background-color: var(--saaf-white);
     border-top: 1px solid var(--saaf-border);

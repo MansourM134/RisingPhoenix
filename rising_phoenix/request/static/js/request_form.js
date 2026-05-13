@@ -102,11 +102,27 @@
           throw new Error(data.error || 'Refinement failed.');
         }
 
+        var refinedText = data.refined_text || '';
+        if (!refinedText) {
+          throw new Error('AI returned an empty suggestion.');
+        }
+
         originalEl.value = descriptionEl.value;
-        suggestedEl.value = data.refined_text;
+        suggestedEl.value = refinedText;
         panelEl.hidden = false;
         renderDiff(originalEl.value, suggestedEl.value);
-        statusEl.textContent = 'Review AI changes below, then accept, reject, or send back.';
+
+        var missingDetails = Array.isArray(data.missing_details) ? data.missing_details : [];
+        var confidence = typeof data.confidence === 'number' ? data.confidence : null;
+        var hints = [];
+        if (missingDetails.length) {
+          hints.push('Consider adding: ' + missingDetails.join(', '));
+        }
+        if (confidence !== null) {
+          hints.push('AI confidence: ' + Math.round(confidence * 100) + '%');
+        }
+
+        statusEl.textContent = 'Review AI changes below, then accept, reject, or send back.' + (hints.length ? ' ' + hints.join(' | ') : '');
       } catch (error) {
         statusEl.textContent = error.message || 'Something went wrong.';
         statusEl.classList.add('error');
@@ -324,5 +340,27 @@
 
     categoryInput.addEventListener('change', loadSuggestions);
     loadSuggestions();
+  })();
+
+  // Double-submit protection
+  (function () {
+    var form = document.querySelector('.request-form-card form');
+    var submitBtn = form ? form.querySelector('button[type="submit"]') : null;
+    if (!form || !submitBtn) {
+      return;
+    }
+
+    var originalLabel = submitBtn.textContent;
+
+    form.addEventListener('submit', function () {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting...';
+
+      // Re-enable after 10s as a safety net in case the page does not navigate away
+      setTimeout(function () {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
+      }, 10000);
+    });
   })();
 })();

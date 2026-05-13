@@ -43,3 +43,21 @@ class RequestImage(models.Model):
 
 	def __str__(self):
 		return f"Image for '{self.request.title}'"
+
+
+class AIRefineLog(models.Model):
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name='ai_refine_logs')
+	input_chars = models.PositiveIntegerField()
+	was_flagged = models.BooleanField(default=False)
+	was_cached = models.BooleanField(default=False)
+	success = models.BooleanField(default=False)
+	confidence = models.FloatField(null=True, blank=True)
+	latency_ms = models.PositiveIntegerField(null=True, blank=True)
+	tokens_used = models.PositiveIntegerField(null=True, blank=True)
+	created_at = models.DateTimeField(auto_now_add=True)
+
+	class Meta:
+		ordering = ['-created_at']
+
+	def __str__(self):
+		return f"AIRefineLog user={self.user_id} success={self.success} at {self.created_at}"

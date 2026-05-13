@@ -691,6 +691,9 @@ h5 {
 	line-height: 1.6;
 	margin-bottom: 0.8rem;
 	background: var(--white);
+	overflow-wrap: break-word;
+	word-break: break-word;
+	min-width: 0;
 }
 
 .diff-added {
@@ -700,6 +703,9 @@ h5 {
 	border-radius: 999px;
 	margin-right: 0.15rem;
 	display: inline-block;
+	overflow-wrap: break-word;
+	word-break: break-word;
+	max-width: 100%;
 }
 
 .diff-removed {
@@ -709,6 +715,9 @@ h5 {
 	border-radius: 999px;
 	margin-right: 0.15rem;
 	display: inline-block;
+	overflow-wrap: break-word;
+	word-break: break-word;
+	max-width: 100%;
 }
 
 .ai-actions {

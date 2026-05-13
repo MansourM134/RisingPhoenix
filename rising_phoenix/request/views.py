@@ -1,8 +1,11 @@
+import hashlib
 import json
 import logging
+import time
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.cache import cache
 from django.core.paginator import Paginator
 from django.db.models import F, Q
 from django.http import HttpRequest, JsonResponse
@@ -13,14 +16,56 @@ from django.conf import settings
 from django.utils import timezone
 
 from .forms import RequestForm
-from .models import Request, RequestImage
+from .models import AIRefineLog, Request, RequestImage
 from workshop.models import Category, WorkshopProfile
 
 logger = logging.getLogger(__name__)
 
 
+def _extract_first_json_object(raw_text: str):
+	start = raw_text.find('{')
+	end = raw_text.rfind('}')
+	if start == -1 or end == -1 or end <= start:
+		return None
+
+	try:
+		parsed = json.loads(raw_text[start : end + 1])
+		if isinstance(parsed, dict):
+			return parsed
+	except json.JSONDecodeError:
+		return None
+
+	return None
+
+
+def _call_with_retry(call_fn, attempts: int, base_delay_seconds: float):
+	last_error = None
+	for attempt in range(1, attempts + 1):
+		try:
+			return call_fn()
+		except Exception as exc:
+			last_error = exc
+			if attempt == attempts:
+				break
+			time.sleep(base_delay_seconds * (2 ** (attempt - 1)))
+
+	if last_error is not None:
+		raise last_error
+
+	raise RuntimeError('Retry helper failed without an explicit error.')
+
+
 def _save_uploaded_request_images(request_instance: Request, request_files):
+	max_size_bytes = int(float(getattr(settings, 'REQUEST_IMAGE_MAX_SIZE_MB', 5)) * 1024 * 1024)
+	allowed_types = list(getattr(settings, 'REQUEST_IMAGE_ALLOWED_TYPES', ['image/jpeg', 'image/png', 'image/webp', 'image/gif']))
 	for image_file in request_files.getlist('reference_images'):
+		if image_file.size > max_size_bytes:
+			logger.warning('Rejected oversized image upload "%s" (%d bytes) for request id=%s', image_file.name, image_file.size, request_instance.id)
+			continue
+		content_type = getattr(image_file, 'content_type', '') or ''
+		if content_type.lower() not in allowed_types:
+			logger.warning('Rejected disallowed content type "%s" for image "%s" on request id=%s', content_type, image_file.name, request_instance.id)
+			continue
 		try:
 			RequestImage.objects.create(request=request_instance, image=image_file)
 		except Exception:
@@ -192,6 +237,38 @@ def refine_request_view(request: HttpRequest):
 	if not user_text:
 		return JsonResponse({'error': 'Please provide request text to refine.'}, status=400)
 
+	max_input_chars = int(getattr(settings, 'OPENAI_REFINE_MAX_INPUT_CHARS', 1200))
+	if len(user_text) > max_input_chars:
+		return JsonResponse({'error': f'Please keep the description under {max_input_chars} characters.'}, status=400)
+
+	# Rate limiting
+	rate_limit = int(getattr(settings, 'OPENAI_REFINE_RATE_LIMIT', 10))
+	rate_window = int(getattr(settings, 'OPENAI_REFINE_RATE_WINDOW_SECONDS', 3600))
+	rate_key = f'ai_refine_rate:{request.user.id}'
+	current_count = cache.get(rate_key, 0)
+	if current_count >= rate_limit:
+		return JsonResponse({'error': f'You have reached the limit of {rate_limit} AI refinements per hour. Please try again later.'}, status=429)
+
+	# Prompt caching
+	cache_ttl = int(getattr(settings, 'OPENAI_REFINE_CACHE_TTL_SECONDS', 300))
+	model_for_cache = getattr(settings, 'OPENAI_MODEL', 'gpt-4o-mini')
+	cache_key = None
+	if cache_ttl > 0:
+		text_hash = hashlib.sha256(f'{model_for_cache}:{user_text}'.encode('utf-8')).hexdigest()
+		cache_key = f'ai_refine_cache:{text_hash}'
+		cached_response = cache.get(cache_key)
+		if cached_response is not None:
+			AIRefineLog.objects.create(
+				user=request.user,
+				input_chars=len(user_text),
+				was_flagged=False,
+				was_cached=True,
+				success=True,
+				confidence=cached_response.get('confidence'),
+				latency_ms=0,
+			)
+			return JsonResponse(cached_response)
+
 	api_key = getattr(settings, 'OPENAI_API_KEY', '').strip()
 	if not api_key:
 		logger.warning('OPENAI_API_KEY not configured')
@@ -204,27 +281,95 @@ def refine_request_view(request: HttpRequest):
 		return JsonResponse({'error': 'OpenAI package is not installed. Add it to requirements and install dependencies.'}, status=503)
 
 	model_name = getattr(settings, 'OPENAI_MODEL', 'gpt-4o-mini')
+	moderation_model = getattr(settings, 'OPENAI_MODERATION_MODEL', 'omni-moderation-latest')
+	timeout_seconds = float(getattr(settings, 'OPENAI_REFINE_TIMEOUT_SECONDS', 15))
+	retries = int(getattr(settings, 'OPENAI_REFINE_RETRIES', 2))
+	retry_base_delay_seconds = float(getattr(settings, 'OPENAI_REFINE_RETRY_BASE_DELAY_SECONDS', 0.7))
+	max_output_tokens = int(getattr(settings, 'OPENAI_REFINE_MAX_OUTPUT_TOKENS', 140))
+	temperature = float(getattr(settings, 'OPENAI_REFINE_TEMPERATURE', 0.5))
+
+	retries = max(1, min(retries, 5))
+	timeout_seconds = max(5.0, min(timeout_seconds, 60.0))
+	max_output_tokens = max(60, min(max_output_tokens, 400))
+	temperature = max(0.0, min(temperature, 1.2))
+	retry_base_delay_seconds = max(0.2, min(retry_base_delay_seconds, 3.0))
+
 	system_prompt = (
 		'You are an expert artisan consultant. Rewrite the request as if the requester is speaking in first person. '
-		'The response must begin with "I want". Include useful details about materials, dimensions, texture, and finish '
-		'when relevant. Keep it under 50 words.'
+		'The refined text must begin with "I want" and stay under 50 words. '\
+		'Return JSON only with this exact schema: '
+		'{"refined_text":"string","missing_details":["string"],"confidence":0.0}. '
+		'Include only short phrases in missing_details, and keep confidence between 0 and 1.'
 	)
 
+	start_time = time.monotonic()
 	try:
-		client = OpenAI(api_key=api_key)
-		response = client.chat.completions.create(
-			model=model_name,
-			messages=[
-				{'role': 'system', 'content': system_prompt},
-				{'role': 'user', 'content': user_text},
-			],
-			temperature=0.6,
+		client = OpenAI(api_key=api_key, timeout=timeout_seconds)
+
+		moderation_response = _call_with_retry(
+			lambda: client.moderations.create(model=moderation_model, input=user_text),
+			attempts=retries,
+			base_delay_seconds=retry_base_delay_seconds,
 		)
-		refined_text = (response.choices[0].message.content or '').strip()
-	except Exception as e:
-		logger.exception(f'OpenAI API error: {str(e)}')
-		error_msg = str(e)[:100]
-		return JsonResponse({'error': f'OpenAI error: {error_msg}'}, status=502)
+		moderation_results = getattr(moderation_response, 'results', []) or []
+		is_flagged = bool(moderation_results and getattr(moderation_results[0], 'flagged', False))
+		if is_flagged:
+			AIRefineLog.objects.create(
+				user=request.user,
+				input_chars=len(user_text),
+				was_flagged=True,
+				was_cached=False,
+				success=False,
+			)
+			return JsonResponse({'error': 'Your text could not be processed. Please rephrase and try again.'}, status=400)
+
+		response = _call_with_retry(
+			lambda: client.chat.completions.create(
+				model=model_name,
+				messages=[
+					{'role': 'system', 'content': system_prompt},
+					{'role': 'user', 'content': user_text},
+				],
+				temperature=temperature,
+				max_tokens=max_output_tokens,
+				response_format={'type': 'json_object'},
+			),
+			attempts=retries,
+			base_delay_seconds=retry_base_delay_seconds,
+		)
+
+		raw_content = (response.choices[0].message.content or '').strip()
+		parsed = _extract_first_json_object(raw_content)
+		if not parsed:
+			logger.warning('OpenAI returned non-JSON content in refine_request_view for user_id=%s', request.user.id)
+			return JsonResponse({'error': 'AI response was invalid. Please try again.'}, status=502)
+
+		refined_text = str(parsed.get('refined_text', '')).strip()
+		missing_details_raw = parsed.get('missing_details', [])
+		confidence_raw = parsed.get('confidence', None)
+
+		if isinstance(missing_details_raw, list):
+			missing_details = [str(item).strip() for item in missing_details_raw if str(item).strip()][:6]
+		else:
+			missing_details = []
+
+		try:
+			confidence = float(confidence_raw)
+			confidence = max(0.0, min(confidence, 1.0))
+		except (TypeError, ValueError):
+			confidence = None
+	except Exception:
+		latency_ms_err = int((time.monotonic() - start_time) * 1000)
+		AIRefineLog.objects.create(
+			user=request.user,
+			input_chars=len(user_text),
+			was_flagged=False,
+			was_cached=False,
+			success=False,
+			latency_ms=latency_ms_err,
+		)
+		logger.exception('OpenAI refine request failed for user_id=%s', request.user.id)
+		return JsonResponse({'error': 'AI service is temporarily unavailable. Please try again.'}, status=502)
 
 	if not refined_text:
 		return JsonResponse({'error': 'AI returned an empty response. Please try again.'}, status=502)
@@ -232,7 +377,43 @@ def refine_request_view(request: HttpRequest):
 	if not refined_text.lower().startswith('i want'):
 		refined_text = f"I want {refined_text.lstrip()}"
 
-	return JsonResponse({'refined_text': refined_text})
+	latency_ms = int((time.monotonic() - start_time) * 1000)
+	tokens_used = None
+	try:
+		usage = getattr(response, 'usage', None)
+		if usage:
+			tokens_used = int(getattr(usage, 'total_tokens', None) or 0) or None
+	except Exception:
+		pass
+
+	# Increment rate limit counter
+	try:
+		new_count = cache.get(rate_key, 0) + 1
+		cache.set(rate_key, new_count, timeout=rate_window)
+	except Exception:
+		pass
+
+	result = {'refined_text': refined_text, 'missing_details': missing_details, 'confidence': confidence}
+
+	# Store in prompt cache
+	if cache_key and cache_ttl > 0:
+		try:
+			cache.set(cache_key, result, timeout=cache_ttl)
+		except Exception:
+			pass
+
+	AIRefineLog.objects.create(
+		user=request.user,
+		input_chars=len(user_text),
+		was_flagged=False,
+		was_cached=False,
+		success=True,
+		confidence=confidence,
+		latency_ms=latency_ms,
+		tokens_used=tokens_used,
+	)
+
+	return JsonResponse(result)
 
 
 

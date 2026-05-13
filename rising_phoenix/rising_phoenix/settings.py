@@ -131,6 +131,24 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', '')
 OPENAI_MODEL = os.getenv('OPENAI_MODEL', 'gpt-4o-mini')
+OPENAI_MODERATION_MODEL = os.getenv('OPENAI_MODERATION_MODEL', 'omni-moderation-latest')
+OPENAI_REFINE_TIMEOUT_SECONDS = float(os.getenv('OPENAI_REFINE_TIMEOUT_SECONDS', '15'))
+OPENAI_REFINE_RETRIES = int(os.getenv('OPENAI_REFINE_RETRIES', '2'))
+OPENAI_REFINE_RETRY_BASE_DELAY_SECONDS = float(os.getenv('OPENAI_REFINE_RETRY_BASE_DELAY_SECONDS', '0.7'))
+OPENAI_REFINE_MAX_INPUT_CHARS = int(os.getenv('OPENAI_REFINE_MAX_INPUT_CHARS', '1200'))
+OPENAI_REFINE_MAX_OUTPUT_TOKENS = int(os.getenv('OPENAI_REFINE_MAX_OUTPUT_TOKENS', '140'))
+OPENAI_REFINE_TEMPERATURE = float(os.getenv('OPENAI_REFINE_TEMPERATURE', '0.5'))
+
+# Rate limiting: max AI refine calls per user per window
+OPENAI_REFINE_RATE_LIMIT = int(os.getenv('OPENAI_REFINE_RATE_LIMIT', '10'))
+OPENAI_REFINE_RATE_WINDOW_SECONDS = int(os.getenv('OPENAI_REFINE_RATE_WINDOW_SECONDS', '3600'))
+
+# Prompt response cache TTL in seconds (0 disables caching)
+OPENAI_REFINE_CACHE_TTL_SECONDS = int(os.getenv('OPENAI_REFINE_CACHE_TTL_SECONDS', '300'))
+
+# Image upload limits
+REQUEST_IMAGE_MAX_SIZE_MB = float(os.getenv('REQUEST_IMAGE_MAX_SIZE_MB', '5'))
+REQUEST_IMAGE_ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
 
 TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
 TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
