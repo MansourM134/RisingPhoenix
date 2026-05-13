@@ -171,6 +171,7 @@
                     <tr>
                         <th>Username</th>
                         <th>Verified</th>
+                        <th>Action</th>
                         <th>Featured</th>
                         <th>Ban reason</th>
                         <th>Status</th>
@@ -195,6 +196,24 @@
                                     Not Verified
                                 </span>
                             {% endif %}
+                        </td>
+                        <td>
+                            <form method="POST"
+                                  action="{% url 'staff:verify_artisan_view' artisan.user.id %}">
+
+                                {% csrf_token %}
+
+                                {% if artisan.is_verified %}
+                                    <button class="btn btn-sm btn-outline-warning">
+                                        Unverify
+                                    </button>
+                                {% else %}
+                                    <button class="btn btn-sm btn-warning">
+                                        Verify
+                                    </button>
+                                {% endif %}
+
+                            </form>
                         </td>
 
                         <td>
@@ -275,8 +294,66 @@
                 </tbody>
 
             </table>
+
+            
         </div>
     </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Verify Requests</h5>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+
+                <thead class="table-light">
+                    <tr>
+                        <th>Username</th>
+                        <th>Workshop</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for artisan in artisan_requests %}
+                    <tr>
+
+                        <td>{{ artisan.user.username }}</td>
+
+                        <td>{{ artisan.workshop_name|default:"-" }}</td>
+
+                        <!-- Verify -->
+                        <td>
+                            <form method="POST"
+                                  action="{% url 'staff:verify_artisan_view' artisan.user.id %}">
+
+                                {% csrf_token %}
+
+                                {% if artisan.is_verified %}
+                                    <button class="btn btn-sm btn-outline-warning">
+                                        Unverify
+                                    </button>
+                                {% else %}
+                                    <button class="btn btn-sm btn-warning">
+                                        Verify
+                                    </button>
+                                {% endif %}
+
+                            </form>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+
+            
+        </div>
+    </div>
+
+    
 
 </div>
 
