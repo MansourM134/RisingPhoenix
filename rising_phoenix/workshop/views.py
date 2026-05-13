@@ -116,6 +116,17 @@ def upload_portfolio_view(request):
         return redirect('workshop:create_workshop_view')
 
     if request.method == 'POST':
+        if 'toggle_pin_image_id' in request.POST:
+            image_id = request.POST.get('toggle_pin_image_id')
+            portfolio_image = workshop.portfolio_images.filter(id=image_id).first()
+            if portfolio_image:
+                portfolio_image.is_pinned = not portfolio_image.is_pinned
+                portfolio_image.save(update_fields=['is_pinned'])
+                messages.success(request, f"Image {'pinned' if portfolio_image.is_pinned else 'unpinned'} successfully.")
+            else:
+                messages.error(request, "Portfolio image not found.")
+            return redirect('workshop:upload_portfolio_view')
+
         form = PortfolioImageForm(request.POST, request.FILES)
 
         if form.is_valid():

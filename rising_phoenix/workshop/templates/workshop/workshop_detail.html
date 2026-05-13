@@ -428,6 +428,11 @@
                     style="font-size:0.95rem;vertical-align:middle;">
                     <i class="bi bi-pencil-square"></i> Edit
                 </a>
+                <!-- <a href="{% url 'workshop:workshop_detail_view' artisan_id=artisan.user.id %}"
+                   class="btn btn-sm btn-outline-secondary ms-2"
+                   style="font-size:0.95rem;vertical-align:middle;">
+                    <i class="bi bi-eye"></i> View as user
+                </a> -->
                 {% endif %}
             </h3>
             <p>{{ artisan.user.first_name }} · {{ workshop.location|default:"Riyadh" }} · Member since Jan 2023</p>
