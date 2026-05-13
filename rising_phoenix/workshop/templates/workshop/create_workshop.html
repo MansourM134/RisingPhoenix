@@ -61,6 +61,20 @@
                                 <small class="text-muted">List the services you offer (one per line)</small>
                             </div>
 
+                            <div class="mb-3">
+                                {% for choice in form.categories %}
+                                <div class="form-check">
+                                    {{ choice }}
+                                    <label class="form-check-label" for="{{ choice.id_for_label }}">
+                                    </label>
+                                </div>
+                                {% endfor %}
+                                {% if form.categories.errors %}
+                                <div class="invalid-feedback d-block">{{ form.categories.errors }}</div>
+                                {% endif %}
+                                <small class="text-muted">Select one or more categories that match your craft</small>
+                            </div>
+
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="id_location" class="form-label">Location</label>

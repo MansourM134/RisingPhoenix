@@ -2,153 +2,411 @@
 
 {% block title %}{{ workshop.workshop_name }}{% endblock %}
 
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #c96f52;
+        --light-bg: #faf3ec;
+        --card-bg: #fff;
+        --text-muted: #8b7461;
+        --border-light: #efe6dd;
+    }
+
+    body {
+        background: var(--light-bg);
+    }
+
+    .cover-section {
+        position: relative;
+        margin-bottom: 40px;
+    }
+
+    .cover-image {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        display: block;
+    }
+
+    .avatar-container {
+        display: flex;
+        justify-content: center;
+        margin-top: -50px;
+        position: relative;
+        z-index: 10;
+    }
+
+    .page-label {
+        display: inline-block;
+        background: #4d2f22;
+        color: var(--primary);
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        margin-bottom: 24px;
+    }
+
+    .workshop-header {
+        display: flex;
+        gap: 24px;
+        align-items: flex-start;
+        margin-bottom: 32px;
+    }
+
+    .artisan-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: #d9b9a8;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.8rem;
+        flex-shrink: 0;
+        border: 4px solid var(--light-bg);
+        margin-top: -50px;
+    }
+
+    .artisan-info h3 {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #2c1f1a;
+        margin-bottom: 4px;
+    }
+
+    .artisan-info p {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin: 0;
+    }
+
+    .categories-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+    }
+
+    .tag {
+        background: #e9dccf;
+        color: #4d2f22;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .verified-badge {
+        background: var(--primary);
+        color: #fff;
+        padding: 8px 14px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
+
+    .two-column {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 24px;
+        margin-bottom: 24px;
+    }
+
+    .workshop-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-light);
+        border-radius: 12px;
+        padding: 24px;
+    }
+
+    .workshop-card h2 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #2c1f1a;
+        margin-bottom: 16px;
+    }
+
+    .workshop-card p {
+        color: var(--text-muted);
+        line-height: 1.6;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-top: 16px;
+    }
+
+    .stat-item {
+        background: #f7efe7;
+        padding: 16px;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #2c1f1a;
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-top: 6px;
+    }
+
+    .artisan-details {
+        background: var(--card-bg);
+        border: 1px solid var(--border-light);
+        border-radius: 12px;
+        padding: 24px;
+    }
+
+    .detail-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .detail-item:last-child {
+        border-bottom: none;
+    }
+
+    .detail-label {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+
+    .detail-value {
+        font-weight: 600;
+        color: #2c1f1a;
+    }
+
+    .check-icon {
+        color: #27ae60;
+    }
+
+    .btn-primary-custom {
+        background: var(--primary);
+        color: #fff;
+        padding: 12px 20px;
+        border-radius: 8px;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 16px;
+    }
+
+    .btn-secondary-custom {
+        background: #fff;
+        color: var(--text-muted);
+        padding: 12px 20px;
+        border-radius: 8px;
+        border: 1px solid var(--border-light);
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 12px;
+    }
+
+    .notice-box {
+        background: #fef5e7;
+        border-left: 4px solid #ff9800;
+        padding: 16px;
+        border-radius: 8px;
+        margin-top: 16px;
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .portfolio-section {
+        background: var(--card-bg);
+        border: 1px solid var(--border-light);
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 24px;
+    }
+
+    .portfolio-section h2 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #2c1f1a;
+        margin-bottom: 16px;
+    }
+
+    .portfolio-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+
+    .portfolio-item {
+        position: relative;
+        aspect-ratio: 4 / 3;
+        background: #f7efe7;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .portfolio-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .portfolio-empty {
+        padding: 22px;
+        border: 1px dashed #e0ccb9;
+        border-radius: 10px;
+        color: var(--text-muted);
+        background: #fcf8f4;
+        font-size: 0.95rem;
+    }
+
+    .portfolio-badge {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        background: var(--primary);
+        color: #fff;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<section class="py-5">
-    <div class="container">
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+<div class="container" style="max-width: 1200px; margin-top: 24px;">
+    <!-- Page Label -->
+    <div class="page-label">PAGE 4 OF 16 — WORKSHOP PROFILE: PINNED PORTFOLIO, VERIFIED REVIEWS, BEFORE/AFTER</div>
+
+    <!-- Cover Image -->
+    {% if workshop.cover_image %}
+    <img src="{{ workshop.cover_image.url }}" alt="{{ workshop.workshop_name }}" class="cover-image">
+    {% endif %}
+
+    <!-- Workshop Header -->
+    <div class="workshop-header">
+        <div class="artisan-avatar">{{ artisan.user.first_name|slice:":1"|default:'A' }}</div>
+        <div class="artisan-info flex-grow-1">
+            <h3>{{ workshop.workshop_name }}</h3>
+            <p>{{ artisan.user.first_name }} · {{ workshop.location|default:"Riyadh" }} · Member since Jan 2023</p>
+            {% if workshop.categories %}
+            {% for category in workshop.categories.all %}
+            <div class="categories-tags">
+                <span class="tag">{{ category.name }}</span>
+            </div>
+            {% endfor %}
+            {% endif %}
         </div>
-        {% endfor %}
+        {% if artisan.is_verified %}
+        <span class="verified-badge">✓ Verified Artisan</span>
         {% endif %}
+    </div>
 
-        <div class="row justify-content-center">
-            <div class="col-lg-9">
-                <!-- Cover Image -->
-                {% if workshop.cover_image %}
-                <div class="mb-4">
-                    <img src="{{ workshop.cover_image.url }}" alt="{{ workshop.workshop_name }}"
-                        class="img-fluid rounded" style="max-height: 400px; width: 100%; object-fit: cover;">
-                </div>
-                {% endif %}
-
-                <!-- Workshop Header -->
-                <div class="card shadow-sm border-0 mb-4">
-                    <div class="card-body p-4">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div>
-                                <h1 class="h2 mb-1">{{ workshop.workshop_name }}</h1>
-                                {% if workshop.tagline %}
-                                <p class="text-muted mb-0">{{ workshop.tagline }}</p>
-                                {% endif %}
-                            </div>
-                            {% if request.user == artisan.user %}
-                            <a href="{% url 'workshop:create_workshop_view' %}" class="btn btn-outline-primary">
-                                Edit
-                            </a>
-                            {% endif %}
-                        </div>
-
-                        <div class="row mt-4">
-                            <div class="col-md-3 mb-3">
-                                <small class="text-muted d-block">Rating</small>
-                                <strong>{{ artisan.average_rating }}/5.0</strong>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <small class="text-muted d-block">Completed Jobs</small>
-                                <strong>{{ artisan.completed_jobs }}</strong>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <small class="text-muted d-block">Status</small>
-                                <strong>
-                                    {% if artisan.is_verified %}
-                                    <span class="badge bg-success">Verified</span>
-                                    {% else %}
-                                    <span class="badge bg-warning">Unverified</span>
-                                    {% endif %}
-                                </strong>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <small class="text-muted d-block">Published</small>
-                                <strong>
-                                    {% if workshop.is_published %}
-                                    <span class="badge bg-success">Yes</span>
-                                    {% else %}
-                                    <span class="badge bg-secondary">No</span>
-                                    {% endif %}
-                                </strong>
-                            </div>
-                        </div>
+    <!-- Two Column -->
+    <div class="two-column">
+        <!-- Left -->
+        <div>
+            <div class="workshop-card">
+                <h2>About {{ artisan.user.first_name }}'s Workshop</h2>
+                <p>{{ workshop.description|default:"Woodworking specialist with years of experience." }}</p>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">{{ artisan.completed_jobs|default:"142" }}</div>
+                        <div class="stat-label">Completed orders</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">⭐ {{ artisan.average_rating|default:"4.9" }}</div>
+                        <div class="stat-label">Average rating</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">~2h</div>
+                        <div class="stat-label">Avg. response time</div>
                     </div>
                 </div>
+            </div>
 
-                <!-- About Section -->
-                {% if workshop.description %}
-                <div class="card shadow-sm border-0 mb-4">
-                    <div class="card-body p-4">
-                        <h3 class="h5 mb-3">About</h3>
-                        <p class="text-muted">{{ workshop.description }}</p>
-                    </div>
-                </div>
-                {% endif %}
-
-                <!-- Services Section -->
-                {% if workshop.services %}
-                <div class="card shadow-sm border-0 mb-4">
-                    <div class="card-body p-4">
-                        <h3 class="h5 mb-3">Services</h3>
-                        <div class="lh-lg">
-                            {% for service in workshop.services.split %}
-                            {% if service %}
-                            <div class="mb-2">
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                {{ service }}
-                            </div>
-                            {% endif %}
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-
-                <!-- Contact Section -->
-                <div class="card shadow-sm border-0 mb-4">
-                    <div class="card-body p-4">
-                        <h3 class="h5 mb-3">Contact Information</h3>
-                        {% if workshop.location %}
-                        <div class="mb-3">
-                            <small class="text-muted d-block">Location</small>
-                            <strong>{{ workshop.location }}</strong>
-                        </div>
-                        {% endif %}
-                        {% if workshop.phone %}
-                        <div class="mb-3">
-                            <small class="text-muted d-block">Phone</small>
-                            <strong><a href="tel:{{ workshop.phone }}">{{ workshop.phone }}</a></strong>
-                        </div>
-                        {% endif %}
-                        {% if artisan.phone %}
-                        <div class="mb-3">
-                            <small class="text-muted d-block">Artisan Phone</small>
-                            <strong><a href="tel:{{ artisan.phone }}">{{ artisan.phone }}</a></strong>
-                        </div>
+            {% if portfolio_images %}
+            <div class="portfolio-section">
+                <h2>Portfolio</h2>
+                <div class="portfolio-grid">
+                    {% for img in portfolio_images|slice:":6" %}
+                    <div class="portfolio-item">
+                        <img src="{{ img.image.url }}" alt="{{ img.caption }}">
+                        {% if img.is_pinned %}
+                        <span class="portfolio-badge">Pinned</span>
                         {% endif %}
                     </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% else %}
+            <div class="portfolio-section">
+                <h2>Portfolio</h2>
+                <div class="portfolio-empty">
+                    No portfolio images uploaded yet.
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Right -->
+        <div>
+            <div class="artisan-details">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #2c1f1a; margin-bottom: 16px;">{{
+                    artisan.user.first_name }} Al-Harbi</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">{{
+                    workshop.services|truncatewords:10|default:"Woodworking · Riyadh" }}</p>
+
+                <div style="margin-top: 16px;">
+                    <div class="detail-item">
+                        <span class="detail-label">Response time</span>
+                        <span class="detail-value">~2 hours</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Typical turnaround</span>
+                        <span class="detail-value">3–10 days</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Active orders</span>
+                        <span class="detail-value">2 (available)</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Item drop-off</span>
+                        <span class="detail-value check-icon">✓ Accepted</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Ships KSA</span>
+                        <span class="detail-value check-icon">✓ Yes</span>
+                    </div>
                 </div>
 
-                <!-- Artisan Info -->
-                <div class="card shadow-sm border-0">
-                    <div class="card-body p-4">
-                        <h3 class="h5 mb-3">About the Artisan</h3>
-                        <div class="d-flex align-items-center mb-3">
-                            {% if artisan.avatar %}
-                            <img src="{{ artisan.avatar.url }}" alt="{{ artisan.user.first_name }}"
-                                class="rounded-circle me-3" width="60" height="60">
-                            {% endif %}
-                            <div>
-                                <h6 class="mb-0">{{ artisan.user.first_name }} {{ artisan.user.last_name }}</h6>
-                                <small class="text-muted">@{{ artisan.user.username }}</small>
-                            </div>
-                        </div>
-                        {% if artisan.bio %}
-                        <p class="text-muted mb-0">{{ artisan.bio }}</p>
-                        {% endif %}
-                    </div>
+                <button class="btn-primary-custom">Request Custom Work</button>
+                <button class="btn-secondary-custom">💬 Send Message</button>
+
+                <div class="notice-box">
+                    🔒 All payments held in escrow and released only when you approve the finished work.
+                </div>
+
+                <div
+                    style="margin-top: 16px; padding: 12px; background: #f0f0f0; border-radius: 8px; font-size: 0.8rem; color: #666;">
+                    <strong style="display: block; margin-bottom: 6px;">ITEM PROTECTION</strong>
+                    {{ artisan.user.first_name }} must deposit items with insurance before work begins.
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>
 {% endblock %}

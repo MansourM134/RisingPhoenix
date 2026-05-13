@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.db import transaction
 from account.models import ArtisanProfile
-from .models import WorkshopProfile
-from .forms import WorkshopProfileForm
+from .models import WorkshopProfile, PortfolioImage
+from .forms import WorkshopProfileForm, PortfolioImageForm
 
 
 def is_artisan(user):
@@ -36,6 +36,8 @@ def create_workshop_view(request):
                 if not workshop:
                     workshop_profile.artisan = artisan_profile
                 workshop_profile.save()
+                # Save ManyToMany fields (categories)
+                form.save_m2m()
                 messages.success(request, "Workshop profile saved successfully!")
                 return redirect('workshop:workshop_detail_view', artisan_id=artisan_profile.user.id)
         else:
@@ -66,7 +68,57 @@ def workshop_detail_view(request, artisan_id):
     context = {
         'workshop': workshop,
         'artisan': artisan_profile,
+        'portfolio_images': workshop.portfolio_images.all(),
     }
     return render(request, 'workshop/workshop_detail.html', context)
+
+
+@login_required(login_url='account:login_view')
+@user_passes_test(is_artisan, login_url='main:home_view')
+def upload_portfolio_view(request):
+    """Upload portfolio images for an artisan workshop."""
+    try:
+        artisan_profile = ArtisanProfile.objects.get(user=request.user)
+        workshop = WorkshopProfile.objects.get(artisan=artisan_profile)
+    except ArtisanProfile.DoesNotExist:
+        messages.error(request, "You must have an artisan profile to upload portfolio images.")
+        return redirect('main:home_view')
+    except WorkshopProfile.DoesNotExist:
+        messages.error(request, "You must create a workshop profile first.")
+        return redirect('workshop:create_workshop_view')
+
+    if request.method == 'POST':
+        form = PortfolioImageForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            images = form.cleaned_data['images']
+            caption = form.cleaned_data.get('caption', '')
+            is_pinned = form.cleaned_data.get('is_pinned', False)
+
+            if not images:
+                messages.error(request, "Please select at least one image to upload.")
+            else:
+                with transaction.atomic():
+                    for image in images:
+                        PortfolioImage.objects.create(
+                            workshop=workshop,
+                            image=image,
+                            caption=caption,
+                            is_pinned=is_pinned,
+                        )
+
+                messages.success(request, f"{len(images)} portfolio image(s) uploaded successfully.")
+                return redirect('workshop:upload_portfolio_view')
+        else:
+            messages.error(request, "Please correct the errors below.")
+    else:
+        form = PortfolioImageForm()
+
+    context = {
+        'form': form,
+        'workshop': workshop,
+        'portfolio_images': workshop.portfolio_images.all(),
+    }
+    return render(request, 'workshop/upload_portfolio.html', context)
 
 # Create your views here.

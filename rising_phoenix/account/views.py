@@ -3,10 +3,11 @@ from .forms import CustomUserCreationForm, ProfileForm, ArtisanProfileForm, Cust
 from django.http import HttpRequest, HttpResponse
 from django.contrib import messages
 from django.db import transaction
-from django.contrib.auth import authenticate, login,logout
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required, user_passes_test
+from .models import ArtisanProfile
 from django.contrib.auth.models import Group, User
 from django.db.models import Avg
-
 
 # Create your views here.
 
@@ -87,6 +88,42 @@ def logout_view(request:HttpRequest):
     return redirect('main:home_view')
 
 
+def is_artisan(user):
+    """Check if user is an artisan."""
+    return user.groups.filter(name='artisan').exists()
+
+
+@login_required(login_url='account:login_view')
+@user_passes_test(is_artisan, login_url='main:home_view')
+def artisan_dashboard_view(request: HttpRequest):
+    """Artisan dashboard showing stats, orders, and workshop info."""
+    try:
+        artisan_profile = ArtisanProfile.objects.get(user=request.user)
+    except ArtisanProfile.DoesNotExist:
+        messages.error(request, "You don't have an artisan profile.")
+        return redirect('main:home_view')
+    
+    # Get workshop if it exists
+    workshop = getattr(artisan_profile, 'workshop_profile', None)
+    
+    # Sample data (you can extend this with actual orders/earnings data later)
+    stats = {
+        'earnings_this_month': 4820,
+        'earnings_last_month': 4060,
+        'earnings_growth_percent': 18,
+        'active_orders': 2,
+        'photos_awaiting': 1,
+        'rating': artisan_profile.average_rating,
+        'rating_reviews': 142,
+        'open_requests': 12,
+    }
+    
+    context = {
+        'artisan': artisan_profile,
+        'workshop': workshop,
+        'stats': stats,
+    }
+    return render(request, 'account/artisan_dashboard.html', context)
 def profile_view(request:HttpRequest, user_name):
     user = get_object_or_404(User, username = user_name)
     if user.groups.filter(name='artisan').exists():
