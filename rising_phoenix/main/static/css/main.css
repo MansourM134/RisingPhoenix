@@ -807,6 +807,79 @@ a:hover {
     border-color: var(--saaf-border);
 }
 
+/* Shared card/link helpers for standardized templates */
+.saaf-tile-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.saaf-tile-link:hover .saaf-dashboard-card {
+    border-color: rgba(107, 72, 38, 0.25);
+    transform: translateY(-2px);
+}
+
+.saaf-info-card {
+    background: var(--saaf-white);
+    border: 1px solid var(--saaf-border);
+    border-radius: 14px;
+    padding: 1rem;
+}
+
+.saaf-info-label {
+    display: block;
+    color: var(--saaf-text-muted);
+    font-size: 0.82rem;
+    margin-bottom: 0.35rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.saaf-avatar-preview {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--saaf-white);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.saaf-avatar-fallback {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: var(--saaf-beige);
+    color: var(--saaf-brown);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 700;
+    border: 3px solid var(--saaf-white);
+}
+
+.saaf-check-card {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid var(--saaf-border);
+    border-radius: 12px;
+    background: var(--saaf-white);
+    cursor: pointer;
+}
+
+.saaf-check-card input {
+    margin: 0;
+}
+
+.saaf-portfolio-item {
+    background: var(--saaf-white);
+    border: 1px solid var(--saaf-border);
+    border-radius: 12px;
+    padding: 0.45rem;
+}
+
 /* ============================================
    RESPONSIVE DESIGN
    ============================================ */

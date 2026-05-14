@@ -1,104 +1,69 @@
 {% extends "main/base.html" %}
 
-{% block title %}User Profile{% endblock %}
+{% block sidebar %}
+{% include 'main/_sidebar.html' with active='profile' %}
+{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-xl-8 col-lg-9">
-            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+<section class="py-4 py-md-5">
+    <div class="container-lg">
+        <div class="saaf-dashboard-card rounded-4 p-4 p-md-5">
+            <p class="saaf-eyebrow mb-2">Profile</p>
+            <h1 class="saaf-section-title mb-4">{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</h1>
 
-                <div class="card-header bg-primary text-white border-0 py-4">
-                    <div class="row align-items-center g-4">
-                        <div class="col-md-auto text-center">
-                            {% if user_profile.avatar %}
-                                <img src="{{ user_profile.avatar.url }}"
-                                     alt="{{ user_profile.user.username }}"
-                                     class="rounded-circle img-fluid border border-3 border-white shadow-sm"
-                                     style="width: 130px; height: 130px; object-fit: cover;">
-                            {% else %}
-                                <div class="rounded-circle bg-light text-primary d-inline-flex align-items-center justify-content-center border border-3 border-white shadow-sm"
-                                     style="width: 130px; height: 130px; font-size: 2rem; font-weight: 700;">
-                                    {{ user_profile.user.username|first|upper }}
-                                </div>
-                            {% endif %}
-                        </div>
-
-                        <div class="col">
-                            <h2 class="mb-1 fw-bold">
-                                {{ user_profile.user.first_name }} {{ user_profile.user.last_name }}
-                            </h2>
-                            <p class="mb-1 opacity-75">@{{ user_profile.user.username }}</p>
-                            <p class="mb-0 opacity-75">{{ user_profile.user.email }}</p>
-                        </div>
-                    </div>
+            <div class="row g-4 align-items-start">
+                <div class="col-md-4 text-center">
+                    {% if user_profile.avatar %}
+                    <img src="{{ user_profile.avatar.url }}" alt="{{ user_profile.user.username }}" class="saaf-avatar-preview mb-3">
+                    {% else %}
+                    <div class="saaf-avatar-fallback mb-3">{{ user_profile.user.username|first|upper }}</div>
+                    {% endif %}
+                    <p class="text-muted mb-1">@{{ user_profile.user.username }}</p>
+                    <p class="text-muted small mb-0">Joined {{ user_profile.user.date_joined|date:"F d, Y" }}</p>
                 </div>
 
-                <div class="card-body p-4 p-md-5">
-                    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-                        <div>
-                            <h4 class="mb-1 fw-bold">Profile Info</h4>
-                            <p class="text-muted mb-0">Personal details and account status.</p>
+                <div class="col-md-8">
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <div class="saaf-info-card">
+                                <span class="saaf-info-label">Email</span>
+                                <p class="mb-0">{{ user_profile.user.email }}</p>
+                            </div>
                         </div>
-
-                        {% if request.user == user_profile.user %}
-                            <a href="{% url 'account:update_profile_view' request.user.username %}" class="btn btn-primary rounded-pill px-4">
-                                Edit Profile
-                            </a>
-                        {% endif %}
+                        <div class="col-sm-6">
+                            <div class="saaf-info-card">
+                                <span class="saaf-info-label">Phone</span>
+                                <p class="mb-0">{{ user_profile.phone|default:"Not provided" }}</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="saaf-info-card">
+                                <span class="saaf-info-label">City</span>
+                                <p class="mb-0">{{ user_profile.city|default:"Not provided" }}</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="saaf-info-card">
+                                <span class="saaf-info-label">Average Rating</span>
+                                <p class="mb-0">{{ avg_rating|default:"No ratings yet" }}</p>
+                            </div>
+                        </div>
                     </div>
 
-                    <ul class="list-group list-group-flush">
+                    <div class="d-flex flex-wrap gap-2 mt-4">
+                        {% if request.user == user_profile.user %}
+                        <a href="{% url 'account:update_profile_view' request.user.username %}" class="btn btn-saaf-primary rounded-pill">Edit Profile</a>
 
-                        <li class="list-group-item px-0 py-3 d-flex justify-content-between align-items-center flex-wrap gap-3">
-                            <div>
-                                <div class="fw-semibold">Phone</div>
-                                <div class="text-muted">
-                                    {{ user_profile.phone|default:"Not provided" }}
-                                </div>
-                            </div>
+                        {% if user_profile.phone and not user_profile.is_phone_verified %}
+                        <a href="{% url 'account:send_phone_verification' request.user.username %}" class="btn btn-saaf-outline rounded-pill">Verify Phone</a>
+                        {% endif %}
+                        {% endif %}
 
-                            <div class="d-flex align-items-center gap-2 flex-wrap">
-                                {% if user_profile.phone %}
-                                    {% if user_profile.is_phone_verified %}
-                                        <span class="badge bg-success rounded-pill px-3 py-2">Verified</span>
-                                    {% else %}
-                                        <span class="badge bg-warning text-dark rounded-pill px-3 py-2">Not verified</span>
-                                        <a href="{% url 'account:send_phone_verification' request.user.username %}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
-                                            Verify now
-                                        </a>
-                                    {% endif %}
-                                {% else %}
-                                    <span class="badge bg-secondary rounded-pill px-3 py-2">No phone</span>
-                                {% endif %}
-                            </div>
-                        </li>
-
-                        <li class="list-group-item px-0 py-3 d-flex justify-content-between align-items-center flex-wrap gap-3">
-                            <div>
-                                <div class="fw-semibold">City</div>
-                                <div class="text-muted">{{ user_profile.city|default:"Not provided" }}</div>
-                            </div>
-                        </li>
-
-                        <li class="list-group-item px-0 py-3 d-flex justify-content-between align-items-center flex-wrap gap-3">
-                            <div>
-                                <div class="fw-semibold">Joined</div>
-                                <div class="text-muted">{{ user_profile.user.date_joined|date:"F d, Y" }}</div>
-                            </div>
-                        </li>
-
-                        <li class="list-group-item px-0 py-3 d-flex justify-content-between align-items-center flex-wrap gap-3">
-                            <div>
-                                <div class="fw-semibold">Rating</div>
-                                <div class="text-muted">{{ avg_rating|default:"No ratings yet" }}</div>
-                            </div>
-                        </li>
-
-                    </ul>
+                        <a href="{% url 'main:dashboard_view' %}" class="btn btn-saaf-outline rounded-pill">Back to Dashboard</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 {% endblock %}

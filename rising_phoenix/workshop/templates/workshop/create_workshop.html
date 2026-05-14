@@ -1,132 +1,88 @@
 {% extends "main/base.html" %}
 
-{% block title %}{% if is_edit %}Edit{% else %}Create{% endif %} Workshop{% endblock %}
+{% block sidebar %}
+{% include 'main/_sidebar.html' with active='workshop' %}
+{% endblock %}
 
 {% block content %}
-<section class="py-5">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 col-md-10">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body p-4 p-md-5">
-                        <div class="text-center mb-4">
-                            <h1 class="h3 mb-2">{% if is_edit %}Edit{% else %}Create{% endif %} Workshop Profile</h1>
-                            <p class="text-muted">Tell users about your workshop and services</p>
-                        </div>
+<section class="py-4 py-md-5">
+    <div class="container-lg">
+        <div class="saaf-dashboard-card rounded-4 p-4 p-md-5">
+            <p class="saaf-eyebrow mb-2">Workshop</p>
+            <h1 class="saaf-section-title mb-4">{% if is_edit %}Update Workshop Profile{% else %}Create Workshop Profile{% endif %}</h1>
 
-                        {% if messages %}
-                        {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                            {{ message }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <form method="post" enctype="multipart/form-data" class="row g-3">
+                {% csrf_token %}
+
+                <div class="col-md-6">
+                    <label for="id_workshop_name" class="form-label">Workshop Name</label>
+                    {{ form.workshop_name }}
+                    {% for error in form.workshop_name.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                </div>
+
+                <div class="col-md-6">
+                    <label for="id_location" class="form-label">Location</label>
+                    {{ form.location }}
+                    {% for error in form.location.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                </div>
+
+                <div class="col-md-6">
+                    <label for="id_tagline" class="form-label">Tagline</label>
+                    {{ form.tagline }}
+                    {% for error in form.tagline.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                </div>
+
+                <div class="col-md-6">
+                    <label for="id_phone" class="form-label">Phone</label>
+                    {{ form.phone }}
+                    {% for error in form.phone.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                </div>
+
+                <div class="col-12">
+                    <label for="id_description" class="form-label">Description</label>
+                    {{ form.description }}
+                    {% for error in form.description.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                </div>
+
+                <div class="col-12">
+                    <label for="id_services" class="form-label">Services</label>
+                    {{ form.services }}
+                    {% for error in form.services.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label">Categories</label>
+                    <div class="row g-2">
+                        {% for choice in form.categories %}
+                        <div class="col-md-4">
+                            <label class="saaf-check-card">
+                                {{ choice.tag }}
+                                <span>{{ choice.choice_label }}</span>
+                            </label>
                         </div>
                         {% endfor %}
-                        {% endif %}
-
-                        <form method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-
-                            <div class="mb-3">
-                                <label for="id_workshop_name" class="form-label">Workshop Name</label>
-                                {{ form.workshop_name }}
-                                {% if form.workshop_name.errors %}
-                                <div class="invalid-feedback d-block">{{ form.workshop_name.errors }}</div>
-                                {% endif %}
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="id_tagline" class="form-label">Tagline</label>
-                                {{ form.tagline }}
-                                {% if form.tagline.errors %}
-                                <div class="invalid-feedback d-block">{{ form.tagline.errors }}</div>
-                                {% endif %}
-                                <small class="text-muted">A short description (max 200 characters)</small>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="id_description" class="form-label">Description</label>
-                                {{ form.description }}
-                                {% if form.description.errors %}
-                                <div class="invalid-feedback d-block">{{ form.description.errors }}</div>
-                                {% endif %}
-                                <small class="text-muted">Tell people about your workshop</small>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="id_services" class="form-label">Services</label>
-                                {{ form.services }}
-                                {% if form.services.errors %}
-                                <div class="invalid-feedback d-block">{{ form.services.errors }}</div>
-                                {% endif %}
-                                <small class="text-muted">List the services you offer (one per line)</small>
-                            </div>
-
-                            <div class="mb-3">
-                                {% for choice in form.categories %}
-                                <div class="form-check">
-                                    {{ choice }}
-                                    <label class="form-check-label" for="{{ choice.id_for_label }}">
-                                    </label>
-                                </div>
-                                {% endfor %}
-                                {% if form.categories.errors %}
-                                <div class="invalid-feedback d-block">{{ form.categories.errors }}</div>
-                                {% endif %}
-                                <small class="text-muted">Select one or more categories that match your craft</small>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="id_location" class="form-label">Location</label>
-                                    {{ form.location }}
-                                    {% if form.location.errors %}
-                                    <div class="invalid-feedback d-block">{{ form.location.errors }}</div>
-                                    {% endif %}
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label for="id_phone" class="form-label">Phone</label>
-                                    {{ form.phone }}
-                                    {% if form.phone.errors %}
-                                    <div class="invalid-feedback d-block">{{ form.phone.errors }}</div>
-                                    {% endif %}
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="id_cover_image" class="form-label">Cover Image</label>
-                                {{ form.cover_image }}
-                                {% if form.cover_image.errors %}
-                                <div class="invalid-feedback d-block">{{ form.cover_image.errors }}</div>
-                                {% endif %}
-                                <small class="text-muted">Upload a cover image for your workshop</small>
-                            </div>
-
-                            <div class="mb-4 form-check">
-                                <label for="id_is_published" class="form-check-label">
-                                    {{ form.is_published }}
-                                    <span>Publish your workshop profile</span>
-                                </label>
-                            </div>
-
-                            <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary btn-lg">
-                                    {% if is_edit %}Save Changes{% else %}Create Workshop{% endif %}
-                                </button>
-                            </div>
-
-                            {% if is_edit %}
-                            <div class="mt-3">
-                                <a href="{% url 'workshop:workshop_detail_view' artisan_id=request.user.id %}"
-                                    class="btn btn-secondary w-100">
-                                    Cancel
-                                </a>
-                            </div>
-                            {% endif %}
-                        </form>
                     </div>
+                    {% for error in form.categories.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
                 </div>
-            </div>
+
+                <div class="col-md-6">
+                    <label for="id_cover_image" class="form-label">Cover Image</label>
+                    {{ form.cover_image }}
+                    {% for error in form.cover_image.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                </div>
+
+                <div class="col-md-6 d-flex align-items-end">
+                    <label class="saaf-check-card w-100">
+                        {{ form.is_published }}
+                        <span>Publish workshop profile</span>
+                    </label>
+                </div>
+
+                <div class="col-12 d-flex flex-wrap gap-2">
+                    <button type="submit" class="btn btn-saaf-primary rounded-pill">{% if is_edit %}Save Changes{% else %}Create Workshop{% endif %}</button>
+                    <a href="{% url 'account:artisan_dashboard_view' %}" class="btn btn-saaf-outline rounded-pill">Back</a>
+                </div>
+            </form>
         </div>
     </div>
 </section>

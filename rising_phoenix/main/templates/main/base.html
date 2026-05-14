@@ -151,10 +151,10 @@
                 <div class="col-md-3">
                     <h6 class="mb-3 fw-bold">Support</h6>
                     <ul class="list-unstyled small">
-                        <li class="mb-2"><a href="#" class="text-decoration-none saaf-footer-link">How It Works</a></li>
-                        <li class="mb-2"><a href="#" class="text-decoration-none saaf-footer-link">FAQ</a></li>
-                        <li class="mb-2"><a href="#" class="text-decoration-none saaf-footer-link">Contact</a></li>
-                        <li class="mb-2"><a href="#" class="text-decoration-none saaf-footer-link">Privacy Policy</a>
+                        <li class="mb-2"><a href="{% url 'main:home_view' %}#how-works" class="text-decoration-none saaf-footer-link">How It Works</a></li>
+                        <li class="mb-2"><a href="{% url 'request:request_list_view' %}" class="text-decoration-none saaf-footer-link">FAQ</a></li>
+                        <li class="mb-2"><a href="{% url 'account:signup_view' %}" class="text-decoration-none saaf-footer-link">Contact</a></li>
+                        <li class="mb-2"><a href="{% url 'main:home_view' %}" class="text-decoration-none saaf-footer-link">Privacy Policy</a>
                         </li>
                     </ul>
                 </div>
@@ -163,10 +163,10 @@
                 <div class="col-md-3">
                     <h6 class="mb-3 fw-bold">Follow Us</h6>
                     <div class="d-flex gap-2">
-                        <a href="#" class="saaf-social-icon"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="saaf-social-icon"><i class="bi bi-twitter-x"></i></a>
-                        <a href="#" class="saaf-social-icon"><i class="bi bi-tiktok"></i></a>
-                        <a href="#" class="saaf-social-icon"><i class="bi bi-pinterest"></i></a>
+                        <a href="{% url 'main:home_view' %}" class="saaf-social-icon" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="{% url 'main:home_view' %}" class="saaf-social-icon" aria-label="Twitter X"><i class="bi bi-twitter-x"></i></a>
+                        <a href="{% url 'main:home_view' %}" class="saaf-social-icon" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+                        <a href="{% url 'main:home_view' %}" class="saaf-social-icon" aria-label="Pinterest"><i class="bi bi-pinterest"></i></a>
                     </div>
                 </div>
             </div>

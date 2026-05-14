@@ -1,51 +1,74 @@
 {% extends 'main/base.html' %}
 
 {% block sidebar %}
-<aside class="saaf-sidebar">
-    <p class="sidebar-label">My Space</p>
-
-    <button class="sidebar-btn sidebar-btn-active" aria-label="Dashboard">
-        <i class="bi bi-grid-1x2-fill"></i>
-        <span class="sidebar-active-indicator"></span>
-    </button>
-
-    <button class="sidebar-btn" aria-label="My Requests">
-        <i class="bi bi-file-text"></i>
-        <span class="sidebar-badge sidebar-badge-brown">2</span>
-    </button>
-
-    <button class="sidebar-btn" aria-label="Saved">
-        <i class="bi bi-bookmark"></i>
-        <span class="sidebar-badge sidebar-badge-light">12</span>
-    </button>
-
-    <button class="sidebar-btn" aria-label="Messages">
-        <i class="bi bi-chat-dots"></i>
-    </button>
-
-    <button class="sidebar-btn" aria-label="Following Artisans">
-        <i class="bi bi-heart"></i>
-    </button>
-
-    <div class="sidebar-divider"></div>
-
-    <button class="sidebar-btn" aria-label="Settings">
-        <i class="bi bi-gear"></i>
-    </button>
-
-    <button class="sidebar-btn sidebar-btn-new" aria-label="Post New Request">
-        <i class="bi bi-plus-lg"></i>
-    </button>
-</aside>
+{% if request.user.artisanprofile %}
+{% include 'main/_sidebar.html' with active='artisan_dashboard' %}
+{% else %}
+{% include 'main/_sidebar.html' with active='dashboard' %}
+{% endif %}
 {% endblock %}
 
 {% block content %}
 <section class="py-4 py-md-5">
     <div class="container-lg">
-        <div class="saaf-dashboard-card rounded-4 p-4 p-md-5">
-            <p class="saaf-eyebrow mb-2">- Dashboard</p>
-            <h1 class="saaf-section-title mb-3">Welcome to your workspace</h1>
-            <p class="mb-0 text-muted">This page shows your overview, requests, and recommendations in one place.</p>
+        <div class="saaf-dashboard-card rounded-4 p-4 p-md-5 mb-4">
+            <p class="saaf-eyebrow mb-2">Dashboard</p>
+            <h1 class="saaf-section-title mb-2">Welcome, {{ request.user.first_name|default:request.user.username }}</h1>
+            <p class="text-muted mb-0">Quick access to your most important actions.</p>
+        </div>
+
+        <div class="row g-3">
+            {% if request.user.artisanprofile %}
+            <div class="col-md-4">
+                <a href="{% url 'workshop:workshop_detail_view' request.user.id %}" class="saaf-tile-link">
+                    <div class="saaf-dashboard-card rounded-4 p-4 h-100">
+                        <h5 class="mb-2">My Workshop</h5>
+                        <p class="text-muted mb-0">Review your public workshop profile.</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="{% url 'workshop:upload_portfolio_view' %}" class="saaf-tile-link">
+                    <div class="saaf-dashboard-card rounded-4 p-4 h-100">
+                        <h5 class="mb-2">Portfolio</h5>
+                        <p class="text-muted mb-0">Upload and manage portfolio images.</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="{% url 'request:request_list_view' %}" class="saaf-tile-link">
+                    <div class="saaf-dashboard-card rounded-4 p-4 h-100">
+                        <h5 class="mb-2">Open Requests</h5>
+                        <p class="text-muted mb-0">Browse active customer requests.</p>
+                    </div>
+                </a>
+            </div>
+            {% else %}
+            <div class="col-md-4">
+                <a href="{% url 'request:request_create_view' %}" class="saaf-tile-link">
+                    <div class="saaf-dashboard-card rounded-4 p-4 h-100">
+                        <h5 class="mb-2">Post a Request</h5>
+                        <p class="text-muted mb-0">Start a new custom project request.</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="{% url 'request:request_list_view' %}" class="saaf-tile-link">
+                    <div class="saaf-dashboard-card rounded-4 p-4 h-100">
+                        <h5 class="mb-2">Discover</h5>
+                        <p class="text-muted mb-0">Explore marketplace requests and artisans.</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="{% url 'account:profile_view' request.user.username %}" class="saaf-tile-link">
+                    <div class="saaf-dashboard-card rounded-4 p-4 h-100">
+                        <h5 class="mb-2">My Profile</h5>
+                        <p class="text-muted mb-0">View and update your account details.</p>
+                    </div>
+                </a>
+            </div>
+            {% endif %}
         </div>
     </div>
 </section>

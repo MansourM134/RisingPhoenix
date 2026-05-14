@@ -1,407 +1,70 @@
 {% extends 'main/base.html' %}
 
-{% block title %}Upload Portfolio Images{% endblock %}
-
-{% block extra_css %}
-<style>
-    .portfolio-upload-page {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 32px 20px 56px;
-    }
-
-    .portfolio-shell {
-        background: #fff;
-        border: 1px solid #ead8c5;
-        border-radius: 24px;
-        box-shadow: 0 12px 30px rgba(89, 58, 35, 0.06);
-        overflow: hidden;
-    }
-
-    .portfolio-hero {
-        padding: 28px 28px 18px;
-        border-bottom: 1px solid #f0e3d6;
-        background: linear-gradient(180deg, #fff 0%, #fffaf5 100%);
-    }
-
-    .portfolio-kicker {
-        font-size: 0.8rem;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: #a98063;
-        font-weight: 700;
-        margin-bottom: 8px;
-    }
-
-    .portfolio-hero h1 {
-        font-family: 'Playfair Display', serif;
-        font-size: clamp(2rem, 3vw, 2.8rem);
-        margin: 0;
-        color: #2f1f17;
-    }
-
-    .portfolio-hero p {
-        margin: 10px 0 0;
-        color: #8b7461;
-        max-width: 720px;
-    }
-
-    .portfolio-body {
-        display: grid;
-        grid-template-columns: 1.2fr 0.8fr;
-        gap: 24px;
-        padding: 24px 28px 30px;
-    }
-
-    .panel {
-        background: #fff;
-        border: 1px solid #f0e3d6;
-        border-radius: 18px;
-        padding: 22px;
-    }
-
-    .panel-title {
-        font-size: 1.1rem;
-        font-weight: 700;
-        margin-bottom: 16px;
-        color: #2f1f17;
-    }
-
-    .dropzone {
-        position: relative;
-        border: 2px dashed #d7b79f;
-        background: #fbf4ed;
-        border-radius: 18px;
-        padding: 28px;
-        text-align: center;
-        transition: 0.2s ease;
-        cursor: pointer;
-    }
-
-    .dropzone:hover,
-    .dropzone.is-dragover {
-        border-color: #c96f52;
-        background: #fffaf6;
-    }
-
-    .dropzone-icon {
-        width: 68px;
-        height: 68px;
-        border-radius: 50%;
-        display: grid;
-        place-items: center;
-        margin: 0 auto 14px;
-        background: #fff;
-        color: #c96f52;
-        font-size: 1.7rem;
-        box-shadow: 0 8px 20px rgba(89, 58, 35, 0.08);
-    }
-
-    .dropzone strong {
-        display: block;
-        font-size: 1.05rem;
-        color: #2f1f17;
-        margin-bottom: 6px;
-    }
-
-    .dropzone span {
-        color: #8b7461;
-        font-size: 0.95rem;
-    }
-
-    .dropzone input[type="file"] {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        cursor: pointer;
-    }
-
-    .dropzone .upload-content {
-        position: relative;
-        z-index: 1;
-        pointer-events: none;
-    }
-
-    .selected-files {
-        margin-top: 10px;
-        font-size: 0.9rem;
-        color: #c96f52;
-        font-weight: 600;
-    }
-
-    .field-label {
-        display: block;
-        margin: 18px 0 8px;
-        font-weight: 700;
-        color: #2f1f17;
-    }
-
-    .form-control {
-        border-radius: 14px;
-        border-color: #e7d9cb;
-        padding: 12px 14px;
-    }
-
-    .form-control:focus {
-        border-color: #c96f52;
-        box-shadow: 0 0 0 0.2rem rgba(201, 111, 82, 0.12);
-    }
-
-    .btn-portfolio {
-        border: 0;
-        border-radius: 999px;
-        padding: 12px 18px;
-        font-weight: 700;
-    }
-
-    .btn-portfolio-primary {
-        background: #c96f52;
-        color: #fff;
-    }
-
-    .btn-portfolio-primary:hover {
-        background: #b95f45;
-        color: #fff;
-    }
-
-    .btn-portfolio-ghost {
-        background: #f6eee7;
-        color: #6f5848;
-    }
-
-    .btn-row {
-        display: flex;
-        gap: 12px;
-        margin-top: 20px;
-        flex-wrap: wrap;
-    }
-
-    .gallery-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 12px;
-    }
-
-    .gallery-card {
-        position: relative;
-        aspect-ratio: 1;
-        border-radius: 16px;
-        overflow: hidden;
-        background: #f2e6d8;
-        border: 1px solid #ead8c5;
-    }
-
-    .gallery-card img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-    }
-
-    .empty-state {
-        padding: 30px 18px;
-        text-align: center;
-        color: #8b7461;
-        border: 1px dashed #e0cdb9;
-        border-radius: 16px;
-        background: #fffaf5;
-    }
-
-    .message-box {
-        margin-bottom: 18px;
-    }
-
-    .pin-box {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-top: 18px;
-        padding: 14px 16px;
-        border: 1px solid #ead8c5;
-        border-radius: 14px;
-        background: #fffaf5;
-    }
-
-    .pin-box label {
-        margin: 0;
-        font-weight: 600;
-        color: #2f1f17;
-    }
-
-    .pin-help {
-        margin-left: 34px;
-        color: #8b7461;
-        font-size: 0.9rem;
-    }
-
-    @media (max-width: 900px) {
-        .portfolio-body {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    @media (max-width: 576px) {
-        .portfolio-upload-page {
-            padding: 18px 12px 40px;
-        }
-
-        .portfolio-hero,
-        .portfolio-body {
-            padding-left: 16px;
-            padding-right: 16px;
-        }
-    }
-</style>
+{% block sidebar %}
+{% include 'main/_sidebar.html' with active='portfolio' %}
 {% endblock %}
 
 {% block content %}
-<div class="portfolio-upload-page">
-    <div class="portfolio-shell">
-        <div class="portfolio-hero">
-            <div class="portfolio-kicker">Portfolio Images</div>
-            <h1>Upload your previous work</h1>
-            <p>Add images of your best work so users can see the quality of your craftsmanship before they contact you.
-            </p>
+<section class="py-4 py-md-5">
+    <div class="container-lg">
+        <div class="saaf-dashboard-card rounded-4 p-4 p-md-5 mb-4">
+            <p class="saaf-eyebrow mb-2">Portfolio</p>
+            <h1 class="saaf-section-title mb-2">Upload Portfolio Images</h1>
+            <p class="text-muted mb-0">Show your previous work to help customers choose you confidently.</p>
         </div>
 
-        <div class="portfolio-body">
-            <div class="panel">
-                <div class="panel-title">Add new images</div>
+        <div class="row g-3">
+            <div class="col-lg-6">
+                <div class="saaf-dashboard-card rounded-4 p-4 h-100">
+                    <h5 class="mb-3">Add New Images</h5>
+                    <form method="post" enctype="multipart/form-data" class="row g-3">
+                        {% csrf_token %}
 
-                {% if messages %}
-                <div class="message-box">
-                    {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>
-                    {% endfor %}
-                </div>
-                {% endif %}
-
-                <form method="post" enctype="multipart/form-data" id="portfolioUploadForm">
-                    {% csrf_token %}
-
-                    <label class="field-label" for="id_images">Select images</label>
-                    <div class="dropzone" id="dropzone">
-                        <div class="upload-content">
-                            <div class="dropzone-icon"><i class="bi bi-cloud-arrow-up"></i></div>
-                            <strong>Click to upload or drag and drop</strong>
-                            <span>PNG, JPG, WEBP accepted</span>
-                            <div class="selected-files" id="selectedFiles">No files selected yet</div>
+                        <div class="col-12">
+                            <label for="id_images" class="form-label">Images</label>
+                            {{ form.images }}
                         </div>
-                        {{ form.images }}
-                    </div>
 
-                    <label class="field-label" for="id_caption">Caption</label>
-                    {{ form.caption }}
+                        <div class="col-12">
+                            <label for="id_caption" class="form-label">Caption</label>
+                            {{ form.caption }}
+                        </div>
 
-                    <div class="pin-box">
-                        {{ form.is_pinned }}
-                        <label for="id_is_pinned">Pin these uploaded images</label>
-                    </div>
-                    <div class="pin-help">Pinned images appear first in your portfolio gallery.</div>
+                        <div class="col-12">
+                            <label class="saaf-check-card">
+                                {{ form.is_pinned }}
+                                <span>Pin uploaded images</span>
+                            </label>
+                        </div>
 
-                    <div class="btn-row">
-                        <button type="submit" class="btn btn-portfolio btn-portfolio-primary">
-                            Upload Images
-                        </button>
-                        <a href="{% url 'account:artisan_dashboard_view' %}"
-                            class="btn btn-portfolio btn-portfolio-ghost">
-                            Back to Dashboard
-                        </a>
-                    </div>
-                </form>
+                        <div class="col-12 d-flex flex-wrap gap-2">
+                            <button type="submit" class="btn btn-saaf-primary rounded-pill">Upload</button>
+                            <a href="{% url 'workshop:workshop_detail_view' request.user.id %}" class="btn btn-saaf-outline rounded-pill">Back to Workshop</a>
+                        </div>
+                    </form>
+                </div>
             </div>
 
-            <div class="panel">
-                <div class="panel-title">Current portfolio</div>
-                {% if portfolio_images %}
-                <div class="gallery-grid">
-                    {% for image in portfolio_images %}
-                    <div class="gallery-card" style="position:relative;">
-                        <img src="{{ image.image.url }}" alt="{{ image.caption|default:'Portfolio image' }}">
-                        {% if image.is_pinned %}
-                        <div
-                            style="position:absolute;top:10px;left:10px;background:#e89b7b;color:#fff;padding:4px 12px;border-radius:8px;font-weight:bold;">
-                            Pinned</div>
-                        {% endif %}
-                        <form method="post" action="" style="position:absolute;top:10px;right:10px;z-index:2;">
-                            {% csrf_token %}
-                            <input type="hidden" name="toggle_pin_image_id" value="{{ image.id }}">
-                            <button type="submit"
-                                style="background:#fff;border:1px solid #e89b7b;color:#e89b7b;padding:2px 10px;border-radius:8px;cursor:pointer;font-weight:bold;min-width:60px;">
-                                {% if image.is_pinned %}Unpin{% else %}Pin{% endif %}
-                            </button>
-                        </form>
+            <div class="col-lg-6">
+                <div class="saaf-dashboard-card rounded-4 p-4 h-100">
+                    <h5 class="mb-3">Current Portfolio</h5>
+                    {% if portfolio_images %}
+                    <div class="row g-2">
+                        {% for image in portfolio_images %}
+                        <div class="col-6">
+                            <div class="saaf-portfolio-item">
+                                <img src="{{ image.image.url }}" alt="{{ image.caption|default:'Portfolio image' }}" class="img-fluid rounded-3 w-100">
+                                {% if image.caption %}<p class="small text-muted mt-1 mb-0">{{ image.caption }}</p>{% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
+                    {% else %}
+                    <p class="text-muted mb-0">No portfolio images yet.</p>
+                    {% endif %}
                 </div>
-                {% else %}
-                <div class="empty-state">
-                    No portfolio images yet. Upload your first piece to start building your gallery.
-                </div>
-                {% endif %}
             </div>
         </div>
     </div>
-</div>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-    const dropzone = document.getElementById('dropzone');
-    const fileInput = document.getElementById('id_images');
-    const selectedFiles = document.getElementById('selectedFiles');
-    // مصفوفة لتجميع كل الملفات المختارة
-    let allFiles = [];
-
-    function updateSelectedFilesText() {
-        if (allFiles.length) {
-            selectedFiles.textContent = `${allFiles.length} file(s) selected`;
-        } else {
-            selectedFiles.textContent = 'No files selected yet';
-        }
-    }
-
-    function updateInputFiles() {
-        // إنشاء DataTransfer جديد لتجميع الملفات
-        const dataTransfer = new DataTransfer();
-        allFiles.forEach(file => dataTransfer.items.add(file));
-        fileInput.files = dataTransfer.files;
-        updateSelectedFilesText();
-    }
-
-    if (dropzone && fileInput) {
-        ['dragenter', 'dragover'].forEach((eventName) => {
-            dropzone.addEventListener(eventName, (event) => {
-                event.preventDefault();
-                event.stopPropagation();
-                dropzone.classList.add('is-dragover');
-            });
-        });
-
-        ['dragleave', 'drop'].forEach((eventName) => {
-            dropzone.addEventListener(eventName, (event) => {
-                event.preventDefault();
-                event.stopPropagation();
-                dropzone.classList.remove('is-dragover');
-            });
-        });
-
-        dropzone.addEventListener('drop', (event) => {
-            const files = Array.from(event.dataTransfer.files);
-            allFiles = allFiles.concat(files);
-            updateInputFiles();
-        });
-
-        fileInput.addEventListener('change', (event) => {
-            const files = Array.from(event.target.files);
-            allFiles = allFiles.concat(files);
-            updateInputFiles();
-        });
-
-        // عند إرسال النموذج، حدث الملفات يبقى كما هو
-        updateSelectedFilesText();
-    }
-</script>
+</section>
 {% endblock %}

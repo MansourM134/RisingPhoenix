@@ -8,6 +8,16 @@
 <link rel="stylesheet" href="{% static 'css/request.css' %}">
 {% endblock %}
 
+{% block sidebar %}
+{% if request.user.is_authenticated %}
+  {% if request.user.artisanprofile %}
+  {% include 'main/_sidebar.html' with active='requests' %}
+  {% else %}
+  {% include 'main/_sidebar.html' with active='requests' %}
+  {% endif %}
+{% endif %}
+{% endblock %}
+
 {% block content %}
 <section class="request-shell">
   <div class="request-container">
@@ -19,7 +29,13 @@
           <p class="request-sub">Explore what requesters need and find projects that match your craft.</p>
         </div>
         <div>
+          {% if request.user.is_authenticated and not request.user.artisanprofile %}
           <a href="{% url 'request:request_create_view' %}" class="request-action">Post a request</a>
+          {% elif request.user.is_authenticated and request.user.artisanprofile %}
+          <a href="{% url 'account:artisan_dashboard_view' %}" class="request-action">Go to dashboard</a>
+          {% else %}
+          <a href="{% url 'account:login_view' %}" class="request-action">Log in to post</a>
+          {% endif %}
         </div>
       </div>
     </header>

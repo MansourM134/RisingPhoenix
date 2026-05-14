@@ -1,399 +1,122 @@
 {% extends 'main/base.html' %}
 
+{% block sidebar %}
+{% include 'main/_sidebar.html' with active='staff' %}
+{% endblock %}
+
 {% block content %}
+<section class="py-4 py-md-5">
+    <div class="container-lg">
+        <div class="saaf-dashboard-card rounded-4 p-4 p-md-5 mb-4">
+            <p class="saaf-eyebrow mb-2">Admin</p>
+            <h1 class="saaf-section-title mb-2">Staff Dashboard</h1>
+            <p class="text-muted mb-0">Monitor users, artisans, verification, and categories in one place.</p>
+        </div>
 
-<div class="container py-5">
+        <div class="row g-3 mb-4">
+            <div class="col-md-2"><div class="saaf-info-card"><span class="saaf-info-label">Users</span><h5 class="mb-0">{{ total_users }}</h5></div></div>
+            <div class="col-md-2"><div class="saaf-info-card"><span class="saaf-info-label">Banned Users</span><h5 class="mb-0">{{ banned_users }}</h5></div></div>
+            <div class="col-md-2"><div class="saaf-info-card"><span class="saaf-info-label">Artisans</span><h5 class="mb-0">{{ total_artisans }}</h5></div></div>
+            <div class="col-md-2"><div class="saaf-info-card"><span class="saaf-info-label">Verified</span><h5 class="mb-0">{{ verified_artisans }}</h5></div></div>
+            <div class="col-md-2"><div class="saaf-info-card"><span class="saaf-info-label">Featured</span><h5 class="mb-0">{{ featured_artisans }}</h5></div></div>
+            <div class="col-md-2"><div class="saaf-info-card"><span class="saaf-info-label">Banned Artisans</span><h5 class="mb-0">{{ banned_artisans }}</h5></div></div>
+        </div>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="fw-bold">Staff Dashboard</h1>
-            <p class="text-muted">Manage users and artisans</p>
+        <div class="saaf-dashboard-card rounded-4 p-4 mb-4">
+            <h5 class="mb-3">Users</h5>
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead><tr><th>Username</th><th>Email</th><th>Status</th><th>Ban Reason</th><th>Action</th></tr></thead>
+                    <tbody>
+                        {% for profile in profiles %}
+                        <tr>
+                            <td>{{ profile.user.username }}</td>
+                            <td>{{ profile.user.email }}</td>
+                            <td>{% if profile.is_banned %}<span class="badge text-bg-danger">Banned</span>{% else %}<span class="badge text-bg-success">Active</span>{% endif %}</td>
+                            <td>{{ profile.ban_reason|default:"-" }}</td>
+                            <td>
+                                <form method="POST" action="{% url 'staff:ban_user_view' profile.user.id %}" class="d-flex gap-2">
+                                    {% csrf_token %}
+                                    {% if not profile.is_banned %}
+                                    <input type="text" name="ban_reason" class="form-control form-control-sm" placeholder="Reason">
+                                    <button class="btn btn-sm btn-saaf-primary">Ban</button>
+                                    {% else %}
+                                    <button class="btn btn-sm btn-saaf-outline">Unban</button>
+                                    {% endif %}
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="saaf-dashboard-card rounded-4 p-4 mb-4">
+            <h5 class="mb-3">Artisans</h5>
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead><tr><th>Username</th><th>Verified</th><th>Feature</th><th>Status</th><th>Ban Action</th><th>Feature Action</th><th>Verify Action</th></tr></thead>
+                    <tbody>
+                        {% for artisan in artisan_profiles %}
+                        <tr>
+                            <td>{{ artisan.user.username }}</td>
+                            <td>{% if artisan.is_verified %}<span class="badge text-bg-success">Verified</span>{% else %}<span class="badge text-bg-secondary">Not verified</span>{% endif %}</td>
+                            <td>{% if artisan.is_featured %}<span class="badge text-bg-warning">Featured</span>{% else %}<span class="badge text-bg-light">No</span>{% endif %}</td>
+                            <td>{% if artisan.is_banned %}<span class="badge text-bg-danger">Banned</span>{% else %}<span class="badge text-bg-success">Active</span>{% endif %}</td>
+                            <td>
+                                <form method="POST" action="{% url 'staff:ban_artisan_view' artisan.user.id %}" class="d-flex gap-2">
+                                    {% csrf_token %}
+                                    {% if not artisan.is_banned %}
+                                    <input type="text" name="ban_reason" class="form-control form-control-sm" placeholder="Reason">
+                                    <button class="btn btn-sm btn-saaf-primary">Ban</button>
+                                    {% else %}
+                                    <button class="btn btn-sm btn-saaf-outline">Unban</button>
+                                    {% endif %}
+                                </form>
+                            </td>
+                            <td>
+                                <form method="POST" action="{% url 'staff:feature_artisan_view' artisan.user.id %}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-sm btn-saaf-outline">{% if artisan.is_featured %}Remove{% else %}Feature{% endif %}</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form method="POST" action="{% url 'staff:verify_artisan_view' artisan.user.id %}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-sm btn-saaf-outline">{% if artisan.is_verified %}Unverify{% else %}Verify{% endif %}</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="saaf-dashboard-card rounded-4 p-4">
+            <h5 class="mb-3">Categories</h5>
+            <form method="POST" action="{% url 'staff:add_category_view' %}" class="row g-2 mb-3">
+                {% csrf_token %}
+                <div class="col-md-4"><input type="text" name="name" class="form-control" placeholder="Category name" required></div>
+                <div class="col-md-5"><input type="text" name="description" class="form-control" placeholder="Description"></div>
+                <div class="col-md-3"><button class="btn btn-saaf-primary w-100">Add Category</button></div>
+            </form>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead><tr><th>Name</th><th>Description</th><th>Workshops</th></tr></thead>
+                    <tbody>
+                        {% for category in categories %}
+                        <tr>
+                            <td>{{ category.name }}</td>
+                            <td>{{ category.description }}</td>
+                            <td>{{ category.workshop_count }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-info alert-dismissible fade show" role="alert">
-                {{ message }}
-
-                <button type="button"
-                        class="btn-close"
-                        data-bs-dismiss="alert">
-                </button>
-            </div>
-        {% endfor %}
-    {% endif %}
-
-    <!--total stats-->
-    <div class="row g-3 mb-5">
-
-        <div class="col-md-2">
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h6 class="text-muted">Users</h6>
-                    <h3>{{ total_users }}</h3>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-2">
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h6 class="text-muted">Banned Users</h6>
-                    <h3>{{ banned_users }}</h3>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-2">
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h6 class="text-muted">Artisans</h6>
-                    <h3>{{ total_artisans }}</h3>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-2">
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h6 class="text-muted">Verified</h6>
-                    <h3>{{ verified_artisans }}</h3>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-2">
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h6 class="text-muted">Featured</h6>
-                    <h3>{{ featured_artisans }}</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h6 class="text-muted">Banned Artisans</h6>
-                    <h3>{{ banned_artisans }}</h3>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <!--users-->
-    <div class="card shadow-sm border-0 mb-5">
-        <div class="card-header bg-dark text-white">
-            <h5 class="mb-0">Users</h5>
-        </div>
-
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-
-                <thead class="table-light">
-                    <tr>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Status</th>
-                        <th>Ban Reason</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {% for profile in profiles %}
-                    <tr>
-
-                        <td>{{ profile.user.username }}</td>
-
-                        <td>{{ profile.user.email }}</td>
-
-                        <td>
-                            {% if profile.is_banned %}
-                                <span class="badge bg-danger">
-                                    Banned
-                                </span>
-                            {% else %}
-                                <span class="badge bg-success">
-                                    Active
-                                </span>
-                            {% endif %}
-                        </td>
-
-                        <td>
-                            {{ profile.ban_reason|default:"-" }}
-                        </td>
-
-                        <td>
-                            <form method="POST"
-                                  action="{% url 'staff:ban_user_view' profile.user.id %}"
-                                  class="d-flex gap-2">
-
-                                {% csrf_token %}
-
-                                {% if not profile.is_banned %}
-                                    <input type="text"
-                                           name="ban_reason"
-                                           class="form-control form-control-sm"
-                                           placeholder="Reason">
-
-                                    <button class="btn btn-sm btn-danger">
-                                        Ban
-                                    </button>
-                                {% else %}
-                                    <button class="btn btn-sm btn-success">
-                                        Unban
-                                    </button>
-                                {% endif %}
-
-                            </form>
-                        </td>
-
-                    </tr>
-                    {% endfor %}
-                </tbody>
-
-            </table>
-        </div>
-    </div>
-
-    <!--artisans-->
-    <div class="card shadow-sm border-0">
-        <div class="card-header bg-dark text-white">
-            <h5 class="mb-0">Artisans</h5>
-        </div>
-
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-
-                <thead class="table-light">
-                    <tr>
-                        <th>Username</th>
-                        <th>Verified</th>
-                        <th>Action</th>
-                        <th>Featured</th>
-                        <th>Ban reason</th>
-                        <th>Status</th>
-                        <th>Ban</th>
-                        <th>Feature</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {% for artisan in artisan_profiles %}
-                    <tr>
-
-                        <td>{{ artisan.user.username }}</td>
-
-                        <td>
-                            {% if artisan.is_verified %}
-                                <span class="badge bg-success">
-                                    Verified
-                                </span>
-                            {% else %}
-                                <span class="badge bg-secondary">
-                                    Not Verified
-                                </span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            <form method="POST"
-                                  action="{% url 'staff:verify_artisan_view' artisan.user.id %}">
-
-                                {% csrf_token %}
-
-                                {% if artisan.is_verified %}
-                                    <button class="btn btn-sm btn-outline-warning">
-                                        Unverify
-                                    </button>
-                                {% else %}
-                                    <button class="btn btn-sm btn-warning">
-                                        Verify
-                                    </button>
-                                {% endif %}
-
-                            </form>
-                        </td>
-
-                        <td>
-                            {% if artisan.is_featured %}
-                                <span class="badge bg-warning text-dark">
-                                    Featured
-                                </span>
-                            {% else %}
-                                <span class="badge bg-light text-dark">
-                                    No
-                                </span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {{ artisan.ban_reason|default:"-" }}
-                        </td>
-
-                        <td>
-                            {% if artisan.is_banned %}
-                                <span class="badge bg-danger">
-                                    Banned
-                                </span>
-                            {% else %}
-                                <span class="badge bg-success">
-                                    Active
-                                </span>
-                            {% endif %}
-                        </td>
-
-                        <!-- Ban -->
-                        <td>
-                            <form method="POST"
-                                  action="{% url 'staff:ban_artisan_view' artisan.user.id %}"
-                                  class="d-flex gap-2">
-
-                                {% csrf_token %}
-
-                                {% if not artisan.is_banned %}
-                                    <input type="text"
-                                           name="ban_reason"
-                                           class="form-control form-control-sm"
-                                           placeholder="Reason">
-
-                                    <button class="btn btn-sm btn-danger">
-                                        Ban
-                                    </button>
-                                {% else %}
-                                    <button class="btn btn-sm btn-success">
-                                        Unban
-                                    </button>
-                                {% endif %}
-
-                            </form>
-                        </td>
-
-                        <!-- Feature -->
-                        <td>
-                            <form method="POST"
-                                  action="{% url 'staff:feature_artisan_view' artisan.user.id %}">
-
-                                {% csrf_token %}
-
-                                {% if artisan.is_featured %}
-                                    <button class="btn btn-sm btn-outline-warning">
-                                        Remove
-                                    </button>
-                                {% else %}
-                                    <button class="btn btn-sm btn-warning">
-                                        Feature
-                                    </button>
-                                {% endif %}
-
-                            </form>
-                        </td>
-
-                    </tr>
-                    {% endfor %}
-                </tbody>
-
-            </table>
-
-            
-        </div>
-    </div>
-    <!--verify requests-->
-    <div class="card shadow-sm border-0">
-        <div class="card-header bg-dark text-white">
-            <h5 class="mb-0">Verify Requests</h5>
-        </div>
-
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-
-                <thead class="table-light">
-                    <tr>
-                        <th>Username</th>
-                        <th>Workshop</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {% for artisan in artisan_requests %}
-                    <tr>
-
-                        <td>{{ artisan.user.username }}</td>
-
-                        <td>{{ artisan.workshop_name|default:"-" }}</td>
-
-                        <!-- Verify -->
-                        <td>
-                            <form method="POST"
-                                  action="{% url 'staff:verify_artisan_view' artisan.user.id %}">
-
-                                {% csrf_token %}
-
-                                {% if artisan.is_verified %}
-                                    <button class="btn btn-sm btn-outline-warning">
-                                        Unverify
-                                    </button>
-                                {% else %}
-                                    <button class="btn btn-sm btn-warning">
-                                        Verify
-                                    </button>
-                                {% endif %}
-
-                            </form>
-                        </td>
-
-                    </tr>
-                    {% endfor %}
-                </tbody>
-
-            </table>
-
-            
-        </div>
-    </div>
-
-    <div class="card shadow-sm border-0">
-        <div class="card-header bg-dark text-white">
-            <h5 class="mb-0">Categories</h5>
-        </div>
-
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-
-                <thead class="table-light">
-                    <tr>
-                        <th>Category Name</th>
-                        <th>Description</th>
-                        <th>Workshops</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr>
-                        <td colspan="3">
-                            <form method="POST" action="{% url 'staff:add_category_view' %}" class="d-flex gap-2">
-                                {% csrf_token %}
-                                <input type="text" name="name" class="form-control form-control-sm" placeholder="Category Name" required>
-                                <input type="text" name="description" class="form-control form-control-sm" placeholder="Description">
-                                <button class="btn btn-sm btn-primary">Add Category</button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% for category in categories %}
-                    <tr>
-                        <td>{{ category.name }}</td>
-                        <td>{{ category.description }}</td>
-                        <td>{{ category.workshop_count }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    
-
-</div>
-
+</section>
 {% endblock %}

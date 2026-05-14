@@ -8,6 +8,16 @@
 <link rel="stylesheet" href="{% static 'css/request.css' %}">
 {% endblock %}
 
+{% block sidebar %}
+{% if request.user.is_authenticated %}
+  {% if request.user.artisanprofile %}
+  {% include 'main/_sidebar.html' with active='requests' %}
+  {% else %}
+  {% include 'main/_sidebar.html' with active='post_request' %}
+  {% endif %}
+{% endif %}
+{% endblock %}
+
 {% block content %}
 <section
   class="request-shell"

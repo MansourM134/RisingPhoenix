@@ -8,6 +8,12 @@
 <link rel="stylesheet" href="{% static 'css/proposal.css' %}">
 {% endblock %}
 
+{% block sidebar %}
+{% if request.user.is_authenticated %}
+{% include 'main/_sidebar.html' with active='requests' %}
+{% endif %}
+{% endblock %}
+
 {% block content %}
 <section class="request-shell">
   <div class="request-container">

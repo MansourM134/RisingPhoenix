@@ -1,0 +1,54 @@
+{% if request.user.is_authenticated %}
+<aside class="saaf-sidebar">
+    <p class="sidebar-label">My Space</p>
+
+    {% if request.user.is_staff %}
+    <a href="{% url 'staff:staff_dashboard_view' %}" class="sidebar-btn {% if active == 'staff' %}sidebar-btn-active{% endif %}" aria-label="Staff Dashboard" title="Staff Dashboard">
+        <i class="bi bi-shield-lock"></i>
+        {% if active == 'staff' %}<span class="sidebar-active-indicator"></span>{% endif %}
+    </a>
+    {% endif %}
+
+    {% if request.user.artisanprofile %}
+    <a href="{% url 'account:artisan_dashboard_view' %}" class="sidebar-btn {% if active == 'artisan_dashboard' %}sidebar-btn-active{% endif %}" aria-label="Artisan Dashboard" title="Artisan Dashboard">
+        <i class="bi bi-grid-1x2-fill"></i>
+        {% if active == 'artisan_dashboard' %}<span class="sidebar-active-indicator"></span>{% endif %}
+    </a>
+
+    <a href="{% url 'workshop:workshop_detail_view' request.user.id %}" class="sidebar-btn {% if active == 'workshop' %}sidebar-btn-active{% endif %}" aria-label="My Workshop" title="My Workshop">
+        <i class="bi bi-shop"></i>
+        {% if active == 'workshop' %}<span class="sidebar-active-indicator"></span>{% endif %}
+    </a>
+
+    <a href="{% url 'workshop:upload_portfolio_view' %}" class="sidebar-btn {% if active == 'portfolio' %}sidebar-btn-active{% endif %}" aria-label="Portfolio" title="Portfolio">
+        <i class="bi bi-images"></i>
+        {% if active == 'portfolio' %}<span class="sidebar-active-indicator"></span>{% endif %}
+    </a>
+
+    <a href="{% url 'request:request_list_view' %}" class="sidebar-btn {% if active == 'requests' %}sidebar-btn-active{% endif %}" aria-label="Requests" title="Requests">
+        <i class="bi bi-file-earmark-text"></i>
+        {% if active == 'requests' %}<span class="sidebar-active-indicator"></span>{% endif %}
+    </a>
+    {% else %}
+    <a href="{% url 'main:dashboard_view' %}" class="sidebar-btn {% if active == 'dashboard' %}sidebar-btn-active{% endif %}" aria-label="Dashboard" title="Dashboard">
+        <i class="bi bi-grid-1x2-fill"></i>
+        {% if active == 'dashboard' %}<span class="sidebar-active-indicator"></span>{% endif %}
+    </a>
+
+    <a href="{% url 'request:request_create_view' %}" class="sidebar-btn {% if active == 'post_request' %}sidebar-btn-active{% endif %}" aria-label="Post a Request" title="Post a Request">
+        <i class="bi bi-plus-lg"></i>
+        {% if active == 'post_request' %}<span class="sidebar-active-indicator"></span>{% endif %}
+    </a>
+
+    <a href="{% url 'request:request_list_view' %}" class="sidebar-btn {% if active == 'requests' %}sidebar-btn-active{% endif %}" aria-label="Discover" title="Discover">
+        <i class="bi bi-search"></i>
+        {% if active == 'requests' %}<span class="sidebar-active-indicator"></span>{% endif %}
+    </a>
+
+    <a href="{% url 'account:profile_view' request.user.username %}" class="sidebar-btn {% if active == 'profile' %}sidebar-btn-active{% endif %}" aria-label="Profile" title="Profile">
+        <i class="bi bi-person-circle"></i>
+        {% if active == 'profile' %}<span class="sidebar-active-indicator"></span>{% endif %}
+    </a>
+    {% endif %}
+</aside>
+{% endif %}
