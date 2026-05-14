@@ -191,6 +191,11 @@
                   <div>
                     <p class="proposal-card-artisan">
                       <strong>{{ proposal.artisan.username }}</strong>
+                                <a class="proposal-chat-btn" href="{% url 'message:start_conversation_view' proposal.id %}">
+            <i class="bi bi-chat-dots-fill"></i>
+            <span>Open Chat</span>
+          </a>
+
                     </p>
                     <div class="proposal-card-stats-row">
                       <div class="proposal-card-stat">

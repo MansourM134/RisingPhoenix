@@ -1,0 +1,295 @@
+{% extends "main/base.html" %}
+
+{% block title %}Conversation{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <div class="card-header bg-white border-0 border-bottom px-4 py-3">
+                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                        <div>
+                            <h3 class="fw-bold mb-1">Conversation</h3>
+                            <p class="text-muted mb-1">
+                                <strong>Request:</strong> {{ conversation.proposal.request.title }}
+                            </p>
+                            <p class="text-muted mb-0 small">
+                                {% if request.user == conversation.requester %}
+                                    Artisan: {{ conversation.artisan.get_full_name|default:conversation.artisan.username }}
+                                {% else %}
+                                    Requester: {{ conversation.requester.get_full_name|default:conversation.requester.username }}
+                                {% endif %}
+                            </p>
+                        </div>
+
+                        <a href="{% url 'message:conversation_list_view' %}" class="btn btn-outline-secondary rounded-pill">
+                            Back to Conversations
+                        </a>
+                    </div>
+                </div>
+
+                <div id="chat-box" class="card-body bg-light px-4 py-4" style="max-height: 520px; overflow-y: auto;">
+                    <div id="messages-wrapper" class="d-flex flex-column gap-3">
+                        {% if conversation_messages %}
+                            {% for msg in conversation_messages %}
+                                <div class="d-flex {% if msg.sender == request.user %}justify-content-end{% else %}justify-content-start{% endif %}">
+                                    <div
+                                        class="rounded-4 px-3 py-3 shadow-sm {% if msg.sender == request.user %}bg-primary text-white{% else %}bg-white text-dark{% endif %}"
+                                        style="max-width: 75%; min-width: 180px;"
+                                    >
+                                        <div class="d-flex justify-content-between align-items-center mb-2 gap-3">
+                                            <span class="fw-semibold small">
+                                                {% if msg.sender == request.user %}
+                                                    You
+                                                {% else %}
+                                                    {{ msg.sender.get_full_name|default:msg.sender.username }}
+                                                {% endif %}
+                                            </span>
+                                            <span class="small {% if msg.sender == request.user %}text-white-50{% else %}text-muted{% endif %}">
+                                                {{ msg.created_at|date:"M d, Y h:i A" }}
+                                            </span>
+                                        </div>
+
+                                        {% if msg.image %}
+                                            <div class="{% if msg.body %}mb-3{% else %}mb-0{% endif %}">
+                                                <a href="{{ msg.image.url }}" target="_blank">
+                                                    <img
+                                                        src="{{ msg.image.url }}"
+                                                        alt="Conversation image"
+                                                        class="img-fluid rounded-4 {% if msg.sender != request.user %}border{% endif %}"
+                                                        style="max-width: 280px; max-height: 320px; object-fit: cover;"
+                                                    >
+                                                </a>
+                                            </div>
+                                        {% endif %}
+
+                                        {% if msg.body %}
+                                            <p class="mb-0" style="white-space: pre-line;">
+                                                {{ msg.body }}
+                                            </p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="text-center py-5" id="empty-chat">
+                                <h5 class="fw-bold mb-2">No messages yet</h5>
+                                <p class="text-muted mb-0">
+                                    Start the conversation by sending your first message.
+                                </p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="card-footer bg-white border-0 border-top px-4 py-4">
+                    <form method="post" enctype="multipart/form-data" id="message-form">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label for="body" class="form-label fw-semibold">Your message</label>
+                            <textarea
+                                name="body"
+                                id="body"
+                                rows="4"
+                                class="form-control rounded-4"
+                                placeholder="Write your message here..."
+                            ></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="image" class="form-label fw-semibold">Attach image</label>
+                            <input
+                                type="file"
+                                name="image"
+                                id="image"
+                                class="form-control rounded-4"
+                                accept="image/*"
+                            >
+                        </div>
+
+                        <div id="image-preview-wrapper" class="mb-3 d-none">
+                            <p class="fw-semibold small text-muted mb-2">Image preview</p>
+                            <div class="position-relative d-inline-block">
+                                <img
+                                    id="image-preview"
+                                    src=""
+                                    alt="Selected image preview"
+                                    class="img-fluid rounded-4 border"
+                                    style="max-width: 220px; max-height: 220px; object-fit: cover;"
+                                >
+                                <button
+                                    type="button"
+                                    id="remove-image"
+                                    class="btn btn-sm btn-danger rounded-circle position-absolute top-0 end-0 translate-middle"
+                                    style="width: 32px; height: 32px; line-height: 1;"
+                                >
+                                    <i class="bi bi-x-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary rounded-pill px-4">
+                                Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+    const chatBox = document.getElementById('chat-box');
+    const messagesWrapper = document.getElementById('messages-wrapper');
+    const imageInput = document.getElementById('image');
+    const imagePreview = document.getElementById('image-preview');
+    const imagePreviewWrapper = document.getElementById('image-preview-wrapper');
+    const removeImageBtn = document.getElementById('remove-image');
+    const form = document.getElementById('message-form');
+    const bodyInput = document.getElementById('body');
+
+    let lastRendered = messagesWrapper.innerHTML.trim();
+
+    function scrollToBottom() {
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text || '';
+        return div.innerHTML;
+    }
+
+    function renderMessages(messages) {
+        if (!messages.length) {
+            const emptyHtml = `
+                <div class="text-center py-5" id="empty-chat">
+                    <h5 class="fw-bold mb-2">No messages yet</h5>
+                    <p class="text-muted mb-0">
+                        Start the conversation by sending your first message.
+                    </p>
+                </div>
+            `;
+
+            if (emptyHtml !== lastRendered) {
+                messagesWrapper.innerHTML = emptyHtml;
+                lastRendered = emptyHtml;
+            }
+            return;
+        }
+
+        const html = messages.map(msg => {
+            const isMine = msg.is_mine;
+            const imageHtml = msg.image_url ? `
+                <div class="${msg.body ? 'mb-3' : 'mb-0'}">
+                    <a href="${escapeHtml(msg.image_url)}" target="_blank">
+                        <img
+                            src="${escapeHtml(msg.image_url)}"
+                            alt="Conversation image"
+                            class="img-fluid rounded-4 ${isMine ? '' : 'border'}"
+                            style="max-width: 280px; max-height: 320px; object-fit: cover;"
+                        >
+                    </a>
+                </div>
+            ` : '';
+
+            const bodyHtml = msg.body ? `
+                <p class="mb-0" style="white-space: pre-line;">${escapeHtml(msg.body)}</p>
+            ` : '';
+
+            return `
+                <div class="d-flex ${isMine ? 'justify-content-end' : 'justify-content-start'}">
+                    <div
+                        class="rounded-4 px-3 py-3 shadow-sm ${isMine ? 'bg-primary text-white' : 'bg-white text-dark'}"
+                        style="max-width: 75%; min-width: 180px;"
+                    >
+                        <div class="d-flex justify-content-between align-items-center mb-2 gap-3">
+                            <span class="fw-semibold small">
+                                ${isMine ? 'You' : escapeHtml(msg.sender_name)}
+                            </span>
+                            <span class="small ${isMine ? 'text-white-50' : 'text-muted'}">
+                                ${escapeHtml(msg.created_at)}
+                            </span>
+                        </div>
+                        ${imageHtml}
+                        ${bodyHtml}
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        if (html !== lastRendered) {
+            messagesWrapper.innerHTML = html;
+            lastRendered = html;
+            scrollToBottom();
+        }
+    }
+
+    async function fetchMessages() {
+        try {
+            const response = await fetch("{% url 'message:conversation_messages_json_view' conversation.id %}", {
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            });
+
+            if (!response.ok) return;
+
+            const data = await response.json();
+            renderMessages(data.messages || []);
+        } catch (error) {
+            console.error('Failed to fetch messages:', error);
+        }
+    }
+
+    if (imageInput) {
+        imageInput.addEventListener('change', function () {
+            const file = this.files && this.files[0];
+
+            if (!file) {
+                imagePreviewWrapper.classList.add('d-none');
+                imagePreview.src = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                imagePreview.src = e.target.result;
+                imagePreviewWrapper.classList.remove('d-none');
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    if (removeImageBtn) {
+        removeImageBtn.addEventListener('click', function () {
+            imageInput.value = '';
+            imagePreview.src = '';
+            imagePreviewWrapper.classList.add('d-none');
+        });
+    }
+
+    if (form) {
+        form.addEventListener('submit', function (e) {
+            const hasText = bodyInput.value.trim().length > 0;
+            const hasImage = imageInput.files && imageInput.files.length > 0;
+
+            if (!hasText && !hasImage) {
+                e.preventDefault();
+                alert('Please write a message or attach an image.');
+            }
+        });
+    }
+
+    scrollToBottom();
+    setInterval(fetchMessages, 2000);
+})();
+</script>
+{% endblock %}
