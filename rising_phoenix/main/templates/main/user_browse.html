@@ -1,0 +1,176 @@
+{% extends "main/base.html" %}
+
+{% block title %}Browse Artisans{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold mb-2">Browse Artisans</h1>
+        <p class="text-muted mb-0">
+            Discover talented artisans and explore their profiles.
+        </p>
+    </div>
+
+<form method="get" class="card border-0 shadow-sm rounded-4 mb-4">
+    <div class="card-body">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label for="q" class="form-label fw-semibold">Search</label>
+                <input
+                    type="text"
+                    name="q"
+                    id="q"
+                    class="form-control"
+                    placeholder="Workshop, artisan, service..."
+                    value="{{ search_query|default:'' }}"
+                >
+            </div>
+
+            <div class="col-md-3">
+                <label for="category" class="form-label fw-semibold">Category</label>
+                <select name="category" id="category" class="form-select">
+                    <option value="">All categories</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"s" %}selected{% endif %}>
+                            {{ category.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label for="city" class="form-label fw-semibold">City</label>
+                <select name="city" id="city" class="form-select">
+                    <option value="">All cities</option>
+                    {% for city in cities %}
+                        <option value="{{ city }}" {% if selected_city == city %}selected{% endif %}>
+                            {{ city }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+            <label for="sort" class="form-label fw-semibold">Sort by</label>
+            <select name="sort" id="sort" class="form-select">
+                <option value="newest" {% if selected_sort == "newest" %}selected{% endif %}>Newest</option>
+                <option value="oldest" {% if selected_sort == "oldest" %}selected{% endif %}>Oldest</option>
+                <option value="name_az" {% if selected_sort == "name_az" %}selected{% endif %}>Name A-Z</option>
+                <option value="name_za" {% if selected_sort == "name_za" %}selected{% endif %}>Name Z-A</option>
+                <option value="workshop_az" {% if selected_sort == "workshop_az" %}selected{% endif %}>Workshop A-Z</option>
+                <option value="workshop_za" {% if selected_sort == "workshop_za" %}selected{% endif %}>Workshop Z-A</option>
+                <option value="city_az" {% if selected_sort == "city_az" %}selected{% endif %}>City A-Z</option>
+                <option value="city_za" {% if selected_sort == "city_za" %}selected{% endif %}>City Z-A</option>
+            </select>
+            </div>
+            <div class="col-md-2 d-grid">
+                <button type="submit" class="btn btn-primary rounded-pill">
+                    Search
+                </button>
+            </div>
+            <div class="col-md-2 d-grid">
+                <a href="{% url 'main:browse_view' %}" class="btn btn-outline-secondary rounded-pill">
+                    Reset
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+    {% if artisans %}
+        <div class="row g-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
+            {% for artisan in artisans %}
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                        <div class="card-body p-4 text-center">
+                            {% if artisan.artisanprofile.avatar %}
+                                <img src="{{ artisan.artisanprofile.avatar.url }}"
+                                     alt="{{ artisan.username }}"
+                                     class="rounded-circle mb-3 border shadow-sm"
+                                     style="width: 96px; height: 96px; object-fit: cover;">
+                            {% else %}
+                                <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3 shadow-sm"
+                                     style="width: 96px; height: 96px; font-size: 2rem; font-weight: 700;">
+                                    {{ artisan.username|first|upper }}
+                                </div>
+                            {% endif %}
+
+                            <h5 class="fw-bold mb-1">
+                                {% if artisan.first_name or artisan.last_name %}
+                                    {{ artisan.first_name }} {{ artisan.last_name }}
+                                {% else %}
+                                    {{ artisan.username }}
+                                {% endif %}
+                            </h5>
+
+                            <p class="text-muted small mb-2">@{{ artisan.username }}</p>
+
+                            <p class="text-muted mb-2 small">
+                                {{ artisan.artisanprofile.workshop_profile.location|default:"Saudi Arabia" }}
+                            </p>
+
+                            {% if artisan.artisanprofile.workshop_profile.workshop_name %}
+                                <p class="fw-semibold mb-2">
+                                    {{ artisan.artisanprofile.workshop_profile.workshop_name }}
+                                </p>
+                            {% endif %}
+
+                            {% if artisan.artisanprofile.workshop_profile.tagline %}
+                                <p class="text-muted small mb-3">
+                                    {{ artisan.artisanprofile.workshop_profile.tagline|truncatechars:90 }}
+                                </p>
+                            {% elif artisan.artisanprofile.bio %}
+                                <p class="text-muted small mb-3">
+                                    {{ artisan.artisanprofile.bio|truncatechars:90 }}
+                                </p>
+                            {% else %}
+                                <p class="text-muted small mb-3">
+                                    No bio added yet.
+                                </p>
+                            {% endif %}
+
+                            {% if artisan.artisanprofile.workshop_profile.categories.all %}
+                                <div class="d-flex justify-content-center gap-2 flex-wrap mb-3">
+                                    {% for category in artisan.artisanprofile.workshop_profile.categories.all %}
+                                        <span class="badge bg-light text-dark rounded-pill px-3 py-2">
+                                            {{ category.name }}
+                                        </span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+                            <div class="d-flex justify-content-center gap-2 flex-wrap">
+                                <span class="badge bg-light text-dark rounded-pill px-3 py-2">
+                                    Artisan
+                                </span>
+
+                                {% if artisan.artisanprofile.is_phone_verified %}
+                                    <span class="badge bg-success rounded-pill px-3 py-2">
+                                        Verified
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="card-footer bg-white border-0 pt-0 pb-4 px-4">
+                            <div class="d-grid">
+                                <a href="{% url 'workshop:workshop_detail_view' artisan.id %}"
+                                   class="btn btn-outline-primary rounded-pill">
+                                    View Workshop
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body text-center py-5">
+                <h4 class="fw-bold mb-2">No artisans found</h4>
+                <p class="text-muted mb-0">
+                    There are no artisan profiles available right now.
+                </p>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

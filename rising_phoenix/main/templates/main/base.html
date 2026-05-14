@@ -74,7 +74,9 @@
                 <div class="d-flex gap-2 align-items-center ms-auto">
                     {% block nav_right %}
                     {% if request.user.is_authenticated %}
+                    {% if not request.user.artisanprofile %}
                     <a href="{% url 'account:profile_view' request.user.username %}">
+                    {% endif %}
                     <span class="btn btn-saaf-outline rounded-pill d-inline-flex align-items-center gap-2">
                         <i class="bi bi-person-circle"></i>
                         {{ request.user.username }}
