@@ -7,6 +7,8 @@ app_name = 'request'
 urlpatterns = [
     path('', views.request_list_view, name='request_list_view'),
     path('create/', views.request_create_view, name='request_create_view'),
+    path('<int:request_id>/', views.request_detail_view, name='request_detail_view'),
+    path('<int:request_id>/edit/', views.request_edit_view, name='request_edit_view'),
     path('api/refine-text/', views.refine_request_view, name='refine_request_view'),
-    path('debug/ai-config/', views.check_ai_config_view, name='check_ai_config_view'),
+    path('api/suggested-artisans/', views.suggested_artisans_view, name='suggested_artisans_view'),
 ]

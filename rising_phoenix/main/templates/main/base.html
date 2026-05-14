@@ -46,14 +46,26 @@
                         <a class="nav-link saaf-nav-link" href="{% url 'main:home_view' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link saaf-nav-link" href="#discover">Discover</a>
+                        <a class="nav-link saaf-nav-link" href="{% url 'request:request_list_view' %}">Discover</a>
                     </li>
+                    {% if request.user.is_authenticated %}
+                        {% if request.user.artisanprofile %}
+                        <li class="nav-item">
+                            <a class="nav-link saaf-nav-link" href="{% url 'workshop:workshop_detail_view' request.user.id %}">My Workshop</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link saaf-nav-link" href="{% url 'account:artisan_dashboard_view' %}">Dashboard</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link saaf-nav-link" href="{% url 'request:request_create_view' %}">Post a Request</a>
+                        </li>
+                        {% endif %}
+                    {% else %}
                     <li class="nav-item">
-                        <a class="nav-link saaf-nav-link" href="#artisans">Artisans</a>
+                        <a class="nav-link saaf-nav-link" href="{% url 'account:artisan_signup_view' %}">Become an Artisan</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link saaf-nav-link" href="#how-works">How It Works</a>
-                    </li>
+                    {% endif %}
                 </ul>
 
                 <div class="d-flex gap-2 align-items-center ms-auto">
@@ -76,12 +88,21 @@
         </div>
     </nav>
     {% if messages %}
-    <div class="container mt-3">
+    <div class="saaf-toast-container" aria-live="polite" aria-atomic="true">
         {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm rounded-4 mb-3" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="toast saaf-toast align-items-center border-0 show"
+             data-bs-autohide="true" data-bs-delay="4500" role="alert">
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center gap-2">
+                    {% if message.tags == 'success' %}<i class="bi bi-check-circle-fill text-success"></i>
+                    {% elif message.tags == 'error' or message.tags == 'danger' %}<i class="bi bi-x-circle-fill text-danger"></i>
+                    {% elif message.tags == 'warning' %}<i class="bi bi-exclamation-triangle-fill text-warning"></i>
+                    {% else %}<i class="bi bi-info-circle-fill text-info"></i>{% endif %}
+                    {{ message }}
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
+        </div>
         {% endfor %}
     </div>
     {% endif %}
@@ -116,13 +137,10 @@
                 <div class="col-md-3">
                     <h6 class="mb-3 fw-bold">Platform</h6>
                     <ul class="list-unstyled small">
-                        <li class="mb-2"><a href="{% url 'main:home_view' %}"
-                                class="text-decoration-none saaf-footer-link">Home</a></li>
-                        <li class="mb-2"><a href="#" class="text-decoration-none saaf-footer-link">Discover</a></li>
-                        <li class="mb-2"><a href="{% url 'account:artisan_signup_view' %}"
-                                class="text-decoration-none saaf-footer-link">Artisans</a></li>
-                        <li class="mb-2"><a href="{% url 'account:signup_view' %}"
-                                class="text-decoration-none saaf-footer-link">Custom Request</a></li>
+                        <li class="mb-2"><a href="{% url 'main:home_view' %}" class="text-decoration-none saaf-footer-link">Home</a></li>
+                        <li class="mb-2"><a href="{% url 'request:request_list_view' %}" class="text-decoration-none saaf-footer-link">Discover</a></li>
+                        <li class="mb-2"><a href="{% url 'account:artisan_signup_view' %}" class="text-decoration-none saaf-footer-link">Become an Artisan</a></li>
+                        <li class="mb-2"><a href="{% url 'request:request_create_view' %}" class="text-decoration-none saaf-footer-link">Post a Request</a></li>
                     </ul>
                 </div>
 
@@ -160,6 +178,13 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    (function () {
+        document.querySelectorAll('.saaf-toast').forEach(function (el) {
+            bootstrap.Toast.getOrCreateInstance(el).show();
+        });
+    })();
+    </script>
     {% block extra_js %}{% endblock %}
 </body>
 

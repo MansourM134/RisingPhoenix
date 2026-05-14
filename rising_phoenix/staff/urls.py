@@ -9,5 +9,6 @@ urlpatterns = [
     path("artisans/<int:user_id>/ban/", views.ban_artisan_view, name="ban_artisan_view"),
     path("artisans/<int:user_id>/feature/", views.feature_artisan_view, name="feature_artisan_view"),
     path("artisans/<int:user_id>/verify/", views.verify_artisan_view, name="verify_artisan_view"),
+    path("categories/add/", views.add_category_view, name="add_category_view"),
 ]
 

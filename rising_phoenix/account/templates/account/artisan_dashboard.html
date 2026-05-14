@@ -435,17 +435,13 @@
                 <span>Messages</span>
                 <span class="sidebar-badge">2</span>
             </a>
-            <a href="{% url 'workshop:upload_portfolio_view' %}">
+            <a href="{% url 'workshop:workshop_detail_view' artisan_id=request.user.id %}">
                 <i class="bi bi-images"></i>
-                <span>My Portfolio</span>
+                <span>My Profile</span>
             </a>
             <a href="#">
                 <i class="bi bi-cash-coin"></i>
                 <span>Earnings</span>
-            </a>
-            <a href="#">
-                <i class="bi bi-gear"></i>
-                <span>Settings</span>
             </a>
             <a href="{% url 'account:logout_view' %}">
                 <i class="bi bi-box-arrow-left"></i>

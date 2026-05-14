@@ -318,8 +318,21 @@
                 {% if portfolio_images %}
                 <div class="gallery-grid">
                     {% for image in portfolio_images %}
-                    <div class="gallery-card">
+                    <div class="gallery-card" style="position:relative;">
                         <img src="{{ image.image.url }}" alt="{{ image.caption|default:'Portfolio image' }}">
+                        {% if image.is_pinned %}
+                        <div
+                            style="position:absolute;top:10px;left:10px;background:#e89b7b;color:#fff;padding:4px 12px;border-radius:8px;font-weight:bold;">
+                            Pinned</div>
+                        {% endif %}
+                        <form method="post" action="" style="position:absolute;top:10px;right:10px;z-index:2;">
+                            {% csrf_token %}
+                            <input type="hidden" name="toggle_pin_image_id" value="{{ image.id }}">
+                            <button type="submit"
+                                style="background:#fff;border:1px solid #e89b7b;color:#e89b7b;padding:2px 10px;border-radius:8px;cursor:pointer;font-weight:bold;min-width:60px;">
+                                {% if image.is_pinned %}Unpin{% else %}Pin{% endif %}
+                            </button>
+                        </form>
                     </div>
                     {% endfor %}
                 </div>
@@ -339,6 +352,24 @@
     const dropzone = document.getElementById('dropzone');
     const fileInput = document.getElementById('id_images');
     const selectedFiles = document.getElementById('selectedFiles');
+    // مصفوفة لتجميع كل الملفات المختارة
+    let allFiles = [];
+
+    function updateSelectedFilesText() {
+        if (allFiles.length) {
+            selectedFiles.textContent = `${allFiles.length} file(s) selected`;
+        } else {
+            selectedFiles.textContent = 'No files selected yet';
+        }
+    }
+
+    function updateInputFiles() {
+        // إنشاء DataTransfer جديد لتجميع الملفات
+        const dataTransfer = new DataTransfer();
+        allFiles.forEach(file => dataTransfer.items.add(file));
+        fileInput.files = dataTransfer.files;
+        updateSelectedFilesText();
+    }
 
     if (dropzone && fileInput) {
         ['dragenter', 'dragover'].forEach((eventName) => {
@@ -358,17 +389,19 @@
         });
 
         dropzone.addEventListener('drop', (event) => {
-            fileInput.files = event.dataTransfer.files;
-            fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+            const files = Array.from(event.dataTransfer.files);
+            allFiles = allFiles.concat(files);
+            updateInputFiles();
         });
 
-        fileInput.addEventListener('change', () => {
-            if (fileInput.files.length) {
-                selectedFiles.textContent = `${fileInput.files.length} file(s) selected`;
-            } else {
-                selectedFiles.textContent = 'No files selected yet';
-            }
+        fileInput.addEventListener('change', (event) => {
+            const files = Array.from(event.target.files);
+            allFiles = allFiles.concat(files);
+            updateInputFiles();
         });
+
+        // عند إرسال النموذج، حدث الملفات يبقى كما هو
+        updateSelectedFilesText();
     }
 </script>
 {% endblock %}

@@ -76,7 +76,7 @@ def login_view(request:HttpRequest):
                 return redirect('staff:staff_dashboard_view')
             if user.groups.filter(name='artisan').exists():
                 print('artisan')
-                return redirect('workshop:create_workshop_view')
+                return redirect('account:artisan_dashboard_view')
             return redirect('main:home_view')
         else:
             messages.error(request, "Your Username or Password is wrong, try again")
