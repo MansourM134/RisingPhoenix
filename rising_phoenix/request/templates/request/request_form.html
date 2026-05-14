@@ -2,19 +2,29 @@
 {% load static %}
 
 
-{% block title %}Create Request{% endblock %}
+{% block title %}{% if edit_mode %}Edit Request{% else %}Create Request{% endif %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/request.css' %}">
 {% endblock %}
 
 {% block content %}
-<section class="request-shell">
+<section
+  class="request-shell"
+  data-refine-url="{% url 'request:refine_request_view' %}"
+  data-suggested-artisans-url="{% url 'request:suggested_artisans_view' %}"
+>
   <div class="request-form-wrap">
     <header class="request-hero">
-      <p class="request-eyebrow">Post Your Idea</p>
-      <h1 class="mb-2">Create a New Request</h1>
-      <p class="request-sub">Share your concept, budget in SAR, and timeline so artisans can submit proposals.</p>
+      <p class="request-eyebrow">{% if edit_mode %}Update Your Idea{% else %}Post Your Idea{% endif %}</p>
+      <h1 class="mb-2">{% if edit_mode %}Edit Request{% else %}Create a New Request{% endif %}</h1>
+      <p class="request-sub">
+        {% if edit_mode %}
+          Refine your details, update budget/timeline, and manage reference images.
+        {% else %}
+          Share your concept, budget in SAR, and timeline so artisans can submit proposals.
+        {% endif %}
+      </p>
     </header>
 
     <div class="request-form-card">
@@ -37,8 +47,10 @@
           <div class="field-full">
             <label class="request-label" for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
             {{ form.description }}
+            <p class="desc-char-counter"><span id="desc-char-count">0</span> characters</p>
             <div class="ai-refine-row">
               <button type="button" id="ai-refine-btn" class="ai-refine-btn">Refine with AI</button>
+              <span id="ai-refine-loader" class="ai-refine-loader" aria-hidden="true" hidden></span>
               <span id="ai-refine-status" class="ai-refine-status" aria-live="polite"></span>
             </div>
             <div id="ai-review-panel" class="ai-review-panel" hidden>
@@ -57,9 +69,13 @@
                 <p class="request-label">What changed</p>
                 <div id="ai-diff-output" class="ai-diff-output"></div>
               </div>
+              <div id="ai-missing-details" class="ai-missing-details" hidden>
+                <p class="request-label">To strengthen your request, consider answering:</p>
+                <ul id="ai-missing-list" class="ai-missing-list"></ul>
+              </div>
               <div class="ai-actions">
                 <button type="button" id="ai-accept-btn" class="ai-refine-btn">Accept</button>
-                <button type="button" id="ai-retry-btn" class="ai-refine-btn ai-secondary-btn">Send back to AI</button>
+                <button type="button" id="ai-retry-btn" class="ai-refine-btn ai-secondary-btn">Refine further</button>
                 <button type="button" id="ai-reject-btn" class="ai-refine-btn ai-danger-btn">Reject</button>
               </div>
             </div>
@@ -72,32 +88,112 @@
             {% for error in form.category.errors %}<p class="request-error">{{ error }}</p>{% endfor %}
           </div>
 
+          {% if not edit_mode %}
+            <div class="field-full" id="suggested-artisans-panel" hidden>
+              <p class="request-label">Suggested artisans for this category</p>
+              <div id="suggested-artisans-list" class="suggested-artisans-list"></div>
+            </div>
+          {% endif %}
+
           <div>
-            <label class="request-label" for="{{ form.deadline.id_for_label }}">{{ form.deadline.label }}</label>
+            <label class="request-label" for="{{ form.deadline.id_for_label }}">Deadline</label>
             {{ form.deadline }}
+            <p class="field-hint">Leave blank for no deadline</p>
             {% for error in form.deadline.errors %}<p class="request-error">{{ error }}</p>{% endfor %}
           </div>
 
           <div>
-            <label class="request-label" for="{{ form.budget_min.id_for_label }}">{{ form.budget_min.label }}</label>
+            <label class="request-label" for="{{ form.budget_min.id_for_label }}">Min budget (SAR)</label>
             {{ form.budget_min }}
+            <p class="field-hint">Leave blank if flexible</p>
             {% for error in form.budget_min.errors %}<p class="request-error">{{ error }}</p>{% endfor %}
           </div>
 
           <div>
-            <label class="request-label" for="{{ form.budget_max.id_for_label }}">{{ form.budget_max.label }}</label>
+            <label class="request-label" for="{{ form.budget_max.id_for_label }}">Max budget (SAR)</label>
             {{ form.budget_max }}
+            <p class="field-hint">Leave blank if flexible</p>
             {% for error in form.budget_max.errors %}<p class="request-error">{{ error }}</p>{% endfor %}
           </div>
 
           <div class="field-full">
-            <label class="request-label" for="{{ form.reference_image.id_for_label }}">{{ form.reference_image.label }}</label>
-            {{ form.reference_image }}
-            {% for error in form.reference_image.errors %}<p class="request-error">{{ error }}</p>{% endfor %}
+            {% if edit_mode and existing_images %}
+              <p class="request-label">Current images</p>
+              <div class="existing-img-grid">
+                {% for image in existing_images %}
+                  <label class="existing-img-item">
+                    <img src="{{ image.image.url }}" alt="Existing reference image">
+                    <input
+                      type="text"
+                      class="request-input existing-img-caption"
+                      name="existing_image_caption_{{ image.id }}"
+                      value="{{ image.caption }}"
+                      maxlength="160"
+                      placeholder="Optional note for this image"
+                    >
+                    <span class="existing-img-remove">
+                      <input type="checkbox" name="delete_image_ids" value="{{ image.id }}">
+                      Remove
+                    </span>
+                  </label>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            <label class="request-label" for="id_reference_images">Reference images</label>
+            <div class="img-upload-zone" id="img-upload-zone">
+              <input type="file" id="id_reference_images" name="reference_images"
+                     class="img-upload-input" accept="image/*" multiple>
+              <p class="img-upload-text">Click or drag images here</p>
+              <p class="img-upload-sub">Up to 5 &bull; JPEG, PNG, WebP &bull; Annotate to highlight what you want changed</p>
+            </div>
+            <p id="img-count-badge" class="img-count-badge" hidden></p>
+            <div id="img-preview-grid" class="img-preview-grid" hidden></div>
+
+            <div class="image-editor-modal" id="image-editor-modal" hidden>
+              <div class="image-editor-card">
+                <div class="image-editor-head">
+                  <p class="mb-0">Mark Up Image</p>
+                  <button type="button" class="image-editor-close" id="image-editor-close" aria-label="Close">&times;</button>
+                </div>
+
+                <p class="image-editor-hint">Draw or highlight the parts you want changed. Annotations are saved with the image.</p>
+
+                <div class="image-editor-controls">
+                  <div class="editor-tool-group">
+                    <button type="button" class="editor-tool-btn is-active" id="editor-mode-draw">&#9998; Draw</button>
+                    <button type="button" class="editor-tool-btn" id="editor-mode-highlight">&#9744; Highlight</button>
+                  </div>
+                  <div class="editor-color-group" id="editor-color-group">
+                    <button type="button" class="editor-color-swatch is-active" data-color="#e53935" style="background:#e53935;" title="Red"></button>
+                    <button type="button" class="editor-color-swatch" data-color="#ff9800" style="background:#ff9800;" title="Orange"></button>
+                    <button type="button" class="editor-color-swatch" data-color="#ffeb3b" style="background:#ffeb3b;" title="Yellow"></button>
+                    <button type="button" class="editor-color-swatch" data-color="#43a047" style="background:#43a047;" title="Green"></button>
+                    <button type="button" class="editor-color-swatch" data-color="#1e88e5" style="background:#1e88e5;" title="Blue"></button>
+                    <button type="button" class="editor-color-swatch" data-color="#1c1712" style="background:#1c1712;" title="Black"></button>
+                  </div>
+                  <div class="editor-tool-group" id="editor-width-group">
+                    <button type="button" class="editor-tool-btn is-active" data-width="3" id="editor-width-thin">Thin</button>
+                    <button type="button" class="editor-tool-btn" data-width="7" id="editor-width-thick">Thick</button>
+                  </div>
+                </div>
+
+                <div class="image-editor-canvas-wrap">
+                  <div id="image-editor-host"></div>
+                </div>
+
+                <div class="image-editor-toolbar">
+                  <button type="button" class="image-editor-btn image-editor-btn-primary" id="editor-save">Save Edits</button>
+                  <button type="button" class="image-editor-btn" id="editor-undo">Undo</button>
+                  <button type="button" class="image-editor-btn" id="editor-clear-all">Clear All</button>
+                  <button type="button" class="image-editor-btn" id="editor-cancel">Cancel</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <button type="submit" class="request-submit">Post request</button>
+        <button type="submit" class="request-submit">{% if edit_mode %}Save changes{% else %}Post request{% endif %}</button>
       </form>
     </div>
   </div>
@@ -105,137 +201,5 @@
 {% endblock %}
 
 {% block extra_js %}
-<script>
-  (function () {
-    const refineBtn = document.getElementById('ai-refine-btn');
-    const statusEl = document.getElementById('ai-refine-status');
-    const descriptionEl = document.getElementById('id_description');
-    const panelEl = document.getElementById('ai-review-panel');
-    const originalEl = document.getElementById('ai-original-text');
-    const suggestedEl = document.getElementById('ai-suggested-text');
-    const diffOutputEl = document.getElementById('ai-diff-output');
-    const acceptBtn = document.getElementById('ai-accept-btn');
-    const retryBtn = document.getElementById('ai-retry-btn');
-    const rejectBtn = document.getElementById('ai-reject-btn');
-
-    if (!refineBtn || !statusEl || !descriptionEl || !panelEl || !originalEl || !suggestedEl || !diffOutputEl || !acceptBtn || !retryBtn || !rejectBtn) {
-      return;
-    }
-
-    const escapeHtml = function (value) {
-      return value
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-    };
-
-    const renderDiff = function (sourceText, suggestedText) {
-      const sourceWords = sourceText.split(/\s+/).filter(Boolean);
-      const suggestedWords = suggestedText.split(/\s+/).filter(Boolean);
-      const sourceSet = new Set(sourceWords);
-      const suggestedSet = new Set(suggestedWords);
-
-      const removed = sourceWords
-        .filter(function (word) { return !suggestedSet.has(word); })
-        .map(function (word) { return '<span class="diff-removed">-' + escapeHtml(word) + '</span>'; })
-        .join(' ');
-
-      const added = suggestedWords
-        .filter(function (word) { return !sourceSet.has(word); })
-        .map(function (word) { return '<span class="diff-added">+' + escapeHtml(word) + '</span>'; })
-        .join(' ');
-
-      const sections = [];
-      if (added) {
-        sections.push('<p class="mb-2"><strong>Added:</strong> ' + added + '</p>');
-      }
-      if (removed) {
-        sections.push('<p class="mb-0"><strong>Removed:</strong> ' + removed + '</p>');
-      }
-      if (!sections.length) {
-        sections.push('<p class="mb-0">No visible word changes found yet.</p>');
-      }
-
-      diffOutputEl.innerHTML = sections.join('');
-    };
-
-    const setBusy = function (isBusy) {
-      refineBtn.disabled = isBusy;
-      retryBtn.disabled = isBusy;
-      acceptBtn.disabled = isBusy;
-      rejectBtn.disabled = isBusy;
-      if (isBusy) {
-        refineBtn.textContent = 'Processing...';
-      } else {
-        refineBtn.textContent = 'Refine with AI';
-      }
-    };
-
-    const refineText = async function (text) {
-      if (!text) {
-        statusEl.textContent = 'Write a short description first.';
-        statusEl.classList.add('error');
-        return;
-      }
-
-      setBusy(true);
-      statusEl.textContent = 'Thinking...';
-      statusEl.classList.remove('error');
-
-      try {
-        const response = await fetch('{% url "request:refine_request_view" %}', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': '{{ csrf_token }}'
-          },
-          body: JSON.stringify({ text })
-        });
-
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.error || 'Refinement failed.');
-        }
-
-        originalEl.value = descriptionEl.value;
-        suggestedEl.value = data.refined_text;
-        panelEl.hidden = false;
-        renderDiff(originalEl.value, suggestedEl.value);
-        statusEl.textContent = 'Review AI changes below, then accept, reject, or send back.';
-      } catch (error) {
-        statusEl.textContent = error.message || 'Something went wrong.';
-        statusEl.classList.add('error');
-      } finally {
-        setBusy(false);
-      }
-    };
-
-    refineBtn.addEventListener('click', async function () {
-      await refineText(descriptionEl.value.trim());
-    });
-
-    suggestedEl.addEventListener('input', function () {
-      renderDiff(originalEl.value, suggestedEl.value);
-    });
-
-    acceptBtn.addEventListener('click', function () {
-      descriptionEl.value = suggestedEl.value.trim();
-      panelEl.hidden = true;
-      statusEl.textContent = 'AI suggestion accepted. You can still edit before posting.';
-      statusEl.classList.remove('error');
-    });
-
-    rejectBtn.addEventListener('click', function () {
-      panelEl.hidden = true;
-      statusEl.textContent = 'AI suggestion rejected. Your original description is unchanged.';
-      statusEl.classList.remove('error');
-    });
-
-    retryBtn.addEventListener('click', async function () {
-      await refineText(suggestedEl.value.trim());
-    });
-  })();
-</script>
+<script src="{% static 'js/request_form.js' %}"></script>
 {% endblock %}

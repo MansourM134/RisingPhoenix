@@ -1,11 +1,12 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saaf - Saudi Artisan Marketplace</title>
-    
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -13,11 +14,14 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap"
+        rel="stylesheet">
     <!-- Custom CSS -->
     <link href="{% static 'css/main.css' %}" rel="stylesheet">
     {% block extra_css %}{% endblock %}
 </head>
+
 <body>
     <!-- Top Navbar (always visible, full width) -->
     <nav class="navbar navbar-expand-lg saaf-nav-wrapper">
@@ -42,40 +46,70 @@
                         <a class="nav-link saaf-nav-link" href="{% url 'main:home_view' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link saaf-nav-link" href="#discover">Discover</a>
+                        <a class="nav-link saaf-nav-link" href="{% url 'request:request_list_view' %}">Discover</a>
                     </li>
+                    {% if request.user.is_authenticated %}
+                        {% if request.user.artisanprofile %}
+                        <li class="nav-item">
+                            <a class="nav-link saaf-nav-link" href="{% url 'workshop:workshop_detail_view' request.user.id %}">My Workshop</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link saaf-nav-link" href="{% url 'account:artisan_dashboard_view' %}">Dashboard</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link saaf-nav-link" href="{% url 'request:request_create_view' %}">Post a Request</a>
+                        </li>
+                        {% endif %}
+                    {% else %}
                     <li class="nav-item">
-                        <a class="nav-link saaf-nav-link" href="#artisans">Artisans</a>
+                        <a class="nav-link saaf-nav-link" href="{% url 'account:artisan_signup_view' %}">Become an Artisan</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link saaf-nav-link" href="#how-works">How It Works</a>
-                    </li>
+                    {% endif %}
                 </ul>
 
                 <div class="d-flex gap-2 align-items-center ms-auto">
                     {% block nav_right %}
-                        {% if request.user.is_authenticated %}
-                            <a href="{% url 'account:profile_view' request.user.username %}">
-                            <span class="btn btn-saaf-outline rounded-pill d-inline-flex align-items-center gap-2">
-                                <i class="bi bi-person-circle"></i>
-                                {{ request.user.username }}
-                            </span>
-                            </a>
-                            <a href="{% url 'account:logout_view' %}" class="btn btn-saaf-primary rounded-pill">Log out</a>
-                        {% else %}
-                            <a href="{% url 'account:login_view' %}" class="btn btn-saaf-outline">Log in</a>
-                            <a href="{% url 'account:signup_view' %}" class="btn btn-saaf-primary rounded-pill">Sign up</a>
-                        {% endif %}
+                    {% if request.user.is_authenticated %}
+                    <a href="{% url 'account:profile_view' request.user.username %}">
+                    <span class="btn btn-saaf-outline rounded-pill d-inline-flex align-items-center gap-2">
+                        <i class="bi bi-person-circle"></i>
+                        {{ request.user.username }}
+                    </span>
+                    </a>
+                    <a href="{% url 'account:logout_view' %}" class="btn btn-saaf-primary rounded-pill">Log out</a>
+                    {% else %}
+                    <a href="{% url 'account:login_view' %}" class="btn btn-saaf-outline">Log in</a>
+                    <a href="{% url 'account:signup_view' %}" class="btn btn-saaf-primary rounded-pill">Sign up</a>
+                    {% endif %}
                     {% endblock %}
                 </div>
             </div>
         </div>
     </nav>
-
+    {% if messages %}
+    <div class="saaf-toast-container" aria-live="polite" aria-atomic="true">
+        {% for message in messages %}
+        <div class="toast saaf-toast align-items-center border-0 show"
+             data-bs-autohide="true" data-bs-delay="4500" role="alert">
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center gap-2">
+                    {% if message.tags == 'success' %}<i class="bi bi-check-circle-fill text-success"></i>
+                    {% elif message.tags == 'error' or message.tags == 'danger' %}<i class="bi bi-x-circle-fill text-danger"></i>
+                    {% elif message.tags == 'warning' %}<i class="bi bi-exclamation-triangle-fill text-warning"></i>
+                    {% else %}<i class="bi bi-info-circle-fill text-info"></i>{% endif %}
+                    {{ message }}
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
     <!-- Flex layout: sidebar (RIGHT in RTL) + main (LEFT) -->
     <div class="saaf-layout d-flex">
         {% block sidebar %}{% endblock %}
-
+        
         <main class="saaf-main flex-grow-1">
             {% block content %}
             {% endblock %}
@@ -95,7 +129,8 @@
                         </div>
                         <h5 class="brand-name mb-0">Saaf</h5>
                     </div>
-                    <p class="text-muted small">A marketplace connecting Saudi artisans with customers seeking custom handmade pieces.</p>
+                    <p class="text-muted small">A marketplace connecting Saudi artisans with customers seeking custom
+                        handmade pieces.</p>
                 </div>
 
                 <!-- Platform Links -->
@@ -103,9 +138,9 @@
                     <h6 class="mb-3 fw-bold">Platform</h6>
                     <ul class="list-unstyled small">
                         <li class="mb-2"><a href="{% url 'main:home_view' %}" class="text-decoration-none saaf-footer-link">Home</a></li>
-                        <li class="mb-2"><a href="#" class="text-decoration-none saaf-footer-link">Discover</a></li>
-                        <li class="mb-2"><a href="{% url 'account:artisan_signup_view' %}" class="text-decoration-none saaf-footer-link">Artisans</a></li>
-                        <li class="mb-2"><a href="{% url 'account:signup_view' %}" class="text-decoration-none saaf-footer-link">Custom Request</a></li>
+                        <li class="mb-2"><a href="{% url 'request:request_list_view' %}" class="text-decoration-none saaf-footer-link">Discover</a></li>
+                        <li class="mb-2"><a href="{% url 'account:artisan_signup_view' %}" class="text-decoration-none saaf-footer-link">Become an Artisan</a></li>
+                        <li class="mb-2"><a href="{% url 'request:request_create_view' %}" class="text-decoration-none saaf-footer-link">Post a Request</a></li>
                     </ul>
                 </div>
 
@@ -116,7 +151,8 @@
                         <li class="mb-2"><a href="#" class="text-decoration-none saaf-footer-link">How It Works</a></li>
                         <li class="mb-2"><a href="#" class="text-decoration-none saaf-footer-link">FAQ</a></li>
                         <li class="mb-2"><a href="#" class="text-decoration-none saaf-footer-link">Contact</a></li>
-                        <li class="mb-2"><a href="#" class="text-decoration-none saaf-footer-link">Privacy Policy</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none saaf-footer-link">Privacy Policy</a>
+                        </li>
                     </ul>
                 </div>
 
@@ -142,5 +178,14 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    (function () {
+        document.querySelectorAll('.saaf-toast').forEach(function (el) {
+            bootstrap.Toast.getOrCreateInstance(el).show();
+        });
+    })();
+    </script>
+    {% block extra_js %}{% endblock %}
 </body>
+
 </html>

@@ -1,0 +1,29 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-4">
+                        <h1 class="h4 mb-3">Verify Phone</h1>
+                        <p class="text-muted">
+                            We sent a verification code to <strong>{{ user_profile.phone }}</strong>.
+                        </p>
+
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="code" class="form-label">Verification Code</label>
+                                <input type="text" name="code" id="code" class="form-control" placeholder="Enter OTP">
+                            </div>
+                            <button type="submit" class="btn btn-success">Verify</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
