@@ -8,6 +8,7 @@ venv/
 # C extensions
 *.so
 .media
+media/
 
 
 # Distribution / packaging

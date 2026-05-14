@@ -5,6 +5,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/request.css' %}">
+<link rel="stylesheet" href="{% static 'css/proposal.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -97,6 +98,162 @@
           </div>
         </div>
       {% endif %}
+    </div>
+
+    {# ── Proposals panel ── #}
+    <div class="proposal-panel">
+
+      {# Proposal CTA — shown to everyone except the requester #}
+      {% if not is_requester %}
+        {% if not user.is_authenticated %}
+          <div class="proposal-cta-box">
+            <p>Want to work on this project? <a href="{% url 'account:login_view' %}">Log in</a> to submit a proposal.</p>
+          </div>
+
+        {% elif not is_artisan %}
+          <div class="proposal-cta-box">
+            <p>Only artisans can submit proposals. <a href="{% url 'account:artisan_signup_view' %}">Become an artisan</a> to get started.</p>
+          </div>
+
+        {% elif can_submit %}
+          <div class="proposal-panel-header">
+            <h2 class="proposal-panel-title">Interested in this project?</h2>
+            <a href="{% url 'proposal:submit_proposal_view' project_request.id %}" class="request-action">Submit a proposal</a>
+          </div>
+
+        {% elif user_proposal %}
+          <div class="proposal-panel-header">
+            <h2 class="proposal-panel-title">Your Proposal</h2>
+            {% if user_proposal.is_pending %}
+              <div class="proposal-panel-header-actions">
+                <a href="{% url 'proposal:edit_proposal_view' user_proposal.id %}" class="proposal-action-btn">Edit</a>
+                <form method="post" action="{% url 'proposal:withdraw_proposal_view' user_proposal.id %}" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="proposal-action-btn proposal-action-btn--danger"
+                    onclick="return confirm('Withdraw this proposal?')">Withdraw</button>
+                </form>
+              </div>
+            {% endif %}
+          </div>
+          <div class="proposal-card proposal-card--{{ user_proposal.status }}">
+            <div class="proposal-card-head">
+              <div class="proposal-card-stats-row">
+                <div class="proposal-card-stat">
+                  <span class="proposal-stat-label">Your price</span>
+                  <span class="proposal-stat-value">{{ user_proposal.price|floatformat:"-2" }} SAR</span>
+                </div>
+                <div class="proposal-card-stat">
+                  <span class="proposal-stat-label">Est. completion</span>
+                  <span class="proposal-stat-value">{{ user_proposal.estimated_days }} day{{ user_proposal.estimated_days|pluralize }}</span>
+                </div>
+              </div>
+              <span class="proposal-status-pill proposal-status-pill--{{ user_proposal.status }}">
+                {{ user_proposal.get_status_display }}
+              </span>
+            </div>
+            <p class="proposal-card-message">{{ user_proposal.message }}</p>
+            {% with imgs=user_proposal.images.all %}
+              {% if imgs %}
+                <div class="proposal-card-gallery">
+                  {% for img in imgs %}
+                    <button type="button" class="gallery-img-btn proposal-gallery-btn"
+                      data-src="{{ img.image.url }}" data-caption="{{ img.caption }}"
+                      aria-label="View proposal image {{ forloop.counter }}">
+                      <img src="{{ img.image.url }}" alt="Proposal image {{ forloop.counter }}">
+                    </button>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}
+          </div>
+
+        {% else %}
+          <div class="proposal-cta-box">
+            <p>This request is no longer accepting proposals.</p>
+          </div>
+        {% endif %}
+      {% endif %}
+
+      {# Requester: see all proposals #}
+      {% if is_requester %}
+        <div class="proposal-panel-header">
+          <h2 class="proposal-panel-title">
+            Proposals
+            <span class="proposal-count-badge">{{ proposals|length }}</span>
+          </h2>
+        </div>
+
+        {% if proposals %}
+          <div class="proposal-list">
+            {% for proposal in proposals %}
+              <div class="proposal-card proposal-card--{{ proposal.status }}">
+                <div class="proposal-card-head">
+                  <div>
+                    <p class="proposal-card-artisan">
+                      <strong>{{ proposal.artisan.username }}</strong>
+                    </p>
+                    <div class="proposal-card-stats-row">
+                      <div class="proposal-card-stat">
+                        <span class="proposal-stat-label">Price</span>
+                        <span class="proposal-stat-value">{{ proposal.price|floatformat:"-2" }} SAR</span>
+                      </div>
+                      <div class="proposal-card-stat">
+                        <span class="proposal-stat-label">Est. completion</span>
+                        <span class="proposal-stat-value">{{ proposal.estimated_days }} day{{ proposal.estimated_days|pluralize }}</span>
+                      </div>
+                      <div class="proposal-card-stat">
+                        <span class="proposal-stat-label">Submitted</span>
+                        <span class="proposal-stat-value">{{ proposal.created_at|date:"N j, Y" }}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <span class="proposal-status-pill proposal-status-pill--{{ proposal.status }}">
+                    {{ proposal.get_status_display }}
+                  </span>
+                </div>
+
+                <p class="proposal-card-message">{{ proposal.message }}</p>
+
+                {% with imgs=proposal.images.all %}
+                  {% if imgs %}
+                    <div class="proposal-card-gallery">
+                      {% for img in imgs %}
+                        <button type="button" class="gallery-img-btn proposal-gallery-btn"
+                          data-src="{{ img.image.url }}" data-caption="{{ img.caption }}"
+                          aria-label="View proposal image {{ forloop.counter }}">
+                          <img src="{{ img.image.url }}" alt="Proposal image {{ forloop.counter }}">
+                        </button>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                {% endwith %}
+
+                {% if proposal.is_pending and project_request.status != 'closed' %}
+                  <div class="proposal-card-actions">
+                    <form method="post" action="{% url 'proposal:accept_proposal_view' proposal.id %}">
+                      {% csrf_token %}
+                      <button type="submit" class="proposal-action-btn proposal-action-btn--accept"
+                        onclick="return confirm('Accept this proposal? This will close the request and reject all other proposals.')">
+                        Accept
+                      </button>
+                    </form>
+                    <form method="post" action="{% url 'proposal:reject_proposal_view' proposal.id %}">
+                      {% csrf_token %}
+                      <button type="submit" class="proposal-action-btn proposal-action-btn--danger"
+                        onclick="return confirm('Reject this proposal?')">
+                        Reject
+                      </button>
+                    </form>
+                  </div>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="proposal-empty-note">No proposals yet. Check back soon.</p>
+        {% endif %}
+      {% endif %}
+
     </div>
   </div>
 </section>

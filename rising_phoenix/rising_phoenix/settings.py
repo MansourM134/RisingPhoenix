@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'staff',
     'workshop',
     'request',
+    'proposal',
     'phonenumber_field',
     'payment',
 ]

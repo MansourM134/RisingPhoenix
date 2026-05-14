@@ -54,6 +54,9 @@
                             <a class="nav-link saaf-nav-link" href="{% url 'workshop:workshop_detail_view' request.user.id %}">My Workshop</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link saaf-nav-link" href="{% url 'proposal:my_proposals_view' %}">My Proposals</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link saaf-nav-link" href="{% url 'account:artisan_dashboard_view' %}">Dashboard</a>
                         </li>
                         {% else %}

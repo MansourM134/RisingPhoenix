@@ -63,6 +63,11 @@ def workshop_detail_view(request, artisan_id):
         messages.error(request, "Artisan profile not found.")
         return redirect('main:home_view')
     except WorkshopProfile.DoesNotExist:
+        # إذا صاحب الحساب نفسه يحاول العرض، حوله إلى صفحة إنشاء الورشة
+        if request.user.is_authenticated and request.user.id == artisan_id:
+            messages.info(request, "You don't have a workshop yet — create one to show your profile.")
+            return redirect('workshop:create_workshop_view')
+        # أما الزائرون الآخرون فيعرض لهم رسالة ويعيد التوجيه للصفحة الرئيسية
         messages.error(request, "Workshop profile not found. The artisan hasn't created a workshop yet.")
         return redirect('main:home_view')
 

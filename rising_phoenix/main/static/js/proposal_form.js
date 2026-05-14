@@ -1,182 +1,9 @@
 (function () {
   'use strict';
 
-  var shell = document.querySelector('.request-shell');
-  var refineUrl = shell ? shell.dataset.refineUrl : '';
-  var suggestedArtisansUrl = shell ? shell.dataset.suggestedArtisansUrl : '';
-
-  function getCsrfToken() {
-    var input = document.querySelector('input[name="csrfmiddlewaretoken"]');
-    return input ? input.value : '';
-  }
-
-  function escapeHtml(value) {
-    return value
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/\"/g, '&quot;')
-      .replace(/'/g, '&#039;');
-  }
-
-  // AI refine block
+  // ── Image upload + draw/highlight editor ──────────────────────────────────
   (function () {
-    var refineBtn = document.getElementById('ai-refine-btn');
-    var statusEl = document.getElementById('ai-refine-status');
-    var descriptionEl = document.getElementById('id_description');
-    var panelEl = document.getElementById('ai-review-panel');
-    var originalEl = document.getElementById('ai-original-text');
-    var suggestedEl = document.getElementById('ai-suggested-text');
-    var diffOutputEl = document.getElementById('ai-diff-output');
-    var missingDetailsPanel = document.getElementById('ai-missing-details');
-    var missingListEl = document.getElementById('ai-missing-list');
-    var acceptBtn = document.getElementById('ai-accept-btn');
-    var retryBtn = document.getElementById('ai-retry-btn');
-    var rejectBtn = document.getElementById('ai-reject-btn');
-    var loaderEl = document.getElementById('ai-refine-loader');
-
-    if (!refineBtn || !statusEl || !descriptionEl || !panelEl || !originalEl || !suggestedEl || !diffOutputEl || !acceptBtn || !retryBtn || !rejectBtn || !loaderEl || !refineUrl) {
-      return;
-    }
-
-    function getCategoryName() {
-      var sel = document.getElementById('id_category');
-      if (!sel || !sel.value) return '';
-      var opt = sel.options[sel.selectedIndex];
-      return opt ? opt.text.trim() : '';
-    }
-
-    function renderDiff(sourceText, suggestedText) {
-      var sourceWords = sourceText.split(/\s+/).filter(Boolean);
-      var suggestedWords = suggestedText.split(/\s+/).filter(Boolean);
-      var sourceSet = new Set(sourceWords);
-      var suggestedSet = new Set(suggestedWords);
-
-      var removed = sourceWords
-        .filter(function (word) { return !suggestedSet.has(word); })
-        .map(function (word) { return '<span class="diff-removed">-' + escapeHtml(word) + '</span>'; })
-        .join(' ');
-
-      var added = suggestedWords
-        .filter(function (word) { return !sourceSet.has(word); })
-        .map(function (word) { return '<span class="diff-added">+' + escapeHtml(word) + '</span>'; })
-        .join(' ');
-
-      var sections = [];
-      if (added) sections.push('<p class="mb-2"><strong>Added:</strong> ' + added + '</p>');
-      if (removed) sections.push('<p class="mb-0"><strong>Removed:</strong> ' + removed + '</p>');
-      if (!sections.length) sections.push('<p class="mb-0">No visible word changes found yet.</p>');
-      diffOutputEl.innerHTML = sections.join('');
-    }
-
-    function renderMissingDetails(questions) {
-      if (!missingDetailsPanel || !missingListEl) return;
-      if (!questions || !questions.length) {
-        missingDetailsPanel.hidden = true;
-        return;
-      }
-      missingListEl.innerHTML = questions
-        .map(function (q) { return '<li class="ai-missing-item">' + escapeHtml(q) + '</li>'; })
-        .join('');
-      missingDetailsPanel.hidden = false;
-    }
-
-    function setBusy(isBusy) {
-      refineBtn.disabled = isBusy;
-      retryBtn.disabled = isBusy;
-      acceptBtn.disabled = isBusy;
-      rejectBtn.disabled = isBusy;
-      loaderEl.hidden = !isBusy;
-      refineBtn.textContent = isBusy ? 'Processing...' : 'Refine with AI';
-    }
-
-    // opts: { text, categoryName, previousSuggestion }
-    async function refineText(opts) {
-      var text = (opts.text || '').trim();
-      if (!text) {
-        statusEl.textContent = 'Write a short description first.';
-        statusEl.classList.add('error');
-        return;
-      }
-
-      setBusy(true);
-      statusEl.textContent = 'Thinking...';
-      statusEl.classList.remove('error');
-
-      try {
-        var body = { text: text };
-        if (opts.categoryName) body.category_name = opts.categoryName;
-        if (opts.previousSuggestion) body.previous_suggestion = opts.previousSuggestion;
-
-        var response = await fetch(refineUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCsrfToken() },
-          body: JSON.stringify(body)
-        });
-        var data = await response.json();
-        if (!response.ok) throw new Error(data.error || 'Refinement failed.');
-
-        var refinedText = data.refined_text || '';
-        if (!refinedText) throw new Error('AI returned an empty suggestion.');
-
-        originalEl.value = opts.text;
-        suggestedEl.value = refinedText;
-        panelEl.hidden = false;
-        renderDiff(opts.text, refinedText);
-
-        var missingDetails = Array.isArray(data.missing_details) ? data.missing_details : [];
-        var confidence = typeof data.confidence === 'number' ? data.confidence : null;
-
-        renderMissingDetails(missingDetails);
-
-        var hint = confidence !== null ? 'AI confidence: ' + Math.round(confidence * 100) + '%' : '';
-        statusEl.textContent = 'Review the suggestion below.' + (hint ? ' ' + hint : '');
-        statusEl.classList.remove('error');
-      } catch (error) {
-        statusEl.textContent = error.message || 'Something went wrong.';
-        statusEl.classList.add('error');
-      } finally {
-        setBusy(false);
-      }
-    }
-
-    refineBtn.addEventListener('click', async function () {
-      await refineText({
-        text: descriptionEl.value,
-        categoryName: getCategoryName()
-      });
-    });
-
-    suggestedEl.addEventListener('input', function () {
-      renderDiff(originalEl.value, suggestedEl.value);
-    });
-
-    // Retry: pass original text + current (possibly edited) suggestion so the model has full context
-    retryBtn.addEventListener('click', async function () {
-      await refineText({
-        text: originalEl.value,
-        categoryName: getCategoryName(),
-        previousSuggestion: suggestedEl.value.trim()
-      });
-    });
-
-    acceptBtn.addEventListener('click', function () {
-      descriptionEl.value = suggestedEl.value.trim();
-      panelEl.hidden = true;
-      statusEl.textContent = 'AI suggestion accepted. You can still edit before posting.';
-      statusEl.classList.remove('error');
-    });
-
-    rejectBtn.addEventListener('click', function () {
-      panelEl.hidden = true;
-      statusEl.textContent = 'AI suggestion rejected. Your original description is unchanged.';
-      statusEl.classList.remove('error');
-    });
-  })();
-
-  // Multi-image preview + draw/highlight editor block
-  (function () {
-    var input = document.getElementById('id_reference_images');
+    var input = document.getElementById('id_proposal_images');
     var zone = document.getElementById('img-upload-zone');
     var grid = document.getElementById('img-preview-grid');
     var form = document.querySelector('.request-form-card form');
@@ -213,6 +40,8 @@
     var editorMode = 'draw';
     var drawColor = '#e53935';
     var drawWidth = 3;
+    var editorIsReference = false;
+    var editorReferenceFile = null;
 
     function renderStroke(ctx, stroke) {
       if (stroke.type === 'draw') {
@@ -311,7 +140,6 @@
     function openEditor(itemId) {
       var item = items.find(function (entry) { return entry.id === itemId; });
       if (!item) return;
-
       var reader = new FileReader();
       reader.onload = function (ev) {
         editorCurrentItemId = itemId;
@@ -319,7 +147,6 @@
         strokes = [];
         currentStroke = null;
         isDragging = false;
-
         var img = new Image();
         img.onload = function () {
           originalImage = img;
@@ -329,7 +156,6 @@
           editorCanvas.style.touchAction = 'none';
           editorHost.appendChild(editorCanvas);
           editorModal.hidden = false;
-
           requestAnimationFrame(function () {
             setupEditorCanvas();
             editorCanvas.addEventListener('mousedown', onPointerDown);
@@ -349,6 +175,8 @@
     function closeEditor() {
       editorModal.hidden = true;
       editorCurrentItemId = null;
+      editorIsReference = false;
+      editorReferenceFile = null;
       originalImage = null;
       editorCanvas = null;
       strokes = [];
@@ -385,13 +213,7 @@
     function renderPreviews() {
       grid.innerHTML = '';
       zone.classList.toggle('is-full', items.length >= MAX_IMAGES);
-
-      if (!items.length) {
-        grid.hidden = true;
-        updateCountBadge();
-        return;
-      }
-
+      if (!items.length) { grid.hidden = true; updateCountBadge(); return; }
       grid.hidden = false;
       updateCountBadge();
 
@@ -437,14 +259,14 @@
 
           var captionInput = document.createElement('textarea');
           captionInput.className = 'img-preview-caption';
-          captionInput.placeholder = 'Add a note — e.g. "change the color of this part"';
+          captionInput.placeholder = 'Add a note — e.g. "this is a similar piece I made"';
           captionInput.maxLength = 160;
           captionInput.value = item.caption;
           captionInput.rows = 3;
 
           var hiddenCaption = document.createElement('input');
           hiddenCaption.type = 'hidden';
-          hiddenCaption.name = 'reference_image_captions';
+          hiddenCaption.name = 'proposal_image_captions';
           hiddenCaption.value = item.caption;
 
           captionInput.addEventListener('input', function () {
@@ -484,9 +306,8 @@
     zone.addEventListener('drop', function (e) { e.preventDefault(); zone.classList.remove('drag-over'); addFiles(e.dataTransfer.files); });
 
     saveBtn.addEventListener('click', function () {
-      if (editorCurrentItemId === null || !originalImage || !editorCanvas) return;
-      var target = items.find(function (item) { return item.id === editorCurrentItemId; });
-      if (!target) { closeEditor(); return; }
+      if (!originalImage || !editorCanvas) return;
+      if (!editorIsReference && editorCurrentItemId === null) return;
 
       var outCanvas = document.createElement('canvas');
       outCanvas.width = originalImage.naturalWidth;
@@ -504,16 +325,79 @@
       var mimeType = editorImageType && editorImageType.startsWith('image/') ? editorImageType : 'image/jpeg';
       outCanvas.toBlob(function (blob) {
         if (!blob) return;
-        var originalName = target.file.name;
-        var dotIndex = originalName.lastIndexOf('.');
-        var baseName = dotIndex > 0 ? originalName.slice(0, dotIndex) : originalName;
         var ext = mimeType === 'image/png' ? '.png' : (mimeType === 'image/webp' ? '.webp' : '.jpg');
-        var newFile = new File([blob], baseName + '-marked' + ext, { type: mimeType, lastModified: Date.now() });
-        target.file = newFile;
-        syncInput();
-        renderPreviews();
-        closeEditor();
+
+        if (editorIsReference) {
+          var refName = editorReferenceFile ? editorReferenceFile.name : 'reference';
+          var rDot = refName.lastIndexOf('.');
+          var rBase = rDot > 0 ? refName.slice(0, rDot) : refName;
+          var newFile = new File([blob], rBase + '-annotated' + ext, { type: mimeType, lastModified: Date.now() });
+          closeEditor();
+          addFiles([newFile]);
+        } else {
+          var target = items.find(function (item) { return item.id === editorCurrentItemId; });
+          if (!target) { closeEditor(); return; }
+          var origName = target.file.name;
+          var oDot = origName.lastIndexOf('.');
+          var oBase = oDot > 0 ? origName.slice(0, oDot) : origName;
+          var newFile2 = new File([blob], oBase + '-marked' + ext, { type: mimeType, lastModified: Date.now() });
+          target.file = newFile2;
+          syncInput();
+          renderPreviews();
+          closeEditor();
+        }
       }, mimeType, mimeType === 'image/png' ? 1 : 0.92);
+    });
+
+    function openEditorFromUrl(url, suggestedName) {
+      fetch(url)
+        .then(function (resp) {
+          if (!resp.ok) throw new Error('load failed');
+          return resp.blob();
+        })
+        .then(function (blob) {
+          var mimeType = blob.type || 'image/jpeg';
+          var ext = mimeType === 'image/png' ? '.png' : (mimeType === 'image/webp' ? '.webp' : '.jpg');
+          editorReferenceFile = new File([blob], (suggestedName || 'reference') + ext, { type: mimeType, lastModified: Date.now() });
+          editorIsReference = true;
+          editorImageType = mimeType;
+          editorCurrentItemId = null;
+          strokes = [];
+          currentStroke = null;
+          isDragging = false;
+
+          var objectUrl = URL.createObjectURL(blob);
+          var img = new Image();
+          img.onload = function () {
+            URL.revokeObjectURL(objectUrl);
+            originalImage = img;
+            editorHost.innerHTML = '';
+            editorCanvas = document.createElement('canvas');
+            editorCanvas.style.cursor = 'crosshair';
+            editorCanvas.style.touchAction = 'none';
+            editorHost.appendChild(editorCanvas);
+            editorModal.hidden = false;
+            requestAnimationFrame(function () {
+              setupEditorCanvas();
+              editorCanvas.addEventListener('mousedown', onPointerDown);
+              editorCanvas.addEventListener('mousemove', onPointerMove);
+              editorCanvas.addEventListener('mouseup', onPointerUp);
+              editorCanvas.addEventListener('mouseleave', onPointerUp);
+              editorCanvas.addEventListener('touchstart', onPointerDown, { passive: false });
+              editorCanvas.addEventListener('touchmove', onPointerMove, { passive: false });
+              editorCanvas.addEventListener('touchend', onPointerUp);
+            });
+          };
+          img.onerror = function () { URL.revokeObjectURL(objectUrl); };
+          img.src = objectUrl;
+        })
+        .catch(function () {});
+    }
+
+    document.querySelectorAll('.ref-img-slot-edit').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        openEditorFromUrl(btn.dataset.src, btn.dataset.name);
+      });
     });
 
     if (undoBtn) undoBtn.addEventListener('click', function () { strokes.pop(); drawEditorCanvas(); });
@@ -565,55 +449,41 @@
     editorModal.addEventListener('click', function (e) { if (e.target === editorModal) closeEditor(); });
   })();
 
-  // Suggested artisans block
+  // ── Reference image lightbox ───────────────────────────────────────────────
   (function () {
-    var categoryInput = document.getElementById('id_category');
-    var panel = document.getElementById('suggested-artisans-panel');
-    var list = document.getElementById('suggested-artisans-list');
+    var lightbox = document.getElementById('gallery-lightbox');
+    var lbImg = document.getElementById('gallery-lightbox-img');
+    var lbCaption = document.getElementById('gallery-lightbox-caption');
+    var closeBtn = document.getElementById('gallery-lightbox-close');
+    if (!lightbox) return;
 
-    if (!categoryInput || !panel || !list || !suggestedArtisansUrl) return;
+    document.querySelectorAll('.proposal-preview-img-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        lbImg.src = btn.dataset.src;
+        lbImg.alt = btn.querySelector('img').alt;
+        if (btn.dataset.caption) {
+          lbCaption.textContent = btn.dataset.caption;
+          lbCaption.hidden = false;
+        } else {
+          lbCaption.hidden = true;
+        }
+        lightbox.hidden = false;
+        document.body.style.overflow = 'hidden';
+      });
+    });
 
-    function renderCards(items) {
-      if (!items.length) {
-        list.innerHTML = '<p class="suggested-empty">No matching artisans found yet for this category.</p>';
-        panel.hidden = false;
-        return;
-      }
-      list.innerHTML = items
-        .map(function (item) {
-          var tagline = item.tagline || 'Custom craft specialist';
-          var location = item.location || 'Location not specified';
-          return (
-            '<a class="suggested-card" href="' + escapeHtml(item.workshop_url) + '">' +
-              '<p class="suggested-name">' + escapeHtml(item.workshop_name) + '</p>' +
-              '<p class="suggested-by">by @' + escapeHtml(item.artisan_username) + '</p>' +
-              '<p class="suggested-tagline">' + escapeHtml(tagline) + '</p>' +
-              '<p class="suggested-location">' + escapeHtml(location) + '</p>' +
-            '</a>'
-          );
-        })
-        .join('');
-      panel.hidden = false;
+    function closeLightbox() {
+      lightbox.hidden = true;
+      lbImg.src = '';
+      document.body.style.overflow = '';
     }
 
-    async function loadSuggestions() {
-      var categoryId = categoryInput.value;
-      if (!categoryId) { panel.hidden = true; return; }
-      try {
-        var response = await fetch(suggestedArtisansUrl + '?category_id=' + encodeURIComponent(categoryId));
-        var data = await response.json();
-        renderCards(data.artisans || []);
-      } catch (_) {
-        list.innerHTML = '<p class="suggested-empty">Could not load suggestions right now.</p>';
-        panel.hidden = false;
-      }
-    }
-
-    categoryInput.addEventListener('change', loadSuggestions);
-    loadSuggestions();
+    closeBtn.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', function (e) { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !lightbox.hidden) closeLightbox(); });
   })();
 
-  // Double-submit protection
+  // ── Double-submit protection ───────────────────────────────────────────────
   (function () {
     var form = document.querySelector('.request-form-card form');
     var submitBtn = form ? form.querySelector('button[type="submit"]') : null;
@@ -627,26 +497,5 @@
         submitBtn.textContent = originalLabel;
       }, 10000);
     });
-  })();
-
-  // Description character counter
-  (function () {
-    var descEl = document.getElementById('id_description');
-    var countEl = document.getElementById('desc-char-count');
-    if (!descEl || !countEl) return;
-    function update() {
-      var len = descEl.value.length;
-      countEl.textContent = len;
-      countEl.parentElement.classList.toggle('is-long', len > 800);
-    }
-    descEl.addEventListener('input', update);
-    update();
-  })();
-
-  // Deadline: prevent past dates
-  (function () {
-    var deadlineEl = document.getElementById('id_deadline');
-    if (!deadlineEl) return;
-    deadlineEl.min = new Date().toISOString().split('T')[0];
   })();
 })();

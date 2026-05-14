@@ -191,7 +191,36 @@ def request_detail_view(request: HttpRequest, request_id: int):
 		id=request_id,
 	)
 	images = list(project_request.images.all())
-	return render(request, 'request/request_detail.html', {'project_request': project_request, 'images': images, 'has_images': bool(images)})
+
+	proposals = []
+	user_proposal = None
+	is_artisan = request.user.is_authenticated and request.user.groups.filter(name='artisan').exists()
+	is_requester = request.user.is_authenticated and project_request.requester == request.user
+
+	if is_requester:
+		proposals = list(
+			project_request.proposals.select_related('artisan').prefetch_related('images').order_by('-created_at')
+		)
+	elif is_artisan:
+		user_proposal = project_request.proposals.prefetch_related('images').filter(artisan=request.user).first()
+
+	can_submit = (
+		is_artisan
+		and not is_requester
+		and user_proposal is None
+		and project_request.status in [Request.Status.OPEN, Request.Status.IN_REVIEW]
+	)
+
+	return render(request, 'request/request_detail.html', {
+		'project_request': project_request,
+		'images': images,
+		'has_images': bool(images),
+		'proposals': proposals,
+		'user_proposal': user_proposal,
+		'is_requester': is_requester,
+		'is_artisan': is_artisan,
+		'can_submit': can_submit,
+	})
 
 
 @login_required

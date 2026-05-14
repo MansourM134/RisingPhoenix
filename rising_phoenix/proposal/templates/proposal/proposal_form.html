@@ -1,0 +1,213 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}{% if edit_mode %}Edit Proposal{% else %}Submit Proposal{% endif %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/request.css' %}">
+<link rel="stylesheet" href="{% static 'css/proposal.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="proposal-form-shell">
+  <div class="proposal-form-layout">
+
+    {# ── Left: Request preview ── #}
+    <aside class="proposal-request-preview">
+      <p class="request-eyebrow">{{ project_request.category.name }}</p>
+      <h2 class="proposal-preview-title">{{ project_request.title }}</h2>
+      <p class="proposal-preview-meta">by {{ project_request.requester.username }}</p>
+
+      <div class="proposal-preview-meta-row">
+        {% if project_request.budget_min or project_request.budget_max %}
+          <div class="proposal-preview-stat">
+            <span class="proposal-stat-label">Budget</span>
+            <span class="proposal-stat-value">
+              {% if project_request.budget_min and project_request.budget_max %}
+                {{ project_request.budget_min|floatformat:"-2" }} – {{ project_request.budget_max|floatformat:"-2" }} SAR
+              {% elif project_request.budget_min %}
+                From {{ project_request.budget_min|floatformat:"-2" }} SAR
+              {% else %}
+                Up to {{ project_request.budget_max|floatformat:"-2" }} SAR
+              {% endif %}
+            </span>
+          </div>
+        {% endif %}
+        {% if project_request.deadline %}
+          <div class="proposal-preview-stat">
+            <span class="proposal-stat-label">Deadline</span>
+            <span class="proposal-stat-value">{{ project_request.deadline }}</span>
+          </div>
+        {% endif %}
+      </div>
+
+      <p class="proposal-preview-description">{{ project_request.description }}</p>
+
+      {% if request_images %}
+        <p class="request-label" style="margin-top:1.25rem;">Reference images</p>
+        <div class="proposal-preview-gallery">
+          {% for image in request_images %}
+            <div class="ref-img-slot">
+              <button type="button"
+                class="proposal-preview-img-btn"
+                data-src="{{ image.image.url }}"
+                data-caption="{{ image.caption }}"
+                aria-label="View reference image {{ forloop.counter }}">
+                <img src="{{ image.image.url }}" alt="Reference image {{ forloop.counter }}">
+              </button>
+              <div class="ref-img-slot-actions">
+                <a href="{{ image.image.url }}" download
+                   class="ref-img-slot-action"
+                   title="Download image">&#11015;</a>
+                <button type="button"
+                  class="ref-img-slot-action ref-img-slot-edit"
+                  data-src="{{ image.image.url }}"
+                  data-name="reference-{{ forloop.counter }}"
+                  title="Edit &amp; add to your uploads">&#9998;</button>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </aside>
+
+    {# ── Right: Proposal form ── #}
+    <div class="proposal-form-wrap">
+      <header class="request-hero">
+        <p class="request-eyebrow">{% if edit_mode %}Update Your Offer{% else %}Submit a Proposal{% endif %}</p>
+        <h1 class="mb-2">{% if edit_mode %}Edit Proposal{% else %}Make Your Offer{% endif %}</h1>
+        <p class="request-sub">
+          {% if edit_mode %}Revise your price, timeline, message, or reference images.
+          {% else %}Share your price, timeline, and supporting images to win this project.{% endif %}
+        </p>
+      </header>
+
+      <div class="request-form-card">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+              <p class="request-error">{{ error }}</p>
+            {% endfor %}
+          {% endif %}
+
+          <div class="request-form-grid">
+            <div>
+              <label class="request-label" for="{{ form.price.id_for_label }}">{{ form.price.label }}</label>
+              {{ form.price }}
+              {% for error in form.price.errors %}<p class="request-error">{{ error }}</p>{% endfor %}
+            </div>
+
+            <div>
+              <label class="request-label" for="{{ form.estimated_days.id_for_label }}">{{ form.estimated_days.label }}</label>
+              {{ form.estimated_days }}
+              {% for error in form.estimated_days.errors %}<p class="request-error">{{ error }}</p>{% endfor %}
+            </div>
+
+            <div class="field-full">
+              <label class="request-label" for="{{ form.message.id_for_label }}">{{ form.message.label }}</label>
+              {{ form.message }}
+              {% for error in form.message.errors %}<p class="request-error">{{ error }}</p>{% endfor %}
+            </div>
+
+            {# ── Images ── #}
+            <div class="field-full">
+              {% if edit_mode and existing_images %}
+                <p class="request-label">Your uploaded images</p>
+                <div class="existing-img-grid">
+                  {% for image in existing_images %}
+                    <label class="existing-img-item">
+                      <img src="{{ image.image.url }}" alt="Proposal image {{ forloop.counter }}">
+                      <input
+                        type="text"
+                        class="request-input existing-img-caption"
+                        name="existing_proposal_image_caption_{{ image.id }}"
+                        value="{{ image.caption }}"
+                        maxlength="160"
+                        placeholder="Optional note"
+                      >
+                      <span class="existing-img-remove">
+                        <input type="checkbox" name="delete_proposal_image_ids" value="{{ image.id }}">
+                        Remove
+                      </span>
+                    </label>
+                  {% endfor %}
+                </div>
+              {% endif %}
+
+              <label class="request-label" for="id_proposal_images">Add images (optional)</label>
+              <div class="img-upload-zone" id="img-upload-zone">
+                <input type="file" id="id_proposal_images" name="proposal_images"
+                       class="img-upload-input" accept="image/*" multiple>
+                <p class="img-upload-text">Click or drag images here</p>
+                <p class="img-upload-sub">Up to 5 &bull; JPEG, PNG, WebP &bull; Mark up to highlight what you can deliver</p>
+              </div>
+              <p id="img-count-badge" class="img-count-badge" hidden></p>
+              <div id="img-preview-grid" class="img-preview-grid" hidden></div>
+
+              {# Image editor modal — identical markup to request form #}
+              <div class="image-editor-modal" id="image-editor-modal" hidden>
+                <div class="image-editor-card">
+                  <div class="image-editor-head">
+                    <p class="mb-0">Mark Up Image</p>
+                    <button type="button" class="image-editor-close" id="image-editor-close" aria-label="Close">&times;</button>
+                  </div>
+                  <p class="image-editor-hint">Draw or highlight the parts relevant to the project. Annotations are saved with the image.</p>
+                  <div class="image-editor-controls">
+                    <div class="editor-tool-group">
+                      <button type="button" class="editor-tool-btn is-active" id="editor-mode-draw">&#9998; Draw</button>
+                      <button type="button" class="editor-tool-btn" id="editor-mode-highlight">&#9744; Highlight</button>
+                    </div>
+                    <div class="editor-color-group" id="editor-color-group">
+                      <button type="button" class="editor-color-swatch is-active" data-color="#e53935" style="background:#e53935;" title="Red"></button>
+                      <button type="button" class="editor-color-swatch" data-color="#ff9800" style="background:#ff9800;" title="Orange"></button>
+                      <button type="button" class="editor-color-swatch" data-color="#ffeb3b" style="background:#ffeb3b;" title="Yellow"></button>
+                      <button type="button" class="editor-color-swatch" data-color="#43a047" style="background:#43a047;" title="Green"></button>
+                      <button type="button" class="editor-color-swatch" data-color="#1e88e5" style="background:#1e88e5;" title="Blue"></button>
+                      <button type="button" class="editor-color-swatch" data-color="#1c1712" style="background:#1c1712;" title="Black"></button>
+                    </div>
+                    <div class="editor-tool-group" id="editor-width-group">
+                      <button type="button" class="editor-tool-btn is-active" data-width="3" id="editor-width-thin">Thin</button>
+                      <button type="button" class="editor-tool-btn" data-width="7" id="editor-width-thick">Thick</button>
+                    </div>
+                  </div>
+                  <div class="image-editor-canvas-wrap">
+                    <div id="image-editor-host"></div>
+                  </div>
+                  <div class="image-editor-toolbar">
+                    <button type="button" class="image-editor-btn image-editor-btn-primary" id="editor-save">Save Edits</button>
+                    <button type="button" class="image-editor-btn" id="editor-undo">Undo</button>
+                    <button type="button" class="image-editor-btn" id="editor-clear-all">Clear All</button>
+                    <button type="button" class="image-editor-btn" id="editor-cancel">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="proposal-form-actions">
+            <button type="submit" class="request-submit">
+              {% if edit_mode %}Save changes{% else %}Submit proposal{% endif %}
+            </button>
+            <a href="{% url 'request:request_detail_view' project_request.id %}" class="proposal-cancel-link">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# Reference image lightbox #}
+<div id="gallery-lightbox" class="gallery-lightbox" hidden>
+  <button class="gallery-lightbox-close" id="gallery-lightbox-close" aria-label="Close">&times;</button>
+  <div class="gallery-lightbox-body">
+    <img id="gallery-lightbox-img" src="" alt="">
+    <p id="gallery-lightbox-caption" class="gallery-lightbox-caption" hidden></p>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/proposal_form.js' %}"></script>
+{% endblock %}
