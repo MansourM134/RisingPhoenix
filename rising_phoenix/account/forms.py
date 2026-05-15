@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Profile, ArtisanProfile
+from .models import Profile, ArtisanProfile, Review
 
 
 class ProfileForm(forms.ModelForm):
@@ -52,3 +52,13 @@ class CustomUserUpdateForm(forms.ModelForm):
         if User.objects.filter(email__iexact=email).exclude(pk=self.instance.pk).exists():
             raise forms.ValidationError("This email is already in use.")
         return email
+
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['rating', 'comment']
+        widgets = {
+            'rating': forms.RadioSelect(choices=Review.Rate.choices),
+            'comment': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Share your experience...'}),
+        }

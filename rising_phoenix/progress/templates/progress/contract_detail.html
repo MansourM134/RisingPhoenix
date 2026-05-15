@@ -49,6 +49,18 @@
       <div class="progress-completion-banner">
         <i class="bi bi-check-circle-fill"></i>
         Project completed on {{ contract.completed_at|date:"N j, Y" }}.
+        {% if is_requester %}
+          {% if contract.proposal.request.review %}
+            <span style="margin-left:1rem; color:#27ae60;">
+              <i class="bi bi-check-lg"></i> Review submitted
+            </span>
+          {% else %}
+            <a href="{% url 'account:submit_review_view' contract.id %}"
+               class="proposal-action-btn proposal-action-btn--accept" style="margin-left:1rem;">
+              <i class="bi bi-star-fill"></i> Leave a Review
+            </a>
+          {% endif %}
+        {% endif %}
       </div>
     {% endif %}
 

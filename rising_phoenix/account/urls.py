@@ -11,6 +11,8 @@ urlpatterns = [
     path('artisan_signup/', views.artisan_signup_view, name='artisan_signup_view'),
 
     path('dashboard_artisan/', views.artisan_dashboard_view, name='artisan_dashboard_view'),
+    path('review/submit/<int:contract_id>/', views.submit_review_view, name='submit_review_view'),
+    path('review/history/', views.review_history_view, name='review_history_view'),
     path('profile/<user_name>', views.profile_view, name='profile_view'),
     path('profile/<user_name>/update', views.update_profile_view, name='update_profile_view'),
     path('profile/<user_name>/verified_phone', views.verify_phone_view, name='verify_phone_view'),
