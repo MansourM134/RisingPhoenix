@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from phonenumber_field.modelfields import PhoneNumberField
 from request.models import Request
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
+from django.db.models import Avg
 # Create your models here.
 
 class Profile(models.Model):
@@ -66,3 +69,18 @@ class Review(models.Model):
 
     def __str__(self):
         return f"Review for {self.request} - {self.rating} stars"
+
+
+def _recalc_artisan_rating(artisan_user):
+    avg = artisan_user.reviews_received.aggregate(v=Avg('rating'))['v'] or 0
+    ArtisanProfile.objects.filter(user=artisan_user).update(average_rating=round(avg, 2))
+
+
+@receiver(post_save, sender=Review)
+def review_saved(sender, instance, **kwargs):
+    _recalc_artisan_rating(instance.reviews_received)
+
+
+@receiver(post_delete, sender=Review)
+def review_deleted(sender, instance, **kwargs):
+    _recalc_artisan_rating(instance.reviews_received)

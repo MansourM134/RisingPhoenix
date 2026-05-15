@@ -101,11 +101,16 @@ def workshop_detail_view(request, artisan_id):
                 messages.error(request, "Portfolio image not found.")
             return redirect('workshop:workshop_detail_view', artisan_id=artisan_id)
     
+    reviews = artisan_profile.user.reviews_received.select_related(
+        'reviews_given', 'request'
+    ).order_by('-created_at')
+
     context = {
         'workshop': workshop,
         'artisan': artisan_profile,
         'portfolio_images': workshop.portfolio_images.all(),
         'can_edit_portfolio': can_edit_portfolio,
+        'reviews': reviews,
     }
     return render(request, 'workshop/workshop_detail.html', context)
 

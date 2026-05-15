@@ -1,0 +1,171 @@
+{% extends "main/base.html" %}
+
+{% block title %}My Reviews{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #c96f52;
+        --light-bg: #faf3ec;
+        --card-bg: #fff;
+        --text-muted: #8b7461;
+        --border-light: #efe6dd;
+    }
+
+    body { background: var(--light-bg); }
+
+    .history-shell {
+        max-width: 760px;
+        margin: 40px auto;
+        padding: 0 16px;
+    }
+
+    .history-eyebrow {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--primary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 6px;
+    }
+
+    .history-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #2c1f1a;
+        margin: 0 0 24px;
+    }
+
+    .review-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-light);
+        border-radius: 12px;
+        padding: 20px 24px;
+        margin-bottom: 16px;
+    }
+
+    .review-card-top {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        margin-bottom: 10px;
+    }
+
+    .artisan-avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: #c96f52;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+
+    .artisan-meta { flex: 1; }
+
+    .artisan-name {
+        font-weight: 700;
+        color: #2c1f1a;
+        font-size: 1rem;
+        text-decoration: none;
+    }
+
+    .artisan-name:hover { color: var(--primary); }
+
+    .review-request-title {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin: 2px 0 0;
+    }
+
+    .review-stars {
+        color: #c96f52;
+        font-size: 1.1rem;
+        margin-top: 4px;
+    }
+
+    .review-date {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        white-space: nowrap;
+    }
+
+    .review-comment {
+        color: #3d3430;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin: 0;
+        padding-top: 10px;
+        border-top: 1px solid var(--border-light);
+    }
+
+    .review-no-comment {
+        color: var(--text-muted);
+        font-style: italic;
+        font-size: 0.9rem;
+        padding-top: 10px;
+        border-top: 1px solid var(--border-light);
+        margin: 0;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text-muted);
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+        display: block;
+        margin-bottom: 12px;
+        color: #d9b9a8;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="history-shell">
+    <p class="history-eyebrow">Account</p>
+    <h1 class="history-title">My Reviews</h1>
+
+    {% if reviews %}
+        {% for review in reviews %}
+        <div class="review-card">
+            <div class="review-card-top">
+                <div class="artisan-avatar">
+                    {{ review.reviews_received.first_name|slice:":1"|default:review.reviews_received.username|slice:":1"|upper }}
+                </div>
+                <div class="artisan-meta">
+                    <a href="{% url 'workshop:workshop_detail_view' artisan_id=review.reviews_received.id %}"
+                       class="artisan-name">
+                        {{ review.reviews_received.get_full_name|default:review.reviews_received.username }}
+                    </a>
+                    <p class="review-request-title">{{ review.request.title }}</p>
+                    <div class="review-stars">
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= review.rating %}&#9733;{% else %}&#9734;{% endif %}
+                        {% endfor %}
+                        <span style="font-size:0.8rem;color:var(--text-muted);margin-left:4px;">{{ review.get_rating_display }}</span>
+                    </div>
+                </div>
+                <span class="review-date">{{ review.created_at|date:"N j, Y" }}</span>
+            </div>
+            {% if review.comment %}
+            <p class="review-comment">{{ review.comment }}</p>
+            {% else %}
+            <p class="review-no-comment">No written review.</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <i class="bi bi-star"></i>
+            <p>You haven't submitted any reviews yet.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

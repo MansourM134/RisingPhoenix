@@ -1,11 +1,11 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from .forms import CustomUserCreationForm, ProfileForm, ArtisanProfileForm, CustomUserUpdateForm
+from .forms import CustomUserCreationForm, ProfileForm, ArtisanProfileForm, CustomUserUpdateForm, ReviewForm
 from django.http import HttpRequest, HttpResponse
 from django.contrib import messages
 from django.db import transaction
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .models import ArtisanProfile
+from .models import ArtisanProfile, Review
 from django.contrib.auth.models import Group, User
 from django.db.models import Avg
 from twilio.rest import Client
@@ -117,7 +117,7 @@ def artisan_dashboard_view(request: HttpRequest):
         'active_orders': 2,
         'photos_awaiting': 1,
         'rating': artisan_profile.average_rating,
-        'rating_reviews': 142,
+        'rating_reviews': request.user.reviews_received.count(),
         'open_requests': 12,
     }
     
@@ -239,6 +239,54 @@ def send_phone_verification_view(request: HttpRequest, user_name):
         print(e)
         messages.error(request, 'Failed to send verification code.')
         return redirect('account:profile_view', user_name=user.username)
+
+
+@login_required(login_url='account:login_view')
+def submit_review_view(request: HttpRequest, contract_id):
+    from progress.models import Contract
+    contract = get_object_or_404(
+        Contract.objects.select_related('proposal__artisan', 'proposal__request__requester'),
+        id=contract_id,
+    )
+
+    if request.user != contract.requester:
+        messages.warning(request, 'You are not allowed to review this project.')
+        return redirect('main:home_view')
+
+    if not contract.is_completed:
+        messages.warning(request, 'You can only leave a review after the project is completed.')
+        return redirect('progress:contract_detail_view', contract_id=contract_id)
+
+    request_obj = contract.proposal.request
+    if hasattr(request_obj, 'review'):
+        messages.warning(request, 'You have already submitted a review for this project.')
+        return redirect('workshop:workshop_detail_view', artisan_id=contract.artisan.id)
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.request = request_obj
+            review.reviews_given = request.user
+            review.reviews_received = contract.artisan
+            review.save()
+            messages.success(request, 'Your review has been submitted. Thank you!')
+            return redirect('workshop:workshop_detail_view', artisan_id=contract.artisan.id)
+    else:
+        form = ReviewForm()
+
+    return render(request, 'account/submit_review.html', {
+        'form': form,
+        'contract': contract,
+    })
+
+
+@login_required(login_url='account:login_view')
+def review_history_view(request: HttpRequest):
+    reviews = request.user.reviews_given.select_related(
+        'request', 'reviews_received'
+    ).order_by('-created_at')
+    return render(request, 'account/review_history.html', {'reviews': reviews})
 
 
 def password_reset_view(request: HttpRequest):
