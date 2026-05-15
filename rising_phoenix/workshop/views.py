@@ -3,8 +3,12 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.db import transaction
 from account.models import ArtisanProfile
-from .models import WorkshopProfile, PortfolioImage
-from .forms import WorkshopProfileForm, PortfolioImageForm
+from .models import WorkshopProfile, PortfolioImage, CompletedProject, CompletedProjectImage
+from .forms import WorkshopProfileForm, PortfolioImageForm, CompletedProjectForm, ProjectImageUploadForm
+from django.db.models import Q
+from .models import Category
+from request.models import Request
+from proposal.models import Proposal
 
 
 def is_artisan(user):
@@ -166,3 +170,158 @@ def upload_portfolio_view(request):
     return render(request, 'workshop/upload_portfolio.html', context)
 
 # Create your views here.
+
+
+@login_required(login_url='account:login_view')
+@user_passes_test(is_artisan, login_url='main:home_view')
+def create_project_view(request):
+    """Create a completed project entry for the artisan's workshop."""
+    try:
+        artisan_profile = ArtisanProfile.objects.get(user=request.user)
+        workshop = WorkshopProfile.objects.get(artisan=artisan_profile)
+    except (ArtisanProfile.DoesNotExist, WorkshopProfile.DoesNotExist):
+        messages.error(request, "You must create a workshop profile first.")
+        return redirect('workshop:create_workshop_view')
+
+    if request.method == 'POST':
+        form = CompletedProjectForm(request.POST, request.FILES)
+        # restrict request choices to accepted proposals by this artisan
+        form.fields['request'].queryset = Request.objects.filter(proposals__artisan=request.user, proposals__status=Proposal.Status.ACCEPTED).distinct()
+        
+        if form.is_valid():
+            project = form.save(commit=False)
+            project.workshop = workshop
+            project.save()
+            messages.success(request, "Completed project created. You can now upload project images.")
+            return redirect('workshop:upload_project_images_view', project_id=project.id)
+        else:
+            messages.error(request, "Please correct the errors below.")
+    else:
+        form = CompletedProjectForm()
+        form.fields['request'].queryset = Request.objects.filter(proposals__artisan=request.user, proposals__status=Proposal.Status.ACCEPTED).distinct()
+
+    return render(request, 'workshop/create_project.html', {'form': form, 'workshop': workshop})
+
+
+@login_required(login_url='account:login_view')
+@user_passes_test(is_artisan, login_url='main:home_view')
+def upload_project_images_view(request, project_id):
+    """Upload images for a completed project."""
+    try:
+        project = CompletedProject.objects.get(id=project_id)
+        artisan_profile = ArtisanProfile.objects.get(user=request.user)
+        # ensure project belongs to this artisan
+        if project.workshop.artisan != artisan_profile:
+            messages.error(request, "You don't have permission to edit this project.")
+            return redirect('workshop:workshop_detail_view', artisan_id=request.user.id)
+    except CompletedProject.DoesNotExist:
+        messages.error(request, "Project not found.")
+        return redirect('main:home_view')
+    except ArtisanProfile.DoesNotExist:
+        messages.error(request, "Artisan profile not found.")
+        return redirect('main:home_view')
+
+    if request.method == 'POST':
+        form = ProjectImageUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            images = form.cleaned_data['images']
+            caption = form.cleaned_data.get('caption', '')
+            is_before = form.cleaned_data.get('is_before', False)
+
+            if not images:
+                messages.error(request, "Please select at least one image to upload.")
+            else:
+                with transaction.atomic():
+                    for img in images:
+                        CompletedProjectImage.objects.create(
+                            project=project,
+                            image=img,
+                            caption=caption,
+                            is_before=is_before,
+                        )
+                messages.success(request, f"{len(images)} project image(s) uploaded successfully.")
+                return redirect('workshop:project_detail_view', project_id=project.id)
+        else:
+            messages.error(request, "Please correct the errors below.")
+    else:
+        form = ProjectImageUploadForm()
+
+    context = {
+        'form': form,
+        'project': project,
+        'images': project.images.all(),
+    }
+    return render(request, 'workshop/upload_project_images.html', context)
+
+
+def project_detail_view(request, project_id):
+    """Public detail view for a completed project."""
+    try:
+        project = CompletedProject.objects.get(id=project_id, is_published=True)
+    except CompletedProject.DoesNotExist:
+        messages.error(request, "Project not found or not published.")
+        return redirect('main:home_view')
+
+    # group images by pair_group for before/after display
+    images = project.images.all()
+    pair_groups = {}
+    for img in images:
+        key = img.pair_group or 0
+        pair_groups.setdefault(key, []).append(img)
+
+    context = {
+        'project': project,
+        'pair_groups': pair_groups,
+    }
+    return render(request, 'workshop/project_detail.html', context)
+
+
+def projects_list_view(request, artisan_id):
+    """List all published completed projects for an artisan's workshop."""
+    try:
+        artisan_profile = ArtisanProfile.objects.get(user_id=artisan_id)
+        workshop = WorkshopProfile.objects.get(artisan=artisan_profile)
+    except (ArtisanProfile.DoesNotExist, WorkshopProfile.DoesNotExist):
+        messages.error(request, "Workshop not found.")
+        return redirect('main:home_view')
+
+    projects = workshop.completed_projects.filter(is_published=True).order_by('-is_featured', '-date_completed')
+
+    return render(request, 'workshop/projects_list.html', {'workshop': workshop, 'projects': projects, 'artisan': artisan_profile})
+
+
+def artisans_list_view(request):
+    """Browse and search artisan workshop profiles."""
+    q = request.GET.get('q', '').strip()
+    category_id = request.GET.get('category')
+
+    qs = WorkshopProfile.objects.filter(is_published=True).select_related('artisan__user').prefetch_related('categories')
+
+    if category_id:
+        try:
+            qs = qs.filter(categories__id=int(category_id))
+        except (ValueError, TypeError):
+            pass
+
+    if q:
+        qs = qs.filter(
+            Q(workshop_name__icontains=q) |
+            Q(tagline__icontains=q) |
+            Q(description__icontains=q) |
+            Q(services__icontains=q) |
+            Q(location__icontains=q) |
+            Q(artisan__user__first_name__icontains=q) |
+            Q(artisan__user__last_name__icontains=q)
+        )
+
+    qs = qs.distinct().order_by('-is_published', '-updated_at')
+
+    categories = Category.objects.all().order_by('name')
+
+    context = {
+        'workshops': qs,
+        'categories': categories,
+        'q': q,
+        'selected_category': int(category_id) if category_id and category_id.isdigit() else None,
+    }
+    return render(request, 'workshop/artisans_list.html', context)

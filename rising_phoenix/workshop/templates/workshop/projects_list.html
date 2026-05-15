@@ -1,0 +1,120 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Completed Projects{% endblock %}
+
+{% block extra_css %}
+<style>
+    .project-shell {
+        max-width: 980px;
+        margin: 28px auto;
+        padding: 22px;
+        border-radius: 12px;
+        background: #fff;
+        border: 1px solid #efe6dd;
+    }
+
+    .project-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px
+    }
+
+    .project-card {
+        display: flex;
+        flex-direction: column;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid #f0e6db
+    }
+
+    .project-visual {
+        display: flex;
+        height: 160px
+    }
+
+    .project-side {
+        flex: 1;
+        display: grid;
+        place-items: center;
+        background: #f7efe7;
+        padding: 12px
+    }
+
+    .project-caption {
+        padding: 14px 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center
+    }
+
+    .project-title {
+        font-weight: 700
+    }
+
+    .project-meta {
+        color: #8b7461;
+        font-size: 0.9rem
+    }
+
+    .badge-verified {
+        background: #e6f7ee;
+        color: #2a7a55;
+        padding: 6px 10px;
+        border-radius: 12px;
+        font-weight: 700
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="project-shell">
+    <h3>Completed Projects</h3>
+    <div class="project-grid">
+        {% if projects %}
+        {% for project in projects %}
+        <div class="project-card">
+            <a href="{% url 'workshop:project_detail_view' project_id=project.id %}"
+                style="text-decoration:none;color:inherit;">
+                <div class="project-visual">
+                    <div class="project-side">
+                        {% with before=project.images.filter(is_before=True).first %}
+                        {% if before %}
+                        <img src="{{ before.image.url }}" alt="Before"
+                            style="max-width:100%;max-height:100%;object-fit:cover;border-radius:6px;">
+                        {% else %}
+                        <div style="color:#a67b61;font-size:1.1rem">Before</div>
+                        {% endif %}
+                        {% endwith %}
+                    </div>
+                    <div class="project-side" style="background:#fbf6f0;">
+                        {% with after=project.images.filter(is_before=False).first %}
+                        {% if after %}
+                        <img src="{{ after.image.url }}" alt="After"
+                            style="max-width:100%;max-height:100%;object-fit:cover;border-radius:6px;">
+                        {% else %}
+                        <div style="color:#a67b61;font-size:1.1rem">After</div>
+                        {% endif %}
+                        {% endwith %}
+                    </div>
+                </div>
+                <div class="project-caption">
+                    <div>
+                        <div class="project-title">{{ project.title }}</div>
+                        <div class="project-meta">{{ workshop.categories.first.name|default:"" }} · {{
+                            project.date_completed|date:"M Y" }}</div>
+                    </div>
+                    <div>
+                        {% if project.is_featured %}
+                        <div class="badge-verified">✓ Verified Project</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="text-muted">No completed projects yet.</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

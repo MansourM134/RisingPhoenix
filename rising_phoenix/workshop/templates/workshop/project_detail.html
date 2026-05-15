@@ -1,0 +1,29 @@
+{% extends 'main/base.html' %}
+
+{% block title %}{{ project.title }}{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width:1000px;margin-top:24px;">
+    <h2>{{ project.title }}</h2>
+    <p class="text-muted">{{ project.date_completed }}</p>
+    <p>{{ project.description }}</p>
+
+    <h4>Images</h4>
+    {% for group, images in pair_groups.items %}
+    <div class="mb-3">
+        <div class="d-flex gap-2">
+            {% for img in images %}
+            <div style="flex:1">
+                <img src="{{ img.image.url }}" alt=""
+                    style="width:100%;height:260px;object-fit:cover;border-radius:8px;">
+                <div class="mt-1 small text-muted">{{ img.caption }} — {{ img.is_before|yesno:"Before,After" }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+
+    <a href="{% url 'workshop:workshop_detail_view' artisan_id=project.workshop.artisan.user.id %}"
+        class="btn btn-secondary">Back to Workshop</a>
+</div>
+{% endblock %}

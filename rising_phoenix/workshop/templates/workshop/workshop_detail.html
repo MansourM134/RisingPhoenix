@@ -562,6 +562,42 @@
 </div>
 
 <!-- Portfolio Modal -->
+{% comment %} Completed Projects showcase for this artisan {% endcomment %}
+{% if workshop.completed_projects.exists %}
+<div class="container" style="max-width:1200px; margin-top:18px;">
+    <div class="portfolio-section">
+        <h2><a href="{% url 'workshop:projects_list_view' artisan_id=artisan.user.id %}"
+                style="text-decoration:none;color:inherit;">Completed Projects</a></h2>
+        {% if can_edit_portfolio %}
+        <a href="{% url 'workshop:create_project_view' %}">add project</a>
+        {% endif %}
+
+        <div class="portfolio-grid" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));">
+            {% for project in workshop.completed_projects.all|dictsortreversed:'is_featured'|slice:":4" %}
+            <div class="portfolio-item" style="aspect-ratio:4/3;">
+                <a href="{% url 'workshop:project_detail_view' project_id=project.id %}" class="portfolio-trigger">
+                    {% if project.main_image %}
+                    <img src="{{ project.main_image.url }}" alt="{{ project.title }}">
+                    {% else %}
+                    {% with first=project.images.first %}
+                    {% if first %}
+                    <img src="{{ first.image.url }}" alt="{{ project.title }}">
+                    {% else %}
+                    <div style="padding:24px;color:#8b7461;">No image</div>
+                    {% endif %}
+                    {% endwith %}
+                    {% endif %}
+                </a>
+                <div style="padding:8px;">
+                    <strong>{{ project.title }}</strong>
+                    <div class="small text-muted">{{ project.date_completed }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
 <div class="modal fade portfolio-modal" id="portfolioImageModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">

@@ -63,3 +63,40 @@ class PortfolioImageForm(forms.Form):
         label='Pin these images to the portfolio',
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
     )
+
+
+class CompletedProjectForm(forms.ModelForm):
+    request = forms.ModelChoiceField(queryset=None, required=False, label='Related request')
+
+    class Meta:
+        model = __import__('workshop.models', fromlist=['CompletedProject']).CompletedProject
+        fields = ['title', 'description', 'date_completed', 'main_image', 'is_featured', 'is_published', 'request']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'date_completed': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'main_image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'is_featured': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'is_published': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # lazy import to avoid circular import
+        from request.models import Request
+        self.fields['request'].queryset = Request.objects.none()
+
+
+class ProjectImageUploadForm(forms.Form):
+    images = MultipleFileField(
+        widget=MultipleFileInput(attrs={'class': 'form-control', 'multiple': True, 'accept': 'image/*'}),
+        label='Project Images',
+    )
+    caption = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Optional caption for these images'}),
+    )
+    is_before = forms.BooleanField(
+        required=False,
+        label='Mark these images as "before"'
+    )

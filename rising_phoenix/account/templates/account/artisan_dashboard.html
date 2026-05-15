@@ -426,7 +426,7 @@
                 <span>My Proposals</span>
                 <span class="sidebar-badge">4</span>
             </a>
-            <a href="#">
+            <a href="{% url 'workshop:projects_list_view' artisan.user.id %}">
                 <i class="bi bi-check-circle-fill"></i>
                 <span>Completed</span>
             </a>
@@ -462,6 +462,8 @@
             </div>
             <div class="header-right">
                 <a href="#" class="btn btn-outline-primary">Browse Open Requests →</a>
+                <a href="{% url 'workshop:create_project_view' %}" class="btn btn-primary" style="margin-left:12px;">Add
+                    Completed Project</a>
             </div>
         </div>
 
