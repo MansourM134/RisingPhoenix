@@ -1,176 +1,389 @@
 {% extends "main/base.html" %}
+{% load static %}
 
 {% block title %}Browse Artisans{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
 {% block content %}
-<div class="container py-5">
-    <div class="text-center mb-5">
-        <h1 class="fw-bold mb-2">Browse Artisans</h1>
-        <p class="text-muted mb-0">
-            Discover talented artisans and explore their profiles.
-        </p>
-    </div>
-
-<form method="get" class="card border-0 shadow-sm rounded-4 mb-4">
-    <div class="card-body">
-        <div class="row g-3 align-items-end">
-            <div class="col-md-4">
-                <label for="q" class="form-label fw-semibold">Search</label>
-                <input
-                    type="text"
-                    name="q"
-                    id="q"
-                    class="form-control"
-                    placeholder="Workshop, artisan, service..."
-                    value="{{ search_query|default:'' }}"
-                >
-            </div>
-
-            <div class="col-md-3">
-                <label for="category" class="form-label fw-semibold">Category</label>
-                <select name="category" id="category" class="form-select">
-                    <option value="">All categories</option>
-                    {% for category in categories %}
-                        <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"s" %}selected{% endif %}>
-                            {{ category.name }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div class="col-md-3">
-                <label for="city" class="form-label fw-semibold">City</label>
-                <select name="city" id="city" class="form-select">
-                    <option value="">All cities</option>
-                    {% for city in cities %}
-                        <option value="{{ city }}" {% if selected_city == city %}selected{% endif %}>
-                            {{ city }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="col-md-2">
-            <label for="sort" class="form-label fw-semibold">Sort by</label>
-            <select name="sort" id="sort" class="form-select">
-                <option value="newest" {% if selected_sort == "newest" %}selected{% endif %}>Newest</option>
-                <option value="oldest" {% if selected_sort == "oldest" %}selected{% endif %}>Oldest</option>
-                <option value="name_az" {% if selected_sort == "name_az" %}selected{% endif %}>Name A-Z</option>
-                <option value="name_za" {% if selected_sort == "name_za" %}selected{% endif %}>Name Z-A</option>
-                <option value="workshop_az" {% if selected_sort == "workshop_az" %}selected{% endif %}>Workshop A-Z</option>
-                <option value="workshop_za" {% if selected_sort == "workshop_za" %}selected{% endif %}>Workshop Z-A</option>
-                <option value="city_az" {% if selected_sort == "city_az" %}selected{% endif %}>City A-Z</option>
-                <option value="city_za" {% if selected_sort == "city_za" %}selected{% endif %}>City Z-A</option>
-            </select>
-            </div>
-            <div class="col-md-2 d-grid">
-                <button type="submit" class="btn btn-primary rounded-pill">
-                    Search
-                </button>
-            </div>
-            <div class="col-md-2 d-grid">
-                <a href="{% url 'main:browse_view' %}" class="btn btn-outline-secondary rounded-pill">
-                    Reset
-                </a>
-            </div>
+<section class="browse-hero py-5">
+    <div class="container">
+        <div class="text-center mx-auto browse-hero-content">
+            <span class="badge rounded-pill browse-badge px-3 py-2 mb-3">Saaf Directory</span>
+            <h1 class="fw-bold mb-3">Browse Artisans</h1>
+            <p class="text-muted mb-0">
+                Discover Saudi artisans, compare workshops, and narrow your search by category, city, and average rating.
+            </p>
         </div>
     </div>
-</form>
-    {% if artisans %}
-        <div class="row g-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
-            {% for artisan in artisans %}
-                <div class="col">
-                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
-                        <div class="card-body p-4 text-center">
-                            {% if artisan.artisanprofile.avatar %}
-                                <img src="{{ artisan.artisanprofile.avatar.url }}"
-                                     alt="{{ artisan.username }}"
-                                     class="rounded-circle mb-3 border shadow-sm"
-                                     style="width: 96px; height: 96px; object-fit: cover;">
-                            {% else %}
-                                <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3 shadow-sm"
-                                     style="width: 96px; height: 96px; font-size: 2rem; font-weight: 700;">
-                                    {{ artisan.username|first|upper }}
-                                </div>
-                            {% endif %}
+</section>
 
-                            <h5 class="fw-bold mb-1">
-                                {% if artisan.first_name or artisan.last_name %}
-                                    {{ artisan.first_name }} {{ artisan.last_name }}
-                                {% else %}
-                                    {{ artisan.username }}
-                                {% endif %}
-                            </h5>
+<section class="pb-5">
+    <div class="container">
+        <div class="row g-4 align-items-start">
+            <div class="col-12 col-xl-3">
+                <form method="get" class="filter-panel card border-0 shadow-sm rounded-4 overflow-hidden">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div>
+                                <h5 class="fw-bold mb-1">Filter results</h5>
+                                <p class="text-muted small mb-0">Refine artisans quickly</p>
+                            </div>
+                            <a href="{% url 'main:browse_view' %}" class="btn btn-sm btn-outline-secondary rounded-pill">
+                                Reset
+                            </a>
+                        </div>
 
-                            <p class="text-muted small mb-2">@{{ artisan.username }}</p>
-
-                            <p class="text-muted mb-2 small">
-                                {{ artisan.artisanprofile.workshop_profile.location|default:"Saudi Arabia" }}
-                            </p>
-
-                            {% if artisan.artisanprofile.workshop_profile.workshop_name %}
-                                <p class="fw-semibold mb-2">
-                                    {{ artisan.artisanprofile.workshop_profile.workshop_name }}
-                                </p>
-                            {% endif %}
-
-                            {% if artisan.artisanprofile.workshop_profile.tagline %}
-                                <p class="text-muted small mb-3">
-                                    {{ artisan.artisanprofile.workshop_profile.tagline|truncatechars:90 }}
-                                </p>
-                            {% elif artisan.artisanprofile.bio %}
-                                <p class="text-muted small mb-3">
-                                    {{ artisan.artisanprofile.bio|truncatechars:90 }}
-                                </p>
-                            {% else %}
-                                <p class="text-muted small mb-3">
-                                    No bio added yet.
-                                </p>
-                            {% endif %}
-
-                            {% if artisan.artisanprofile.workshop_profile.categories.all %}
-                                <div class="d-flex justify-content-center gap-2 flex-wrap mb-3">
-                                    {% for category in artisan.artisanprofile.workshop_profile.categories.all %}
-                                        <span class="badge bg-light text-dark rounded-pill px-3 py-2">
-                                            {{ category.name }}
-                                        </span>
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-
-                            <div class="d-flex justify-content-center gap-2 flex-wrap">
-                                <span class="badge bg-light text-dark rounded-pill px-3 py-2">
-                                    Artisan
-                                </span>
-
-                                {% if artisan.artisanprofile.is_phone_verified %}
-                                    <span class="badge bg-success rounded-pill px-3 py-2">
-                                        Verified
-                                    </span>
-                                {% endif %}
+                        <div class="mb-4">
+                            <label for="q" class="form-label fw-semibold">Search</label>
+                            <div class="search-input-wrap">
+                                <i class="bi bi-search search-input-icon"></i>
+                                <input
+                                    type="text"
+                                    name="q"
+                                    id="q"
+                                    class="form-control rounded-3 ps-5"
+                                    placeholder="Workshop, artisan, service..."
+                                    value="{{ search_query|default:'' }}"
+                                >
                             </div>
                         </div>
 
-                        <div class="card-footer bg-white border-0 pt-0 pb-4 px-4">
-                            <div class="d-grid">
-                                <a href="{% url 'workshop:workshop_detail_view' artisan.id %}"
-                                   class="btn btn-outline-primary rounded-pill">
-                                    View Workshop
-                                </a>
+                        <div class="mb-4">
+                            <label for="category" class="form-label fw-semibold">Category</label>
+                            <select name="category" id="category" class="form-select rounded-3">
+                                <option value="">All categories</option>
+                                {% for category in categories %}
+                                    <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"s" %}selected{% endif %}>
+                                        {{ category.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="city" class="form-label fw-semibold">City</label>
+                            <select name="city" id="city" class="form-select rounded-3">
+                                <option value="">All cities</option>
+                                {% for city in cities %}
+                                    <option value="{{ city }}" {% if selected_city == city %}selected{% endif %}>
+                                        {{ city }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold d-block mb-3">Average rating</label>
+                            <div class="form-check form-switch mb-3">
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    role="switch"
+                                    id="use_rating"
+                                    name="use_rating"
+                                    value="1"
+                                    {% if use_rating %}checked{% endif %}
+                                >
+                                <label class="form-check-label fw-medium" for="use_rating">
+                                    Use average rating filter
+                                </label>
+                            </div>
+                            <div class="rating-slider-card">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="text-muted small">From</span>
+                                    <span class="text-muted small">To</span>
+                                </div>
+
+                                <div class="range-slider-wrap">
+                                    <div class="range-track"></div>
+                                    <div class="range-fill" id="range-fill"></div>
+
+                                    <input
+                                        type="range"
+                                        id="rating_min"
+                                        name="rating_min"
+                                        min="1"
+                                        max="5"
+                                        step="0.5"
+                                        value="{{ selected_rating_min|default:'1' }}"
+                                        class="range-input"
+                                    >
+
+                                    <input
+                                        type="range"
+                                        id="rating_max"
+                                        name="rating_max"
+                                        min="1"
+                                        max="5"
+                                        step="0.5"
+                                        value="{{ selected_rating_max|default:'5' }}"
+                                        class="range-input"
+                                    >
+                                </div>
+
+                                <div class="d-flex justify-content-between mt-3 rating-bubbles">
+                                    <span class="rating-value-pill" id="rating-min-display">{{ selected_rating_min|default:"1.0" }}</span>
+                                    <span class="rating-value-pill" id="rating-max-display">{{ selected_rating_max|default:"5.0" }}</span>
+                                </div>
+
+                                <div class="d-flex justify-content-between mt-3">
+                                    <div class="rating-input-box" id="rating-min-box">{{ selected_rating_min|default:"1.0" }}</div>
+                                    <div class="rating-input-box" id="rating-max-box">{{ selected_rating_max|default:"5.0" }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="sort" class="form-label fw-semibold">Sort by</label>
+                            <select name="sort" id="sort" class="form-select rounded-3">
+                                <option value="newest" {% if selected_sort == "newest" %}selected{% endif %}>Newest</option>
+                                <option value="oldest" {% if selected_sort == "oldest" %}selected{% endif %}>Oldest</option>
+                                <option value="name_az" {% if selected_sort == "name_az" %}selected{% endif %}>Name A-Z</option>
+                                <option value="name_za" {% if selected_sort == "name_za" %}selected{% endif %}>Name Z-A</option>
+                                <option value="workshop_az" {% if selected_sort == "workshop_az" %}selected{% endif %}>Workshop A-Z</option>
+                                <option value="workshop_za" {% if selected_sort == "workshop_za" %}selected{% endif %}>Workshop Z-A</option>
+                                <option value="city_az" {% if selected_sort == "city_az" %}selected{% endif %}>City A-Z</option>
+                                <option value="city_za" {% if selected_sort == "city_za" %}selected{% endif %}>City Z-A</option>
+                                <option value="rating_high" {% if selected_sort == "rating_high" %}selected{% endif %}>Highest Rated</option>
+                                <option value="rating_low" {% if selected_sort == "rating_low" %}selected{% endif %}>Lowest Rated</option>
+                            </select>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary rounded-pill py-2">
+                                Apply Filters
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-12 col-xl-9">
+                {% if artisans %}
+                    <div class="results-toolbar card border-0 shadow-sm rounded-4 mb-4">
+                        <div class="card-body p-3 p-lg-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+                            <div>
+                                <h5 class="fw-bold mb-1">Available artisans</h5>
+                                <p class="text-muted mb-0">{{ artisans|length }} result{{ artisans|length|pluralize }}</p>
+                            </div>
+
+                            <div class="d-flex flex-wrap gap-2">
+                                {% if selected_category %}
+                                    <span class="badge rounded-pill text-bg-light px-3 py-2">Category selected</span>
+                                {% endif %}
+                                {% if selected_city %}
+                                    <span class="badge rounded-pill text-bg-light px-3 py-2">{{ selected_city }}</span>
+                                {% endif %}
+                                {% if search_query %}
+                                    <span class="badge rounded-pill text-bg-light px-3 py-2">“{{ search_query }}”</span>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <div class="card border-0 shadow-sm rounded-4">
-            <div class="card-body text-center py-5">
-                <h4 class="fw-bold mb-2">No artisans found</h4>
-                <p class="text-muted mb-0">
-                    There are no artisan profiles available right now.
-                </p>
+
+                    <div class="row g-4 row-cols-1 row-cols-md-2 row-cols-xxl-3">
+                        {% for artisan in artisans %}
+                            <div class="col">
+                                <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden artisan-card">
+                                    <div class="card-body p-4 d-flex flex-column">
+                                        <div class="d-flex align-items-start gap-3 mb-3">
+                                            {% if artisan.artisanprofile.avatar %}
+                                                <img src="{{ artisan.artisanprofile.avatar.url }}"
+                                                     alt="{{ artisan.username }}"
+                                                     class="rounded-circle border shadow-sm flex-shrink-0"
+                                                     style="width: 72px; height: 72px; object-fit: cover;">
+                                            {% else %}
+                                                <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center shadow-sm flex-shrink-0"
+                                                     style="width: 72px; height: 72px; font-size: 1.5rem; font-weight: 700;">
+                                                    {{ artisan.username|first|upper }}
+                                                </div>
+                                            {% endif %}
+
+                                            <div class="flex-grow-1">
+                                                <h5 class="fw-bold mb-1">
+                                                    {% if artisan.first_name or artisan.last_name %}
+                                                        {{ artisan.first_name }} {{ artisan.last_name }}
+                                                    {% else %}
+                                                        {{ artisan.username }}
+                                                    {% endif %}
+                                                </h5>
+
+                                                <p class="text-muted small mb-2">@{{ artisan.username }}</p>
+
+                                                <div class="d-flex flex-wrap gap-2">
+                                                    <span class="badge rounded-pill text-bg-light px-3 py-2">
+                                                        <i class="bi bi-geo-alt me-1"></i>
+                                                        {{ artisan.artisanprofile.workshop_profile.location|default:"Saudi Arabia" }}
+                                                    </span>
+
+                                                    {% if artisan.artisanprofile.is_phone_verified %}
+                                                        <span class="badge rounded-pill bg-success px-3 py-2">
+                                                            Verified
+                                                        </span>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            {% if artisan.artisanprofile.workshop_profile.workshop_name %}
+                                                <p class="fw-semibold mb-2 artisan-workshop-name">
+                                                    {{ artisan.artisanprofile.workshop_profile.workshop_name }}
+                                                </p>
+                                            {% endif %}
+
+                                            {% if artisan.avg_rating %}
+                                                <div class="d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill artisan-rating-badge small fw-semibold mb-2">
+                                                    <i class="bi bi-star-fill"></i>
+                                                    {{ artisan.avg_rating|floatformat:1 }} / 5
+                                                </div>
+                                            {% else %}
+                                                <div class="d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill bg-light text-muted small fw-semibold mb-2">
+                                                    <i class="bi bi-star"></i>
+                                                    No ratings yet
+                                                </div>
+                                            {% endif %}
+                                        </div>
+
+                                        {% if artisan.artisanprofile.workshop_profile.tagline %}
+                                            <p class="text-muted small mb-3">
+                                                {{ artisan.artisanprofile.workshop_profile.tagline|truncatechars:100 }}
+                                            </p>
+                                        {% elif artisan.artisanprofile.bio %}
+                                            <p class="text-muted small mb-3">
+                                                {{ artisan.artisanprofile.bio|truncatechars:100 }}
+                                            </p>
+                                        {% else %}
+                                            <p class="text-muted small mb-3">
+                                                No bio added yet.
+                                            </p>
+                                        {% endif %}
+
+                                        {% if artisan.artisanprofile.workshop_profile.categories.all %}
+                                            <div class="d-flex flex-wrap gap-2 mb-4">
+                                                {% for category in artisan.artisanprofile.workshop_profile.categories.all %}
+                                                    <span class="badge rounded-pill category-chip px-3 py-2">
+                                                        {{ category.name }}
+                                                    </span>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+
+                                        <div class="mt-auto d-grid">
+                                            <a href="{% url 'workshop:workshop_detail_view' artisan.id %}"
+                                               class="btn btn-outline-primary rounded-pill">
+                                                View Workshop
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="card border-0 shadow-sm rounded-4">
+                        <div class="card-body text-center py-5 px-4">
+                            <div class="mb-3">
+                                <i class="bi bi-search text-muted" style="font-size: 2.5rem;"></i>
+                            </div>
+                            <h4 class="fw-bold mb-2">No artisans found</h4>
+                            <p class="text-muted mb-3">
+                                Try changing your search keywords, city, category, or rating range.
+                            </p>
+                            <a href="{% url 'main:browse_view' %}" class="btn btn-outline-primary rounded-pill px-4">
+                                Clear filters
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         </div>
-    {% endif %}
-</div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+    const minInput = document.getElementById('rating_min');
+    const maxInput = document.getElementById('rating_max');
+    const minDisplay = document.getElementById('rating-min-display');
+    const maxDisplay = document.getElementById('rating-max-display');
+    const minBox = document.getElementById('rating-min-box');
+    const maxBox = document.getElementById('rating-max-box');
+    const rangeFill = document.getElementById('range-fill');
+
+    if (!minInput || !maxInput || !rangeFill) return;
+
+    const min = parseFloat(minInput.min);
+    const max = parseFloat(minInput.max);
+    const step = parseFloat(minInput.step) || 0.5;
+
+    function updateSlider(fromChanged = true) {
+        let minValue = parseFloat(minInput.value);
+        let maxValue = parseFloat(maxInput.value);
+
+        if (minValue > maxValue) {
+            if (fromChanged) {
+                maxValue = minValue;
+                maxInput.value = maxValue;
+            } else {
+                minValue = maxValue;
+                minInput.value = minValue;
+            }
+        }
+
+        const left = ((minValue - min) / (max - min)) * 100;
+        const right = ((maxValue - min) / (max - min)) * 100;
+
+        rangeFill.style.left = left + '%';
+        rangeFill.style.right = (100 - right) + '%';
+
+        minDisplay.textContent = minValue.toFixed(1);
+        maxDisplay.textContent = maxValue.toFixed(1);
+        minBox.textContent = minValue.toFixed(1);
+        maxBox.textContent = maxValue.toFixed(1);
+
+        if ((parseFloat(maxInput.value) - parseFloat(minInput.value)) <= step) {
+            minInput.style.zIndex = 5;
+        } else {
+            minInput.style.zIndex = 4;
+        }
+    }
+
+    minInput.addEventListener('input', function () {
+        updateSlider(true);
+    });
+
+    maxInput.addEventListener('input', function () {
+        updateSlider(false);
+    });
+
+    updateSlider(true);
+})();
+
+
+(function () {
+    const toggle = document.getElementById('use_rating');
+    const minInput = document.getElementById('rating_min');
+    const maxInput = document.getElementById('rating_max');
+    const sliderCard = document.querySelector('.rating-slider-card');
+
+    function syncRatingState() {
+        const enabled = toggle && toggle.checked;
+        if (minInput) minInput.disabled = !enabled;
+        if (maxInput) maxInput.disabled = !enabled;
+        if (sliderCard) sliderCard.classList.toggle('rating-disabled', !enabled);
+    }
+
+    if (toggle) {
+        toggle.addEventListener('change', syncRatingState);
+        syncRatingState();
+    }
+})();
+
+</script>
 {% endblock %}
