@@ -35,12 +35,6 @@ class RequestForm(forms.ModelForm):
             raise forms.ValidationError('Your description contains inappropriate language. Please revise it.')
         return value
 
-    def clean_budget_min(self):
-        budget_min = self.cleaned_data.get('budget_min')
-        if budget_min is not None and budget_min < 0:
-            raise forms.ValidationError('Budget cannot be negative.')
-        return budget_min
-
     def clean_budget_max(self):
         budget = self.cleaned_data.get('budget_max')
         if budget is not None and budget < 0:
