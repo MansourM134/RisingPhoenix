@@ -66,6 +66,13 @@
       <div class="browse-filter-actions">
         <button type="submit" class="request-action browse-btn">Apply filters</button>
         <a href="{% url 'request:request_list_view' %}" class="browse-reset">Reset</a>
+        {% if user.is_authenticated %}
+          {% if current_mine == '1' %}
+            <a href="{% url 'request:request_list_view' %}" class="browse-reset">Show all requests</a>
+          {% else %}
+            <a href="{% url 'request:request_list_view' %}?mine=1" class="browse-reset">My Requests</a>
+          {% endif %}
+        {% endif %}
         <span class="browse-result-count">{{ total_count }} request{{ total_count|pluralize }} found</span>
       </div>
     </form>
@@ -88,16 +95,13 @@
           <h2 class="request-card-title">
             <a href="{% url 'request:request_detail_view' project_request.id %}" class="request-card-title-link">{{ project_request.title }}</a>
           </h2>
+          <p class="request-card-meta-by">by {{ project_request.requester.username }}</p>
           <p class="request-card-desc">{{ project_request.description|truncatewords:24 }}</p>
           <div class="request-meta">
             <div class="request-meta-row">
               <span>
-                {% if project_request.budget_min and project_request.budget_max %}
-                  {{ project_request.budget_min|floatformat:"-2" }}&ndash;{{ project_request.budget_max|floatformat:"-2" }} SAR
-                {% elif project_request.budget_min %}
-                  From {{ project_request.budget_min|floatformat:"-2" }} SAR
-                {% elif project_request.budget_max %}
-                  Up to {{ project_request.budget_max|floatformat:"-2" }} SAR
+                {% if project_request.budget_max %}
+                  {{ project_request.budget_max|floatformat:"-2" }} SAR
                 {% else %}
                   Budget flexible
                 {% endif %}
@@ -113,6 +117,10 @@
               {% endif %}
             </div>
             <p class="mb-0">Deadline: {{ project_request.deadline|default:"Flexible" }}</p>
+            <p class="mb-0 request-card-proposals">
+              <i class="bi bi-file-earmark-text"></i>
+              {{ project_request.proposal_count }} proposal{{ project_request.proposal_count|pluralize }}
+            </p>
             <div class="request-card-actions">
               {% if user.is_authenticated and user == project_request.requester and project_request.status != 'closed' and project_request.status != 'time_ended' %}
                 <a href="{% url 'request:request_edit_view' project_request.id %}" class="request-card-edit-btn">Edit</a>
@@ -129,13 +137,13 @@
     {% if page_obj.has_other_pages %}
       <nav class="browse-pagination" aria-label="Requests pagination">
         {% if page_obj.has_previous %}
-          <a class="page-link" href="?q={{ current_q|urlencode }}&category={{ current_category|urlencode }}&status={{ current_status|urlencode }}&sort={{ current_sort|urlencode }}&page={{ page_obj.previous_page_number }}">Previous</a>
+          <a class="page-link" href="?q={{ current_q|urlencode }}&category={{ current_category|urlencode }}&status={{ current_status|urlencode }}&sort={{ current_sort|urlencode }}&mine={{ current_mine|urlencode }}&page={{ page_obj.previous_page_number }}">Previous</a>
         {% endif %}
 
         <span class="page-current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
 
         {% if page_obj.has_next %}
-          <a class="page-link" href="?q={{ current_q|urlencode }}&category={{ current_category|urlencode }}&status={{ current_status|urlencode }}&sort={{ current_sort|urlencode }}&page={{ page_obj.next_page_number }}">Next</a>
+          <a class="page-link" href="?q={{ current_q|urlencode }}&category={{ current_category|urlencode }}&status={{ current_status|urlencode }}&sort={{ current_sort|urlencode }}&mine={{ current_mine|urlencode }}&page={{ page_obj.next_page_number }}">Next</a>
         {% endif %}
       </nav>
     {% endif %}

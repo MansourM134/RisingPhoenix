@@ -33,8 +33,8 @@ class ProposalForm(forms.ModelForm):
 
     def clean_price(self):
         price = self.cleaned_data.get('price')
-        if price is not None and price < 0:
-            raise forms.ValidationError('Price cannot be negative.')
+        if price is not None and price <= 0:
+            raise forms.ValidationError('Price must be greater than 0.')
         return price
 
     def clean_estimated_days(self):

@@ -30,9 +30,21 @@
                   {{ proposal.request.category.name }} &bull; by {{ proposal.request.requester.username }}
                 </p>
               </div>
-              <span class="proposal-status-pill proposal-status-pill--{{ proposal.status }}">
-                {{ proposal.get_status_display }}
-              </span>
+              {% if proposal.status == 'accepted' and proposal.contract %}
+                {% with c=proposal.contract %}
+                  {% if c.status == 'completed' %}
+                    <span class="proposal-status-pill proposal-status-pill--completed">Completed</span>
+                  {% elif c.status == 'completion_requested' %}
+                    <span class="proposal-status-pill proposal-status-pill--completion-requested">Awaiting Confirmation</span>
+                  {% else %}
+                    <span class="proposal-status-pill proposal-status-pill--in-progress">In Progress</span>
+                  {% endif %}
+                {% endwith %}
+              {% elif proposal.status == 'rejected' and proposal.request.status == 'closed' %}
+                <span class="proposal-status-pill proposal-status-pill--rejected">Another was selected</span>
+              {% else %}
+                <span class="proposal-status-pill proposal-status-pill--{{ proposal.status }}">{{ proposal.get_status_display }}</span>
+              {% endif %}
             </div>
 
             <div class="proposal-card-body">

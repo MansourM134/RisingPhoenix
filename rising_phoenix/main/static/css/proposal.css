@@ -342,6 +342,22 @@
     color: #41464b;
 }
 
+.proposal-status-pill--in-progress {
+    background: #cfe2ff;
+    color: #084298;
+}
+
+.proposal-status-pill--completion-requested {
+    background: #fff3cd;
+    color: #664d03;
+}
+
+.proposal-status-pill--completed {
+    background: #d1e7dd;
+    color: #0a3622;
+    font-weight: 600;
+}
+
 /* ── Action Buttons ── */
 .proposal-action-btn {
     display: inline-block;

@@ -30,12 +30,8 @@
         <div class="request-detail-meta-item">
           <span class="request-label">Budget</span>
           <p class="mb-0">
-            {% if project_request.budget_min and project_request.budget_max %}
-              {{ project_request.budget_min|floatformat:"-2" }} &ndash; {{ project_request.budget_max|floatformat:"-2" }} SAR
-            {% elif project_request.budget_min %}
-              From {{ project_request.budget_min|floatformat:"-2" }} SAR
-            {% elif project_request.budget_max %}
-              Up to {{ project_request.budget_max|floatformat:"-2" }} SAR
+            {% if project_request.budget_max %}
+              {{ project_request.budget_max|floatformat:"-2" }} SAR
             {% else %}
               Flexible
             {% endif %}
@@ -70,9 +66,21 @@
         <p class="request-detail-description">{{ project_request.description|linebreaksbr }}</p>
       </div>
 
-      {% if project_request.status == 'time_ended' and project_request.deadline %}
+      {% if project_request.status == 'time_ended' %}
         <div class="request-time-ended-note" role="status">
-          This request was automatically marked as time ended because the deadline ({{ project_request.deadline }}) has passed.
+          {% if project_request.deadline %}
+            This request was automatically marked as time ended because the deadline ({{ project_request.deadline }}) has passed.
+          {% else %}
+            This request has ended.
+          {% endif %}
+          {% if is_requester %}
+            <form method="post" action="{% url 'request:reopen_request_view' project_request.id %}" class="reopen-form">
+              {% csrf_token %}
+              <label for="new_deadline">Set a new deadline to reopen:</label>
+              <input type="date" name="new_deadline" id="new_deadline" class="request-input reopen-date-input" required>
+              <button type="submit" class="request-action reopen-btn">Reopen Request</button>
+            </form>
+          {% endif %}
         </div>
       {% endif %}
 
@@ -134,6 +142,10 @@
                     data-confirm-body="Your proposal will be withdrawn and you will no longer be considered for this project."
                     data-confirm-variant="danger">Withdraw</button>
                 </form>
+              {% elif user_proposal.status == 'withdrawn' and project_request.status == 'open' or user_proposal.status == 'withdrawn' and project_request.status == 'in_review' %}
+                <a href="{% url 'proposal:submit_proposal_view' project_request.id %}" class="proposal-action-btn proposal-action-btn--accept">
+                  Re-submit Proposal
+                </a>
               {% endif %}
               {% if user_proposal.is_accepted and user_proposal.contract %}
                 <a href="{% url 'progress:contract_detail_view' user_proposal.contract.id %}" class="proposal-action-btn proposal-action-btn--accept">

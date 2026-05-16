@@ -463,17 +463,47 @@
       });
     }
 
+    function showUploadWarning(msg) {
+      var badge = document.getElementById('img-count-badge');
+      var warn = document.getElementById('img-upload-warning');
+      if (!warn) {
+        warn = document.createElement('p');
+        warn.id = 'img-upload-warning';
+        warn.className = 'request-error';
+        warn.style.marginTop = '0.5rem';
+        if (badge && badge.parentNode) {
+          badge.parentNode.insertBefore(warn, badge.nextSibling);
+        } else if (zone && zone.parentNode) {
+          zone.parentNode.appendChild(warn);
+        }
+      }
+      warn.textContent = msg;
+      warn.hidden = false;
+      setTimeout(function () { warn.hidden = true; }, 5000);
+    }
+
     function addFiles(newFiles) {
       var existing = new Set(items.map(function (item) { return fileKey(item.file); }));
+      var nonImageNames = [];
       Array.from(newFiles).forEach(function (file) {
+        if (!file.type.startsWith('image/')) {
+          nonImageNames.push(file.name);
+          return;
+        }
         if (items.length >= MAX_IMAGES) return;
-        if (!file.type.startsWith('image/')) return;
         var key = fileKey(file);
         if (existing.has(key)) return;
         items.push({ id: nextId, file: file, caption: '' });
         nextId += 1;
         existing.add(key);
       });
+      if (nonImageNames.length) {
+        showUploadWarning(
+          nonImageNames.length === 1
+            ? '"' + nonImageNames[0] + '" is not an image and was not added.'
+            : nonImageNames.length + ' files were skipped because they are not images.'
+        );
+      }
       syncInput();
       renderPreviews();
     }
@@ -613,13 +643,32 @@
     loadSuggestions();
   })();
 
-  // Double-submit protection
+  // Double-submit protection + client-side required field validation
   (function () {
     var form = document.querySelector('.request-form-card form');
     var submitBtn = form ? form.querySelector('button[type="submit"]') : null;
     if (!form || !submitBtn) return;
     var originalLabel = submitBtn.textContent;
-    form.addEventListener('submit', function () {
+
+    function showFieldError(field, msg) {
+      var wrap = field.closest('.field-full') || field.parentElement;
+      var existing = wrap.querySelector('.request-error.js-field-error');
+      if (!existing) {
+        existing = document.createElement('p');
+        existing.className = 'request-error js-field-error';
+        wrap.appendChild(existing);
+      }
+      existing.textContent = msg;
+      field.focus();
+    }
+
+    form.addEventListener('submit', function (e) {
+      var titleInput = form.querySelector('#id_title');
+      if (titleInput && !titleInput.value.trim()) {
+        e.preventDefault();
+        showFieldError(titleInput, 'Title is required.');
+        return;
+      }
       submitBtn.disabled = true;
       submitBtn.textContent = 'Submitting...';
       setTimeout(function () {

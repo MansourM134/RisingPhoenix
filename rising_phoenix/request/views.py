@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
 from django.core.paginator import Paginator
-from django.db.models import F, Q
+from django.db.models import Count, F, Q
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -101,19 +101,54 @@ def _refresh_time_based_statuses():
 		deadline__isnull=False,
 		deadline__lt=today,
 	).update(status=Request.Status.TIME_ENDED)
+	# Revert IN_REVIEW → OPEN when every proposal has been withdrawn/rejected
+	# (and the request hasn't expired yet).
+	# Use exclude+subquery instead of annotate+update (annotate+update is unreliable in Django).
+	from proposal.models import Proposal as _Proposal
+	requests_with_pending = (
+		_Proposal.objects.filter(status='pending').values('request_id').distinct()
+	)
+	Request.objects.filter(
+		status=Request.Status.IN_REVIEW,
+	).filter(
+		Q(deadline__isnull=True) | Q(deadline__gte=today)
+	).exclude(
+		id__in=requests_with_pending
+	).update(status=Request.Status.OPEN)
 	cache.set(cache_key, True, timeout=60)
 
 
 def request_list_view(request: HttpRequest):
 	_refresh_time_based_statuses()
-	project_requests = Request.objects.select_related('requester', 'category').prefetch_related('images')
+	project_requests = (
+		Request.objects
+		.select_related('requester', 'category')
+		.prefetch_related('images')
+		.annotate(proposal_count=Count('proposals'))
+	)
+
+	is_artisan = request.user.is_authenticated and request.user.groups.filter(name='artisan').exists()
+
+	# Non-artisan visitors (guests + regular requesters) only see closed requests,
+	# except requesters can also see their own open ones.
+	if not is_artisan:
+		if request.user.is_authenticated:
+			project_requests = project_requests.filter(
+				Q(status=Request.Status.CLOSED) | Q(requester=request.user)
+			)
+		else:
+			project_requests = project_requests.filter(status=Request.Status.CLOSED)
 
 	search_query = request.GET.get('q', '').strip()
 	category = request.GET.get('category', '').strip()
 	status = request.GET.get('status', '').strip()
 	sort = request.GET.get('sort', 'newest').strip()
+	mine = request.GET.get('mine', '').strip()
 
 	valid_statuses = {choice[0] for choice in Request.Status.choices}
+
+	if mine == '1' and request.user.is_authenticated:
+		project_requests = project_requests.filter(requester=request.user)
 
 	if search_query:
 		project_requests = project_requests.filter(
@@ -154,6 +189,7 @@ def request_list_view(request: HttpRequest):
 		'current_category': category,
 		'current_status': status,
 		'current_sort': sort,
+		'current_mine': mine,
 	}
 	return render(request, 'request/request_list.html', context)
 
@@ -287,6 +323,46 @@ def request_edit_view(request: HttpRequest, request_id: int):
 		'existing_images': request_instance.images.all(),
 	}
 	return render(request, 'request/request_form.html', context)
+
+
+@login_required
+def reopen_request_view(request: HttpRequest, request_id: int):
+	request_instance = get_object_or_404(Request, id=request_id)
+
+	if request.method != 'POST':
+		messages.error(request, 'Invalid action.')
+		return redirect('request:request_detail_view', request_id=request_id)
+
+	if request_instance.requester_id != request.user.id:
+		messages.error(request, 'Only the requester can reopen this request.')
+		return redirect('request:request_detail_view', request_id=request_id)
+
+	if request_instance.status != Request.Status.TIME_ENDED:
+		messages.error(request, 'Only time-ended requests can be reopened.')
+		return redirect('request:request_detail_view', request_id=request_id)
+
+	new_deadline_str = request.POST.get('new_deadline', '').strip()
+	if not new_deadline_str:
+		messages.error(request, 'Please provide a new deadline.')
+		return redirect('request:request_detail_view', request_id=request_id)
+
+	try:
+		from datetime import date
+		new_deadline = date.fromisoformat(new_deadline_str)
+		if new_deadline <= timezone.localdate():
+			messages.error(request, 'The new deadline must be in the future.')
+			return redirect('request:request_detail_view', request_id=request_id)
+	except ValueError:
+		messages.error(request, 'Invalid date format.')
+		return redirect('request:request_detail_view', request_id=request_id)
+
+	# If any proposals are still pending, go back to IN_REVIEW; otherwise OPEN
+	has_pending = request_instance.proposals.filter(status='pending').exists()
+	request_instance.deadline = new_deadline
+	request_instance.status = Request.Status.IN_REVIEW if has_pending else Request.Status.OPEN
+	request_instance.save(update_fields=['deadline', 'status'])
+	messages.success(request, 'Your request has been reopened with the new deadline.')
+	return redirect('request:request_detail_view', request_id=request_id)
 
 
 @login_required

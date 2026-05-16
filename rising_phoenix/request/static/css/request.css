@@ -418,6 +418,35 @@ h5 {
 	font-size: 0.82rem;
 }
 
+.reopen-form {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+	margin-top: 0.6rem;
+}
+
+.reopen-date-input {
+	max-width: 180px;
+	font-size: 0.82rem;
+}
+
+.reopen-btn {
+	font-size: 0.82rem;
+	padding: 0.35rem 0.75rem;
+}
+
+.request-card-meta-by {
+	font-size: 0.78rem;
+	color: var(--ink-mid);
+	margin-bottom: 0.25rem;
+}
+
+.request-card-proposals {
+	font-size: 0.78rem;
+	color: var(--ink-mid);
+}
+
 .request-detail-gallery {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));

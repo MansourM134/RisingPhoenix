@@ -103,14 +103,7 @@
           </div>
 
           <div>
-            <label class="request-label" for="{{ form.budget_min.id_for_label }}">Min budget (SAR)</label>
-            {{ form.budget_min }}
-            <p class="field-hint">Leave blank if flexible</p>
-            {% for error in form.budget_min.errors %}<p class="request-error">{{ error }}</p>{% endfor %}
-          </div>
-
-          <div>
-            <label class="request-label" for="{{ form.budget_max.id_for_label }}">Max budget (SAR)</label>
+            <label class="request-label" for="{{ form.budget_max.id_for_label }}">{{ form.budget_max.label }}</label>
             {{ form.budget_max }}
             <p class="field-hint">Leave blank if flexible</p>
             {% for error in form.budget_max.errors %}<p class="request-error">{{ error }}</p>{% endfor %}
