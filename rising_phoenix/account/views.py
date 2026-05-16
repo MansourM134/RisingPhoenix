@@ -7,7 +7,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import ArtisanProfile, Review
 from django.contrib.auth.models import Group, User
-from django.db.models import Avg
+from django.db.models import Avg, Sum, Count, Q
+from django.utils import timezone
+import datetime
+import calendar
 from twilio.rest import Client
 from django.conf import settings
 from django.contrib.auth.forms import PasswordResetForm
@@ -111,22 +114,86 @@ def artisan_dashboard_view(request: HttpRequest):
     # Get workshop if it exists
     workshop = getattr(artisan_profile, 'workshop_profile', None)
     
-    # Sample data (you can extend this with actual orders/earnings data later)
+    # Dynamic stats calculated from models
+    now = timezone.now()
+    year = now.year
+    month = now.month
+
+    from progress.models import Contract, ProgressUpdate
+    from request.models import Request as UserRequest
+    from proposal.models import Proposal
+
+    # Earnings for last 6 months (including current month)
+    earnings_6months = []
+    for n in range(5, -1, -1):
+        total_months = (year * 12 + month - 1) - n
+        y = total_months // 12
+        m = total_months % 12 + 1
+        total = Contract.objects.filter(
+            proposal__artisan=request.user,
+            status=Contract.Status.COMPLETED,
+            completed_at__year=y,
+            completed_at__month=m,
+        ).aggregate(total=Sum('proposal__price'))['total'] or 0
+        earnings_6months.append({'label': f"{calendar.month_abbr[m]} {y}", 'total': float(total)})
+
+    # this and last month totals for stat cards
+    earnings_this_month = earnings_6months[-1]['total'] if earnings_6months else 0
+    earnings_last_month = earnings_6months[-2]['total'] if len(earnings_6months) > 1 else 0
+    try:
+        if earnings_last_month == 0:
+            earnings_growth_percent = 100 if earnings_this_month > 0 else 0
+        else:
+            earnings_growth_percent = int(((earnings_this_month - earnings_last_month) / float(earnings_last_month)) * 100)
+    except Exception:
+        earnings_growth_percent = 0
+
+    # Active orders (contracts in progress)
+    active_contracts_qs = Contract.objects.filter(
+        proposal__artisan=request.user,
+        status=Contract.Status.IN_PROGRESS,
+    ).select_related('proposal__request', 'proposal')
+    active_orders = active_contracts_qs.count()
+
+    # Progress updates that have no images (awaiting photo upload)
+    photos_awaiting = ProgressUpdate.objects.filter(
+        contract__proposal__artisan=request.user,
+    ).annotate(img_count=Count('images')).filter(img_count=0).count()
+
+    # My proposals
+    my_proposals_qs = Proposal.objects.filter(artisan=request.user).select_related('request')
+    my_proposals = my_proposals_qs.count()
+    my_proposals_pending = my_proposals_qs.filter(status=Proposal.Status.PENDING).count()
+
+    # Requests matching artisan's workshop categories (if available)
+    requests_matching_count = 0
+    requests_matching_list = []
+    if workshop and hasattr(workshop, 'categories'):
+        cats = workshop.categories.all()
+        if cats.exists():
+            reqs_qs = UserRequest.objects.filter(status=UserRequest.Status.OPEN, category__in=cats).distinct()
+            requests_matching_count = reqs_qs.count()
+            requests_matching_list = list(reqs_qs.order_by('-created_at')[:5])
+
     stats = {
-        'earnings_this_month': 4820,
-        'earnings_last_month': 4060,
-        'earnings_growth_percent': 18,
-        'active_orders': 2,
-        'photos_awaiting': 1,
+        'earnings_6months': earnings_6months,
+        'earnings_this_month': earnings_this_month,
+        'earnings_last_month': earnings_last_month,
+        'earnings_growth_percent': earnings_growth_percent,
+        'active_orders': active_orders,
+        'photos_awaiting': photos_awaiting,
         'rating': artisan_profile.average_rating,
         'rating_reviews': request.user.reviews_received.count(),
-        'open_requests': 12,
+        'open_requests': requests_matching_count,
     }
-    
+
     context = {
         'artisan': artisan_profile,
         'workshop': workshop,
         'stats': stats,
+        'active_contracts': active_contracts_qs[:5],
+        'my_proposals': my_proposals_qs[:5],
+        'requests_matching_list': requests_matching_list,
     }
     return render(request, 'account/artisan_dashboard.html', context)
 def profile_view(request:HttpRequest, user_name):
