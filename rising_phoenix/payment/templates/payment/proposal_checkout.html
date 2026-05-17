@@ -1,20 +1,20 @@
 {% extends "main/base.html" %}
 {% load static %}
 
-{% block title %}Review & Pay{% endblock %}
+{% block title %}Accept Contract{% endblock %}
 
 {% block content %}
 <div class="container py-4 py-lg-5">
     <div class="row g-4">
-        <div class="col-lg-7">
+        <div class="col-lg-8">
             <div class="card border-0 shadow-sm rounded-4 h-100">
                 <div class="card-body p-4 p-lg-5">
                     <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
                         <div>
-                            <p class="text-uppercase small text-muted fw-semibold mb-2">Proposal Checkout</p>
-                            <h2 class="fw-bold mb-1">Review your escrow payment</h2>
+                            <p class="text-uppercase small text-muted fw-semibold mb-2">Contract Acceptance</p>
+                            <h2 class="fw-bold mb-1">Review and accept the contract</h2>
                             <p class="text-muted mb-0">
-                                Confirm the proposal details, then choose how you want to pay.
+                                Review the proposal details, accept the contract, and authorize the payment hold before sending it to the artisan for final approval.
                             </p>
                         </div>
 
@@ -89,14 +89,14 @@
                         {% endif %}
                     {% endwith %}
 
-                    <div class="alert alert-warning border-0 rounded-4 mb-0">
+                    <div class="alert alert-info border-0 rounded-4 mb-0">
                         <div class="d-flex gap-3 align-items-start">
-                            <i class="bi bi-shield-lock fs-4"></i>
+                            <i class="bi bi-file-earmark-text fs-4"></i>
                             <div>
-                                <h6 class="fw-bold mb-1">Escrow authorization</h6>
+                                <h6 class="fw-bold mb-1">What happens next</h6>
                                 <p class="mb-0 small">
-                                    Your payment method will be authorized for this amount before the proposal is accepted.
-                                    The request will close after successful payment authorization.
+                                    By continuing, you accept this contract and authorize a payment hold for the agreed amount.
+                                    The artisan will review the contract next. Your payment will remain on hold and will only be captured after the project is completed and confirmed.
                                 </p>
                             </div>
                         </div>
@@ -105,40 +105,37 @@
             </div>
         </div>
 
-        <div class="col-lg-5">
+        <div class="col-lg-4">
             <div class="card border-0 shadow-sm rounded-4 mb-4">
                 <div class="card-body p-4">
-                    <h5 class="fw-bold mb-4">Payment summary</h5>
+                    <h5 class="fw-bold mb-4">Contract summary</h5>
 
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="text-muted">Proposal price</span>
+                        <span class="text-muted">Project budget</span>
                         <span class="fw-semibold">{{ proposal.price|floatformat:2 }} SAR</span>
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="text-muted">Service fee</span>
-                        <span class="fw-semibold">0.00 SAR</span>
+                        <span class="text-muted">Estimated duration</span>
+                        <span class="fw-semibold">
+                            {{ proposal.estimated_days }} day{{ proposal.estimated_days|pluralize }}
+                        </span>
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="text-muted">Tax</span>
-                        <span class="fw-semibold">0.00 SAR</span>
+                        <span class="text-muted">Requester</span>
+                        <span class="fw-semibold">{{ request.user.username }}</span>
                     </div>
 
                     <hr>
 
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="fw-bold fs-5">Total to authorize</span>
-                        <span class="fw-bold fs-4">{{ proposal.price|floatformat:2 }} SAR</span>
-                    </div>
-
-                    <p class="text-muted small mt-3 mb-0">
-                        This amount is tied to the accepted proposal and will be used for the project escrow flow.
+                    <p class="text-muted small mb-0">
+                        This step accepts the contract and places the payment on hold. The artisan must still review and accept before work begins.
                     </p>
                 </div>
             </div>
 
-            <div class="card border-0 shadow-sm rounded-4">
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
                         <h5 class="fw-bold mb-0">Payment method</h5>
@@ -147,10 +144,10 @@
                         </a>
                     </div>
 
-                    <form method="post" action="{% url 'payment:confirm_proposal_payment_view' proposal.id %}">
-                        {% csrf_token %}
+                    {% if cards %}
+                        <form method="post" action="{% url 'payment:confirm_proposal_payment_view' proposal.id %}">
+                            {% csrf_token %}
 
-                        {% if cards %}
                             <div class="d-grid gap-3 mb-4">
                                 {% for card in cards %}
                                     <label class="border rounded-4 p-3 payment-card-option {% if card.is_default %}border-primary{% endif %}">
@@ -189,24 +186,44 @@
                                 {% endfor %}
                             </div>
 
-                            <button type="submit" class="btn btn-primary w-100 rounded-pill py-3 fw-semibold">
-                                Pay & Accept Proposal
-                            </button>
-                        {% else %}
-                            <div class="text-center py-4">
-                                <div class="mb-3">
-                                    <i class="bi bi-credit-card text-muted" style="font-size: 2rem;"></i>
-                                </div>
-                                <h6 class="fw-bold mb-2">No saved cards yet</h6>
-                                <p class="text-muted small mb-3">
-                                    Add a payment method before you can continue with escrow payment.
-                                </p>
-                                <a href="{% url 'payment:add_card' %}" class="btn btn-primary rounded-pill">
-                                    Add Your First Card
-                                </a>
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" value="1" id="accept_terms" required>
+                                <label class="form-check-label small text-muted" for="accept_terms">
+                                    I have reviewed the contract details, agree to the proposal terms, and authorize a payment hold for this project.
+                                </label>
                             </div>
-                        {% endif %}
-                    </form>
+
+                            <button type="submit" class="btn btn-primary w-100 rounded-pill py-3 fw-semibold">
+                                Accept Contract & Authorize Hold
+                            </button>
+                        </form>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <div class="mb-3">
+                                <i class="bi bi-credit-card text-muted" style="font-size: 2rem;"></i>
+                            </div>
+                            <h6 class="fw-bold mb-2">No saved cards yet</h6>
+                            <p class="text-muted small mb-3">
+                                Add a payment method to authorize the hold and continue with the contract.
+                            </p>
+                            <a href="{% url 'payment:add_card' %}" class="btn btn-primary rounded-pill">
+                                Add Your First Card
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <h6 class="fw-bold mb-2">Hold amount</h6>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Amount to authorize</span>
+                        <span class="fw-bold fs-5">{{ proposal.price|floatformat:2 }} SAR</span>
+                    </div>
+                    <p class="text-muted small mt-3 mb-0">
+                        This amount will be authorized on your card and held until the project is completed, canceled, or the authorization expires.
+                    </p>
                 </div>
             </div>
         </div>

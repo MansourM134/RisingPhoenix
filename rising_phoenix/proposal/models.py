@@ -8,6 +8,7 @@ class Proposal(models.Model):
         ACCEPTED = 'accepted', 'Accepted'
         REJECTED = 'rejected', 'Rejected'
         WITHDRAWN = 'withdrawn', 'Withdrawn'
+        CONTRACT_APPROVAL = 'contract_approval', 'Pending Contract Approval'
 
     request = models.ForeignKey(
         'request.Request',
@@ -41,6 +42,10 @@ class Proposal(models.Model):
     @property
     def is_accepted(self):
         return self.status == self.Status.ACCEPTED
+    @property
+    def is_contract_approval(self):
+        return self.status == self.Status.CONTRACT_APPROVAL
+
 
 
 class ProposalImage(models.Model):

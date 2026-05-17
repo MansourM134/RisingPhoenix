@@ -1,3 +1,4 @@
+from django.utils import timezone
 from decimal import Decimal
 
 from django.shortcuts import render, redirect, get_object_or_404
@@ -12,8 +13,10 @@ import stripe
 from request.models import Request
 from proposal.models import Proposal
 from django.db import transaction
-from progress.models import Contract
+from progress.models import Contract, ContractEvent
 from notification.models import Notification
+
+
 # Create your views here.
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -113,6 +116,49 @@ def proposal_checkout_view(request, proposal_id):
     return render(request, 'payment/proposal_checkout.html', context)
 
 
+def artisan_contract_review_view(request, contract_id):
+    contract = get_object_or_404(
+        Contract.objects.select_related(
+            'proposal',
+            'proposal__request',
+            'proposal__artisan',
+            'proposal__request__requester',
+            'escrow_payment',
+        ),
+        id=contract_id
+    )
+
+    if request.user != contract.artisan:
+        messages.error(request, 'Only the artisan can review this contract.')
+        return redirect('request:request_detail_view', request_id=contract.proposal.request.id)
+
+    if contract.status == Contract.Status.CANCELED:
+        messages.error(request, 'This contract has been canceled.')
+        return redirect('progress:contract_detail_view', contract_id=contract.id)
+
+    if contract.status == Contract.Status.COMPLETED:
+        messages.info(request, 'This contract has already been completed.')
+        return redirect('progress:contract_detail_view', contract_id=contract.id)
+
+    if not contract.requester_accepted_at:
+        messages.error(request, 'The requester has not accepted this contract yet.')
+        return redirect('request:request_detail_view', request_id=contract.proposal.request.id)
+
+    escrow_payment = getattr(contract, 'escrow_payment', None)
+    if not escrow_payment or escrow_payment.status != 'authorized' or escrow_payment.captured:
+        messages.error(request, 'This contract does not have a valid authorized payment hold.')
+        return redirect('request:request_detail_view', request_id=contract.proposal.request.id)
+
+    context = {
+        'contract': contract,
+        'proposal': contract.proposal,
+        'project_request': contract.proposal.request,
+        'escrow_payment': escrow_payment,
+    }
+    return render(request, 'payment/artisan_contract_review.html', context)
+
+
+
 def confirm_proposal_payment_view(request, proposal_id):
     proposal = get_object_or_404(
         Proposal.objects.select_related('request', 'artisan'),
@@ -124,12 +170,8 @@ def confirm_proposal_payment_view(request, proposal_id):
         messages.error(request, 'Only the requester can pay for this proposal.')
         return redirect('request:request_detail_view', request_id=project_request.id)
 
-    if not proposal.is_pending:
-        messages.error(request, 'This proposal is no longer pending.')
-        return redirect('request:request_detail_view', request_id=project_request.id)
-
-    if project_request.status == Request.Status.CLOSED:
-        messages.error(request, 'This request is already closed.')
+    if proposal.status != Proposal.Status.PENDING:
+        messages.error(request, 'This proposal is no longer available for payment.')
         return redirect('request:request_detail_view', request_id=project_request.id)
 
     payment_method_id = request.POST.get('payment_method')
@@ -180,7 +222,7 @@ def confirm_proposal_payment_view(request, proposal_id):
         return redirect('payment:proposal_checkout_view', proposal_id=proposal.id)
 
     with transaction.atomic():
-        proposal.status = Proposal.Status.ACCEPTED
+        proposal.status = Proposal.Status.CONTRACT_APPROVAL
         proposal.save(update_fields=['status', 'updated_at'])
 
         rejected_artisans = list(
@@ -196,10 +238,18 @@ def confirm_proposal_payment_view(request, proposal_id):
             status=Proposal.Status.REJECTED
         )
 
-        project_request.status = Request.Status.CLOSED
-        project_request.save(update_fields=['status'])
+        contract, created = Contract.objects.get_or_create(
+            proposal=proposal,
+            defaults={
+                'status': Contract.Status.PENDING_ARTISAN,
+                'requester_accepted_at': timezone.now(),
+            }
+        )
 
-        contract, _ = Contract.objects.get_or_create(proposal=proposal)
+        if not created:
+            contract.requester_accepted_at = timezone.now()
+            contract.status = Contract.Status.PENDING_ARTISAN
+            contract.save(update_fields=['requester_accepted_at', 'status', 'updated_at'])
 
         EscrowPayment.objects.create(
             requester=request.user,
@@ -226,13 +276,85 @@ def confirm_proposal_payment_view(request, proposal_id):
     notify(
         proposal.artisan,
         Notification.NotifType.PROPOSAL_ACCEPTED,
-        'Your proposal was accepted!',
-        body=f'You were chosen for "{project_request.title}". Escrow payment has been authorized.',
+        'Contract awaiting your approval',
+        body=f'The requester selected your proposal for "{project_request.title}" and authorized the payment hold. Please review and accept the contract.',
         link=reverse('progress:contract_detail_view', kwargs={'contract_id': contract.id}),
     )
 
-    messages.success(request, 'Payment authorized and proposal accepted successfully.')
+    messages.success(request, 'Payment authorized successfully. The contract was sent to the artisan for approval.')
     return redirect('progress:contract_detail_view', contract_id=contract.id)
+
+
+def artisan_accept_contract_view(request, contract_id):
+    contract = get_object_or_404(
+        Contract.objects.select_related(
+            'proposal',
+            'proposal__request',
+            'proposal__artisan',
+            'proposal__request__requester',
+            'escrow_payment',
+        ),
+        id=contract_id
+    )
+
+    if request.method != 'POST':
+        messages.error(request, 'Invalid request method.')
+        return redirect('progress:artisan_contract_review_view', contract_id=contract.id)
+
+    if request.user != contract.artisan:
+        messages.error(request, 'Only the artisan can accept this contract.')
+        return redirect('request:request_detail_view', request_id=contract.proposal.request.id)
+
+    if contract.status == Contract.Status.COMPLETED:
+        messages.info(request, 'This contract has already been completed.')
+        return redirect('progress:contract_detail_view', contract_id=contract.id)
+
+    if contract.status == Contract.Status.CANCELED:
+        messages.error(request, 'This contract has been canceled.')
+        return redirect('progress:contract_detail_view', contract_id=contract.id)
+
+    if not contract.requester_accepted_at:
+        messages.error(request, 'The requester must accept the contract first.')
+        return redirect('progress:artisan_contract_review_view', contract_id=contract.id)
+
+    if contract.artisan_accepted_at:
+        messages.info(request, 'You already accepted this contract.')
+        return redirect('progress:contract_detail_view', contract_id=contract.id)
+
+    if contract.status != Contract.Status.PENDING_ARTISAN:
+        messages.error(request, 'This contract is not waiting for artisan acceptance.')
+        return redirect('progress:contract_detail_view', contract_id=contract.id)
+
+    escrow_payment = getattr(contract, 'escrow_payment', None)
+    if not escrow_payment:
+        messages.error(request, 'No authorized escrow payment was found for this contract.')
+        return redirect('progress:artisan_contract_review_view', contract_id=contract.id)
+
+    if escrow_payment.status != 'authorized' or escrow_payment.captured:
+        messages.error(request, 'This escrow payment is not in a valid authorized state.')
+        return redirect('progress:artisan_contract_review_view', contract_id=contract.id)
+
+    with transaction.atomic():
+        contract.artisan_accepted_at = timezone.now()
+        contract.status = Contract.Status.ACTIVE
+        contract.save(update_fields=['artisan_accepted_at', 'status', 'updated_at'])
+
+        proposal = contract.proposal
+        proposal.status = Proposal.Status.ACCEPTED
+        proposal.save(update_fields=['status', 'updated_at'])
+
+    # notify(
+    #     contract.requester,
+    #     Notification.NotifType.CONTRACT_ACTIVE,
+    #     'The artisan accepted the contract',
+    #     body=f'The contract for "{contract.proposal.request.title}" is now active and work can begin.',
+    #     link=reverse('progress:contract_detail_view', kwargs={'contract_id': contract.id}),
+    # )
+
+    messages.success(request, 'Contract accepted successfully. You can now begin the work.')
+    return redirect('progress:contract_detail_view', contract_id=contract.id)
+
+
 
 
     

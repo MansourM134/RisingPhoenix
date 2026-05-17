@@ -152,7 +152,13 @@
                   <i class="bi bi-box-arrow-up-right"></i> View Project
                 </a>
               {% endif %}
-            </div>
+{% if user_proposal.is_contract_approval and user_proposal.contract %}
+  <a href="{% url 'payment:artisan_contract_review_view' user_proposal.contract.id %}"
+     class="proposal-action-btn proposal-action-btn--accept">
+    <i class="bi bi-file-earmark-text"></i> Accept Contract
+  </a>
+{% endif %}            
+</div>
           </div>
           <div class="proposal-card proposal-card--{{ user_proposal.status }}">
             <div class="proposal-card-head">

@@ -53,6 +53,7 @@ def _save_images(model_cls, fk_field, fk_obj, request_files, captions=None):
 
 @login_required
 def contract_detail_view(request, contract_id):
+    
     contract = get_object_or_404(
         Contract.objects.select_related(
             'proposal__artisan',
@@ -61,6 +62,9 @@ def contract_detail_view(request, contract_id):
         ),
         id=contract_id,
     )
+    if contract.status != Contract.Status.ACTIVE or not (contract.requester_accepted_at and contract.artisan_accepted_at):
+        messages.error(request, 'This contract is not active yet. Both parties must accept the contract first.')
+        return redirect('main:home_view')
 
     is_artisan   = request.user == contract.artisan
     is_requester = request.user == contract.requester

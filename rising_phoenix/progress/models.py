@@ -5,16 +5,23 @@ from django.utils import timezone
 
 class Contract(models.Model):
     class Status(models.TextChoices):
+        PENDING_REQUESTER = 'pending_requester', 'Pending Requester Acceptance'
+        PENDING_ARTISAN = 'pending_artisan', 'Pending Artisan Acceptance'
+        ACTIVE = 'active', 'Active'
         IN_PROGRESS           = 'in_progress',          'In Progress'
         COMPLETION_REQUESTED  = 'completion_requested', 'Completion Requested'
         COMPLETED             = 'completed',            'Completed'
+        CANCELED = 'canceled', 'Canceled'
+
 
     proposal     = models.OneToOneField(
         'proposal.Proposal',
         on_delete=models.CASCADE,
         related_name='contract',
     )
-    status       = models.CharField(max_length=30, choices=Status.choices, default=Status.IN_PROGRESS)
+    status       = models.CharField(max_length=30, choices=Status.choices, default=Status.PENDING_ARTISAN)
+    requester_accepted_at = models.DateTimeField(null=True, blank=True)
+    artisan_accepted_at = models.DateTimeField(null=True, blank=True)
     created_at   = models.DateTimeField(auto_now_add=True)
     updated_at   = models.DateTimeField(auto_now=True)
     # Set when requester confirms completion — escrow/reviews hook here
