@@ -163,6 +163,15 @@
                   <i class="bi bi-box-arrow-up-right"></i> View Project
                 </a>
               {% endif %}
+              {% if user_proposal.conversation %}
+                <a href="{% url 'message:conversation_detail_view' user_proposal.conversation.id %}" class="proposal-action-btn">
+                  <i class="bi bi-chat-dots-fill"></i> Open Chat
+                </a>
+              {% else %}
+                <a href="{% url 'message:start_conversation_view' user_proposal.id %}" class="proposal-action-btn">
+                  <i class="bi bi-chat-dots-fill"></i> Start Chat
+                </a>
+              {% endif %}
             </div>
           </div>
           <div class="proposal-card proposal-card--{{ user_proposal.status }}">
@@ -221,24 +230,22 @@
                   <div>
                     <p class="proposal-card-artisan">
                       <strong>{{ proposal.artisan.username }}</strong>
-                      {% if proposal.is_accepted %}
-                        {% if proposal.contract %}
-                          <a class="proposal-chat-btn" href="{% url 'progress:contract_detail_view' proposal.contract.id %}">
-                            <i class="bi bi-box-arrow-up-right"></i>
-                            <span>View Project</span>
-                          </a>
-                        {% endif %}
-                        {% if proposal.conversation %}
-                          <a class="proposal-chat-btn" href="{% url 'message:conversation_detail_view' proposal.conversation.id %}">
-                            <i class="bi bi-chat-dots-fill"></i>
-                            <span>Open Chat</span>
-                          </a>
-                        {% else %}
-                          <a class="proposal-chat-btn" href="{% url 'message:start_conversation_view' proposal.id %}">
-                            <i class="bi bi-chat-dots-fill"></i>
-                            <span>Start Chat</span>
-                          </a>
-                        {% endif %}
+                      {% if proposal.is_accepted and proposal.contract %}
+                        <a class="proposal-chat-btn" href="{% url 'progress:contract_detail_view' proposal.contract.id %}">
+                          <i class="bi bi-box-arrow-up-right"></i>
+                          <span>View Project</span>
+                        </a>
+                      {% endif %}
+                      {% if proposal.conversation %}
+                        <a class="proposal-chat-btn" href="{% url 'message:conversation_detail_view' proposal.conversation.id %}">
+                          <i class="bi bi-chat-dots-fill"></i>
+                          <span>Open Chat</span>
+                        </a>
+                      {% else %}
+                        <a class="proposal-chat-btn" href="{% url 'message:start_conversation_view' proposal.id %}">
+                          <i class="bi bi-chat-dots-fill"></i>
+                          <span>Start Chat</span>
+                        </a>
                       {% endif %}
                     </p>
                     <div class="proposal-card-stats-row">

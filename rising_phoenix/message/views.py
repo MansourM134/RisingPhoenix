@@ -18,7 +18,7 @@ def start_conversation_view(request: HttpRequest, proposal_id: int) -> HttpRespo
     requester = proposal.request.requester
     artisan = proposal.artisan
 
-    if request.user != requester:
+    if request.user not in (requester, artisan):
         messages.error(request, "You are not allowed to start this conversation.")
         return redirect('main:home_view')
 
@@ -32,10 +32,11 @@ def start_conversation_view(request: HttpRequest, proposal_id: int) -> HttpRespo
 
     if created:
         messages.success(request, "Conversation started successfully.")
+        recipient = artisan if request.user == requester else requester
         notify(
-            recipient=artisan,
+            recipient=recipient,
             notif_type=Notification.NotifType.MESSAGE_RECEIVED,
-            title=f'{requester.username} wants to chat',
+            title=f'{request.user.username} wants to chat',
             body=f'About: {proposal.request.title}',
             link=reverse('message:conversation_detail_view', args=[conversation.id]),
         )

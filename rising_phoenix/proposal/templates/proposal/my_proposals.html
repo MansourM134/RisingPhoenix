@@ -85,12 +85,30 @@
                     data-confirm-body="Your proposal will be withdrawn and you will no longer be considered for this project."
                     data-confirm-variant="danger">Withdraw</button>
                 </form>
+                {% if proposal.conversation %}
+                  <a href="{% url 'message:conversation_detail_view' proposal.conversation.id %}" class="proposal-action-btn">
+                    <i class="bi bi-chat-dots-fill"></i> Open Chat
+                  </a>
+                {% else %}
+                  <a href="{% url 'message:start_conversation_view' proposal.id %}" class="proposal-action-btn">
+                    <i class="bi bi-chat-dots-fill"></i> Start Chat
+                  </a>
+                {% endif %}
               </div>
             {% elif proposal.is_accepted and proposal.contract %}
               <div class="proposal-card-actions">
                 <a href="{% url 'progress:contract_detail_view' proposal.contract.id %}" class="proposal-action-btn proposal-action-btn--accept">
                   <i class="bi bi-box-arrow-up-right"></i> View Project
                 </a>
+                {% if proposal.conversation %}
+                  <a href="{% url 'message:conversation_detail_view' proposal.conversation.id %}" class="proposal-action-btn">
+                    <i class="bi bi-chat-dots-fill"></i> Open Chat
+                  </a>
+                {% else %}
+                  <a href="{% url 'message:start_conversation_view' proposal.id %}" class="proposal-action-btn">
+                    <i class="bi bi-chat-dots-fill"></i> Start Chat
+                  </a>
+                {% endif %}
               </div>
             {% endif %}
           </div>
