@@ -7,10 +7,9 @@ from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from django.views.decorators.http import require_POST
-
 from notification.models import Notification
 from notification.utils import notify
+from rising_phoenix.moderation import image_is_clean, text_is_clean
 from request.models import Request
 from .forms import ProposalForm
 from .models import Proposal, ProposalImage
@@ -48,8 +47,13 @@ def _save_proposal_images(proposal, request_files, captions=None):
         if content_type.lower() not in allowed_types:
             skipped.append(f'"{image_file.name}" is not an accepted image type.')
             continue
+        if not image_is_clean(image_file):
+            skipped.append(f'"{image_file.name}" was removed: explicit content detected.')
+            continue
         try:
             caption = (captions[index] if index < len(captions) else '').strip()
+            if caption and not text_is_clean(caption):
+                caption = ''
             ProposalImage.objects.create(proposal=proposal, image=image_file, caption=caption[:160])
         except Exception:
             logger.exception('Failed to save proposal image "%s"', image_file.name)
@@ -78,17 +82,19 @@ def submit_proposal_view(request, request_id):
         return redirect('request:request_detail_view', request_id=request_id)
 
     existing = Proposal.objects.filter(request=project_request, artisan=request.user).first()
-    if existing:
+    if existing and existing.status != Proposal.Status.WITHDRAWN:
         messages.info(request, 'You have already submitted a proposal for this request.')
         return redirect('request:request_detail_view', request_id=request_id)
 
     if request.method == 'POST':
-        form = ProposalForm(request.POST, request.FILES)
+        # Re-use the withdrawn proposal record instead of creating a duplicate
+        form = ProposalForm(request.POST, request.FILES, instance=existing if existing else None)
         if form.is_valid():
             try:
                 proposal = form.save(commit=False)
                 proposal.request = project_request
                 proposal.artisan = request.user
+                proposal.status = Proposal.Status.PENDING
                 proposal.save()
                 captions = request.POST.getlist('proposal_image_captions')
                 skipped = _save_proposal_images(proposal, request.FILES, captions)
@@ -110,13 +116,14 @@ def submit_proposal_view(request, request_id):
                 messages.error(request, 'You have already submitted a proposal for this request.')
                 return redirect('request:request_detail_view', request_id=request_id)
     else:
-        form = ProposalForm()
+        form = ProposalForm(instance=existing if existing else None)
 
     return render(request, 'proposal/proposal_form.html', {
         'form': form,
         'project_request': project_request,
         'request_images': list(project_request.images.all()),
         'edit_mode': False,
+        'resubmit': existing is not None,
     })
 
 
@@ -133,7 +140,7 @@ def edit_proposal_view(request, proposal_id):
 
     if not proposal.is_pending:
         messages.error(request, 'You can only edit a pending proposal.')
-        return redirect('request:request_detail_view', request_id=proposal.request_id)
+        return redirect('proposal:my_proposals_view')
 
     if request.method == 'POST':
         form = ProposalForm(request.POST, request.FILES, instance=proposal)
@@ -172,29 +179,47 @@ def edit_proposal_view(request, proposal_id):
 
 
 @login_required
-@require_POST
 def withdraw_proposal_view(request, proposal_id):
-    proposal = get_object_or_404(Proposal, id=proposal_id)
+    proposal = get_object_or_404(Proposal.objects.select_related('request'), id=proposal_id)
+    project_request = proposal.request
+
+    if request.method != 'POST':
+        messages.error(request, 'Invalid action.')
+        return redirect('request:request_detail_view', request_id=project_request.id)
 
     if proposal.artisan != request.user:
         messages.error(request, 'You can only withdraw your own proposals.')
-        return redirect('request:request_detail_view', request_id=proposal.request_id)
+        return redirect('request:request_detail_view', request_id=project_request.id)
 
     if not proposal.is_pending:
         messages.error(request, 'Only pending proposals can be withdrawn.')
-        return redirect('request:request_detail_view', request_id=proposal.request_id)
-
+        return redirect('request:request_detail_view', request_id=project_request.id)
     proposal.status = Proposal.Status.WITHDRAWN
     proposal.save(update_fields=['status', 'updated_at'])
+
+    # Immediately revert to OPEN if no pending proposals remain and the request hasn't expired
+    if project_request.status == Request.Status.IN_REVIEW:
+        from django.utils import timezone
+        today = timezone.localdate()
+        has_pending = project_request.proposals.filter(status=Proposal.Status.PENDING).exists()
+        if not has_pending:
+            deadline_ok = project_request.deadline is None or project_request.deadline >= today
+            if deadline_ok:
+                project_request.status = Request.Status.OPEN
+                project_request.save(update_fields=['status'])
+
     messages.success(request, 'Your proposal has been withdrawn.')
     return redirect('request:request_detail_view', request_id=proposal.request_id)
 
 
 @login_required
-@require_POST
 def accept_proposal_view(request, proposal_id):
     proposal = get_object_or_404(Proposal.objects.select_related('request'), id=proposal_id)
     project_request = proposal.request
+
+    if request.method != 'POST':
+        messages.error(request, 'Invalid action.')
+        return redirect('request:request_detail_view', request_id=project_request.id)
 
     if project_request.requester != request.user:
         messages.error(request, 'Only the requester can accept proposals.')
@@ -247,10 +272,13 @@ def accept_proposal_view(request, proposal_id):
 
 
 @login_required
-@require_POST
 def reject_proposal_view(request, proposal_id):
     proposal = get_object_or_404(Proposal.objects.select_related('request'), id=proposal_id)
     project_request = proposal.request
+
+    if request.method != 'POST':
+        messages.error(request, 'Invalid action.')
+        return redirect('request:request_detail_view', request_id=project_request.id)
 
     if project_request.requester != request.user:
         messages.error(request, 'Only the requester can reject proposals.')

@@ -1,5 +1,6 @@
 from django import forms
 
+from rising_phoenix.moderation import text_is_clean
 from .models import Proposal
 
 
@@ -31,10 +32,16 @@ class ProposalForm(forms.ModelForm):
             'message': 'Proposal message',
         }
 
+    def clean_message(self):
+        value = self.cleaned_data.get('message', '')
+        if value and not text_is_clean(value):
+            raise forms.ValidationError('Your proposal message contains inappropriate language. Please revise it.')
+        return value
+
     def clean_price(self):
         price = self.cleaned_data.get('price')
-        if price is not None and price < 0:
-            raise forms.ValidationError('Price cannot be negative.')
+        if price is not None and price <= 0:
+            raise forms.ValidationError('Price must be greater than 0.')
         return price
 
     def clean_estimated_days(self):

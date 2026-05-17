@@ -4,6 +4,8 @@ from django.db.models import Q
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+
+from rising_phoenix.moderation import image_is_clean, text_is_clean
 from .models import Conversation, Message
 from notification.models import Notification
 from notification.utils import notify
@@ -68,6 +70,22 @@ def conversation_detail_view(request, conversation_id):
     if request.method == "POST":
         body = request.POST.get("body", "").strip()
         image = request.FILES.get("image")
+
+        if body and not text_is_clean(body):
+            messages.error(request, 'Your message contains inappropriate language. Please revise it.')
+            return redirect('message:conversation_detail_view', conversation_id=conversation.id)
+
+        if image:
+            allowed_types = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
+            if image.size > 5 * 1024 * 1024:
+                messages.error(request, 'Image must be under 5 MB.')
+                image = None
+            elif (getattr(image, 'content_type', '') or '').lower() not in allowed_types:
+                messages.error(request, 'Only JPEG, PNG, WebP, and GIF images are allowed.')
+                image = None
+            elif not image_is_clean(image):
+                messages.error(request, 'Your image was rejected: explicit content detected.')
+                image = None
 
         if body or image:
             Message.objects.create(

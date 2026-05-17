@@ -411,26 +411,26 @@
                 <i class="bi bi-house-door-fill"></i>
                 <span>Dashboard</span>
             </a>
-            <a href="#">
+            <a href="{% url 'request:request_list_view' %}">
                 <i class="bi bi-search"></i>
                 <span>Browse Requests</span>
-                <span class="sidebar-badge">12</span>
+                <span class="sidebar-badge">{{ stats.open_requests }}</span>
             </a>
             <a href="#">
                 <i class="bi bi-box-seam"></i>
                 <span>Active Orders</span>
-                <span class="sidebar-badge">2</span>
+                <span class="sidebar-badge">{{ stats.active_orders }}</span>
             </a>
-            <a href="#">
+            <a href="{% url 'proposal:my_proposals_view' %}">
                 <i class="bi bi-clipboard-check"></i>
                 <span>My Proposals</span>
-                <span class="sidebar-badge">4</span>
+                <span class="sidebar-badge">{{ stats.my_proposals }}</span>
             </a>
             <a href="{% url 'workshop:projects_list_view' artisan.user.id %}">
                 <i class="bi bi-check-circle-fill"></i>
                 <span>Completed</span>
             </a>
-            <a href="#">
+            <a href="{% url 'message:conversation_list_view' %}">
                 <i class="bi bi-chat-dots"></i>
                 <span>Messages</span>
                 <span class="sidebar-badge">2</span>
@@ -439,7 +439,7 @@
                 <i class="bi bi-images"></i>
                 <span>My Profile</span>
             </a>
-            <a href="#">
+            <a href="{% url 'payment:my_cards' %}">
                 <i class="bi bi-cash-coin"></i>
                 <span>Earnings</span>
             </a>
@@ -455,13 +455,14 @@
         <!-- Page Header -->
         <div class="page-header">
             <div class="header-left">
-                <div class="header-label">PAGE 12 OF 16 — ARTISAN DASHBOARD: EARNINGS, ORDERS, PROPOSALS PREVIEW,
-                    MATCHING REQUESTS FEED</div>
+                <!-- <div class="header-label">PAGE 12 OF 16 — ARTISAN DASHBOARD: EARNINGS, ORDERS, PROPOSALS PREVIEW,
+                    MATCHING REQUESTS FEED</div> -->
                 <h1>Welcome back, {{ artisan.user.first_name }}</h1>
-                <p class="header-subtitle">12 open requests match your skills right now.</p>
+                <p class="header-subtitle">{{ stats.open_requests }} open requests match your skills right now.</p>
             </div>
             <div class="header-right">
-                <a href="#" class="btn btn-outline-primary">Browse Open Requests →</a>
+                <a href="{% url 'request:request_list_view' %}" class="btn btn-outline-primary">Browse Open Requests
+                    →</a>
                 <a href="{% url 'workshop:create_project_view' %}" class="btn btn-primary" style="margin-left:12px;">Add
                     Completed Project</a>
             </div>
@@ -471,7 +472,7 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon">💰</div>
-                <div class="stat-number">SAR {{ stats.earnings_this_month }}</div>
+                <div class="stat-number">SAR {{ stats.earnings_this_month|floatformat:0 }}</div>
                 <div class="stat-label">Earned This Month</div>
                 <div class="stat-detail positive">↑ {{ stats.earnings_growth_percent }}% vs last month</div>
             </div>
@@ -507,98 +508,80 @@
         <!-- Active Orders -->
         <div class="section-header">
             <div class="section-title" style="margin: 0;">Active Orders</div>
-            <a href="#" class="see-all">Manage all →</a>
+            <a href="{% url 'workshop:workshop_detail_view' artisan_id=request.user.id %}" class="see-all">Manage all
+                →</a>
         </div>
 
-        <div class="order-card highlight">
+        {% for contract in active_contracts %}
+        <div class="order-card {% if forloop.first %}highlight{% endif %}">
             <div class="order-icon">🪑</div>
             <div class="order-info">
-                <h6>Hidden drawer — walnut side table</h6>
-                <p>Tariq Al-Mansouri · SAR 650 · Due May 17</p>
+                <h6>{{ contract.proposal.request.title }}</h6>
+                <p>{{ contract.proposal.request.requester.get_full_name }} · SAR {{ contract.proposal.price }}{% if contract.completed_at %} · Due {{ contract.completed_at|date:"M j" }}{% endif %}</p>
             </div>
             <div class="order-right">
-                <span class="order-warning">⚠ Upload progress photo</span>
-                <span class="badge-status badge-in-progress">In Progress</span>
+                {% if contract.is_in_progress %}
+                    <span class="order-warning">⚠ Upload progress photo</span>
+                    <span class="badge-status badge-in-progress">In Progress</span>
+                {% elif contract.is_completion_requested %}
+                    <span class="badge-status badge-pending">Completion Requested</span>
+                {% else %}
+                    <span class="badge-status badge-sourcing">Sourcing Materials</span>
+                {% endif %}
             </div>
         </div>
-
-        <div class="order-card">
-            <div class="order-icon">📺</div>
-            <div class="order-info">
-                <h6>Custom TV unit — geometric inlay</h6>
-                <p>Hessa Al-Anzi · SAR 1,800 · Due May 25</p>
-            </div>
-            <div class="order-right">
-                <span class="badge-status badge-sourcing">Sourcing Materials</span>
-            </div>
-        </div>
+        {% empty %}
+        <p class="stat-detail">No active orders currently.</p>
+        {% endfor %}
 
         <!-- My Proposals -->
         <div class="section-header" style="margin-top: 28px;">
             <div class="section-title" style="margin: 0;">My Proposals</div>
-            <a href="#" class="see-all">View all →</a>
+            <a href="{% url 'proposal:my_proposals_view' %}" class="see-all">View all →</a>
         </div>
 
+        {% for prop in my_proposals %}
         <div class="order-card">
             <div class="order-icon">📚</div>
             <div class="order-info">
-                <h6>Custom bookshelf — floor to ceiling, solid walnut</h6>
-                <p style="font-size: 0.8rem;">Bid: SAR 820</p>
+                <h6>{{ prop.request.title }}</h6>
+                <p style="font-size: 0.8rem;">Bid: SAR {{ prop.price }}</p>
             </div>
             <div class="order-right">
-                <span class="badge-status badge-pending">Pending</span>
+                {% if prop.status == 'pending' %}
+                    <span class="badge-status badge-pending">Pending</span>
+                {% elif prop.status == 'rejected' %}
+                    <span class="badge-status badge-rejected">Rejected</span>
+                {% else %}
+                    <span class="badge-status badge-pending">{{ prop.get_status_display }}</span>
+                {% endif %}
             </div>
         </div>
-
-        <div class="order-card">
-            <div class="order-icon">⚡</div>
-            <div class="order-info">
-                <h6>Cable management + monitor arm for standing desk</h6>
-                <p style="font-size: 0.8rem;">Bid: SAR 220</p>
-            </div>
-            <div class="order-right">
-                <span class="badge-status badge-rejected">Rejected</span>
-            </div>
-        </div>
-
-        <div class="order-card">
-            <div class="order-icon">📝</div>
-            <div class="order-info">
-                <h6>Antique writing desk restoration</h6>
-                <p style="font-size: 0.8rem;">Bid: SAR 950</p>
-            </div>
-            <div class="order-right">
-                <span class="badge-status badge-pending">Pending</span>
-            </div>
-        </div>
+        {% empty %}
+        <p class="stat-detail">You haven't submitted any proposals yet.</p>
+        {% endfor %}
 
         <!-- Requests Matching Your Skills -->
         <div class="section-header" style="margin-top: 28px;">
             <div class="section-title" style="margin: 0;">Requests Matching Your Skills</div>
-            <a href="#" class="see-all">See all 12 →</a>
+            <a href="{% url 'request:request_list_view' %}" class="see-all">See all →</a>
         </div>
 
+        {% for req in requests_matching_list %}
         <div class="order-card">
             <div class="order-icon">🪑</div>
             <div class="order-info">
-                <h6>Build custom bookshelf with adjustable shelves — walnut or oak</h6>
-                <p>Riyadh · SAR 400–900 · 2 proposals</p>
+                <h6>{{ req.title }}</h6>
+                <p>{{ req.requester.get_full_name }} · SAR {{ req.budget_min }}–{{ req.budget_max }} · {{ req.proposals.count }} proposals</p>
             </div>
             <div class="order-right">
-                <a href="#" class="btn btn-outline-primary btn-sm">Bid Now</a>
+                <a href="{% url 'request:request_detail_view' req.id %}" class="btn btn-outline-primary btn-sm">Bid Now</a>
             </div>
         </div>
+        {% empty %}
+        <p class="stat-detail">No matching requests at the moment.</p>
+        {% endfor %}
 
-        <div class="order-card">
-            <div class="order-icon">⚡</div>
-            <div class="order-info">
-                <h6>Add cable management to standing desk</h6>
-                <p>Riyadh · SAR 150–300 · 0 proposals</p>
-            </div>
-            <div class="order-right">
-                <a href="#" class="btn btn-outline-primary btn-sm">Bid Now</a>
-            </div>
-        </div>
     </main>
 </div>
 {% endblock %}
@@ -606,34 +589,32 @@
 <!-- {% block extra_js %}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        const ctx = document.getElementById('earningsChart').getContext('2d');
-        const earningsChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May'],
-                datasets: [{
-                    label: 'Earnings',
-                    data: [1200, 1600, 1800, 1400, 1700, {{ stats.earnings_this_month }}],
-                backgroundColor: ['#e9dccf', '#e9dccf', '#e9dccf', '#e9dccf', '#e9dccf', '#c96f52'],
-                borderRadius: 8,
-                barThickness: 36
-            }]
-        },
-            options: {
-            plugins: {
-                legend: { display: false }
-            },
-            scales: {
-                x: {
-                    grid: { display: false },
-                    ticks: { color: '#8b7461' }
+        (function(){
+            const labels = [{% for e in stats.earnings_6months %}'{{ e.label }}'{% if not forloop.last %}, {% endif %}{% endfor %}];
+            const data = [{% for e in stats.earnings_6months %}{{ e.total }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+            const ctx = document.getElementById('earningsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Earnings',
+                        data: data,
+                        backgroundColor: labels.map((l,i)=> i===labels.length-1 ? '#c96f52' : '#e9dccf'),
+                        borderRadius: 8,
+                        barThickness: 36
+                    }]
                 },
-                y: { display: false }
-            },
-            responsive: true,
-            maintainAspectRatio: false
-        }
-        });
-    </script>
-    -->
+                options: {
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { color: '#8b7461' } },
+                        y: { display: false }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        })();
+    </script> -->
 {% endblock %}

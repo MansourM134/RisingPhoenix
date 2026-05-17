@@ -273,6 +273,18 @@
     color: var(--ink-light, #8a7a6e);
 }
 
+.notif-master-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.notif-master-label {
+    font-size: 0.75rem;
+    color: var(--ink-light, #8a7a6e);
+    white-space: nowrap;
+}
+
 /* Toggle switch */
 .notif-toggle, .notif-master-toggle {
     position: relative;

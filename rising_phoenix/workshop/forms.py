@@ -1,4 +1,6 @@
 from django import forms
+
+from rising_phoenix.moderation import text_is_clean
 from .models import WorkshopProfile, PortfolioImage
 
 
@@ -49,6 +51,31 @@ class WorkshopProfileForm(forms.ModelForm):
         }
 
 
+    def clean_workshop_name(self):
+        value = self.cleaned_data.get('workshop_name', '')
+        if value and not text_is_clean(value):
+            raise forms.ValidationError('Your workshop name contains inappropriate language. Please revise it.')
+        return value
+
+    def clean_tagline(self):
+        value = self.cleaned_data.get('tagline', '')
+        if value and not text_is_clean(value):
+            raise forms.ValidationError('Your tagline contains inappropriate language. Please revise it.')
+        return value
+
+    def clean_description(self):
+        value = self.cleaned_data.get('description', '')
+        if value and not text_is_clean(value):
+            raise forms.ValidationError('Your description contains inappropriate language. Please revise it.')
+        return value
+
+    def clean_services(self):
+        value = self.cleaned_data.get('services', '')
+        if value and not text_is_clean(value):
+            raise forms.ValidationError('Your services description contains inappropriate language. Please revise it.')
+        return value
+
+
 class PortfolioImageForm(forms.Form):
     images = MultipleFileField(
         widget=MultipleFileInput(attrs={'class': 'form-control', 'multiple': True, 'accept': 'image/*'}),
@@ -79,6 +106,18 @@ class CompletedProjectForm(forms.ModelForm):
             'is_featured': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'is_published': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
+
+    def clean_title(self):
+        value = self.cleaned_data.get('title', '')
+        if value and not text_is_clean(value):
+            raise forms.ValidationError('Your project title contains inappropriate language. Please revise it.')
+        return value
+
+    def clean_description(self):
+        value = self.cleaned_data.get('description', '')
+        if value and not text_is_clean(value):
+            raise forms.ValidationError('Your project description contains inappropriate language. Please revise it.')
+        return value
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

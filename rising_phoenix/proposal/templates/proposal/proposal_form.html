@@ -19,18 +19,10 @@
       <p class="proposal-preview-meta">by {{ project_request.requester.username }}</p>
 
       <div class="proposal-preview-meta-row">
-        {% if project_request.budget_min or project_request.budget_max %}
+        {% if project_request.budget_max %}
           <div class="proposal-preview-stat">
             <span class="proposal-stat-label">Budget</span>
-            <span class="proposal-stat-value">
-              {% if project_request.budget_min and project_request.budget_max %}
-                {{ project_request.budget_min|floatformat:"-2" }} – {{ project_request.budget_max|floatformat:"-2" }} SAR
-              {% elif project_request.budget_min %}
-                From {{ project_request.budget_min|floatformat:"-2" }} SAR
-              {% else %}
-                Up to {{ project_request.budget_max|floatformat:"-2" }} SAR
-              {% endif %}
-            </span>
+            <span class="proposal-stat-value">{{ project_request.budget_max|floatformat:"-2" }} SAR</span>
           </div>
         {% endif %}
         {% if project_request.deadline %}

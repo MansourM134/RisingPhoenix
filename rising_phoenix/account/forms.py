@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+
+from rising_phoenix.moderation import image_is_clean, text_is_clean
 from .models import Profile, ArtisanProfile, Review
 
 
@@ -9,11 +11,35 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         fields = ['phone', 'bio', 'avatar']
 
+    def clean_bio(self):
+        value = self.cleaned_data.get('bio', '')
+        if value and not text_is_clean(value):
+            raise forms.ValidationError('Your bio contains inappropriate language. Please revise it.')
+        return value
+
+    def clean_avatar(self):
+        avatar = self.cleaned_data.get('avatar')
+        if avatar and hasattr(avatar, 'chunks') and not image_is_clean(avatar):
+            raise forms.ValidationError('Your profile picture contains inappropriate content.')
+        return avatar
+
 
 class ArtisanProfileForm(forms.ModelForm):
     class Meta:
         model = ArtisanProfile
         fields = ['phone', 'bio', 'avatar']
+
+    def clean_bio(self):
+        value = self.cleaned_data.get('bio', '')
+        if value and not text_is_clean(value):
+            raise forms.ValidationError('Your bio contains inappropriate language. Please revise it.')
+        return value
+
+    def clean_avatar(self):
+        avatar = self.cleaned_data.get('avatar')
+        if avatar and hasattr(avatar, 'chunks') and not image_is_clean(avatar):
+            raise forms.ValidationError('Your profile picture contains inappropriate content.')
+        return avatar
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -62,3 +88,9 @@ class ReviewForm(forms.ModelForm):
             'rating': forms.RadioSelect(choices=Review.Rate.choices),
             'comment': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Share your experience...'}),
         }
+
+    def clean_comment(self):
+        value = self.cleaned_data.get('comment', '')
+        if value and not text_is_clean(value):
+            raise forms.ValidationError('Your review contains inappropriate language. Please revise it.')
+        return value

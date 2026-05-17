@@ -6,10 +6,10 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
-from django.views.decorators.http import require_POST
 
 from notification.models import Notification
 from notification.utils import notify
+from rising_phoenix.moderation import image_is_clean, text_is_clean
 from .forms import ProgressCommentForm
 from .models import Contract, ContractEvent, ContractEventImage, ProgressComment, ProgressCommentImage, ProgressImage, ProgressUpdate
 import stripe
@@ -36,8 +36,13 @@ def _save_images(model_cls, fk_field, fk_obj, request_files, captions=None):
         if (getattr(image_file, 'content_type', '') or '').lower() not in allowed_types:
             skipped.append(f'"{image_file.name}" is not an accepted image type.')
             continue
+        if not image_is_clean(image_file):
+            skipped.append(f'"{image_file.name}" was removed: explicit content detected.')
+            continue
         try:
             caption = (captions[index] if index < len(captions) else '').strip()[:160]
+            if caption and not text_is_clean(caption):
+                caption = ''
             model_cls.objects.create(**{fk_field: fk_obj, 'image': image_file, 'caption': caption})
         except Exception:
             logger.exception('Failed to save image "%s"', image_file.name)
@@ -93,9 +98,12 @@ def contract_detail_view(request, contract_id):
 
 
 @login_required
-@require_POST
 def post_update_view(request, contract_id):
     contract = get_object_or_404(Contract, id=contract_id)
+
+    if request.method != 'POST':
+        messages.error(request, 'Invalid action.')
+        return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     if request.user != contract.artisan:
         messages.error(request, 'Only the artisan can post progress updates.')
@@ -108,6 +116,10 @@ def post_update_view(request, contract_id):
     body = request.POST.get('body', '').strip()
     if not body:
         messages.error(request, 'Update text is required.')
+        return redirect('progress:contract_detail_view', contract_id=contract_id)
+
+    if not text_is_clean(body):
+        messages.error(request, 'Your update contains inappropriate language. Please revise it.')
         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     update = ProgressUpdate.objects.create(contract=contract, body=body)
@@ -126,10 +138,13 @@ def post_update_view(request, contract_id):
 
 
 @login_required
-@require_POST
 def add_comment_view(request, update_id):
     update = get_object_or_404(ProgressUpdate.objects.select_related('contract'), id=update_id)
     contract = update.contract
+
+    if request.method != 'POST':
+        messages.error(request, 'Invalid action.')
+        return redirect('progress:contract_detail_view', contract_id=contract.id)
 
     if request.user not in (contract.artisan, contract.requester):
         messages.error(request, 'You do not have access to this project.')
@@ -164,9 +179,12 @@ def add_comment_view(request, update_id):
 
 
 @login_required
-@require_POST
 def request_completion_view(request, contract_id):
     contract = get_object_or_404(Contract, id=contract_id)
+
+    if request.method != 'POST':
+        messages.error(request, 'Invalid action.')
+        return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     if request.user != contract.artisan:
         messages.error(request, 'Only the artisan can mark a project as complete.')
@@ -177,6 +195,10 @@ def request_completion_view(request, contract_id):
         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     body = request.POST.get('body', '').strip()[:5000]
+    if body and not text_is_clean(body):
+        messages.error(request, 'Your message contains inappropriate language. Please revise it.')
+        return redirect('progress:contract_detail_view', contract_id=contract_id)
+
     contract.status = Contract.Status.COMPLETION_REQUESTED
     contract.save(update_fields=['status', 'updated_at'])
     event = ContractEvent.objects.create(
@@ -242,6 +264,10 @@ def confirm_completion_view(request, contract_id):
         id=contract_id
     )
 
+    if request.method != 'POST':
+        messages.error(request, 'Invalid action.')
+        return redirect('progress:contract_detail_view', contract_id=contract_id)
+
     if request.user != contract.requester:
         messages.error(request, 'Only the requester can confirm completion.')
         return redirect('progress:contract_detail_view', contract_id=contract_id)
@@ -301,9 +327,12 @@ def confirm_completion_view(request, contract_id):
 
 
 @login_required
-@require_POST
 def reject_completion_view(request, contract_id):
     contract = get_object_or_404(Contract, id=contract_id)
+
+    if request.method != 'POST':
+        messages.error(request, 'Invalid action.')
+        return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     if request.user != contract.requester:
         messages.error(request, 'Only the requester can reject a completion request.')
@@ -314,6 +343,10 @@ def reject_completion_view(request, contract_id):
         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     body = request.POST.get('body', '').strip()[:1000]
+    if body and not text_is_clean(body):
+        messages.error(request, 'Your message contains inappropriate language. Please revise it.')
+        return redirect('progress:contract_detail_view', contract_id=contract_id)
+
     contract.status = Contract.Status.IN_PROGRESS
     contract.save(update_fields=['status', 'updated_at'])
     event = ContractEvent.objects.create(

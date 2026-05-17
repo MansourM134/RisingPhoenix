@@ -15,7 +15,7 @@
         <div class="notif-page-meta">
             {% if unread_count %}
                 <span class="notif-count-label">{{ unread_count }} unread</span>
-            {% elif notifications %}
+            {% elif page_obj.paginator.count %}
                 <span class="notif-count-label">All caught up</span>
             {% endif %}
             <a href="{% url 'notification:notification_settings_view' %}" class="notif-settings-link" title="Notification settings">
@@ -46,6 +46,18 @@
             </div>
             {% endfor %}
         </div>
+
+        {% if page_obj.has_other_pages %}
+            <nav class="browse-pagination" aria-label="Notifications pagination">
+                {% if page_obj.has_previous %}
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                {% endif %}
+                <span class="page-current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                {% if page_obj.has_next %}
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                {% endif %}
+            </nav>
+        {% endif %}
     {% else %}
         <div class="notif-empty">
             <i class="bi bi-bell-slash"></i>

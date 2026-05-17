@@ -16,11 +16,6 @@
         background: var(--light-bg);
     }
 
-    .cover-section {
-        position: relative;
-        margin-bottom: 40px;
-    }
-
     .cover-image {
         width: 100%;
         height: 300px;
@@ -28,14 +23,6 @@
         border-radius: 16px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         display: block;
-    }
-
-    .avatar-container {
-        display: flex;
-        justify-content: center;
-        margin-top: -50px;
-        position: relative;
-        z-index: 10;
     }
 
     .page-label {
@@ -117,14 +104,17 @@
         margin-bottom: 24px;
     }
 
-    .workshop-card {
+    .workshop-card,
+    .portfolio-section,
+    .artisan-details {
         background: var(--card-bg);
         border: 1px solid var(--border-light);
         border-radius: 12px;
         padding: 24px;
     }
 
-    .workshop-card h2 {
+    .workshop-card h2,
+    .portfolio-section h2 {
         font-size: 1.3rem;
         font-weight: 700;
         color: #2c1f1a;
@@ -162,13 +152,6 @@
         margin-top: 6px;
     }
 
-    .artisan-details {
-        background: var(--card-bg);
-        border: 1px solid var(--border-light);
-        border-radius: 12px;
-        padding: 24px;
-    }
-
     .detail-item {
         display: flex;
         justify-content: space-between;
@@ -201,7 +184,6 @@
         border-radius: 8px;
         border: none;
         font-weight: 600;
-        cursor: pointer;
         width: 100%;
         margin-top: 16px;
     }
@@ -213,7 +195,6 @@
         border-radius: 8px;
         border: 1px solid var(--border-light);
         font-weight: 600;
-        cursor: pointer;
         width: 100%;
         margin-top: 12px;
     }
@@ -228,78 +209,56 @@
         color: #666;
     }
 
-    .portfolio-section {
-        background: var(--card-bg);
-        border: 1px solid var(--border-light);
-        border-radius: 12px;
-        padding: 24px;
-        margin-bottom: 24px;
-    }
-
-    .portfolio-section h2 {
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: #2c1f1a;
-        margin-bottom: 16px;
-    }
-
     .portfolio-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 16px;
     }
 
     .portfolio-item {
         position: relative;
-        aspect-ratio: 4 / 3;
         background: #f7efe7;
-        border-radius: 8px;
+        border-radius: 12px;
         overflow: hidden;
+    }
+
+    .portfolio-item img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+    }
+
+    .portfolio-trigger {
+        all: unset;
+        cursor: pointer;
+        display: block;
+        width: 100%;
     }
 
     .portfolio-delete-btn {
         position: absolute;
         top: 8px;
         right: 8px;
-        z-index: 2;
-        background: rgba(255, 255, 255, 0.92);
-        color: #c96f52;
+        z-index: 10;
+        background: rgba(255, 255, 255, .9);
         border: none;
         border-radius: 50%;
         width: 32px;
         height: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.2rem;
-        font-weight: bold;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
-        cursor: pointer;
-        transition: background 0.15s;
+        font-size: 18px;
+        color: #c96f52;
     }
 
-    .portfolio-delete-btn:hover {
-        background: #ffe5d7;
-        color: #a34d1e;
-    }
-
-    .portfolio-trigger {
-        all: unset;
-        display: block;
-        width: 100%;
-        height: 100%;
-        cursor: zoom-in;
-    }
-
-    .portfolio-trigger:focus-visible {
-        outline: 3px solid rgba(201, 111, 82, 0.45);
-        outline-offset: -3px;
-    }
-
-    .portfolio-item img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+    .portfolio-badge {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        background: var(--primary);
+        color: white;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: .75rem;
+        font-weight: 700;
     }
 
     .portfolio-empty {
@@ -308,34 +267,6 @@
         border-radius: 10px;
         color: var(--text-muted);
         background: #fcf8f4;
-        font-size: 0.95rem;
-    }
-
-    .portfolio-badge {
-        position: absolute;
-        top: 8px;
-        left: 8px;
-        background: var(--primary);
-        color: #fff;
-        padding: 4px 10px;
-        border-radius: 4px;
-        font-size: 0.75rem;
-        font-weight: 700;
-    }
-
-    .portfolio-modal .modal-content {
-        border: none;
-        border-radius: 18px;
-        overflow: hidden;
-    }
-
-    .portfolio-modal .modal-header {
-        border-bottom: 1px solid var(--border-light);
-        background: #fff;
-    }
-
-    .portfolio-modal .modal-body {
-        background: #fcf8f4;
     }
 
     .portfolio-modal-image {
@@ -343,384 +274,517 @@
         max-height: 70vh;
         object-fit: contain;
         border-radius: 14px;
-        background: #fff;
     }
 
     .portfolio-modal-caption {
         margin-top: 14px;
         color: #3d3430;
-        font-size: 0.95rem;
         line-height: 1.6;
-        white-space: pre-line;
     }
 
-    .portfolio-edit-form {
-        margin-top: 16px;
-        padding-top: 16px;
-        border-top: 1px solid var(--border-light);
-    }
-
-    .portfolio-edit-form label {
-        display: block;
-        font-weight: 700;
-        margin-bottom: 8px;
-        color: #2c1f1a;
-    }
-
-    .portfolio-edit-form textarea {
-        width: 100%;
-        min-height: 110px;
-        resize: vertical;
-        border: 1px solid #e1d5c9;
+    .review-card {
+        background: #f7efe7;
         border-radius: 12px;
-        padding: 12px 14px;
-        font: inherit;
-        background: #fff;
+        padding: 20px 24px;
     }
 
-    .portfolio-edit-form textarea:focus {
-        outline: none;
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(201, 111, 82, 0.15);
-    }
-
-    .portfolio-edit-actions {
+    .review-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #c96f52;
+        color: #fff;
         display: flex;
-        gap: 10px;
-        margin-top: 12px;
-    }
-
-    .portfolio-edit-actions button,
-    .portfolio-edit-actions .btn-link {
-        border-radius: 10px;
-        padding: 10px 14px;
+        align-items: center;
+        justify-content: center;
         font-weight: 700;
     }
 
-    .portfolio-edit-actions .btn-link {
-        text-decoration: none;
-    }
-
-    .portfolio-modal-empty {
-        color: var(--text-muted);
-        font-size: 0.95rem;
+    .review-stars {
+        color: #c96f52;
+        font-size: 1.1rem;
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="container" style="max-width: 1200px; margin-top: 24px;">
-    <!-- Page Label -->
-    <div class="page-label">PAGE 4 OF 16 — WORKSHOP PROFILE: PINNED PORTFOLIO, VERIFIED REVIEWS, BEFORE/AFTER</div>
 
-    <!-- Cover Image -->
+<div class="container" style="max-width: 1200px; margin-top: 24px;">
+
+    <div class="page-label">
+        WORKSHOP PROFILE
+    </div>
+
     {% if workshop.cover_image %}
     <img src="{{ workshop.cover_image.url }}" alt="{{ workshop.workshop_name }}" class="cover-image">
     {% endif %}
 
-    <!-- Workshop Header -->
     <div class="workshop-header">
-        <div class="artisan-avatar">{{ artisan.user.first_name|slice:":1"|default:'A' }}</div>
+
+        <div class="artisan-avatar">
+            {{ artisan.user.first_name|slice:":1"|default:'A' }}
+        </div>
+
         <div class="artisan-info flex-grow-1">
-            <h3>{{ workshop.workshop_name }}
+
+            <h3>
+                {{ workshop.workshop_name }}
+
                 {% if can_edit_portfolio %}
-                <a href="{% url 'workshop:create_workshop_view' %}" class="btn btn-sm btn-outline-primary ms-2"
-                    style="font-size:0.95rem;vertical-align:middle;">
-                    <i class="bi bi-pencil-square"></i> Edit
+                <a href="{% url 'workshop:create_workshop_view' %}" class="btn btn-sm btn-outline-primary ms-2">
+                    Edit
                 </a>
-                <!-- <a href="{% url 'workshop:workshop_detail_view' artisan_id=artisan.user.id %}"
-                   class="btn btn-sm btn-outline-secondary ms-2"
-                   style="font-size:0.95rem;vertical-align:middle;">
-                    <i class="bi bi-eye"></i> View as user
-                </a> -->
                 {% endif %}
             </h3>
-            <p>{{ artisan.user.first_name }} · {{ workshop.location|default:"Riyadh" }} · Member since Jan 2023</p>
-            {% if workshop.categories %}
-            {% for category in workshop.categories.all %}
+
+            <p>
+                {{ artisan.user.first_name }}
+                ·
+                {{ workshop.location|default:"Riyadh" }}
+            </p>
+
             <div class="categories-tags">
+                {% for category in workshop.categories.all %}
                 <span class="tag">{{ category.name }}</span>
+                {% endfor %}
             </div>
-            {% endfor %}
-            {% endif %}
         </div>
+
         {% if artisan.is_verified %}
-        <span class="verified-badge">✓ Verified Artisan</span>
+        <span class="verified-badge">
+            ✓ Verified Artisan
+        </span>
         {% endif %}
     </div>
 
-    <!-- Two Column -->
     <div class="two-column">
-        <!-- Left -->
+
+        <!-- LEFT -->
         <div>
+
             <div class="workshop-card">
-                <h2>About {{ artisan.user.first_name }}'s Workshop</h2>
-                <p>{{ workshop.description|default:"Woodworking specialist with years of experience." }}</p>
+                <h2>About Workshop</h2>
+
+                <p>
+                    {{ workshop.description|default:"Woodworking specialist with years of experience." }}
+                </p>
+
                 <div class="stats-grid">
+
                     <div class="stat-item">
-                        <div class="stat-number">{{ artisan.completed_jobs|default:"142" }}</div>
-                        <div class="stat-label">Completed orders</div>
+                        <div class="stat-number">
+                            {{ artisan.completed_jobs|default:"142" }}
+                        </div>
+                        <div class="stat-label">
+                            Completed orders
+                        </div>
                     </div>
+
                     <div class="stat-item">
-                        <div class="stat-number">⭐ {{ artisan.average_rating|default:"4.9" }}</div>
-                        <div class="stat-label">Average rating</div>
+                        <div class="stat-number">
+                            ⭐ {{ artisan.average_rating|default:"4.9" }}
+                        </div>
+                        <div class="stat-label">
+                            Average rating
+                        </div>
                     </div>
+
                     <div class="stat-item">
                         <div class="stat-number">~2h</div>
-                        <div class="stat-label">Avg. response time</div>
+                        <div class="stat-label">
+                            Avg. response time
+                        </div>
                     </div>
+
                 </div>
             </div>
 
-            {% if portfolio_images %}
+            <!-- PORTFOLIO -->
+
             <div class="portfolio-section">
+
                 <h2>Portfolio</h2>
-                <a href="{% url 'workshop:upload_portfolio_view'%}">add images</a>
+
+                {% if can_edit_portfolio %}
+                <a href="{% url 'workshop:upload_portfolio_view' %}">
+                    add images
+                </a>
+                {% endif %}
+
+                {% if portfolio_images %}
                 <div class="portfolio-grid">
+
                     {% for img in portfolio_images|slice:":6" %}
-                    <div class="portfolio-item" style="position:relative;">
+                    <div class="portfolio-item">
+
                         {% if can_edit_portfolio %}
-                        <form method="post" style="position:absolute;top:0;right:0;z-index:3;"
-                            onsubmit="return confirm('Are you sure you want to delete this image?');">
+                        <form method="post" style="position:absolute;top:0;right:0;z-index:5;">
+
                             {% csrf_token %}
+
                             <input type="hidden" name="delete_portfolio_image_id" value="{{ img.id }}">
-                            <button type="submit" class="portfolio-delete-btn" title="Delete image"
-                                aria-label="Delete image">&times;</button>
+
+                            <button type="submit" class="portfolio-delete-btn">
+                                ×
+                            </button>
                         </form>
                         {% endif %}
+
                         <button type="button" class="portfolio-trigger" data-bs-toggle="modal"
                             data-bs-target="#portfolioImageModal" data-image="{{ img.image.url }}"
-                            data-id="{{ img.id }}" data-caption="{{ img.caption|default:''|escapejs }}"
-                            data-title="{{ workshop.workshop_name|escapejs }}">
+                            data-caption="{{ img.caption|default:''|escapejs }}"
+                            data-title="{{ workshop.workshop_name|escapejs }}" data-id="{{ img.id }}">
+
                             <img src="{{ img.image.url }}" alt="{{ img.caption|default:workshop.workshop_name }}">
 
                             {% if img.is_pinned %}
-                            <span class="portfolio-badge">Pinned</span>
+                            <span class="portfolio-badge">
+                                Pinned
+                            </span>
                             {% endif %}
+
                         </button>
+
                     </div>
                     {% endfor %}
+
                 </div>
-            </div>
-            {% else %}
-            <div class="portfolio-section">
-                <h2>Portfolio</h2>
-                <a href="{% url 'workshop:upload_portfolio_view'%}">add images</a>
+
+                {% else %}
+
                 <div class="portfolio-empty">
                     No portfolio images uploaded yet.
                 </div>
-            </div>
-            {% endif %}
-        </div>
 
-        <!-- Right -->
-        <div>
-            <div class="artisan-details">
-                <h3 style="font-size: 1.1rem; font-weight: 700; color: #2c1f1a; margin-bottom: 16px;">{{
-                    artisan.user.first_name }} Al-Harbi</h3>
-                <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">{{
-                    workshop.services|truncatewords:10|default:"Woodworking · Riyadh" }}</p>
-
-                <div style="margin-top: 16px;">
-                    <div class="detail-item">
-                        <span class="detail-label">Response time</span>
-                        <span class="detail-value">~2 hours</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Typical turnaround</span>
-                        <span class="detail-value">3–10 days</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Active orders</span>
-                        <span class="detail-value">2 (available)</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Item drop-off</span>
-                        <span class="detail-value check-icon">✓ Accepted</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Ships KSA</span>
-                        <span class="detail-value check-icon">✓ Yes</span>
-                    </div>
-                </div>
-
-                <button class="btn-primary-custom">Request Custom Work</button>
-                <button class="btn-secondary-custom">💬 Send Message</button>
-
-                <div class="notice-box">
-                    🔒 All payments held in escrow and released only when you approve the finished work.
-                </div>
-
-                <div
-                    style="margin-top: 16px; padding: 12px; background: #f0f0f0; border-radius: 8px; font-size: 0.8rem; color: #666;">
-                    <strong style="display: block; margin-bottom: 6px;">ITEM PROTECTION</strong>
-                    {{ artisan.user.first_name }} must deposit items with insurance before work begins.
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Portfolio Modal -->
-{% comment %} Completed Projects showcase for this artisan {% endcomment %}
-{% if workshop.completed_projects.exists %}
-<div class="container" style="max-width:1200px; margin-top:18px;">
-    <div class="portfolio-section">
-        <h2><a href="{% url 'workshop:projects_list_view' artisan_id=artisan.user.id %}"
-                style="text-decoration:none;color:inherit;">Completed Projects</a></h2>
-        {% if can_edit_portfolio %}
-        <a href="{% url 'workshop:create_project_view' %}">add project</a>
-        {% endif %}
-
-        <div class="portfolio-grid" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));">
-            {% for project in workshop.completed_projects.all|dictsortreversed:'is_featured'|slice:":4" %}
-            <div class="portfolio-item" style="aspect-ratio:4/3;">
-                <a href="{% url 'workshop:project_detail_view' project_id=project.id %}" class="portfolio-trigger">
-                    {% if project.main_image %}
-                    <img src="{{ project.main_image.url }}" alt="{{ project.title }}">
-                    {% else %}
-                    {% with first=project.images.first %}
-                    {% if first %}
-                    <img src="{{ first.image.url }}" alt="{{ project.title }}">
-                    {% else %}
-                    <div style="padding:24px;color:#8b7461;">No image</div>
-                    {% endif %}
-                    {% endwith %}
-                    {% endif %}
-                </a>
-                <div style="padding:8px;">
-                    <strong>{{ project.title }}</strong>
-                    <div class="small text-muted">{{ project.date_completed }}</div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</div>
-{% endif %}
-{% if reviews %}
-<div class="container" style="max-width:1200px; margin-top:18px; margin-bottom:24px;">
-  <div class="portfolio-section">
-    <h2>Reviews <span style="font-size:1rem; font-weight:400; color:var(--text-muted);">({{ reviews|length }})</span></h2>
-    <div style="display:flex; flex-direction:column; gap:16px; margin-top:8px;">
-      {% for review in reviews %}
-      <div style="background:#f7efe7; border-radius:12px; padding:20px 24px;">
-        <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
-          <div style="width:40px;height:40px;border-radius:50%;background:#c96f52;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;flex-shrink:0;">
-            {{ review.reviews_given.first_name|slice:":1"|default:review.reviews_given.username|slice:":1"|upper }}
-          </div>
-          <div>
-            <div style="font-weight:700;color:#2c1f1a;">{{ review.reviews_given.get_full_name|default:review.reviews_given.username }}</div>
-            <div style="font-size:0.8rem;color:var(--text-muted);">{{ review.created_at|date:"N j, Y" }}</div>
-          </div>
-          <div style="margin-left:auto;">
-            <span style="font-size:0.75rem;font-weight:700;background:#27ae60;color:#fff;padding:3px 8px;border-radius:4px;">
-              <i class="bi bi-patch-check-fill"></i> Verified Completed Project
-            </span>
-          </div>
-        </div>
-        <div style="color:#c96f52; font-size:1.1rem; margin-bottom:8px;">
-          {% for i in "12345" %}
-            {% if forloop.counter <= review.rating %}&#9733;{% else %}&#9734;{% endif %}
-          {% endfor %}
-          <span style="font-size:0.85rem;color:var(--text-muted);margin-left:6px;">{{ review.get_rating_display }}</span>
-        </div>
-        {% if review.comment %}
-        <p style="color:#3d3430;margin:0;line-height:1.6;">{{ review.comment }}</p>
-        {% endif %}
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</div>
-{% endif %}
-
-<div class="modal fade portfolio-modal" id="portfolioImageModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div>
-                    <h5 class="modal-title mb-1" id="portfolioModalTitle">Portfolio Image</h5>
-                    <small class="text-muted">Click outside or press Esc to close</small>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-3 p-md-4">
-                <img src="" alt="Portfolio image preview" id="portfolioModalImage" class="portfolio-modal-image">
-                <div class="portfolio-modal-caption" id="portfolioModalCaption"></div>
-
-                {% if can_edit_portfolio %}
-                <form method="post" class="portfolio-edit-form">
-                    {% csrf_token %}
-                    <input type="hidden" name="portfolio_image_id" id="portfolioImageId" value="">
-                    <label for="portfolioCaption">Edit description</label>
-                    <textarea name="caption" id="portfolioCaption"
-                        placeholder="Write a short description for this image..."></textarea>
-                    <div class="portfolio-edit-actions">
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
                 {% endif %}
             </div>
+
+            <!-- COMPLETED PROJECTS -->
+
+            {% comment %} Closed / Completed Requests Section {% endcomment %}
+            
+            {% if workshop.completed_projects.exists %}
+            
+            <div class="portfolio-section">
+            
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+            
+                    <h2 style="margin:0;">
+                        Closed Requests
+                    </h2>
+            
+                    <a href="{% url 'workshop:projects_list_view' artisan_id=artisan.user.id %}" style="
+                            color: var(--primary);
+                            text-decoration:none;
+                            font-weight:600;
+                       ">
+                        View All
+                    </a>
+            
+                </div>
+            
+                <div class="portfolio-grid">
+            
+                    {% for project in workshop.completed_projects.all|dictsortreversed:'date_completed'|slice:":6" %}
+            
+                    <div class="portfolio-item" style="
+                            background:#fff;
+                            border:1px solid var(--border-light);
+                            border-radius:14px;
+                            overflow:hidden;
+                         ">
+            
+                        <a href="{% url 'workshop:project_detail_view' project_id=project.id %}"
+                            style="text-decoration:none;color:inherit;">
+            
+                            {% if project.main_image %}
+            
+                            <img src="{{ project.main_image.url }}" alt="{{ project.title }}" style="
+                                    width:100%;
+                                    height:220px;
+                                    object-fit:cover;
+                                 ">
+            
+                            {% else %}
+            
+                            {% with first=project.images.first %}
+            
+                            {% if first %}
+                            <img src="{{ first.image.url }}" alt="{{ project.title }}" style="
+                                            width:100%;
+                                            height:220px;
+                                            object-fit:cover;
+                                         ">
+                            {% else %}
+            
+                            <div style="
+                                            height:220px;
+                                            display:flex;
+                                            align-items:center;
+                                            justify-content:center;
+                                            background:#f7efe7;
+                                            color:#8b7461;
+                                         ">
+                                No Image
+                            </div>
+            
+                            {% endif %}
+            
+                            {% endwith %}
+            
+                            {% endif %}
+            
+                            <div style="padding:16px;">
+            
+                                <div style="
+                                        display:flex;
+                                        justify-content:space-between;
+                                        align-items:center;
+                                        margin-bottom:10px;
+                                     ">
+            
+                                    <span style="
+                                            background:#e7f7ee;
+                                            color:#27ae60;
+                                            padding:4px 10px;
+                                            border-radius:20px;
+                                            font-size:.75rem;
+                                            font-weight:700;
+                                         ">
+                                        ✓ Closed
+                                    </span>
+            
+                                    <span style="
+                                            font-size:.8rem;
+                                            color:var(--text-muted);
+                                         ">
+                                        {{ project.date_completed }}
+                                    </span>
+            
+                                </div>
+            
+                                <h5 style="
+                                        font-size:1rem;
+                                        font-weight:700;
+                                        color:#2c1f1a;
+                                        margin-bottom:8px;
+                                     ">
+                                    {{ project.title }}
+                                </h5>
+            
+                                {% if project.description %}
+                                <p style="
+                                        color:var(--text-muted);
+                                        font-size:.9rem;
+                                        line-height:1.5;
+                                        margin:0;
+                                     ">
+                                    {{ project.description|truncatewords:18 }}
+                                </p>
+                                {% endif %}
+            
+                            </div>
+            
+                        </a>
+            
+                    </div>
+            
+                    {% endfor %}
+            
+                </div>
+            
+            </div>
+            
+            {% endif %}
+
+            <!-- REVIEWS -->
+
+            {% if reviews %}
+
+            <div class="portfolio-section">
+
+                <h2>
+                    Reviews
+                    <span style="font-size:1rem;color:var(--text-muted);">
+                        ({{ reviews|length }})
+                    </span>
+                </h2>
+
+                <div style="display:flex;flex-direction:column;gap:16px;">
+
+                    {% for review in reviews %}
+
+                    <div class="review-card">
+
+                        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+
+                            <div class="review-avatar">
+                                {{ review.reviews_given.first_name|slice:":1"|upper }}
+                            </div>
+
+                            <div>
+                                <div style="font-weight:700;">
+                                    {{ review.reviews_given.get_full_name|default:review.reviews_given.username }}
+                                </div>
+
+                                <div style="font-size:.8rem;color:var(--text-muted);">
+                                    {{ review.created_at|date:"N j, Y" }}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="review-stars">
+
+                            {% for i in "12345" %}
+                            {% if forloop.counter <= review.rating %} ★ {% else %} ☆ {% endif %} {% endfor %} </div>
+
+                                {% if review.comment %}
+                                <p style="margin-top:10px;">
+                                    {{ review.comment }}
+                                </p>
+                                {% endif %}
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+                {% endif %}
+
+            </div>
+
+            <!-- RIGHT -->
+
+            <div>
+
+                <div class="artisan-details">
+
+                    <h3 style="font-size:1.1rem;font-weight:700;">
+                        {{ artisan.user.first_name }}
+                    </h3>
+
+                    <p style="color:var(--text-muted);">
+                        {{ workshop.services|truncatewords:10 }}
+                    </p>
+
+                    <div style="margin-top:16px;">
+
+                        <div class="detail-item">
+                            <span class="detail-label">Response time</span>
+                            <span class="detail-value">~2 hours</span>
+                        </div>
+
+                        <div class="detail-item">
+                            <span class="detail-label">Ships KSA</span>
+                            <span class="detail-value check-icon">✓ Yes</span>
+                        </div>
+
+                    </div>
+
+                    <button class="btn-primary-custom">
+                        Request Custom Work
+                    </button>
+
+                    <button class="btn-secondary-custom">
+                        💬 Send Message
+                    </button>
+
+                    <div class="notice-box">
+                        🔒 Payments held safely until work is completed.
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
+
     </div>
-</div>
-{% endblock %}
 
-{% block extra_js %}
-<script>
-    (function () {
-        const modal = document.getElementById('portfolioImageModal');
-        const modalImage = document.getElementById('portfolioModalImage');
-        const modalCaption = document.getElementById('portfolioModalCaption');
-        const modalTitle = document.getElementById('portfolioModalTitle');
-        const portfolioImageId = document.getElementById('portfolioImageId');
-        const portfolioCaption = document.getElementById('portfolioCaption');
+    <!-- MODAL -->
 
-        if (!modal || !modalImage || !modalCaption || !modalTitle) {
-            return;
-        }
+    <div class="modal fade portfolio-modal" id="portfolioImageModal" tabindex="-1" aria-hidden="true">
 
-        modal.addEventListener('show.bs.modal', function (event) {
-            const trigger = event.relatedTarget;
-            if (!trigger) {
-                return;
-            }
+        <div class="modal-dialog modal-dialog-centered modal-xl">
 
-            const image = trigger.getAttribute('data-image');
-            const caption = trigger.getAttribute('data-caption') || '';
-            const title = trigger.getAttribute('data-title') || 'Portfolio Image';
-            const imageId = trigger.getAttribute('data-id') || '';
+            <div class="modal-content">
 
-            modalImage.src = image;
-            modalImage.alt = caption || title;
-            modalCaption.textContent = caption || 'No description provided.';
-            modalTitle.textContent = title;
+                <div class="modal-header">
 
-            if (portfolioImageId) {
-                portfolioImageId.value = imageId;
-            }
+                    <div>
+                        <h5 class="modal-title" id="portfolioModalTitle">
 
-            if (portfolioCaption) {
-                portfolioCaption.value = caption;
-            }
-        });
+                            Portfolio Image
+                        </h5>
+                    </div>
 
-        modal.addEventListener('hidden.bs.modal', function () {
-            modalImage.src = '';
-            modalImage.alt = 'Portfolio image preview';
-            modalCaption.textContent = '';
-            modalTitle.textContent = 'Portfolio Image';
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    </button>
 
-            if (portfolioImageId) {
-                portfolioImageId.value = '';
-            }
+                </div>
 
-            if (portfolioCaption) {
-                portfolioCaption.value = '';
-            }
-        });
-    })();
-</script>
-{% endblock %}
+                <div class="modal-body p-4">
+
+                    <img src="" id="portfolioModalImage" class="portfolio-modal-image">
+
+                    <div class="portfolio-modal-caption" id="portfolioModalCaption">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endblock %}
+
+    {% block extra_js %}
+
+    <script>
+        (function () {
+
+            const modal = document.getElementById('portfolioImageModal');
+
+            const modalImage = document.getElementById('portfolioModalImage');
+
+            const modalCaption = document.getElementById('portfolioModalCaption');
+
+            const modalTitle = document.getElementById('portfolioModalTitle');
+
+            if (!modal) return;
+
+            modal.addEventListener('show.bs.modal', function (event) {
+
+                const trigger = event.relatedTarget;
+
+                const image = trigger.getAttribute('data-image');
+
+                const caption = trigger.getAttribute('data-caption') || '';
+
+                const title = trigger.getAttribute('data-title') || 'Portfolio Image';
+
+                modalImage.src = image;
+
+                modalCaption.textContent = caption;
+
+                modalTitle.textContent = title;
+            });
+
+            modal.addEventListener('hidden.bs.modal', function () {
+
+                modalImage.src = '';
+
+                modalCaption.textContent = '';
+
+                modalTitle.textContent = 'Portfolio Image';
+            });
+
+        })();
+    </script>
+
+    {% endblock %}
