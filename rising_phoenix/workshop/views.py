@@ -122,6 +122,11 @@ def workshop_detail_view(request, artisan_id):
     reviews = artisan_profile.user.reviews_received.select_related(
         'reviews_given', 'request'
     ).order_by('-created_at')
+    completed_orders = Request.objects.filter(
+    proposals__artisan=artisan_profile.user,
+    proposals__status=Proposal.Status.ACCEPTED,
+    status='completed'
+).distinct().order_by('-updated_at')
 
     context = {
         'workshop': workshop,
@@ -129,6 +134,7 @@ def workshop_detail_view(request, artisan_id):
         'portfolio_images': workshop.portfolio_images.all(),
         'can_edit_portfolio': can_edit_portfolio,
         'reviews': reviews,
+        'completed_orders': completed_orders,
     }
     return render(request, 'workshop/workshop_detail.html', context)
 
@@ -317,18 +323,50 @@ def project_detail_view(request, project_id):
     return render(request, 'workshop/project_detail.html', context)
 
 
+# def projects_list_view(request, artisan_id):
+#     """List all published completed projects for an artisan's workshop."""
+#     try:
+#         artisan_profile = ArtisanProfile.objects.get(user_id=artisan_id)
+#         workshop = WorkshopProfile.objects.get(artisan=artisan_profile)
+#     except (ArtisanProfile.DoesNotExist, WorkshopProfile.DoesNotExist):
+#         messages.error(request, "Workshop not found.")
+#         return redirect('main:home_view')
+
+#     projects = workshop.completed_projects.filter(is_published=True).order_by('-is_featured', '-date_completed')
+
+#     return render(request, 'workshop/projects_list.html', {'workshop': workshop, 'projects': projects, 'artisan': artisan_profile})
 def projects_list_view(request, artisan_id):
     """List all published completed projects for an artisan's workshop."""
+
     try:
         artisan_profile = ArtisanProfile.objects.get(user_id=artisan_id)
         workshop = WorkshopProfile.objects.get(artisan=artisan_profile)
+
     except (ArtisanProfile.DoesNotExist, WorkshopProfile.DoesNotExist):
         messages.error(request, "Workshop not found.")
         return redirect('main:home_view')
 
-    projects = workshop.completed_projects.filter(is_published=True).order_by('-is_featured', '-date_completed')
+    projects = workshop.completed_projects.filter(
+        is_published=True
+    ).prefetch_related(
+        'images',
+        'request'
+    ).order_by(
+        '-is_featured',
+        '-date_completed'
+    )
 
-    return render(request, 'workshop/projects_list.html', {'workshop': workshop, 'projects': projects, 'artisan': artisan_profile})
+    context = {
+        'workshop': workshop,
+        'projects': projects,
+        'artisan': artisan_profile,
+    }
+
+    return render(
+        request,
+        'workshop/projects_list.html',
+        context
+    )
 
 
 def artisans_list_view(request):
