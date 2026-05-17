@@ -19,6 +19,7 @@ class Contract(models.Model):
     updated_at   = models.DateTimeField(auto_now=True)
     # Set when requester confirms completion — escrow/reviews hook here
     completed_at = models.DateTimeField(null=True, blank=True)
+    earnings_recorded = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-created_at']

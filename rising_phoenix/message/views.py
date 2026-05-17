@@ -70,22 +70,31 @@ def conversation_detail_view(request, conversation_id):
     if request.method == "POST":
         body = request.POST.get("body", "").strip()
         image = request.FILES.get("image")
+        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
 
         if body and not text_is_clean(body):
+            if is_ajax:
+                return JsonResponse({'error': 'Your message contains inappropriate language. Please revise it.'}, status=400)
             messages.error(request, 'Your message contains inappropriate language. Please revise it.')
             return redirect('message:conversation_detail_view', conversation_id=conversation.id)
 
+        image_error = None
         if image:
             allowed_types = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
             if image.size > 5 * 1024 * 1024:
-                messages.error(request, 'Image must be under 5 MB.')
+                image_error = 'Image must be under 5 MB.'
                 image = None
             elif (getattr(image, 'content_type', '') or '').lower() not in allowed_types:
-                messages.error(request, 'Only JPEG, PNG, WebP, and GIF images are allowed.')
+                image_error = 'Only JPEG, PNG, WebP, and GIF images are allowed.'
                 image = None
             elif not image_is_clean(image):
-                messages.error(request, 'Your image was rejected: explicit content detected.')
+                image_error = 'Your image was rejected: explicit content detected.'
                 image = None
+
+            if image_error:
+                if is_ajax:
+                    return JsonResponse({'error': image_error}, status=400)
+                messages.error(request, image_error)
 
         if body or image:
             Message.objects.create(

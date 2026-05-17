@@ -99,22 +99,28 @@ def logout_view(request:HttpRequest):
 def is_artisan(user):
     """Check if user is an artisan."""
     return user.groups.filter(name='artisan').exists()
-
-
 @login_required(login_url='account:login_view')
 @user_passes_test(is_artisan, login_url='main:home_view')
 def artisan_dashboard_view(request: HttpRequest):
     """Artisan dashboard showing stats, orders, and workshop info."""
+
     try:
-        artisan_profile = ArtisanProfile.objects.get(user=request.user)
+        artisan_profile = ArtisanProfile.objects.get(
+            user=request.user
+        )
     except ArtisanProfile.DoesNotExist:
-        messages.error(request, "You don't have an artisan profile.")
+        messages.error(
+            request,
+            "You don't have an artisan profile."
+        )
         return redirect('main:home_view')
-    
-    # Get workshop if it exists
-    workshop = getattr(artisan_profile, 'workshop_profile', None)
-    
-    # Dynamic stats calculated from models
+
+    workshop = getattr(
+        artisan_profile,
+        'workshop_profile',
+        None
+    )
+
     now = timezone.now()
     year = now.year
     month = now.month
@@ -123,59 +129,200 @@ def artisan_dashboard_view(request: HttpRequest):
     from request.models import Request as UserRequest
     from proposal.models import Proposal
 
-    # Earnings for last 6 months (including current month)
+
+    # ==========================
+    # Earnings last 6 months
+    # ==========================
+
     earnings_6months = []
+
     for n in range(5, -1, -1):
-        total_months = (year * 12 + month - 1) - n
+
+        total_months = (
+            (year * 12 + month - 1)
+            - n
+        )
+
         y = total_months // 12
         m = total_months % 12 + 1
-        total = Contract.objects.filter(
-            proposal__artisan=request.user,
-            status=Contract.Status.COMPLETED,
-            completed_at__year=y,
-            completed_at__month=m,
-        ).aggregate(total=Sum('proposal__price'))['total'] or 0
-        earnings_6months.append({'label': f"{calendar.month_abbr[m]} {y}", 'total': float(total)})
 
-    # this and last month totals for stat cards
-    earnings_this_month = earnings_6months[-1]['total'] if earnings_6months else 0
-    earnings_last_month = earnings_6months[-2]['total'] if len(earnings_6months) > 1 else 0
+        total = (
+            Contract.objects.filter(
+                proposal__artisan=request.user,
+                status=Contract.Status.COMPLETED,
+                completed_at__year=y,
+                completed_at__month=m
+            )
+            .aggregate(
+                total=Sum(
+                    'proposal__price'
+                )
+            )['total']
+            or 0
+        )
+
+        earnings_6months.append({
+            'label': f"{calendar.month_abbr[m]} {y}",
+            'total': float(total)
+        })
+
+
+    earnings_this_month = (
+        earnings_6months[-1]['total']
+        if earnings_6months
+        else 0
+    )
+
+    earnings_last_month = (
+        earnings_6months[-2]['total']
+        if len(earnings_6months) > 1
+        else 0
+    )
+
     try:
+
         if earnings_last_month == 0:
-            earnings_growth_percent = 100 if earnings_this_month > 0 else 0
+
+            earnings_growth_percent = (
+                100
+                if earnings_this_month > 0
+                else 0
+            )
+
         else:
-            earnings_growth_percent = int(((earnings_this_month - earnings_last_month) / float(earnings_last_month)) * 100)
+
+            earnings_growth_percent = int(
+                (
+                    (
+                        earnings_this_month
+                        - earnings_last_month
+                    )
+                    /
+                    float(
+                        earnings_last_month
+                    )
+                ) * 100
+            )
+
     except Exception:
+
         earnings_growth_percent = 0
 
-    # Active orders (contracts in progress)
-    active_contracts_qs = Contract.objects.filter(
-        proposal__artisan=request.user,
-        status=Contract.Status.IN_PROGRESS,
-    ).select_related('proposal__request', 'proposal')
+
+    # ==========================
+    # Active Orders
+    # ==========================
+
+    active_contracts_qs = (
+        Contract.objects.filter(
+            proposal__artisan=request.user,
+            status=Contract.Status.IN_PROGRESS
+        )
+        .select_related(
+            'proposal',
+            'proposal__request'
+        )
+    )
+
     active_orders = active_contracts_qs.count()
 
-    # Progress updates that have no images (awaiting photo upload)
-    photos_awaiting = ProgressUpdate.objects.filter(
-        contract__proposal__artisan=request.user,
-    ).annotate(img_count=Count('images')).filter(img_count=0).count()
 
-    # My proposals
-    my_proposals_qs = Proposal.objects.filter(artisan=request.user).select_related('request')
+    # ==========================
+    # Completed Orders
+    # ==========================
+
+    completed_orders = (
+        Contract.objects.filter(
+            proposal__artisan=request.user,
+            status=Contract.Status.COMPLETED
+        )
+        .select_related(
+            'proposal',
+            'proposal__request'
+        )
+        .order_by(
+            '-completed_at'
+        )
+    )
+
+
+    # ==========================
+    # Awaiting photos
+    # ==========================
+
+    photos_awaiting = (
+        ProgressUpdate.objects.filter(
+            contract__proposal__artisan=request.user
+        )
+        .annotate(
+            img_count=Count(
+                'images'
+            )
+        )
+        .filter(
+            img_count=0
+        )
+        .count()
+    )
+
+
+    # ==========================
+    # Proposals
+    # ==========================
+
+    my_proposals_qs = (
+        Proposal.objects.filter(
+            artisan=request.user
+        )
+        .select_related(
+            'request'
+        )
+    )
+
     my_proposals = my_proposals_qs.count()
-    my_proposals_pending = my_proposals_qs.filter(status=Proposal.Status.PENDING).count()
 
-    # Requests matching artisan's workshop categories (if available)
+    my_proposals_pending = (
+        my_proposals_qs.filter(
+            status=Proposal.Status.PENDING
+        ).count()
+    )
+
+
+    # ==========================
+    # Matching Requests
+    # ==========================
+
     requests_matching_count = 0
     requests_matching_list = []
-    if workshop and hasattr(workshop, 'categories'):
+
+    if workshop and hasattr(
+        workshop,
+        'categories'
+    ):
+
         cats = workshop.categories.all()
+
         if cats.exists():
-            reqs_qs = UserRequest.objects.filter(status=UserRequest.Status.OPEN, category__in=cats).distinct()
+
+            reqs_qs = (
+                UserRequest.objects.filter(
+                    status=UserRequest.Status.OPEN,
+                    category__in=cats
+                )
+                .distinct()
+            )
+
             requests_matching_count = reqs_qs.count()
-            requests_matching_list = list(reqs_qs.order_by('-created_at')[:5])
+
+            requests_matching_list = list(
+                reqs_qs.order_by(
+                    '-created_at'
+                )[:5]
+            )
+
 
     stats = {
+
         'earnings_6months': earnings_6months,
         'earnings_this_month': earnings_this_month,
         'earnings_last_month': earnings_last_month,
@@ -185,17 +332,32 @@ def artisan_dashboard_view(request: HttpRequest):
         'rating': artisan_profile.average_rating,
         'rating_reviews': request.user.reviews_received.count(),
         'open_requests': requests_matching_count,
+
     }
 
+
     context = {
+
         'artisan': artisan_profile,
         'workshop': workshop,
         'stats': stats,
+
         'active_contracts': active_contracts_qs[:5],
+
+        'completed_orders': completed_orders[:10],
+
         'my_proposals': my_proposals_qs[:5],
+
         'requests_matching_list': requests_matching_list,
+
     }
-    return render(request, 'account/artisan_dashboard.html', context)
+
+    return render(
+        request,
+        'account/artisan_dashboard.html',
+        context
+    )
+
 def profile_view(request:HttpRequest, user_name):
     user = get_object_or_404(User, username = user_name)
     if user.groups.filter(name='artisan').exists():
