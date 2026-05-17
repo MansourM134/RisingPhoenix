@@ -23,6 +23,11 @@
                 <a href="{% url 'request:request_create_view' %}" class="btn btn-saaf-primary rounded-pill">Request Custom Work</a>
                 {% endif %}
                 <a href="{% url 'request:request_list_view' %}" class="btn btn-saaf-outline rounded-pill">Browse Requests</a>
+                {% if request.user.is_authenticated and request.user != artisan.user %}
+                <a href="{% url 'account:submit_report_view' 'user' artisan.user.id %}" class="btn btn-saaf-outline rounded-pill text-danger">
+                  <i class="bi bi-flag"></i> Report Artisan
+                </a>
+                {% endif %}
             </div>
         </div>
 
@@ -52,6 +57,12 @@
                     <div class="saaf-portfolio-item">
                         <img src="{{ img.image.url }}" alt="{{ img.caption|default:workshop.workshop_name }}" class="img-fluid rounded-3 w-100">
                         {% if img.caption %}<p class="small text-muted mt-2 mb-0">{{ img.caption }}</p>{% endif %}
+                        {% if request.user.is_authenticated %}
+                        <a href="{% url 'account:submit_report_view' 'portfolio_image' img.id %}"
+                           class="small text-danger" style="text-decoration:none;opacity:0.7;">
+                          <i class="bi bi-flag"></i> Report
+                        </a>
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
@@ -130,6 +141,14 @@
         </div>
         {% if review.comment %}
                 <p class="saaf-review-comment">{{ review.comment }}</p>
+        {% endif %}
+        {% if request.user.is_authenticated and request.user != review.reviews_given %}
+        <div class="mt-1">
+          <a href="{% url 'account:submit_report_view' 'review' review.id %}"
+             class="small text-danger" style="text-decoration:none;opacity:0.7;">
+            <i class="bi bi-flag"></i> Report
+          </a>
+        </div>
         {% endif %}
       </div>
       {% endfor %}
