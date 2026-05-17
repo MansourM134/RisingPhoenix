@@ -29,6 +29,11 @@
           {% if user.is_authenticated and user == project_request.requester and project_request.status != 'closed' and project_request.status != 'time_ended' %}
             <a href="{% url 'request:request_edit_view' project_request.id %}" class="request-action">Edit request</a>
           {% endif %}
+          {% if user.is_authenticated and user != project_request.requester %}
+            <a href="{% url 'account:submit_report_view' 'request' project_request.id %}" class="page-link text-danger" style="font-size:0.85rem;">
+              <i class="bi bi-flag"></i> Report
+            </a>
+          {% endif %}
         </div>
       </div>
 

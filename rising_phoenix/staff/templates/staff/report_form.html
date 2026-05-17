@@ -1,0 +1,167 @@
+{% extends "main/base.html" %}
+
+{% block title %}Submit a Report{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #c96f52;
+        --light-bg: #faf3ec;
+        --card-bg: #fff;
+        --text-muted: #8b7461;
+        --border-light: #efe6dd;
+    }
+
+    body { background: var(--light-bg); }
+
+    .report-shell {
+        max-width: 640px;
+        margin: 40px auto;
+        padding: 0 16px;
+    }
+
+    .report-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-light);
+        border-radius: 16px;
+        padding: 36px 40px;
+    }
+
+    .report-eyebrow {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #c94040;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 8px;
+    }
+
+    .report-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #2c1f1a;
+        margin-bottom: 4px;
+    }
+
+    .report-sub {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-bottom: 28px;
+    }
+
+    .target-box {
+        background: #fdf8f4;
+        border: 1px solid var(--border-light);
+        border-radius: 10px;
+        padding: 14px 16px;
+        margin-bottom: 24px;
+        font-size: 0.9rem;
+        color: #2c1f1a;
+    }
+
+    .report-label {
+        display: block;
+        font-weight: 700;
+        color: #2c1f1a;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+    }
+
+    .report-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 24px;
+    }
+
+    .btn-submit {
+        background: #c94040;
+        color: #fff;
+        padding: 12px 28px;
+        border-radius: 8px;
+        border: none;
+        font-weight: 700;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+
+    .btn-submit:hover { background: #a83232; }
+
+    .btn-cancel {
+        background: #fff;
+        color: var(--text-muted);
+        padding: 12px 20px;
+        border-radius: 8px;
+        border: 1px solid var(--border-light);
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        transition: background 0.15s;
+    }
+
+    .btn-cancel:hover { background: #f7efe7; color: #2c1f1a; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="report-shell">
+    <div class="report-card">
+        <p class="report-eyebrow"><i class="bi bi-flag-fill"></i> Report Content</p>
+        <h1 class="report-title">Submit a Report</h1>
+        <p class="report-sub">
+            Our team will review your report and take appropriate action. All reports are confidential.
+        </p>
+
+        <div class="target-box">
+            <strong>Reporting:</strong>
+            {{ content_type|title|cut:"_" }}
+            —
+            <span class="text-muted">
+                {% if content_type == 'user' %}
+                    {{ target.username }}
+                {% elif content_type == 'request' %}
+                    {{ target.title }}
+                {% elif content_type == 'portfolio_image' %}
+                    Portfolio image ({{ target.caption|default:"no caption" }})
+                {% elif content_type == 'review' %}
+                    Review by {{ target.reviews_given.username }}
+                {% elif content_type == 'message' %}
+                    Message from {{ target.sender.username }}
+                {% endif %}
+            </span>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
+
+            <label class="report-label" for="{{ form.reason.id_for_label }}">
+                {{ form.reason.label }}
+            </label>
+            {{ form.reason }}
+            {% if form.reason.errors %}
+            <div class="text-danger small mt-1">{{ form.reason.errors }}</div>
+            {% endif %}
+
+            <label class="report-label mt-3" for="{{ form.details.id_for_label }}">
+                {{ form.details.label }}
+            </label>
+            {{ form.details }}
+            {% if form.details.errors %}
+            <div class="text-danger small mt-1">{{ form.details.errors }}</div>
+            {% endif %}
+
+            <div class="report-actions">
+                <button type="submit" class="btn-submit">
+                    <i class="bi bi-flag-fill"></i> Submit Report
+                </button>
+                <a href="javascript:history.back()" class="btn-cancel">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

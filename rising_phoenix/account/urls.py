@@ -17,6 +17,9 @@ urlpatterns = [
     path('profile/<user_name>/update', views.update_profile_view, name='update_profile_view'),
     path('profile/<user_name>/verified_phone', views.verify_phone_view, name='verify_phone_view'),
     path('account/profile/<str:user_name>/send-phone-verification/', views.send_phone_verification_view, name='send_phone_verification'),
+    # Report & flagging (user-facing)
+    path('report/<str:content_type>/<int:object_id>/', views.submit_report_view, name='submit_report_view'),
+    path('my-reports/', views.my_reports_view, name='my_reports_view'),
     path(
         'password-reset/',
         auth_views.PasswordResetView.as_view(

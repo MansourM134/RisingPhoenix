@@ -69,6 +69,15 @@
                                                 {{ msg.body }}
                                             </p>
                                         {% endif %}
+
+                                        {% if msg.sender != request.user %}
+                                        <div class="mt-1">
+                                            <a href="{% url 'account:submit_report_view' 'message' msg.id %}"
+                                               style="font-size:0.7rem;color:#c94040;text-decoration:none;opacity:0.7;">
+                                                <i class="bi bi-flag"></i> Report
+                                            </a>
+                                        </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                             {% endfor %}
@@ -290,6 +299,15 @@
                 <p class="mb-0" style="white-space: pre-line;">${escapeHtml(msg.body)}</p>
             ` : '';
 
+            const reportHtml = !isMine ? `
+                <div class="mt-1">
+                    <a href="/account/report/message/${msg.id}/"
+                       style="font-size:0.7rem;color:#c94040;text-decoration:none;opacity:0.7;">
+                        <i class="bi bi-flag"></i> Report
+                    </a>
+                </div>
+            ` : '';
+
             return `
                 <div class="d-flex ${isMine ? 'justify-content-end' : 'justify-content-start'}">
                     <div
@@ -306,6 +324,7 @@
                         </div>
                         ${imageHtml}
                         ${bodyHtml}
+                        ${reportHtml}
                     </div>
                 </div>
             `;

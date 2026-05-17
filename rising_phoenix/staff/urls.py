@@ -10,5 +10,8 @@ urlpatterns = [
     path("artisans/<int:user_id>/feature/", views.feature_artisan_view, name="feature_artisan_view"),
     path("artisans/<int:user_id>/verify/", views.verify_artisan_view, name="verify_artisan_view"),
     path("categories/add/", views.add_category_view, name="add_category_view"),
+    # Report management (staff only)
+    path("reports/", views.report_list_view, name="report_list_view"),
+    path("reports/<int:report_id>/resolve/", views.resolve_report_view, name="resolve_report_view"),
 ]
 
