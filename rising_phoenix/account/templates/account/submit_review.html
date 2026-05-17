@@ -172,10 +172,12 @@
             <div class="error-list">{{ form.rating.errors }}</div>
             {% endif %}
             <div class="star-group">
-                {% for value, label in form.fields.rating.choices %}
+                {% for value, label in form.fields.rating.choices reversed %}
+                {% if value %}
                 <input type="radio" name="rating" id="star{{ value }}" value="{{ value }}"
                     {% if form.rating.value == value|stringformat:"s" %}checked{% endif %}>
                 <label for="star{{ value }}" title="{{ label }}">&#9733;</label>
+                {% endif %}
                 {% endfor %}
             </div>
 
