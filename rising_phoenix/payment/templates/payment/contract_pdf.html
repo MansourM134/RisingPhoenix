@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Contract #{{ contract.id }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            color: #222;
+            line-height: 1.6;
+            margin: 32px;
+        }
+        h1, h2, h3 {
+            margin-bottom: 8px;
+        }
+        .section {
+            margin-bottom: 24px;
+        }
+        .box {
+            border: 1px solid #ddd;
+            padding: 12px;
+            border-radius: 8px;
+        }
+        .muted {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Project Contract</h1>
+    <p class="muted">Contract #{{ contract.id }}</p>
+
+    <div class="section">
+        <h3>Requester</h3>
+        <div class="box">
+            <p>{{ project_request.requester.get_full_name|default:project_request.requester.username }}</p>
+            <p>{{ project_request.requester.email }}</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Artisan</h3>
+        <div class="box">
+            <p>{{ proposal.artisan.get_full_name|default:proposal.artisan.username }}</p>
+            <p>{{ proposal.artisan.email }}</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Request</h3>
+        <div class="box">
+            <p><strong>Title:</strong> {{ project_request.title }}</p>
+            <p><strong>Description:</strong><br>{{ project_request.description }}</p>
+            <p><strong>Category:</strong> {{ project_request.category.name }}</p>
+            {% if project_request.budget_max %}
+                <p><strong>Budget:</strong> {{ project_request.budget_max }} SAR</p>
+            {% endif %}
+            {% if project_request.deadline %}
+                <p><strong>Deadline:</strong> {{ project_request.deadline }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Proposal</h3>
+        <div class="box">
+            <p><strong>Price:</strong> {{ proposal.price }} SAR</p>
+            <p><strong>Estimated completion:</strong> {{ proposal.estimated_days }} day{{ proposal.estimated_days|pluralize }}</p>
+            <p><strong>Details:</strong><br>{{ proposal.message }}</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Acceptance</h3>
+        <div class="box">
+            <p><strong>Requester accepted at:</strong> {{ contract.requester_accepted_at }}</p>
+            <p><strong>Artisan accepted at:</strong> {{ contract.artisan_accepted_at }}</p>
+            <p><strong>Status:</strong> {{ contract.status }}</p>
+        </div>
+    </div>
+</body>
+</html>

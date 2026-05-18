@@ -4,7 +4,8 @@ from decimal import Decimal
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth import get_user_model
-
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 from notification.utils import notify
 from .models import StripeCustomer, PaymentMethod, EscrowPayment
 from django.conf import settings
@@ -19,7 +20,7 @@ from .services import process_monthly_artisan_payouts
 from django.views.decorators.http import require_POST
 from django.contrib.admin.views.decorators import staff_member_required
 import logging
-
+from .utils import send_contract_pdf_email
 
 # Create your views here.
 
@@ -128,6 +129,9 @@ def artisan_contract_review_view(request, contract_id):
             'proposal__artisan',
             'proposal__request__requester',
             'escrow_payment',
+        ).prefetch_related(
+            'proposal__images',
+            'proposal__request__images',
         ),
         id=contract_id
     )
@@ -289,6 +293,9 @@ def confirm_proposal_payment_view(request, proposal_id):
     return redirect('progress:contract_detail_view', contract_id=contract.id)
 
 
+
+
+
 def artisan_accept_contract_view(request, contract_id):
     contract = get_object_or_404(
         Contract.objects.select_related(
@@ -296,6 +303,7 @@ def artisan_accept_contract_view(request, contract_id):
             'proposal__request',
             'proposal__artisan',
             'proposal__request__requester',
+            'proposal__request__category',
             'escrow_payment',
         ),
         id=contract_id
@@ -358,9 +366,7 @@ def artisan_accept_contract_view(request, contract_id):
         return redirect('request:request_detail_view', request_id=contract.proposal.request.id)
 
     try:
-        captured_intent = stripe.PaymentIntent.capture(
-            escrow_payment.stripe_payment_intent_id
-        )
+        stripe.PaymentIntent.capture(escrow_payment.stripe_payment_intent_id)
     except stripe.error.StripeError:
         messages.error(request, 'The payment could not be captured. Please try again.')
         return redirect('payment:artisan_contract_review_view', contract_id=contract.id)
@@ -378,9 +384,14 @@ def artisan_accept_contract_view(request, contract_id):
         escrow_payment.captured = True
         escrow_payment.save(update_fields=['status', 'captured', 'updated_at'])
 
-    messages.success(request, 'Contract accepted and payment captured successfully.')
-    return redirect('progress:contract_detail_view', contract_id=contract.id)
+    try:
+        send_contract_pdf_email(contract)
+    except Exception:
+        messages.warning(request, 'Contract accepted and payment captured, but the contract email could not be sent.')
+        return redirect('progress:contract_detail_view', contract_id=contract.id)
 
+    messages.success(request, 'Contract accepted, payment captured, and contract PDF emailed successfully.')
+    return redirect('progress:contract_detail_view', contract_id=contract.id)
 
 def artisan_reject_contract_view(request, contract_id):
     contract = get_object_or_404(
