@@ -6,21 +6,45 @@ from workshop.models import Category
 from workshop.models import WorkshopProfile
 from django.db.models import Q, Avg
 from django.core.paginator import Paginator
+from request.models import Request
 
 
 # Create your views here.
 
 def home_view(request:HttpRequest):
-    latest_workshops = (
-        WorkshopProfile.objects
-        .filter(is_published=True)
-        .select_related('artisan__user')
-        .prefetch_related('categories')
-        .order_by('-created_at')[:8]
+    categories = Category.objects.order_by('name')[:6]
+
+    is_artisan_user = (
+        request.user.is_authenticated
+        and request.user.groups.filter(name='artisan').exists()
     )
 
+    top_rated_workshops = None
+    latest_requests = None
+
+    if is_artisan_user:
+        latest_requests = (
+            Request.objects
+            .filter(status__in=[Request.Status.OPEN, Request.Status.IN_REVIEW])
+            .select_related('requester', 'category')
+            .prefetch_related('images')
+            .order_by('-created_at')[:8]
+        )
+    else:
+        top_rated_workshops = (
+            WorkshopProfile.objects
+            .filter(is_published=True)
+            .select_related('artisan__user')
+            .prefetch_related('categories')
+            .annotate(avg_rating=Avg('artisan__user__reviews_received__rating'))
+            .order_by('-avg_rating', '-created_at')[:8]
+        )
+
     context = {
-        'latest_workshops': latest_workshops,
+        'home_categories': categories,
+        'home_feed_type': 'requests' if is_artisan_user else 'top_artisans',
+        'top_rated_workshops': top_rated_workshops,
+        'latest_requests': latest_requests,
     }
 
     return render(request, 'main/index.html', context)
@@ -50,6 +74,7 @@ def browse_view(request: HttpRequest):
     rating_min = request.GET.get('rating_min')
     rating_max = request.GET.get('rating_max')
     use_rating = request.GET.get('use_rating') == '1'
+    verified_only = request.GET.get('verified') == '1'
 
     if category_id:
         artisans = artisans.filter(
@@ -59,6 +84,11 @@ def browse_view(request: HttpRequest):
     if city:
         artisans = artisans.filter(
             artisanprofile__workshop_profile__location__icontains=city
+        )
+
+    if verified_only:
+        artisans = artisans.filter(
+            artisanprofile__is_verified=True
         )
 
     if q:
@@ -156,6 +186,7 @@ def browse_view(request: HttpRequest):
         'selected_rating_min': str(min_value),
         'selected_rating_max': str(max_value),
         'use_rating': use_rating,
+        'verified_only': verified_only,
         'query_params': query_params.urlencode(),
     }
     return render(request, 'main/user_browse.html', context)
