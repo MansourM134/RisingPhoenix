@@ -16,6 +16,7 @@ from .models import Contract, ContractEvent, ContractEventImage, ProgressComment
 import stripe
 from django.db import transaction
 from account.models import ArtisanRevenue
+from request.models import Request
 
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -267,6 +268,11 @@ def confirm_completion_view(request, contract_id):
         contract.status = Contract.Status.COMPLETED
         contract.completed_at = timezone.now()
         contract.save(update_fields=['status', 'completed_at', 'updated_at'])
+
+        project_request = contract.proposal.request
+        if project_request.status != Request.Status.CLOSED:
+            project_request.status = Request.Status.CLOSED
+            project_request.save(update_fields=['status', 'updated_at'])
 
         ContractEvent.objects.create(
             contract=contract,
