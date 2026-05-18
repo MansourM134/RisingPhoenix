@@ -5,7 +5,7 @@
 {% block title %}Requests{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/request.css' %}">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 {% endblock %}
 
 {% block sidebar %}
@@ -19,150 +19,230 @@
 {% endblock %}
 
 {% block content %}
-<section class="request-shell">
-  <div class="request-container">
-    <header class="request-hero">
-      <p class="request-eyebrow">Request Marketplace</p>
-      <div class="request-row">
-        <div>
-          <h1 class="mb-2">Browse Project Requests</h1>
-          <p class="request-sub">Explore what requesters need and find projects that match your craft.</p>
-        </div>
-        <div>
-          {% if request.user.is_authenticated and not request.user.artisanprofile %}
-          <a href="{% url 'request:request_create_view' %}" class="request-action">Post a request</a>
-          {% elif request.user.is_authenticated and request.user.artisanprofile %}
-          <a href="{% url 'account:artisan_dashboard_view' %}" class="request-action">Go to dashboard</a>
-          {% else %}
-          <a href="{% url 'account:login_view' %}" class="request-action">Log in to post</a>
-          {% endif %}
-        </div>
-      </div>
-    </header>
-
-    <form method="get" class="browse-filters">
-      <div class="browse-filters-grid">
-        <div>
-          <label class="request-label" for="id_q">Search</label>
-          <input id="id_q" type="text" name="q" value="{{ current_q }}" class="request-input" placeholder="Title, description, or requester">
-        </div>
-
-        <div>
-          <label class="request-label" for="id_category">Category</label>
-          <select id="id_category" name="category" class="request-select">
-            <option value="">All categories</option>
-            {% for category_item in category_choices %}
-              <option value="{{ category_item.id }}" {% if current_category == category_item.id|stringformat:'s' %}selected{% endif %}>{{ category_item.name }}</option>
-            {% endfor %}
-          </select>
-        </div>
-
-        <div>
-          <label class="request-label" for="id_status">Status</label>
-          <select id="id_status" name="status" class="request-select">
-            <option value="">All statuses</option>
-            {% for value, label in status_choices %}
-              <option value="{{ value }}" {% if current_status == value %}selected{% endif %}>{{ label }}</option>
-            {% endfor %}
-          </select>
-        </div>
-
-        <div>
-          <label class="request-label" for="id_sort">Sort by</label>
-          <select id="id_sort" name="sort" class="request-select">
-            <option value="newest" {% if current_sort == 'newest' %}selected{% endif %}>Newest first</option>
-            <option value="oldest" {% if current_sort == 'oldest' %}selected{% endif %}>Oldest first</option>
-            <option value="deadline_soon" {% if current_sort == 'deadline_soon' %}selected{% endif %}>Deadline soonest</option>
-            <option value="budget_high" {% if current_sort == 'budget_high' %}selected{% endif %}>Highest budget</option>
-            <option value="budget_low" {% if current_sort == 'budget_low' %}selected{% endif %}>Lowest budget</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="browse-filter-actions">
-        <button type="submit" class="request-action browse-btn">Apply filters</button>
-        <a href="{% url 'request:request_list_view' %}" class="browse-reset">Reset</a>
-        {% if user.is_authenticated %}
-          {% if current_mine == '1' %}
-            <a href="{% url 'request:request_list_view' %}" class="browse-reset">Show all requests</a>
-          {% else %}
-            <a href="{% url 'request:request_list_view' %}?mine=1" class="browse-reset">My Requests</a>
-          {% endif %}
-        {% endif %}
-        <span class="browse-result-count">{{ total_count }} request{{ total_count|pluralize }} found</span>
-      </div>
-    </form>
-
-    <div class="request-grid">
-      {% for project_request in project_requests %}
-        <article class="request-card">
-          {% with project_request.images.first as cover %}
-            {% if cover %}
-              <a href="{% url 'request:request_detail_view' project_request.id %}" class="request-card-link-media">
-                <img src="{{ cover.image.url }}" alt="Reference image for {{ project_request.title }}" class="request-card-img">
-              </a>
-            {% else %}
-              <a href="{% url 'request:request_detail_view' project_request.id %}" class="request-card-no-img" tabindex="-1" aria-hidden="true">
-                <span class="request-card-no-img-label">{{ project_request.category.name }}</span>
-              </a>
-            {% endif %}
-          {% endwith %}
-          <p class="request-tag">{{ project_request.category.name }}</p>
-          <h2 class="request-card-title">
-            <a href="{% url 'request:request_detail_view' project_request.id %}" class="request-card-title-link">{{ project_request.title }}</a>
-          </h2>
-          <p class="request-card-meta-by">by {{ project_request.requester.username }}</p>
-          <p class="request-card-desc">{{ project_request.description|truncatewords:24 }}</p>
-          <div class="request-meta">
-            <div class="request-meta-row">
-              <span>
-                {% if project_request.budget_max %}
-                  {{ project_request.budget_max|floatformat:"-2" }} SAR
-                {% else %}
-                  Budget flexible
-                {% endif %}
-              </span>
-              {% if project_request.status == 'open' %}
-                <span class="status-pill status-open">{{ project_request.get_status_display }}</span>
-              {% elif project_request.status == 'in_review' %}
-                <span class="status-pill status-in-review">{{ project_request.get_status_display }}</span>
-              {% elif project_request.status == 'time_ended' %}
-                <span class="status-pill status-time-ended">{{ project_request.get_status_display }}</span>
-              {% else %}
-                <span class="status-pill status-closed">{{ project_request.get_status_display }}</span>
-              {% endif %}
-            </div>
-            <p class="mb-0">Deadline: {{ project_request.deadline|default:"Flexible" }}</p>
-            <p class="mb-0 request-card-proposals">
-              <i class="bi bi-file-earmark-text"></i>
-              {{ project_request.proposal_count }} proposal{{ project_request.proposal_count|pluralize }}
+<section class="browse-hero py-5">
+    <div class="container-fluid px-0">
+        <div class="text-center mx-auto browse-hero-content">
+            <span class="badge rounded-pill browse-badge px-3 py-2 mb-3">Saaf Marketplace</span>
+            <h1 class="fw-bold mb-3">Browse Requests</h1>
+            <p class="text-muted mb-0">
+                Find project requests that match your craft and filter results quickly.
             </p>
-            <div class="request-card-actions">
-              {% if user.is_authenticated and user == project_request.requester and project_request.status != 'closed' and project_request.status != 'time_ended' %}
-                <a href="{% url 'request:request_edit_view' project_request.id %}" class="request-card-edit-btn">Edit</a>
-              {% endif %}
-              <a href="{% url 'request:request_detail_view' project_request.id %}" class="request-card-cta">View details</a>
-            </div>
-          </div>
-        </article>
-      {% empty %}
-        <div class="request-empty">No requests match your filters yet.</div>
-      {% endfor %}
+        </div>
     </div>
-
-    {% if page_obj.has_other_pages %}
-      <nav class="browse-pagination" aria-label="Requests pagination">
-        {% if page_obj.has_previous %}
-          <a class="page-link" href="?q={{ current_q|urlencode }}&category={{ current_category|urlencode }}&status={{ current_status|urlencode }}&sort={{ current_sort|urlencode }}&mine={{ current_mine|urlencode }}&page={{ page_obj.previous_page_number }}">Previous</a>
-        {% endif %}
-
-        <span class="page-current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
-
-        {% if page_obj.has_next %}
-          <a class="page-link" href="?q={{ current_q|urlencode }}&category={{ current_category|urlencode }}&status={{ current_status|urlencode }}&sort={{ current_sort|urlencode }}&mine={{ current_mine|urlencode }}&page={{ page_obj.next_page_number }}">Next</a>
-        {% endif %}
-      </nav>
-    {% endif %}
-  </div>
 </section>
+
+<section class="pb-5">
+    <div class="container">
+        <div class="row g-4 align-items-start">
+            <div class="col-12 col-xl-3">
+                <form method="get" class="filter-panel card border-0 shadow-sm rounded-4 overflow-hidden" id="request-filter-form">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div>
+                                <h5 class="fw-bold mb-1">Filter requests</h5>
+                                <p class="text-muted small mb-0">Refine results fast</p>
+                            </div>
+                            <a href="{% url 'request:request_list_view' %}" class="btn btn-sm btn-saaf-outline rounded-pill">Reset</a>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="id_q" class="form-label fw-semibold">Search</label>
+                            <div class="search-input-wrap">
+                                <i class="bi bi-search search-input-icon"></i>
+                                <input id="id_q" type="text" name="q" value="{{ current_q }}" class="form-control rounded-3 ps-5" placeholder="Title, description, requester">
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="id_category" class="form-label fw-semibold">Category</label>
+                            <select id="id_category" name="category" class="form-select rounded-3">
+                                <option value="">All categories</option>
+                                {% for category_item in category_choices %}
+                                <option value="{{ category_item.id }}" {% if current_category == category_item.id|stringformat:'s' %}selected{% endif %}>{{ category_item.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="id_status" class="form-label fw-semibold">Status</label>
+                            <select id="id_status" name="status" class="form-select rounded-3">
+                                <option value="">All statuses</option>
+                                {% for value, label in status_choices %}
+                                <option value="{{ value }}" {% if current_status == value %}selected{% endif %}>{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="id_sort" class="form-label fw-semibold">Sort by</label>
+                            <select id="id_sort" name="sort" class="form-select rounded-3">
+                                <option value="newest" {% if current_sort == 'newest' %}selected{% endif %}>Newest first</option>
+                                <option value="oldest" {% if current_sort == 'oldest' %}selected{% endif %}>Oldest first</option>
+                                <option value="deadline_soon" {% if current_sort == 'deadline_soon' %}selected{% endif %}>Deadline soonest</option>
+                                <option value="budget_high" {% if current_sort == 'budget_high' %}selected{% endif %}>Highest budget</option>
+                                <option value="budget_low" {% if current_sort == 'budget_low' %}selected{% endif %}>Lowest budget</option>
+                            </select>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-saaf-primary rounded-pill py-2">Apply Filters</button>
+                            {% if user.is_authenticated %}
+                                {% if current_mine == '1' %}
+                                <a href="{% url 'request:request_list_view' %}" class="btn btn-saaf-outline rounded-pill py-2">Show All Requests</a>
+                                {% else %}
+                                <a href="{% url 'request:request_list_view' %}?mine=1" class="btn btn-saaf-outline rounded-pill py-2">My Requests</a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-12 col-xl-9">
+                <div class="results-toolbar card border-0 shadow-sm rounded-4 mb-4">
+                    <div class="card-body p-3 p-lg-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+                        <div>
+                            <h5 class="fw-bold mb-1">Available requests</h5>
+                            <p class="text-muted mb-0">{{ total_count }} result{{ total_count|pluralize }}</p>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2">
+                            {% if current_category %}<span class="badge rounded-pill active-filter-chip px-3 py-2">Category selected</span>{% endif %}
+                            {% if current_status %}<span class="badge rounded-pill active-filter-chip px-3 py-2">{{ current_status }}</span>{% endif %}
+                            {% if current_q %}<span class="badge rounded-pill active-filter-chip px-3 py-2">“{{ current_q }}”</span>{% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                {% if project_requests %}
+                <div class="row g-4 row-cols-1 row-cols-md-2 row-cols-xxl-3">
+                    {% for project_request in project_requests %}
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden artisan-card">
+                            {% with project_request.images.first as cover %}
+                            {% if cover %}
+                            <img src="{{ cover.image.url }}" alt="{{ project_request.title }}" class="w-100" style="height: 200px; object-fit: cover;">
+                            {% endif %}
+                            {% endwith %}
+
+                            <div class="card-body p-4 d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                                    <span class="badge rounded-pill active-filter-chip px-3 py-2">{{ project_request.category.name }}</span>
+                                    {% if project_request.status == 'open' %}
+                                    <span class="badge rounded-pill text-bg-success">{{ project_request.get_status_display }}</span>
+                                    {% elif project_request.status == 'in_review' %}
+                                    <span class="badge rounded-pill text-bg-warning">{{ project_request.get_status_display }}</span>
+                                    {% elif project_request.status == 'time_ended' %}
+                                    <span class="badge rounded-pill text-bg-secondary">{{ project_request.get_status_display }}</span>
+                                    {% else %}
+                                    <span class="badge rounded-pill text-bg-dark">{{ project_request.get_status_display }}</span>
+                                    {% endif %}
+                                </div>
+
+                                <h5 class="fw-bold mb-2">{{ project_request.title|truncatechars:60 }}</h5>
+                                <p class="text-muted small mb-2">by {{ project_request.requester.username }}</p>
+                                <p class="text-muted small mb-3">{{ project_request.description|truncatechars:110 }}</p>
+
+                                <div class="d-flex justify-content-between align-items-center small text-muted mb-3">
+                                    <span>
+                                        {% if project_request.budget_max %}
+                                        {{ project_request.budget_max|floatformat:"-2" }} SAR
+                                        {% else %}
+                                        Budget flexible
+                                        {% endif %}
+                                    </span>
+                                    <span>{{ project_request.proposal_count }} proposal{{ project_request.proposal_count|pluralize }}</span>
+                                </div>
+
+                                <div class="mt-auto d-grid gap-2">
+                                    {% if user.is_authenticated and user == project_request.requester and project_request.status != 'closed' and project_request.status != 'time_ended' %}
+                                    <a href="{% url 'request:request_edit_view' project_request.id %}" class="btn btn-saaf-outline rounded-pill">Edit Request</a>
+                                    {% endif %}
+                                    <a href="{% url 'request:request_detail_view' project_request.id %}" class="btn btn-saaf-primary rounded-pill">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body text-center py-5 px-4">
+                        <div class="mb-3"><i class="bi bi-search text-muted" style="font-size: 2.5rem;"></i></div>
+                        <h4 class="fw-bold mb-2">No requests found</h4>
+                        <p class="text-muted mb-3">Try changing your search terms or filters.</p>
+                        <a href="{% url 'request:request_list_view' %}" class="btn btn-saaf-outline rounded-pill px-4">Clear filters</a>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if page_obj.has_other_pages %}
+                <nav class="pagination-wrap mt-5" aria-label="Requests pages">
+                    <ul class="pagination justify-content-center align-items-center flex-wrap gap-2 mb-0">
+                        {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link saaf-page-link" href="?q={{ current_q|urlencode }}&category={{ current_category|urlencode }}&status={{ current_status|urlencode }}&sort={{ current_sort|urlencode }}&mine={{ current_mine|urlencode }}&page=1">
+                                <i class="bi bi-chevron-double-left me-1"></i> First
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link saaf-page-link" href="?q={{ current_q|urlencode }}&category={{ current_category|urlencode }}&status={{ current_status|urlencode }}&sort={{ current_sort|urlencode }}&mine={{ current_mine|urlencode }}&page={{ page_obj.previous_page_number }}">
+                                <i class="bi bi-chevron-left me-1"></i> Previous
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled"><span class="page-link saaf-page-link"><i class="bi bi-chevron-double-left me-1"></i> First</span></li>
+                        <li class="page-item disabled"><span class="page-link saaf-page-link"><i class="bi bi-chevron-left me-1"></i> Previous</span></li>
+                        {% endif %}
+
+                        <li class="page-item active" aria-current="page">
+                            <span class="page-link saaf-page-link saaf-page-current">{{ page_obj.number }}</span>
+                        </li>
+                        <li class="page-item disabled d-none d-md-block">
+                            <span class="page-link saaf-page-link saaf-page-status">of {{ page_obj.paginator.num_pages }}</span>
+                        </li>
+
+                        {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link saaf-page-link" href="?q={{ current_q|urlencode }}&category={{ current_category|urlencode }}&status={{ current_status|urlencode }}&sort={{ current_sort|urlencode }}&mine={{ current_mine|urlencode }}&page={{ page_obj.next_page_number }}">
+                                Next <i class="bi bi-chevron-right ms-1"></i>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link saaf-page-link" href="?q={{ current_q|urlencode }}&category={{ current_category|urlencode }}&status={{ current_status|urlencode }}&sort={{ current_sort|urlencode }}&mine={{ current_mine|urlencode }}&page={{ page_obj.paginator.num_pages }}">
+                                Last <i class="bi bi-chevron-double-right ms-1"></i>
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled"><span class="page-link saaf-page-link">Next <i class="bi bi-chevron-right ms-1"></i></span></li>
+                        <li class="page-item disabled"><span class="page-link saaf-page-link">Last <i class="bi bi-chevron-double-right ms-1"></i></span></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+    const form = document.getElementById('request-filter-form');
+    const controls = [
+        document.getElementById('id_category'),
+        document.getElementById('id_status'),
+        document.getElementById('id_sort')
+    ];
+
+    if (!form) return;
+
+    controls.forEach(function (el) {
+        if (!el) return;
+        el.addEventListener('change', function () {
+            form.submit();
+        });
+    });
+})();
+</script>
 {% endblock %}

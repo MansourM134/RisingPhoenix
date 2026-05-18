@@ -77,6 +77,24 @@
                         </div>
 
                         <div class="mb-4">
+                            <label class="form-label fw-semibold d-block mb-2">Verification</label>
+                            <div class="form-check form-switch mb-0">
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    role="switch"
+                                    id="verified"
+                                    name="verified"
+                                    value="1"
+                                    {% if verified_only %}checked{% endif %}
+                                >
+                                <label class="form-check-label fw-medium" for="verified">
+                                    Show verified artisans only
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
                             <label class="form-label fw-semibold d-block mb-3">Average rating</label>
                             <div class="form-check form-switch mb-3">
                                 <input
@@ -177,6 +195,9 @@
                                 {% endif %}
                                 {% if selected_city %}
                                     <span class="badge rounded-pill active-filter-chip px-3 py-2">{{ selected_city }}</span>
+                                {% endif %}
+                                {% if verified_only %}
+                                    <span class="badge rounded-pill active-filter-chip px-3 py-2">Verified only</span>
                                 {% endif %}
                                 {% if search_query %}
                                     <span class="badge rounded-pill active-filter-chip px-3 py-2">“{{ search_query }}”</span>
@@ -381,10 +402,11 @@
     const citySelect = document.getElementById('city');
     const sortSelect = document.getElementById('sort');
     const ratingToggle = document.getElementById('use_rating');
+    const verifiedToggle = document.getElementById('verified');
 
     if (!filterForm) return;
 
-    [categorySelect, citySelect, sortSelect, ratingToggle].forEach(function (el) {
+    [categorySelect, citySelect, sortSelect, ratingToggle, verifiedToggle].forEach(function (el) {
         if (!el) return;
         el.addEventListener('change', function () {
             filterForm.submit();

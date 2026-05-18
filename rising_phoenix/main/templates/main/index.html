@@ -48,42 +48,21 @@
         <p class="saaf-eyebrow text-center mb-2">— Categories</p>
         <h2 class="saaf-section-title text-center mb-5">Craft categories for custom work</h2>
         <div class="row row-cols-2 row-cols-sm-3 row-cols-md-6 g-3">
+            {% for category in home_categories %}
             <div class="col">
-                <a href="{% url 'main:browse_view' %}" class="saaf-craft-card text-decoration-none">
-                    <i class="bi bi-tree saaf-craft-icon"></i>
-                    <span class="saaf-craft-label">Woodwork</span>
+                <a href="{% url 'main:browse_view' %}?category={{ category.id }}" class="saaf-craft-card text-decoration-none">
+                    <i class="bi bi-grid saaf-craft-icon"></i>
+                    <span class="saaf-craft-label">{{ category.name }}</span>
                 </a>
             </div>
-            <div class="col">
-                <a href="{% url 'main:browse_view' %}" class="saaf-craft-card text-decoration-none">
-                    <i class="bi bi-droplet saaf-craft-icon"></i>
-                    <span class="saaf-craft-label">Pottery</span>
-                </a>
-            </div>
-            <div class="col">
-                <a href="{% url 'main:browse_view' %}" class="saaf-craft-card text-decoration-none">
-                    <i class="bi bi-scissors saaf-craft-icon"></i>
-                    <span class="saaf-craft-label">Textiles</span>
-                </a>
-            </div>
-            <div class="col">
-                <a href="{% url 'main:browse_view' %}" class="saaf-craft-card text-decoration-none">
-                    <i class="bi bi-gem saaf-craft-icon"></i>
-                    <span class="saaf-craft-label">Jewelry</span>
-                </a>
-            </div>
-            <div class="col">
-                <a href="{% url 'main:browse_view' %}" class="saaf-craft-card text-decoration-none">
-                    <i class="bi bi-brush saaf-craft-icon"></i>
-                    <span class="saaf-craft-label">Calligraphy</span>
-                </a>
-            </div>
+            {% empty %}
             <div class="col">
                 <a href="{% url 'main:browse_view' %}" class="saaf-craft-card text-decoration-none">
                     <i class="bi bi-grid saaf-craft-icon"></i>
-                    <span class="saaf-craft-label">More →</span>
+                    <span class="saaf-craft-label">Browse all</span>
                 </a>
             </div>
+            {% endfor %}
         </div>
     </div>
 </section>
@@ -120,14 +99,48 @@
     </div>
 </section>
 
-<!-- Latest published workshops -->
+<!-- Home feed by user type -->
 <section class="saaf-section py-5 saaf-reveal">
     <div class="container-lg">
-        <p class="saaf-eyebrow text-center mb-2">— Latest workshops</p>
-        <h2 class="saaf-section-title text-center mb-5">Published workshops on Saaf</h2>
-        {% if latest_workshops %}
+        {% if home_feed_type == 'requests' %}
+        <p class="saaf-eyebrow text-center mb-2">— Latest requests</p>
+        <h2 class="saaf-section-title text-center mb-5">Newest project requests for artisans</h2>
+        {% if latest_requests %}
         <div class="row g-4">
-            {% for workshop in latest_workshops %}
+            {% for project_request in latest_requests %}
+            <div class="col-md-6 col-xl-3">
+                <a href="{% url 'request:request_detail_view' project_request.id %}" class="text-decoration-none">
+                    <div class="saaf-featured-card h-100">
+                        <div class="saaf-product-media">
+                            {% with project_request.images.first as cover %}
+                            {% if cover %}
+                                <img src="{{ cover.image.url }}" alt="{{ project_request.title }}" class="img-fluid w-100 h-100" style="object-fit: cover;">
+                            {% else %}
+                                <i class="bi bi-file-earmark-text"></i>
+                            {% endif %}
+                            {% endwith %}
+                        </div>
+                        <div class="saaf-product-body">
+                            <h5 class="mb-2">{{ project_request.title|truncatechars:50 }}</h5>
+                            <p class="text-muted small mb-2">{{ project_request.description|truncatechars:70 }}</p>
+                            <p class="saaf-price-tag mb-0">{{ project_request.category.name }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="saaf-featured-card text-center p-4">
+            <p class="mb-0 text-muted">No recent requests yet.</p>
+        </div>
+        {% endif %}
+        {% else %}
+        <p class="saaf-eyebrow text-center mb-2">— Top rated artisans</p>
+        <h2 class="saaf-section-title text-center mb-5">Highest rated workshops on Saaf</h2>
+        {% if top_rated_workshops %}
+        <div class="row g-4">
+            {% for workshop in top_rated_workshops %}
             <div class="col-md-6 col-xl-3">
                 <a href="{% url 'workshop:workshop_detail_view' workshop.artisan.user.id %}" class="text-decoration-none">
                     <div class="saaf-featured-card h-100">
@@ -141,7 +154,8 @@
                         <div class="saaf-product-body">
                             <h5 class="mb-2">{{ workshop.workshop_name }}</h5>
                             <p class="text-muted small mb-2">{{ workshop.tagline|default:"Saudi artisan workshop"|truncatechars:70 }}</p>
-                            <p class="saaf-price-tag mb-0">{{ workshop.location|default:"Saudi Arabia" }}</p>
+                            <p class="saaf-price-tag mb-1">{{ workshop.location|default:"Saudi Arabia" }}</p>
+                            <small class="text-muted">⭐ {{ workshop.avg_rating|default:0|floatformat:1 }} / 5</small>
                         </div>
                     </div>
                 </a>
@@ -153,11 +167,12 @@
             <p class="mb-0 text-muted">No published workshops yet.</p>
         </div>
         {% endif %}
+        {% endif %}
     </div>
 </section>
 
-<!-- Artisan CTA (hidden for logged-in artisans) -->
-{% if not request.user.artisanprofile %}
+<!-- Artisan CTA (hidden for any logged-in user) -->
+{% if not request.user.is_authenticated %}
 <section class="saaf-section py-5 saaf-reveal">
     <div class="container-lg">
         <div class="saaf-artisan-cta-banner">
