@@ -687,6 +687,85 @@ h5 {
 	margin-bottom: 0;
 }
 
+.suggested-card--invite {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.suggested-card--invite .suggested-card-link {
+	text-decoration: none;
+	color: inherit;
+	display: block;
+}
+
+.invite-btn {
+	margin-top: auto;
+	background: var(--clay, #c96f52);
+	color: #fff;
+	border: none;
+	border-radius: 6px;
+	padding: 0.4rem 0.7rem;
+	font-size: 0.8rem;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.invite-btn:hover:not(:disabled) {
+	filter: brightness(0.95);
+}
+
+.invite-btn:disabled,
+.invite-btn--done {
+	background: var(--sand, #e9dccf);
+	color: var(--ink-light, #8b7461);
+	cursor: default;
+}
+
+.invitations-sent-list {
+	list-style: none;
+	padding: 0;
+	margin: 0.5rem 0 0;
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+}
+
+.invitation-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.5rem;
+	padding: 0.5rem 0.75rem;
+	border: 1px solid var(--border, #efe6dd);
+	border-radius: 8px;
+	background: #fff;
+	font-size: 0.85rem;
+}
+
+.invitation-name {
+	font-weight: 600;
+	color: var(--ink, #2c1f1a);
+}
+
+.invitation-status {
+	font-size: 0.75rem;
+	font-weight: 700;
+	padding: 0.15rem 0.55rem;
+	border-radius: 999px;
+	background: #f4ecdf;
+	color: #6b4d2f;
+}
+
+.invitation-status--pending  { background: #f4ecdf; color: #6b4d2f; }
+.invitation-status--viewed   { background: #dceef7; color: #1a6fa8; }
+.invitation-status--proposed { background: #d8efe1; color: #1a7a4a; }
+
+.invitation-when {
+	color: var(--ink-light, #8b7461);
+	font-size: 0.75rem;
+}
+
 
 .img-preview-grid {
 	display: flex;
