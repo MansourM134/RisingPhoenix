@@ -13,6 +13,7 @@ from .models import Category
 from request.models import Request
 from proposal.models import Proposal
 from django.core.paginator import Paginator
+from progress.models import Contract
 
 
 def _validate_workshop_image(image):
@@ -358,17 +359,10 @@ def workshop_detail_view(request, artisan_id):
         .count()
     )    
 
-    active_orders_count = (
-        Request.objects.filter(
-            proposals__artisan=artisan_profile.user,
-            proposals__contract__status__in=[
-                Contract.Status.IN_PROGRESS,
-                Contract.Status.COMPLETION_REQUESTED,
-            ]
-        )
-        .distinct()
-        .count()
-    )
+    active_orders_count = Contract.objects.filter(
+        proposal__artisan=artisan_profile.user,
+        status=Contract.Status.IN_PROGRESS,
+    ).count()
 
 
     portfolio_images = workshop.portfolio_images.all()

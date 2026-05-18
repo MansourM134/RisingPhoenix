@@ -145,18 +145,12 @@ class WorkshopDetailForm(forms.ModelForm):
     class Meta:
         model = WorkshopDetail
         fields = [
-            'response_time',
             'typical_turnaround',
-            'active_orders',
-            'item_drop_off',
             'ships_ksa',
             'protection_text',
         ]
         widgets = {
-            'response_time': forms.TextInput(attrs={'class': 'form-control'}),
             'typical_turnaround': forms.TextInput(attrs={'class': 'form-control'}),
-            'active_orders': forms.TextInput(attrs={'class': 'form-control'}),
-            'item_drop_off': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'ships_ksa': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'protection_text': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
         }

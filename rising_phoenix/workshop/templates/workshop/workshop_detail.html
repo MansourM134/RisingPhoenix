@@ -6,6 +6,7 @@
 {% if request.user.is_authenticated and request.user == artisan.user %}
 {% include 'main/_sidebar.html' with active='workshop' %}
 {% endif %}
+{% endblock %}
 {% block extra_css %}
 <style>
     :root { --primary:#c96f52; --light-bg:#faf3ec; --card-bg:#fff; --text-muted:#8b7461; --border-light:#efe6dd; --dark-header:#2c1f1a; }
@@ -155,12 +156,6 @@
             <div class="row g-3 g-md-4 mt-1">
                 <div class="col-sm-6 col-lg-3">
                     <div class="saaf-info-card saaf-profile-info-card h-100">
-                        <span class="saaf-info-label">Response Time</span>
-                        <p class="mb-0">{{ workshop.details.response_time|default:"~2 hours" }}</p>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-lg-3">
-                    <div class="saaf-info-card saaf-profile-info-card h-100">
                         <span class="saaf-info-label">Turnaround</span>
                         <p class="mb-0">{{ workshop.details.typical_turnaround|default:"3-10 days" }}</p>
                     </div>
@@ -168,7 +163,7 @@
                 <div class="col-sm-6 col-lg-3">
                     <div class="saaf-info-card saaf-profile-info-card h-100">
                         <span class="saaf-info-label">Active Orders</span>
-                        <p class="mb-0">{{ workshop.details.active_orders|default:"2 available" }}</p>
+                        <p class="mb-0">{{ active_orders_count }}</p>
                     </div>
                 </div>
                 <div class="col-sm-6 col-lg-3">
@@ -215,10 +210,6 @@
                         <div class="saaf-workshop-stat-card">
                             <strong>{{ artisan.average_rating }}</strong>
                             <span>Average rating</span>
-                        </div>
-                        <div class="saaf-workshop-stat-card">
-                            <strong>{{ workshop.details.response_time|default:"~2h" }}</strong>
-                            <span>Response time</span>
                         </div>
                     </div>
                 </div>
@@ -345,10 +336,8 @@
                     <p class="text-muted mb-3">{{ workshop.tagline|default:"Custom handcrafted work" }}</p>
 
                     <div class="saaf-workshop-detail-list">
-                        <div class="saaf-workshop-detail-row"><span>Response time</span><strong>{{ workshop.details.response_time|default:"~2 hours" }}</strong></div>
                         <div class="saaf-workshop-detail-row"><span>Typical turnaround</span><strong>{{ workshop.details.typical_turnaround|default:"3-10 days" }}</strong></div>
-                        <div class="saaf-workshop-detail-row"><span>Active orders</span><strong>{{ workshop.details.active_orders|default:"2 available" }}</strong></div>
-                        <div class="saaf-workshop-detail-row"><span>Item drop-off</span><strong>{% if workshop.details.item_drop_off %}Accepted{% else %}Not available{% endif %}</strong></div>
+                        <div class="saaf-workshop-detail-row"><span>Active orders</span><strong>{{ active_orders_count }}</strong></div>
                         <div class="saaf-workshop-detail-row"><span>Ships KSA</span><strong>{% if workshop.details.ships_ksa %}Yes{% else %}No{% endif %}</strong></div>
                     </div>
 

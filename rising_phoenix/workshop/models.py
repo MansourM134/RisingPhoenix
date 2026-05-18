@@ -29,10 +29,7 @@ class WorkshopProfile(models.Model):
 
 class WorkshopDetail(models.Model):
 	workshop = models.OneToOneField(WorkshopProfile, on_delete=models.CASCADE, related_name='details')
-	response_time = models.CharField(max_length=100, blank=True, help_text='E.g. ~2 hours')
 	typical_turnaround = models.CharField(max_length=100, blank=True, help_text='E.g. 3–10 days')
-	active_orders = models.CharField(max_length=100, blank=True, help_text='E.g. 2 (available)')
-	item_drop_off = models.BooleanField(default=False)
 	ships_ksa = models.BooleanField(default=False)
 	protection_text = models.TextField(blank=True, help_text='Optional protection / policy text shown to buyers')
 
