@@ -208,7 +208,12 @@ def suggested_artisans_view(request: HttpRequest):
 
     workshops = (
         WorkshopProfile.objects.select_related('artisan__user')
-        .filter(is_published=True, categories__id=int(category_id))
+        .filter(
+            is_published=True,
+            categories__id=int(category_id),
+            artisan__is_banned=False,
+        )
+        .order_by('-artisan__is_verified', '-artisan__average_rating', '-id')
         .distinct()[:6]
     )
 
