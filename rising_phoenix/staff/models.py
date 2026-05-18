@@ -1,5 +1,20 @@
 from django.db import models
 from django.contrib.auth.models import User
+from phonenumber_field.modelfields import PhoneNumberField
+
+
+class StaffProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='staff_profile')
+    display_name = models.CharField(max_length=120, blank=True)
+    role = models.CharField(max_length=120, default='Staff Member')
+    phone = PhoneNumberField(blank=True, null=True)
+    bio = models.TextField(blank=True)
+    avatar = models.ImageField(upload_to='images/avatars/', default='images/avatars/default_avatar.jpg')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'StaffProfile - {self.user.username}'
 
 
 class Report(models.Model):

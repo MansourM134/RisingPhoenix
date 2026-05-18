@@ -5,6 +5,10 @@
 Completed Orders
 {% endblock %}
 
+{% block sidebar %}
+{% include 'main/_sidebar.html' with active='workshop' %}
+{% endblock %}
+
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/request.css' %}">
 {% endblock %}
@@ -13,6 +17,19 @@ Completed Orders
 
 <section class="request-shell">
     <div class="request-container">
+
+        <header class="request-hero mb-3">
+            <div class="request-row">
+                <div>
+                    <p class="request-eyebrow mb-1">Workshop</p>
+                    <h1 class="mb-2">Closed Requests</h1>
+                    <p class="request-sub">All closed requests linked to your accepted proposals.</p>
+                </div>
+                <div>
+                    <a href="{% url 'workshop:workshop_detail_view' request.user.id %}" class="request-action">Back to My Workshop</a>
+                </div>
+            </div>
+        </header>
 
         <div class="request-grid">
 

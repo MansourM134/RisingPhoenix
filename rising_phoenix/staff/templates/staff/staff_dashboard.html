@@ -5,28 +5,77 @@
 {% endblock %}
 
 {% block content %}
-<section class="py-4 py-md-5">
+<section class="py-4 py-md-5 saaf-dashboard-shell saaf-staff-dashboard-page">
     <div class="container-lg">
-        <div class="saaf-dashboard-card rounded-4 p-4 p-md-5 mb-4">
-            <p class="saaf-eyebrow mb-2">Admin</p>
-            <h1 class="saaf-section-title mb-2">Staff Dashboard</h1>
-            <p class="text-muted mb-0">Monitor users, artisans, verification, and categories in one place.</p>
+        <div class="saaf-dashboard-card saaf-dashboard-hero saaf-dashboard-hero--split saaf-staff-hero rounded-4 p-4 p-md-5 mb-4">
+            <div class="saaf-dashboard-hero-grid">
+                <div>
+                    <div class="saaf-dashboard-kicker-row">
+                        <p class="saaf-eyebrow mb-0">Admin</p>
+                        <span class="saaf-hero-chip"><i class="bi bi-shield-lock"></i> Moderation Surface</span>
+                    </div>
+                    <h1 class="saaf-section-title mb-2">Staff Dashboard</h1>
+                    <p class="text-muted mb-0">A tighter command center for moderation, artisan management, reporting, and category maintenance.</p>
+
+                    <div class="saaf-dashboard-hero-actions">
+                        <a href="{% url 'staff:report_list_view' %}" class="saaf-quick-action-btn">
+                            <i class="bi bi-flag"></i>
+                            Review Reports
+                        </a>
+                        <a href="{% url 'staff:staff_profile_view' %}" class="saaf-quick-action-btn saaf-quick-action-btn--soft">
+                            <i class="bi bi-person-circle"></i>
+                            My Staff Profile
+                        </a>
+                    </div>
+                </div>
+
+                <div class="saaf-dashboard-side-panel">
+                    <div class="saaf-dashboard-side-card">
+                        <span class="saaf-info-label">Pending Reports</span>
+                        <h3 class="saaf-dashboard-side-title">{{ pending_reports_count }}</h3>
+                        <p class="mb-0 text-muted">Items still waiting for moderation review.</p>
+                    </div>
+                    <div class="saaf-dashboard-mini-stats">
+                        <div class="saaf-dashboard-mini-stat">
+                            <span class="saaf-info-label">Users</span>
+                            <strong>{{ total_users }}</strong>
+                        </div>
+                        <div class="saaf-dashboard-mini-stat">
+                            <span class="saaf-info-label">Artisans</span>
+                            <strong>{{ total_artisans }}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="row g-3 mb-4">
-            <div class="col-md-2"><div class="saaf-info-card"><span class="saaf-info-label">Users</span><h5 class="mb-0">{{ total_users }}</h5></div></div>
-            <div class="col-md-2"><div class="saaf-info-card"><span class="saaf-info-label">Banned Users</span><h5 class="mb-0">{{ banned_users }}</h5></div></div>
-            <div class="col-md-2"><div class="saaf-info-card"><span class="saaf-info-label">Artisans</span><h5 class="mb-0">{{ total_artisans }}</h5></div></div>
-            <div class="col-md-2"><div class="saaf-info-card"><span class="saaf-info-label">Verified</span><h5 class="mb-0">{{ verified_artisans }}</h5></div></div>
-            <div class="col-md-2"><div class="saaf-info-card"><span class="saaf-info-label">Featured</span><h5 class="mb-0">{{ featured_artisans }}</h5></div></div>
-            <div class="col-md-2"><div class="saaf-info-card"><span class="saaf-info-label">Banned Artisans</span><h5 class="mb-0">{{ banned_artisans }}</h5></div></div>
-            <div class="col-md-2"><div class="saaf-info-card"><span class="saaf-info-label">Pending Reports</span><h5 class="mb-0"><a href="{% url 'staff:report_list_view' %}" class="text-danger text-decoration-none">{{ pending_reports_count }}</a></h5></div></div>
+        <div class="saaf-dashboard-section-head mb-3">
+            <div>
+                <p class="saaf-eyebrow mb-1">Overview</p>
+                <h2 class="saaf-dashboard-section-title mb-0">Platform health at a glance</h2>
+            </div>
         </div>
 
-        <div class="saaf-dashboard-card rounded-4 p-4 mb-4">
-            <h5 class="mb-3">Users</h5>
+        <div class="row g-3 g-xl-4 mb-4">
+            <div class="col-6 col-md-4 col-xl"><div class="saaf-info-card saaf-info-card--metric"><span class="saaf-info-label">Users</span><h5 class="mb-0">{{ total_users }}</h5><p class="mb-0 text-muted">All requester accounts</p></div></div>
+            <div class="col-6 col-md-4 col-xl"><div class="saaf-info-card saaf-info-card--metric"><span class="saaf-info-label">Banned Users</span><h5 class="mb-0">{{ banned_users }}</h5><p class="mb-0 text-muted">Restricted requester access</p></div></div>
+            <div class="col-6 col-md-4 col-xl"><div class="saaf-info-card saaf-info-card--metric"><span class="saaf-info-label">Artisans</span><h5 class="mb-0">{{ total_artisans }}</h5><p class="mb-0 text-muted">Registered makers</p></div></div>
+            <div class="col-6 col-md-4 col-xl"><div class="saaf-info-card saaf-info-card--metric"><span class="saaf-info-label">Verified</span><h5 class="mb-0">{{ verified_artisans }}</h5><p class="mb-0 text-muted">Approved artisan profiles</p></div></div>
+            <div class="col-6 col-md-4 col-xl"><div class="saaf-info-card saaf-info-card--metric"><span class="saaf-info-label">Featured</span><h5 class="mb-0">{{ featured_artisans }}</h5><p class="mb-0 text-muted">Highlighted creators</p></div></div>
+            <div class="col-6 col-md-4 col-xl"><div class="saaf-info-card saaf-info-card--metric"><span class="saaf-info-label">Banned Artisans</span><h5 class="mb-0">{{ banned_artisans }}</h5><p class="mb-0 text-muted">Restricted artisan accounts</p></div></div>
+            <div class="col-12 col-md-6 col-xl"><div class="saaf-info-card saaf-info-card--metric saaf-info-card--alert"><span class="saaf-info-label">Pending Reports</span><h5 class="mb-1"><a href="{% url 'staff:report_list_view' %}" class="saaf-staff-inline-link">{{ pending_reports_count }}</a></h5><p class="mb-0 text-muted">Open moderation queue</p></div></div>
+        </div>
+
+        <div class="saaf-dashboard-card saaf-staff-section-card rounded-4 p-4 mb-4">
+            <div class="saaf-dashboard-table-head">
+                <div>
+                    <p class="saaf-eyebrow mb-1">Users</p>
+                    <h5 class="mb-0">Requester accounts</h5>
+                </div>
+                <span class="saaf-table-caption">Ban and restore access when needed.</span>
+            </div>
             <div class="table-responsive">
-                <table class="table align-middle">
+                <table class="table align-middle saaf-dashboard-table">
                     <thead><tr><th>Username</th><th>Email</th><th>Status</th><th>Ban Reason</th><th>Action</th></tr></thead>
                     <tbody>
                         {% for profile in profiles %}
@@ -53,10 +102,16 @@
             </div>
         </div>
 
-        <div class="saaf-dashboard-card rounded-4 p-4 mb-4">
-            <h5 class="mb-3">Artisans</h5>
+        <div class="saaf-dashboard-card saaf-staff-section-card rounded-4 p-4 mb-4">
+            <div class="saaf-dashboard-table-head">
+                <div>
+                    <p class="saaf-eyebrow mb-1">Artisans</p>
+                    <h5 class="mb-0">Verification and featuring</h5>
+                </div>
+                <span class="saaf-table-caption">Manage trust, visibility, and account access.</span>
+            </div>
             <div class="table-responsive">
-                <table class="table align-middle">
+                <table class="table align-middle saaf-dashboard-table">
                     <thead><tr><th>Username</th><th>Verified</th><th>Feature</th><th>Status</th><th>Ban Action</th><th>Feature Action</th><th>Verify Action</th></tr></thead>
                     <tbody>
                         {% for artisan in artisan_profiles %}
@@ -95,8 +150,14 @@
             </div>
         </div>
 
-        <div class="saaf-dashboard-card rounded-4 p-4">
-            <h5 class="mb-3">Categories</h5>
+        <div class="saaf-dashboard-card saaf-staff-section-card rounded-4 p-4">
+            <div class="saaf-dashboard-table-head">
+                <div>
+                    <p class="saaf-eyebrow mb-1">Catalog</p>
+                    <h5 class="mb-0">Categories</h5>
+                </div>
+                <span class="saaf-table-caption">Keep the marketplace structure clear and current.</span>
+            </div>
             <form method="POST" action="{% url 'staff:add_category_view' %}" class="row g-2 mb-3">
                 {% csrf_token %}
                 <div class="col-md-4"><input type="text" name="name" class="form-control" placeholder="Category name" required></div>
@@ -104,7 +165,7 @@
                 <div class="col-md-3"><button class="btn btn-saaf-primary w-100">Add Category</button></div>
             </form>
             <div class="table-responsive">
-                <table class="table align-middle mb-0">
+                <table class="table align-middle mb-0 saaf-dashboard-table">
                     <thead><tr><th>Name</th><th>Description</th><th>Workshops</th></tr></thead>
                     <tbody>
                         {% for category in categories %}

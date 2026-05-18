@@ -3,79 +3,69 @@
 {% block title %}Conversations{% endblock %}
 
 {% block content %}
-<div class="container py-4 py-lg-5">
-    <div class="row justify-content-center">
-        <div class="col-xl-10">
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
-                <div>
-                    <h2 class="fw-bold mb-1">Conversations</h2>
-                    <p class="text-muted mb-0">Chat with artisans and requesters about active proposals.</p>
+<section class="py-4 py-lg-5 saaf-chat-page">
+    <div class="container-fluid saaf-chat-container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="saaf-chat-list-hero mb-4">
+                    <p class="saaf-eyebrow mb-2">Messages</p>
+                    <h1 class="saaf-section-title mb-2">Conversations</h1>
+                    <p class="text-muted mb-0">Follow every project discussion in one clear inbox.</p>
                 </div>
-            </div>
 
-            {% if conversations %}
-                <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-                    <div class="list-group list-group-flush">
+                {% if conversations %}
+                    <div class="saaf-chat-list-wrap">
                         {% for conversation in conversations %}
-                            <a href="{% url 'message:conversation_detail_view' conversation.id %}"
-                               class="list-group-item list-group-item-action border-0 px-4 py-4">
-                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
-                                    <div class="d-flex align-items-start gap-3">
-                                        <div class="rounded-circle bg-primary-subtle text-primary d-flex align-items-center justify-content-center fw-bold"
-                                             style="width: 52px; height: 52px; font-size: 1.1rem;">
+                            <a href="{% url 'message:conversation_detail_view' conversation.id %}" class="saaf-chat-list-item">
+                                <div class="saaf-chat-list-avatar" aria-hidden="true">
+                                    {% if request.user == conversation.requester %}
+                                        {{ conversation.artisan.username|first|upper }}
+                                    {% else %}
+                                        {{ conversation.requester.username|first|upper }}
+                                    {% endif %}
+                                </div>
+
+                                <div class="saaf-chat-list-main">
+                                    <div class="saaf-chat-list-topline">
+                                        <h5 class="mb-0 fw-semibold">
                                             {% if request.user == conversation.requester %}
-                                                {{ conversation.artisan.username|first|upper }}
+                                                {{ conversation.artisan.get_full_name|default:conversation.artisan.username }}
                                             {% else %}
-                                                {{ conversation.requester.username|first|upper }}
+                                                {{ conversation.requester.get_full_name|default:conversation.requester.username }}
                                             {% endif %}
-                                        </div>
-
-                                        <div>
-                                            <div class="d-flex align-items-center flex-wrap gap-2 mb-1">
-                                                <h5 class="mb-0 fw-semibold">
-                                                    {% if request.user == conversation.requester %}
-                                                        {{ conversation.artisan.get_full_name|default:conversation.artisan.username }}
-                                                    {% else %}
-                                                        {{ conversation.requester.get_full_name|default:conversation.requester.username }}
-                                                    {% endif %}
-                                                </h5>
-                                                <span class="badge rounded-pill text-bg-light">Proposal #{{ conversation.proposal.id }}</span>
-                                            </div>
-
-                                            <p class="text-dark mb-1 fw-medium">
-                                                {{ conversation.proposal.request.title }}
-                                            </p>
-
-                                            <p class="text-muted small mb-0">
-                                                Updated {{ conversation.updated_at|date:"M d, Y h:i A" }}
-                                            </p>
-                                        </div>
+                                        </h5>
+                                        <span class="saaf-chat-list-time">{{ conversation.updated_at|date:"M d, Y h:i A" }}</span>
                                     </div>
 
-                                    <div class="d-flex align-items-center">
-                                        <span class="btn btn-outline-primary rounded-pill px-3">
-                                            Open Chat
-                                        </span>
+                                    <p class="saaf-chat-list-title mb-1">{{ conversation.proposal.request.title }}</p>
+
+                                    <div class="saaf-chat-list-meta">
+                                        <span class="saaf-chat-proposal-pill">Proposal #{{ conversation.proposal.id }}</span>
+                                        <span class="saaf-chat-meta-dot"></span>
+                                        <span>Updated recently</span>
                                     </div>
+                                </div>
+
+                                <div class="saaf-chat-list-cta">
+                                    <span>Open</span>
+                                    <i class="bi bi-arrow-right"></i>
                                 </div>
                             </a>
                         {% endfor %}
                     </div>
-                </div>
-            {% else %}
-                <div class="card border-0 shadow-sm rounded-4">
-                    <div class="card-body text-center py-5">
+                {% else %}
+                    <div class="saaf-chat-empty-state">
                         <div class="mb-3">
-                            <i class="bi bi-chat-dots text-muted" style="font-size: 2.5rem;"></i>
+                            <i class="bi bi-chat-dots"></i>
                         </div>
                         <h4 class="fw-bold mb-2">No conversations yet</h4>
                         <p class="text-muted mb-0">
                             Once a requester opens a chat from a proposal, it will appear here.
                         </p>
                     </div>
-                </div>
-            {% endif %}
+                {% endif %}
+            </div>
         </div>
     </div>
-</div>
+</section>
 {% endblock %}

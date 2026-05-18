@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.db import transaction
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .models import ArtisanProfile, Review
+from .models import Profile, ArtisanProfile, Review
 from django.contrib.auth.models import Group, User
 from django.db.models import Avg, Sum, Count, Q
 from django.utils import timezone
@@ -363,23 +363,29 @@ def artisan_dashboard_view(request: HttpRequest):
 
 def profile_view(request:HttpRequest, user_name):
     user = get_object_or_404(User, username = user_name)
+    if user.is_staff:
+        return redirect('staff:staff_profile_view')
     if user.groups.filter(name='artisan').exists():
         messages.warning(request, 'Your are not allowed')
         return redirect('main:home_view')
-    user_profile = user.profile
+    user_profile = get_object_or_404(Profile, user=user)
     user_reviews = user.reviews_received.all()
     avg_rating = user_reviews.aggregate(avg_rating=Avg('rating'))['avg_rating']
     return render(request,'account/profile.html',{'user_profile': user_profile, 'user_reviews': user_reviews, 'avg_rating': avg_rating})
 
 def update_profile_view(request:HttpRequest,user_name):
+    if request.user.is_staff:
+        return redirect('staff:update_staff_profile_view')
     if user_name != request.user.username:
         messages.warning(request,'Your are not allowed')
         return redirect('main:home_view')
     user = User.objects.get(username = user_name)
+    if user.is_staff:
+        return redirect('staff:update_staff_profile_view')
     if user.groups.filter(name='artisan').exists():
         messages.warning(request, 'Your are not allowed')
         redirect('main:home_view')
-    user_profile = user.profile
+    user_profile = get_object_or_404(Profile, user=user)
     if request.method == 'POST':
         user_form = CustomUserUpdateForm(request.POST,instance=request.user)
         profile_form = ProfileForm(request.POST,request.FILES,instance=user_profile)
@@ -544,11 +550,13 @@ def password_reset_view(request: HttpRequest):
 @login_required(login_url='account:login_view')
 @user_passes_test(is_artisan, login_url='main:home_view')
 def completed_orders_view(request):
+    from proposal.models import Proposal
 
     completed_requests = (
         Request.objects.filter(
             status=Request.Status.CLOSED,
-            proposals__artisan=request.user
+            proposals__artisan=request.user,
+            proposals__status=Proposal.Status.ACCEPTED,
         )
         .distinct()
         .order_by('-created_at')

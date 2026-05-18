@@ -61,7 +61,11 @@
 
     <div class="sidebar-divider"></div>
 
+    {% if request.user.is_staff %}
+    <a href="{% url 'staff:staff_profile_view' %}" class="sidebar-btn {% if active == 'profile' %}sidebar-btn-active{% endif %}" aria-label="{% if LANGUAGE_CODE == 'ar' %}الملف الشخصي{% else %}Profile{% endif %}" title="{% if LANGUAGE_CODE == 'ar' %}الملف الشخصي{% else %}Profile{% endif %}">
+    {% else %}
     <a href="{% url 'account:profile_view' request.user.username %}" class="sidebar-btn {% if active == 'profile' %}sidebar-btn-active{% endif %}" aria-label="{% if LANGUAGE_CODE == 'ar' %}الملف الشخصي{% else %}Profile{% endif %}" title="{% if LANGUAGE_CODE == 'ar' %}الملف الشخصي{% else %}Profile{% endif %}">
+    {% endif %}
         <i class="bi bi-person-circle"></i>
         {% if active == 'profile' %}<span class="sidebar-active-indicator"></span>{% endif %}
     </a>

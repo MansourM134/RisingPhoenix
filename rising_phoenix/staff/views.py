@@ -10,8 +10,8 @@ from django.contrib import messages
 from django.db.models import Count
 from django.utils import timezone
 import datetime
-from .models import Report
-from .forms import ReportForm
+from .models import Report, StaffProfile
+from .forms import ReportForm, StaffProfileForm
 
 
 # Create your views here.
@@ -54,6 +54,42 @@ def staff_dashboard_view(request: HttpRequest):
         'pending_reports_count': Report.objects.filter(status=Report.Status.PENDING).count(),
     }
     return render(request, 'staff/staff_dashboard.html', context)
+
+
+@staff_required
+def staff_profile_view(request: HttpRequest):
+    profile, _ = StaffProfile.objects.get_or_create(
+        user=request.user,
+        defaults={
+            'display_name': request.user.get_full_name() or request.user.username,
+        },
+    )
+    return render(request, 'staff/staff_profile.html', {'staff_profile': profile})
+
+
+@staff_required
+def update_staff_profile_view(request: HttpRequest):
+    profile, _ = StaffProfile.objects.get_or_create(
+        user=request.user,
+        defaults={
+            'display_name': request.user.get_full_name() or request.user.username,
+        },
+    )
+
+    if request.method == 'POST':
+        form = StaffProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Staff profile updated successfully.')
+            return redirect('staff:staff_profile_view')
+        messages.error(request, 'Please fix the errors below.')
+    else:
+        form = StaffProfileForm(instance=profile)
+
+    return render(request, 'staff/update_staff_profile.html', {
+        'form': form,
+        'staff_profile': profile,
+    })
  
 
 @staff_required

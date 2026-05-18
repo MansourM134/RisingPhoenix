@@ -3,153 +3,146 @@
 {% block title %}Conversation{% endblock %}
 
 {% block content %}
-<div class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-lg-9">
-            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-                <div class="card-header bg-white border-0 border-bottom px-4 py-3">
-                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
-                        <div>
-                            <h3 class="fw-bold mb-1">Conversation</h3>
-                            <p class="text-muted mb-1">
-                                <strong>Request:</strong> {{ conversation.proposal.request.title }}
-                            </p>
+<section class="py-4 py-lg-5 saaf-chat-page">
+    <div class="container-fluid saaf-chat-container">
+                <div class="saaf-chat-detail-card">
+                    <header class="saaf-chat-detail-head">
+                        <div class="saaf-chat-head-main">
+                            <p class="saaf-eyebrow mb-1">Conversation</p>
+                            <h1 class="saaf-chat-head-title mb-2">{{ conversation.proposal.request.title }}</h1>
                             <p class="text-muted mb-0 small">
                                 {% if request.user == conversation.requester %}
-                                    Artisan: {{ conversation.artisan.get_full_name|default:conversation.artisan.username }}
+                                    Talking with artisan: {{ conversation.artisan.get_full_name|default:conversation.artisan.username }}
                                 {% else %}
-                                    Requester: {{ conversation.requester.get_full_name|default:conversation.requester.username }}
+                                    Talking with requester: {{ conversation.requester.get_full_name|default:conversation.requester.username }}
                                 {% endif %}
                             </p>
                         </div>
 
-                        <a href="{% url 'message:conversation_list_view' %}" class="btn btn-outline-secondary rounded-pill">
-                            Back to Conversations
-                        </a>
-                    </div>
-                </div>
+                        <div class="saaf-chat-head-actions">
+                            <span class="saaf-chat-proposal-pill">Proposal #{{ conversation.proposal.id }}</span>
+                            <a href="{% url 'message:conversation_list_view' %}" class="btn btn-saaf-outline rounded-pill">
+                                Back to Conversations
+                            </a>
+                        </div>
+                    </header>
 
-                <div id="chat-box" class="card-body bg-light px-4 py-4" style="max-height: 520px; overflow-y: auto;">
-                    <div id="messages-wrapper" class="d-flex flex-column gap-3">
+                    <div id="chat-box" class="saaf-chat-scroll">
+                        <div id="messages-wrapper" class="saaf-chat-messages-stack">
                         {% if conversation_messages %}
                             {% for msg in conversation_messages %}
-                                <div class="d-flex {% if msg.sender == request.user %}justify-content-end{% else %}justify-content-start{% endif %}">
-                                    <div
-                                        class="rounded-4 px-3 py-3 shadow-sm {% if msg.sender == request.user %}bg-primary text-white{% else %}bg-white text-dark{% endif %}"
-                                        style="max-width: 75%; min-width: 180px;"
-                                    >
-                                        <div class="d-flex justify-content-between align-items-center mb-2 gap-3">
-                                            <span class="fw-semibold small">
+                                <div class="saaf-chat-row {% if msg.sender == request.user %}saaf-chat-row--mine{% else %}saaf-chat-row--other{% endif %}">
+                                    <article class="saaf-chat-bubble {% if msg.sender == request.user %}saaf-chat-bubble--mine{% else %}saaf-chat-bubble--other{% endif %}">
+                                        <div class="saaf-chat-bubble-head">
+                                            <span class="saaf-chat-sender">
                                                 {% if msg.sender == request.user %}
                                                     You
                                                 {% else %}
                                                     {{ msg.sender.get_full_name|default:msg.sender.username }}
                                                 {% endif %}
                                             </span>
-                                            <span class="small {% if msg.sender == request.user %}text-white-50{% else %}text-muted{% endif %}">
+                                            <span class="saaf-chat-time">
                                                 {{ msg.created_at|date:"M d, Y h:i A" }}
                                             </span>
                                         </div>
 
                                         {% if msg.image %}
-                                            <div class="{% if msg.body %}mb-3{% else %}mb-0{% endif %}">
+                                            <div class="{% if msg.body %}mb-3{% endif %}">
                                                 <a href="{{ msg.image.url }}" target="_blank">
                                                     <img
                                                         src="{{ msg.image.url }}"
                                                         alt="Conversation image"
-                                                        class="img-fluid rounded-4 {% if msg.sender != request.user %}border{% endif %}"
-                                                        style="max-width: 280px; max-height: 320px; object-fit: cover;"
+                                                        class="img-fluid saaf-chat-image {% if msg.sender != request.user %}border{% endif %}"
                                                     >
                                                 </a>
                                             </div>
                                         {% endif %}
 
                                         {% if msg.body %}
-                                            <p class="mb-0" style="white-space: pre-line;">
+                                            <p class="mb-0 saaf-chat-text">
                                                 {{ msg.body }}
                                             </p>
                                         {% endif %}
 
                                         {% if msg.sender != request.user %}
-                                        <div class="mt-1">
-                                            <a href="{% url 'account:submit_report_view' 'message' msg.id %}"
-                                               style="font-size:0.7rem;color:#c94040;text-decoration:none;opacity:0.7;">
+                                        <div class="mt-2">
+                                            <a href="{% url 'account:submit_report_view' 'message' msg.id %}" class="saaf-chat-report-link">
                                                 <i class="bi bi-flag"></i> Report
                                             </a>
                                         </div>
                                         {% endif %}
-                                    </div>
+                                    </article>
                                 </div>
                             {% endfor %}
                         {% else %}
-                            <div class="text-center py-5" id="empty-chat">
+                            <div class="saaf-chat-empty-state" id="empty-chat">
                                 <h5 class="fw-bold mb-2">No messages yet</h5>
                                 <p class="text-muted mb-0">
                                     Start the conversation by sending your first message.
                                 </p>
                             </div>
                         {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-white border-0 border-top px-4 py-4">
+                        <form method="post" enctype="multipart/form-data" id="message-form" class="saaf-chat-composer">
+                            {% csrf_token %}
+
+                            <div class="mb-3 mb-md-2">
+                                <label for="body" class="form-label fw-semibold mb-2">Your message</label>
+                                <textarea
+                                    name="body"
+                                    id="body"
+                                    rows="3"
+                                    class="form-control rounded-4 saaf-chat-textarea"
+                                    placeholder="Write your message here..."
+                                ></textarea>
+                            </div>
+
+                            <div class="saaf-chat-composer-row">
+                                <div class="saaf-chat-file-input-wrap">
+                                    <label for="image" class="form-label fw-semibold mb-2">Attach image</label>
+                                    <input
+                                        type="file"
+                                        name="image"
+                                        id="image"
+                                        class="form-control rounded-4"
+                                        accept="image/*"
+                                    >
+                                    <p class="saaf-chat-helper-text mb-0">JPEG, PNG, WebP, GIF, up to 5 MB.</p>
+                                </div>
+                                <div class="saaf-chat-submit-wrap">
+                                    <button type="submit" class="btn btn-saaf-primary rounded-pill px-4 w-100">
+                                        Send Message
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div id="image-preview-wrapper" class="mb-3 d-none">
+                                <p class="fw-semibold small text-muted mb-2">Image preview</p>
+                                <div class="position-relative d-inline-block">
+                                    <img
+                                        id="image-preview"
+                                        src=""
+                                        alt="Selected image preview"
+                                        class="img-fluid rounded-4 border saaf-chat-preview-image"
+                                    >
+                                    <button
+                                        type="button"
+                                        id="remove-image"
+                                        class="btn btn-sm btn-danger rounded-circle position-absolute top-0 end-0 translate-middle"
+                                        style="width: 32px; height: 32px; line-height: 1;"
+                                    >
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-
-                <div class="card-footer bg-white border-0 border-top px-4 py-4">
-                    <form method="post" enctype="multipart/form-data" id="message-form">
-                        {% csrf_token %}
-
-                        <div class="mb-3">
-                            <label for="body" class="form-label fw-semibold">Your message</label>
-                            <textarea
-                                name="body"
-                                id="body"
-                                rows="4"
-                                class="form-control rounded-4"
-                                placeholder="Write your message here..."
-                            ></textarea>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="image" class="form-label fw-semibold">Attach image</label>
-                            <input
-                                type="file"
-                                name="image"
-                                id="image"
-                                class="form-control rounded-4"
-                                accept="image/*"
-                            >
-                        </div>
-
-                        <div id="image-preview-wrapper" class="mb-3 d-none">
-                            <p class="fw-semibold small text-muted mb-2">Image preview</p>
-                            <div class="position-relative d-inline-block">
-                                <img
-                                    id="image-preview"
-                                    src=""
-                                    alt="Selected image preview"
-                                    class="img-fluid rounded-4 border"
-                                    style="max-width: 220px; max-height: 220px; object-fit: cover;"
-                                >
-                                <button
-                                    type="button"
-                                    id="remove-image"
-                                    class="btn btn-sm btn-danger rounded-circle position-absolute top-0 end-0 translate-middle"
-                                    style="width: 32px; height: 32px; line-height: 1;"
-                                >
-                                    <i class="bi bi-x-lg"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary rounded-pill px-4">
-                                Send Message
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
     </div>
-</div>
+</section>
 {% endblock %}
 
 {% block extra_js %}
@@ -227,7 +220,7 @@
         const hasImage = imageInput.files && imageInput.files.length > 0;
 
         if (!hasText && !hasImage) {
-            alert('Please write a message or attach an image.');
+            showToast('Please write a message or attach an image.', 'warning');
             return;
         }
 
@@ -265,7 +258,7 @@
     function renderMessages(messages) {
         if (!messages.length) {
             const emptyHtml = `
-                <div class="text-center py-5" id="empty-chat">
+                <div class="saaf-chat-empty-state" id="empty-chat">
                     <h5 class="fw-bold mb-2">No messages yet</h5>
                     <p class="text-muted mb-0">
                         Start the conversation by sending your first message.
@@ -288,44 +281,40 @@
                         <img
                             src="${escapeHtml(msg.image_url)}"
                             alt="Conversation image"
-                            class="img-fluid rounded-4 ${isMine ? '' : 'border'}"
-                            style="max-width: 280px; max-height: 320px; object-fit: cover;"
+                            class="img-fluid saaf-chat-image ${isMine ? '' : 'border'}"
                         >
                     </a>
                 </div>
             ` : '';
 
             const bodyHtml = msg.body ? `
-                <p class="mb-0" style="white-space: pre-line;">${escapeHtml(msg.body)}</p>
+                <p class="mb-0 saaf-chat-text">${escapeHtml(msg.body)}</p>
             ` : '';
 
             const reportHtml = !isMine ? `
-                <div class="mt-1">
+                <div class="mt-2">
                     <a href="/account/report/message/${msg.id}/"
-                       style="font-size:0.7rem;color:#c94040;text-decoration:none;opacity:0.7;">
+                       class="saaf-chat-report-link">
                         <i class="bi bi-flag"></i> Report
                     </a>
                 </div>
             ` : '';
 
             return `
-                <div class="d-flex ${isMine ? 'justify-content-end' : 'justify-content-start'}">
-                    <div
-                        class="rounded-4 px-3 py-3 shadow-sm ${isMine ? 'bg-primary text-white' : 'bg-white text-dark'}"
-                        style="max-width: 75%; min-width: 180px;"
-                    >
-                        <div class="d-flex justify-content-between align-items-center mb-2 gap-3">
-                            <span class="fw-semibold small">
+                <div class="saaf-chat-row ${isMine ? 'saaf-chat-row--mine' : 'saaf-chat-row--other'}">
+                    <article class="saaf-chat-bubble ${isMine ? 'saaf-chat-bubble--mine' : 'saaf-chat-bubble--other'}">
+                        <div class="saaf-chat-bubble-head">
+                            <span class="saaf-chat-sender">
                                 ${isMine ? 'You' : escapeHtml(msg.sender_name)}
                             </span>
-                            <span class="small ${isMine ? 'text-white-50' : 'text-muted'}">
+                            <span class="saaf-chat-time">
                                 ${escapeHtml(msg.created_at)}
                             </span>
                         </div>
                         ${imageHtml}
                         ${bodyHtml}
                         ${reportHtml}
-                    </div>
+                    </article>
                 </div>
             `;
         }).join('');

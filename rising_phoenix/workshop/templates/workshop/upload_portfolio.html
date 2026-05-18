@@ -54,7 +54,37 @@
                         <div class="col-6">
                             <div class="saaf-portfolio-item">
                                 <img src="{{ image.image.url }}" alt="{{ image.caption|default:'Portfolio image' }}" class="img-fluid rounded-3 w-100">
-                                {% if image.caption %}<p class="small text-muted mt-1 mb-0">{{ image.caption }}</p>{% endif %}
+
+                                <div class="mt-2 d-flex flex-wrap gap-1">
+                                    <form method="post" class="d-inline">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="toggle_pin_image_id" value="{{ image.id }}">
+                                        <button type="submit" class="btn btn-sm {% if image.is_pinned %}btn-saaf-primary{% else %}btn-saaf-outline{% endif %} rounded-pill">
+                                            {% if image.is_pinned %}Pinned{% else %}Pin{% endif %}
+                                        </button>
+                                    </form>
+
+                                    <button class="btn btn-sm btn-saaf-outline rounded-pill" type="button" data-bs-toggle="collapse" data-bs-target="#edit-caption-{{ image.id }}" aria-expanded="false" aria-controls="edit-caption-{{ image.id }}">
+                                        Edit
+                                    </button>
+
+                                    <form method="post" class="d-inline" onsubmit="return confirm('Delete this image?');">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="delete_image_id" value="{{ image.id }}">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill">Delete</button>
+                                    </form>
+                                </div>
+
+                                <div class="collapse mt-2" id="edit-caption-{{ image.id }}">
+                                    <form method="post" class="d-grid gap-2">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="update_caption_image_id" value="{{ image.id }}">
+                                        <input type="text" name="caption" value="{{ image.caption }}" class="form-control form-control-sm" placeholder="Image caption">
+                                        <button type="submit" class="btn btn-sm btn-saaf-primary rounded-pill">Save Caption</button>
+                                    </form>
+                                </div>
+
+                                {% if image.caption %}<p class="small text-muted mt-2 mb-0">{{ image.caption }}</p>{% endif %}
                             </div>
                         </div>
                         {% endfor %}
