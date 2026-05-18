@@ -353,9 +353,34 @@ a:hover {
    ============================================ */
 
 .saaf-hero {
-    background-color: var(--saaf-bg);
+    position: relative;
+    overflow: hidden;
+    min-height: 72vh;
+    display: flex;
+    align-items: center;
     padding-top: 6rem;
     padding-bottom: 5rem;
+}
+
+.saaf-hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.saaf-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, rgba(20, 13, 9, 0.7), rgba(20, 13, 9, 0.4));
+    z-index: 1;
+}
+
+.saaf-hero-content-wrap {
+    position: relative;
+    z-index: 2;
 }
 
 .saaf-section {
@@ -383,29 +408,29 @@ a:hover {
    ============================================ */
 
 .saaf-layout {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    min-height: calc(100vh - 80px);
+    display: block;
+    min-height: auto;
 }
 
 .saaf-sidebar {
-    width: 68px;
-    flex-shrink: 0;
-    background-color: var(--saaf-sidebar-bg) !important;
-    padding: 18px 12px;
-    position: sticky;
-    top: 16px;
-    height: calc(100vh - 32px);
+    width: auto;
+    background-color: transparent !important;
+    padding: 8px 6px;
+    position: fixed;
+    top: calc(50vh - 120px);
+    left: 10px;
+    height: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
-    border-right: 0.5px solid var(--saaf-border);
+    gap: 6px;
+    border-right: none;
+    z-index: 1035;
 }
 
 .saaf-main {
-    flex-grow: 1;
+    width: 100%;
+    max-width: 100%;
     padding: 24px;
 }
 
@@ -413,8 +438,8 @@ a:hover {
     width: 44px;
     height: 44px;
     border-radius: 12px;
-    border: 0.5px solid var(--saaf-border);
-    background-color: var(--saaf-white);
+    border: none;
+    background-color: transparent;
     color: var(--saaf-brown);
     display: flex;
     align-items: center;
@@ -423,12 +448,11 @@ a:hover {
     font-size: 19px;
     text-decoration: none;
     cursor: pointer;
+    transition: transform 0.18s ease, color 0.18s ease;
 }
 
 .sidebar-label {
-    font-size: 0.75rem;
-    color: var(--saaf-text-muted);
-    margin: 0 0 0.5rem;
+    display: none;
 }
 
 .sidebar-btn i {
@@ -436,12 +460,13 @@ a:hover {
 }
 
 .sidebar-btn:hover {
-    background-color: var(--saaf-beige);
+    background-color: transparent;
     color: var(--saaf-brown);
+    transform: scale(1.12);
 }
 
 .sidebar-btn-active {
-    background-color: var(--saaf-beige);
+    background-color: transparent;
 }
 
 .sidebar-active-indicator {
@@ -479,19 +504,16 @@ a:hover {
 }
 
 .sidebar-divider {
-    width: 28px;
-    height: 1px;
-    background-color: var(--saaf-border);
-    margin: 6px 0;
+    display: none;
 }
 
 .sidebar-btn-new {
     width: 44px;
     height: 44px;
     border-radius: 12px;
-    background-color: var(--saaf-brown);
-    color: var(--saaf-bg);
-    box-shadow: 0 2px 0 var(--saaf-text-muted);
+    background-color: transparent;
+    color: var(--saaf-brown);
+    box-shadow: none;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -499,6 +521,7 @@ a:hover {
     border: none;
     text-decoration: none;
     cursor: pointer;
+    transition: transform 0.18s ease, color 0.18s ease;
 }
 
 .sidebar-btn-new i {
@@ -506,8 +529,9 @@ a:hover {
 }
 
 .sidebar-btn-new:hover {
-    background-color: var(--saaf-brown-light);
-    color: var(--saaf-white);
+    background-color: transparent;
+    color: var(--saaf-brown);
+    transform: scale(1.12);
 }
 
 .saaf-dashboard-card {
@@ -552,8 +576,20 @@ a:hover {
 .saaf-description {
     font-size: 1rem;
     line-height: 1.7;
-    color: var(--saaf-text-muted);
+    color: rgba(255, 248, 240, 0.92);
     margin-bottom: 2rem;
+}
+
+.saaf-hero .saaf-eyebrow,
+.saaf-hero .saaf-hero-title,
+.saaf-hero .saaf-text-accent {
+    color: var(--saaf-white);
+}
+
+.saaf-hero .btn-saaf-outline {
+    background: rgba(255, 248, 240, 0.14);
+    border-color: rgba(255, 248, 240, 0.35);
+    color: var(--saaf-white);
 }
 
 /* Hero Grid Layout */
@@ -1477,18 +1513,97 @@ a.saaf-notif-dd-item {
 .saaf-page-loader {
     position: fixed;
     inset: 0;
-    background: rgba(245, 230, 211, 0.72);
-    backdrop-filter: blur(4px);
+    background: rgba(245, 230, 211, 0.96);
+    backdrop-filter: blur(6px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 2000;
-    transition: opacity 0.35s ease, visibility 0.35s ease;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
 .saaf-page-loader[aria-hidden="true"] {
     opacity: 0;
     visibility: hidden;
+}
+
+.saaf-loader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+}
+
+.saaf-loader-logo {
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: saaf-logo-pulse 2.5s ease-in-out infinite;
+}
+
+.saaf-loader-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.saaf-loader-text {
+    display: flex;
+    gap: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--saaf-btn);
+    letter-spacing: 4px;
+}
+
+.saaf-loader-letter {
+    display: inline-block;
+    opacity: 0;
+    animation: saaf-letter-reveal 0.2s ease-out forwards;
+}
+
+.saaf-loader-letter[data-index="0"] {
+    animation-delay: 0.1s;
+}
+
+.saaf-loader-letter[data-index="1"] {
+    animation-delay: 0.3s;
+}
+
+.saaf-loader-letter[data-index="2"] {
+    animation-delay: 0.5s;
+}
+
+.saaf-loader-letter[data-index="3"] {
+    animation-delay: 0.7s;
+}
+
+@keyframes saaf-logo-pulse {
+    0%, 100% {
+        transform: scale(1) translateY(0);
+    }
+    50% {
+        transform: scale(1.12) translateY(-16px);
+    }
+}
+
+@keyframes saaf-letter-reveal {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Dark mode loader */
+[data-theme="dark"] .saaf-page-loader {
+    background: rgba(30, 30, 35, 0.98);
 }
 
 .saaf-loader-dot {
@@ -1812,20 +1927,22 @@ html[dir="rtl"] body {
 }
 
 html[dir="rtl"] .saaf-layout {
-    flex-direction: row-reverse !important;
+    display: block;
 }
 
 html[dir="rtl"] .saaf-layout > .saaf-sidebar {
-    order: 2;
+    order: initial;
 }
 
 html[dir="rtl"] .saaf-layout > .saaf-main {
-    order: 1;
+    order: initial;
 }
 
 html[dir="rtl"] .saaf-sidebar {
+    left: auto;
+    right: 10px;
     border-right: none;
-    border-left: 0.5px solid var(--saaf-border);
+    border-left: none;
 }
 
 html[dir="rtl"] .saaf-nav-wrapper .ms-auto {

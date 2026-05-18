@@ -24,7 +24,17 @@
 
 <body>
     <div id="saaf-page-loader" class="saaf-page-loader" aria-hidden="false">
-        <span class="saaf-loader-dot" aria-label="Loading"></span>
+        <div class="saaf-loader-content">
+            <div class="saaf-loader-logo">
+                <img src="{% static 'images/logo.webp' %}" alt="Saaf" class="saaf-loader-logo-img">
+            </div>
+            <div class="saaf-loader-text">
+                <span class="saaf-loader-letter" data-index="0">S</span>
+                <span class="saaf-loader-letter" data-index="1">a</span>
+                <span class="saaf-loader-letter" data-index="2">a</span>
+                <span class="saaf-loader-letter" data-index="3">f</span>
+            </div>
+        </div>
     </div>
 
     {% block top_nav %}
@@ -434,11 +444,73 @@
     </script>
     <script>
     (function () {
-        window.addEventListener('load', function () {
-            var loader = document.getElementById('saaf-page-loader');
-            if (!loader) return;
+        var loader = document.getElementById('saaf-page-loader');
+        if (!loader) return;
+
+        function showLoader() {
+            loader.setAttribute('aria-hidden', 'false');
+        }
+
+        function hideLoader() {
             loader.setAttribute('aria-hidden', 'true');
+        }
+
+        // Hide loader only when the current page is fully loaded.
+        window.addEventListener('load', hideLoader);
+        // Ensure loader is hidden when using browser back/forward cache.
+        window.addEventListener('pageshow', hideLoader);
+
+        // Intercept internal link clicks
+        document.addEventListener('click', function (e) {
+            var link = e.target.closest('a');
+            if (!link) return;
+
+            var href = link.getAttribute('href');
+            if (!href || href.startsWith('#') || href.startsWith('javascript:') || link.target === '_blank') {
+                return;
+            }
+
+            // Keep browser default behavior for modified clicks and downloads.
+            if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || link.hasAttribute('download')) {
+                return;
+            }
+
+            // Show loader for internal navigation and let browser navigate immediately.
+            if (href.startsWith('/') || href.startsWith(window.location.origin)) {
+                showLoader();
+            }
         });
+
+        // Show loader for form submissions
+        document.addEventListener('submit', function (e) {
+            var form = e.target;
+            var method = form.getAttribute('method') || 'get';
+
+            if (method.toLowerCase() === 'get' || method.toLowerCase() === 'post') {
+                showLoader();
+            }
+        }, true);
+    })();
+    </script>
+    <script>
+    (function () {
+        function syncSidebarPosition() {
+            var sidebar = document.querySelector('.saaf-sidebar');
+            var footer = document.querySelector('.saaf-footer');
+            if (!sidebar || !footer || window.innerWidth <= 768) return;
+
+            var sidebarHeight = sidebar.offsetHeight;
+            var centeredTop = Math.max(16, (window.innerHeight - sidebarHeight) / 2);
+            var footerTop = footer.getBoundingClientRect().top;
+            var footerLimitedTop = footerTop - sidebarHeight - 16;
+            var nextTop = Math.min(centeredTop, footerLimitedTop);
+
+            sidebar.style.top = Math.max(16, nextTop) + 'px';
+        }
+
+        window.addEventListener('load', syncSidebarPosition);
+        window.addEventListener('resize', syncSidebarPosition);
+        window.addEventListener('scroll', syncSidebarPosition, { passive: true });
     })();
     </script>
 

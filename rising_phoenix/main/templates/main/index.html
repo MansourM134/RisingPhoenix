@@ -11,61 +11,32 @@
 
 <!-- Hero -->
 <section class="saaf-hero saaf-reveal">
-    <div class="container-lg">
-        <div class="row align-items-center g-4">
-            <!-- Left: Visual Cards -->
-            <div class="col-lg-5">
-                <div class="saaf-hero-grid">
-                    <div class="saaf-hero-card saaf-hero-card-large">
-                        <div class="saaf-card-icon-large">
-                            <i class="bi bi-palette"></i>
-                        </div>
-                        <div class="saaf-card-badge">Custom Orders Open</div>
-                        <div class="saaf-card-content">
-                            <h5>Made by Saudi Hands</h5>
-                            <p class="mb-0">From hand-thrown pottery to embroidered textiles — commission pieces with real cultural identity.</p>
-                        </div>
-                    </div>
-                    <div class="saaf-hero-card saaf-hero-card-small">
-                        <div class="saaf-card-icon-small">
-                            <i class="bi bi-pencil-square"></i>
-                        </div>
-                        <p class="mb-0 small fw-semibold mt-3">Post your custom idea</p>
-                    </div>
-                    <div class="saaf-hero-card saaf-hero-card-small saaf-hero-card-stats">
-                        <div class="saaf-card-stats-text">
-                            <p class="mb-0 text-muted">Direct collaboration</p>
-                            <h6>With Saudi artisans</h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right: Text + CTAs -->
-            <div class="col-lg-7">
-                <div class="saaf-hero-text">
-                    <p class="saaf-eyebrow">— The Saudi artisan marketplace</p>
-                    <h1 class="saaf-hero-title mb-4">
-                        Commission something made for you, by a real <span class="saaf-text-accent">artisan</span>.
-                    </h1>
-                    <p class="saaf-description mb-4">
-                        Post your idea, receive proposals from vetted Saudi craftspeople, and track every step — from first sketch to final delivery.
-                    </p>
-                    <div class="d-flex gap-3 flex-wrap">
-                        {% if request.user.is_authenticated %}
-                            {% if request.user.artisanprofile %}
-                                <a href="{% url 'request:request_list_view' %}" class="btn btn-saaf-primary rounded-pill">Browse Requests</a>
-                                <a href="{% url 'workshop:workshop_detail_view' request.user.id %}" class="btn btn-saaf-outline rounded-pill">My Workshop</a>
-                            {% else %}
-                                <a href="{% url 'request:request_create_view' %}" class="btn btn-saaf-primary rounded-pill">Post a Request</a>
-                                <a href="{% url 'main:browse_view' %}" class="btn btn-saaf-outline rounded-pill">Browse Artisans</a>
-                            {% endif %}
-                        {% else %}
-                            <a href="{% url 'account:signup_view' %}" class="btn btn-saaf-primary rounded-pill">Get Started Free</a>
-                            <a href="{% url 'main:browse_view' %}" class="btn btn-saaf-outline rounded-pill">Browse Artisans</a>
-                        {% endif %}
-                    </div>
-                </div>
+    <video class="saaf-hero-video" autoplay muted loop playsinline>
+        <source src="{% static 'images/6693574-uhd_2160_4096_25fps.mp4' %}" type="video/mp4">
+    </video>
+    <div class="saaf-hero-overlay"></div>
+    <div class="container-lg saaf-hero-content-wrap">
+        <div class="saaf-hero-text">
+            <p class="saaf-eyebrow">— The Saudi artisan marketplace</p>
+            <h1 class="saaf-hero-title mb-4">
+                Commission something made for you, by a real <span class="saaf-text-accent">artisan</span>.
+            </h1>
+            <p class="saaf-description mb-4">
+                Post your idea, receive proposals from vetted Saudi craftspeople, and track every step — from first sketch to final delivery.
+            </p>
+            <div class="d-flex gap-3 flex-wrap">
+                {% if request.user.is_authenticated %}
+                    {% if request.user.artisanprofile %}
+                        <a href="{% url 'request:request_list_view' %}" class="btn btn-saaf-primary rounded-pill">Browse Requests</a>
+                        <a href="{% url 'workshop:workshop_detail_view' request.user.id %}" class="btn btn-saaf-outline rounded-pill">My Workshop</a>
+                    {% else %}
+                        <a href="{% url 'request:request_create_view' %}" class="btn btn-saaf-primary rounded-pill">Post a Request</a>
+                        <a href="{% url 'main:browse_view' %}" class="btn btn-saaf-outline rounded-pill">Browse Artisans</a>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'account:signup_view' %}" class="btn btn-saaf-primary rounded-pill">Get Started Free</a>
+                    <a href="{% url 'main:browse_view' %}" class="btn btn-saaf-outline rounded-pill">Browse Artisans</a>
+                {% endif %}
             </div>
         </div>
     </div>
