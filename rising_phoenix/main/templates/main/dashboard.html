@@ -9,102 +9,169 @@
 {% endblock %}
 
 {% block content %}
-<section class="py-4 py-md-5">
+<section class="py-4 py-md-5 saaf-dashboard-shell">
     <div class="container-lg">
-        <div class="saaf-dashboard-card saaf-dashboard-hero rounded-4 p-4 p-md-5 mb-4">
-            <p class="saaf-eyebrow mb-2">Dashboard</p>
-            <h1 class="saaf-section-title mb-2">Welcome, {{ request.user.first_name|default:request.user.username }}</h1>
-            <p class="text-muted mb-0">Quick access to your most important actions.</p>
+        <div class="saaf-dashboard-card saaf-dashboard-hero saaf-dashboard-hero--split rounded-4 p-4 p-md-5 mb-4">
+            <div class="saaf-dashboard-hero-grid">
+                <div>
+                    <div class="saaf-dashboard-kicker-row">
+                        <p class="saaf-eyebrow mb-0">Dashboard</p>
+                        {% if request.user.is_staff %}
+                        <span class="saaf-hero-chip"><i class="bi bi-shield-check"></i> Staff Access</span>
+                        {% elif request.user.artisanprofile %}
+                        <span class="saaf-hero-chip"><i class="bi bi-stars"></i> Artisan Account</span>
+                        {% else %}
+                        <span class="saaf-hero-chip"><i class="bi bi-person-badge"></i> Requester Account</span>
+                        {% endif %}
+                    </div>
 
-            <div class="saaf-dashboard-hero-actions">
-                {% if request.user.artisanprofile %}
-                <a href="{% url 'request:request_list_view' %}" class="saaf-quick-action-btn">
-                    <i class="bi bi-lightning-charge"></i>
-                    Find New Request
-                </a>
-                <a href="{% url 'proposal:my_proposals_view' %}" class="saaf-quick-action-btn">
-                    <i class="bi bi-send-check"></i>
-                    Track Proposals
-                </a>
-                {% else %}
-                <a href="{% url 'request:request_create_view' %}" class="saaf-quick-action-btn">
-                    <i class="bi bi-plus-circle"></i>
-                    Create Request
-                </a>
-                <a href="{% url 'main:browse_view' %}" class="saaf-quick-action-btn">
-                    <i class="bi bi-search"></i>
-                    Browse Artisans
-                </a>
-                {% endif %}
+                    <h1 class="saaf-section-title mb-2">Welcome, {{ request.user.first_name|default:request.user.username }}</h1>
+                    <p class="text-muted mb-0">A cleaner control center for your next steps, account shortcuts, and marketplace activity.</p>
+
+                    <div class="saaf-dashboard-hero-actions">
+                        {% if request.user.artisanprofile %}
+                        <a href="{% url 'request:request_list_view' %}" class="saaf-quick-action-btn">
+                            <i class="bi bi-lightning-charge"></i>
+                            Find New Request
+                        </a>
+                        <a href="{% url 'proposal:my_proposals_view' %}" class="saaf-quick-action-btn">
+                            <i class="bi bi-send-check"></i>
+                            Track Proposals
+                        </a>
+                        <a href="{% url 'workshop:upload_portfolio_view' %}" class="saaf-quick-action-btn saaf-quick-action-btn--soft">
+                            <i class="bi bi-images"></i>
+                            Refresh Portfolio
+                        </a>
+                        {% else %}
+                        <a href="{% url 'request:request_create_view' %}" class="saaf-quick-action-btn">
+                            <i class="bi bi-plus-circle"></i>
+                            Create Request
+                        </a>
+                        <a href="{% url 'main:browse_view' %}" class="saaf-quick-action-btn">
+                            <i class="bi bi-search"></i>
+                            Browse Artisans
+                        </a>
+                        {% if request.user.is_staff %}
+                        <a href="{% url 'staff:staff_dashboard_view' %}" class="saaf-quick-action-btn saaf-quick-action-btn--soft">
+                            <i class="bi bi-kanban"></i>
+                            Open Staff Tools
+                        </a>
+                        {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="saaf-dashboard-side-panel">
+                    <div class="saaf-dashboard-side-card">
+                        <span class="saaf-info-label">Account Focus</span>
+                        {% if request.user.artisanprofile %}
+                        <h3 class="saaf-dashboard-side-title">Keep your workshop active</h3>
+                        <p class="mb-0 text-muted">Review your public presence, upload new work, and stay close to incoming opportunities.</p>
+                        {% elif request.user.is_staff %}
+                        <h3 class="saaf-dashboard-side-title">Moderation and oversight</h3>
+                        <p class="mb-0 text-muted">Jump between moderation, categories, and user operations from one clean surface.</p>
+                        {% else %}
+                        <h3 class="saaf-dashboard-side-title">Move projects faster</h3>
+                        <p class="mb-0 text-muted">Post requests, compare artisans, and keep your account details ready for smoother project starts.</p>
+                        {% endif %}
+                    </div>
+                    <div class="saaf-dashboard-mini-stats">
+                        <div class="saaf-dashboard-mini-stat">
+                            <span class="saaf-info-label">Username</span>
+                            <strong>@{{ request.user.username }}</strong>
+                        </div>
+                        <div class="saaf-dashboard-mini-stat">
+                            <span class="saaf-info-label">Joined</span>
+                            <strong>{{ request.user.date_joined|date:"M Y" }}</strong>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="row g-3">
+        <div class="saaf-dashboard-section-head mb-3">
+            <div>
+                <p class="saaf-eyebrow mb-1">Shortcuts</p>
+                <h2 class="saaf-dashboard-section-title mb-0">Your main actions</h2>
+            </div>
+        </div>
+
+        <div class="row g-3 g-lg-4">
             {% if request.user.artisanprofile %}
             <div class="col-md-4">
                 <a href="{% url 'workshop:workshop_detail_view' request.user.id %}" class="saaf-tile-link">
-                    <div class="saaf-dashboard-card rounded-4 p-4 h-100">
+                    <div class="saaf-dashboard-card saaf-dashboard-feature-card rounded-4 p-4 h-100">
                         <div class="saaf-dashboard-tile-head">
                             <h5 class="mb-0">My Workshop</h5>
                             <span class="saaf-dashboard-tile-icon"><i class="bi bi-shop"></i></span>
                         </div>
-                        <p class="text-muted mb-0">Review your public workshop profile.</p>
+                        <p class="text-muted mb-3">Review your public workshop profile and keep your storefront sharp.</p>
+                        <span class="saaf-dashboard-linkline">Open workshop <i class="bi bi-arrow-right-short"></i></span>
                     </div>
                 </a>
             </div>
             <div class="col-md-4">
                 <a href="{% url 'workshop:upload_portfolio_view' %}" class="saaf-tile-link">
-                    <div class="saaf-dashboard-card rounded-4 p-4 h-100">
+                    <div class="saaf-dashboard-card saaf-dashboard-feature-card rounded-4 p-4 h-100">
                         <div class="saaf-dashboard-tile-head">
                             <h5 class="mb-0">Portfolio</h5>
                             <span class="saaf-dashboard-tile-icon"><i class="bi bi-images"></i></span>
                         </div>
-                        <p class="text-muted mb-0">Upload and manage portfolio images.</p>
+                        <p class="text-muted mb-3">Upload new work samples and keep your strongest pieces visible.</p>
+                        <span class="saaf-dashboard-linkline">Manage gallery <i class="bi bi-arrow-right-short"></i></span>
                     </div>
                 </a>
             </div>
             <div class="col-md-4">
                 <a href="{% url 'request:request_list_view' %}" class="saaf-tile-link">
-                    <div class="saaf-dashboard-card rounded-4 p-4 h-100">
+                    <div class="saaf-dashboard-card saaf-dashboard-feature-card rounded-4 p-4 h-100">
                         <div class="saaf-dashboard-tile-head">
                             <h5 class="mb-0">Open Requests</h5>
                             <span class="saaf-dashboard-tile-icon"><i class="bi bi-briefcase"></i></span>
                         </div>
-                        <p class="text-muted mb-0">Browse active customer requests.</p>
+                        <p class="text-muted mb-3">Browse active customer requests and spot the next fit for your craft.</p>
+                        <span class="saaf-dashboard-linkline">Explore listings <i class="bi bi-arrow-right-short"></i></span>
                     </div>
                 </a>
             </div>
             {% else %}
             <div class="col-md-4">
                 <a href="{% url 'request:request_create_view' %}" class="saaf-tile-link">
-                    <div class="saaf-dashboard-card rounded-4 p-4 h-100">
+                    <div class="saaf-dashboard-card saaf-dashboard-feature-card rounded-4 p-4 h-100">
                         <div class="saaf-dashboard-tile-head">
                             <h5 class="mb-0">Post a Request</h5>
                             <span class="saaf-dashboard-tile-icon"><i class="bi bi-plus-square"></i></span>
                         </div>
-                        <p class="text-muted mb-0">Start a new custom project request.</p>
+                        <p class="text-muted mb-3">Start a new custom project request with clearer details and quicker replies.</p>
+                        <span class="saaf-dashboard-linkline">Create now <i class="bi bi-arrow-right-short"></i></span>
                     </div>
                 </a>
             </div>
             <div class="col-md-4">
                 <a href="{% url 'request:request_list_view' %}" class="saaf-tile-link">
-                    <div class="saaf-dashboard-card rounded-4 p-4 h-100">
+                    <div class="saaf-dashboard-card saaf-dashboard-feature-card rounded-4 p-4 h-100">
                         <div class="saaf-dashboard-tile-head">
                             <h5 class="mb-0">Discover</h5>
                             <span class="saaf-dashboard-tile-icon"><i class="bi bi-compass"></i></span>
                         </div>
-                        <p class="text-muted mb-0">Explore marketplace requests and artisans.</p>
+                        <p class="text-muted mb-3">Explore marketplace requests and artisans with a cleaner starting point.</p>
+                        <span class="saaf-dashboard-linkline">Start browsing <i class="bi bi-arrow-right-short"></i></span>
                     </div>
                 </a>
             </div>
             <div class="col-md-4">
+                {% if request.user.is_staff %}
+                <a href="{% url 'staff:staff_profile_view' %}" class="saaf-tile-link">
+                {% else %}
                 <a href="{% url 'account:profile_view' request.user.username %}" class="saaf-tile-link">
-                    <div class="saaf-dashboard-card rounded-4 p-4 h-100">
+                {% endif %}
+                    <div class="saaf-dashboard-card saaf-dashboard-feature-card rounded-4 p-4 h-100">
                         <div class="saaf-dashboard-tile-head">
                             <h5 class="mb-0">My Profile</h5>
                             <span class="saaf-dashboard-tile-icon"><i class="bi bi-person-circle"></i></span>
                         </div>
-                        <p class="text-muted mb-0">View and update your account details.</p>
+                        <p class="text-muted mb-3">Review your contact details, profile info, and account presence.</p>
+                        <span class="saaf-dashboard-linkline">Open profile <i class="bi bi-arrow-right-short"></i></span>
                     </div>
                 </a>
             </div>

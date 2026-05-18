@@ -13,7 +13,6 @@ from .models import Category
 from request.models import Request
 from proposal.models import Proposal
 from django.core.paginator import Paginator
-from progress.models import Contract
 
 
 def _validate_workshop_image(image):
@@ -142,6 +141,43 @@ def workshop_detail_view(request, artisan_id):
 
 
     if request.method == 'POST' and can_edit_portfolio:
+
+        if 'toggle_pin_image_id' in request.POST:
+
+            image_id = request.POST.get(
+                'toggle_pin_image_id'
+            )
+
+            portfolio_image = (
+                workshop.portfolio_images.filter(
+                    id=image_id
+                ).first()
+            )
+
+            if portfolio_image:
+
+                portfolio_image.is_pinned = not portfolio_image.is_pinned
+
+                portfolio_image.save(
+                    update_fields=['is_pinned']
+                )
+
+                messages.success(
+                    request,
+                    f"Image {'pinned' if portfolio_image.is_pinned else 'unpinned'} successfully."
+                )
+
+            else:
+
+                messages.error(
+                    request,
+                    "Portfolio image not found."
+                )
+
+            return redirect(
+                'workshop:workshop_detail_view',
+                artisan_id=artisan_id
+            )
 
         if (
             'caption' in request.POST
@@ -301,20 +337,22 @@ def workshop_detail_view(request, artisan_id):
     )
 
 
-    # Completed projects
+    # Closed requests linked to this artisan (same logic as account completed-orders page)
     completed_orders = (
         Request.objects.filter(
+            status=Request.Status.CLOSED,
             proposals__artisan=artisan_profile.user,
-            proposals__contract__status=Contract.Status.COMPLETED
+            proposals__status=Proposal.Status.ACCEPTED,
         )
         .distinct()
-        .order_by('-updated_at')[:3]
+        .order_by('-created_at')[:3]
     )
 
     completed_orders_count = (
         Request.objects.filter(
+            status=Request.Status.CLOSED,
             proposals__artisan=artisan_profile.user,
-            proposals__contract__status=Contract.Status.COMPLETED
+            proposals__status=Proposal.Status.ACCEPTED,
         )
         .distinct()
         .count()
@@ -522,6 +560,34 @@ def upload_portfolio_view(request):
         return redirect('workshop:create_workshop_view')
 
     if request.method == 'POST':
+        if 'update_caption_image_id' in request.POST:
+            image_id = request.POST.get('update_caption_image_id')
+            new_caption = request.POST.get('caption', '').strip()
+            portfolio_image = workshop.portfolio_images.filter(id=image_id).first()
+
+            if not portfolio_image:
+                messages.error(request, 'Portfolio image not found.')
+                return redirect('workshop:upload_portfolio_view')
+
+            if new_caption and not text_is_clean(new_caption):
+                messages.error(request, 'Caption contains inappropriate language. Please revise it.')
+                return redirect('workshop:upload_portfolio_view')
+
+            portfolio_image.caption = new_caption
+            portfolio_image.save(update_fields=['caption'])
+            messages.success(request, 'Image caption updated successfully.')
+            return redirect('workshop:upload_portfolio_view')
+
+        if 'delete_image_id' in request.POST:
+            image_id = request.POST.get('delete_image_id')
+            portfolio_image = workshop.portfolio_images.filter(id=image_id).first()
+            if portfolio_image:
+                portfolio_image.delete()
+                messages.success(request, 'Portfolio image deleted successfully.')
+            else:
+                messages.error(request, 'Portfolio image not found.')
+            return redirect('workshop:upload_portfolio_view')
+
         if 'toggle_pin_image_id' in request.POST:
             image_id = request.POST.get('toggle_pin_image_id')
             portfolio_image = workshop.portfolio_images.filter(id=image_id).first()

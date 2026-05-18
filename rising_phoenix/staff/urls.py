@@ -5,6 +5,8 @@ app_name = "staff"
 
 urlpatterns = [
     path("dashboard/", views.staff_dashboard_view, name="staff_dashboard_view"),
+    path("profile/", views.staff_profile_view, name="staff_profile_view"),
+    path("profile/update/", views.update_staff_profile_view, name="update_staff_profile_view"),
     path("users/<int:user_id>/ban/", views.ban_user_view, name="ban_user_view"),
     path("artisans/<int:user_id>/ban/", views.ban_artisan_view, name="ban_artisan_view"),
     path("artisans/<int:user_id>/feature/", views.feature_artisan_view, name="feature_artisan_view"),
