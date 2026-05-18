@@ -12,4 +12,5 @@ urlpatterns = [
     path('<int:request_id>/reopen/', views.reopen_request_view, name='reopen_request_view'),
     path('api/refine-text/', views.refine_request_view, name='refine_request_view'),
     path('api/suggested-artisans/', views.suggested_artisans_view, name='suggested_artisans_view'),
+    path('api/my-open-requests/', views.my_open_requests_view, name='my_open_requests_view'),
 ]

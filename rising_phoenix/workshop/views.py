@@ -385,6 +385,11 @@ def workshop_detail_view(request, artisan_id):
         portfolio_page_number
     )
 
+    is_viewer_artisan = (
+        request.user.is_authenticated
+        and request.user.groups.filter(name='artisan').exists()
+    )
+
     context = {
 
         'workshop': workshop,
@@ -408,6 +413,8 @@ def workshop_detail_view(request, artisan_id):
         active_orders_count,
         'workshop_details': workshop_details,
         'detail_form': detail_form,
+
+        'is_viewer_artisan': is_viewer_artisan,
 
     }
 

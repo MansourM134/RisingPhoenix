@@ -358,8 +358,17 @@
                     </div>
 
                     <div class="d-grid gap-2 mt-3">
-                        <a href="{% url 'request:request_list_view' %}" class="btn btn-saaf-primary rounded-pill">Request Custom Work</a>
-                        <a href="{% url 'request:request_list_view' %}" class="btn btn-saaf-outline rounded-pill">Start from Requests</a>
+                        {% if request.user.is_authenticated and request.user != artisan.user and not is_viewer_artisan %}
+                            <button type="button" class="btn btn-saaf-primary rounded-pill"
+                                    data-bs-toggle="modal" data-bs-target="#inviteArtisanModal"
+                                    data-artisan-user-id="{{ artisan.user.id }}"
+                                    data-artisan-username="{{ artisan.user.username }}">
+                                Invite to a Request
+                            </button>
+                        {% elif not request.user.is_authenticated %}
+                            <a href="{% url 'account:login_view' %}" class="btn btn-saaf-primary rounded-pill">Log in to invite</a>
+                        {% endif %}
+                        <a href="{% url 'request:request_create_view' %}" class="btn btn-saaf-outline rounded-pill">Start a new Request</a>
                     </div>
 
                     <div class="saaf-workshop-notice mt-3">
@@ -398,6 +407,32 @@
                 </div>
             </div>
         </div>
+
+        {% if request.user.is_authenticated and request.user != artisan.user and not is_viewer_artisan %}
+        <div class="modal fade" id="inviteArtisanModal" tabindex="-1" aria-hidden="true"
+             data-my-requests-url="{% url 'request:my_open_requests_view' %}"
+             data-invite-url="{% url 'invitation:send_invitation_view' %}"
+             data-create-request-url="{% url 'request:request_create_view' %}">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Invite {{ artisan.user.username }} to a request</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="text-muted small mb-3">Pick one of your open requests. The artisan will get a notification and can submit a proposal.</p>
+                        <div id="inviteArtisanBody">
+                            <p class="text-muted">Loading your open requests…</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-saaf-outline" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-saaf-primary" id="inviteArtisanSubmit" disabled>Send invitation</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
 
         <div class="modal fade portfolio-modal" id="portfolioImageModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-xl">
@@ -457,6 +492,116 @@
 
         modal.addEventListener('hidden.bs.modal', function(){ modalImage.src = ''; modalCaption.textContent = ''; modalTitle.textContent = 'Portfolio Image'; });
     })();
+</script>
+
+<script>
+(function () {
+    var modal = document.getElementById('inviteArtisanModal');
+    if (!modal) return;
+
+    var bodyEl = document.getElementById('inviteArtisanBody');
+    var submitBtn = document.getElementById('inviteArtisanSubmit');
+    var myRequestsUrl = modal.dataset.myRequestsUrl;
+    var inviteUrl = modal.dataset.inviteUrl;
+    var createRequestUrl = modal.dataset.createRequestUrl;
+    var currentArtisanId = null;
+
+    function getCsrf() {
+        var m = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/);
+        return m ? m[1] : '';
+    }
+
+    function escapeHtml(value) {
+        return String(value == null ? '' : value)
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    function renderRequests(items) {
+        if (!items.length) {
+            bodyEl.innerHTML = '<p class="text-muted mb-0">You have no open requests right now. ' +
+                '<a href="' + escapeHtml(createRequestUrl) + '">Create a new request</a> to invite this artisan.</p>';
+            submitBtn.disabled = true;
+            return;
+        }
+        var rows = items.map(function (item) {
+            return (
+                '<div class="form-check mb-2">' +
+                    '<input class="form-check-input" type="radio" name="invite_request_id" ' +
+                        'id="invite-req-' + escapeHtml(item.id) + '" value="' + escapeHtml(item.id) + '">' +
+                    '<label class="form-check-label" for="invite-req-' + escapeHtml(item.id) + '">' +
+                        escapeHtml(item.title) +
+                    '</label>' +
+                '</div>'
+            );
+        }).join('');
+        bodyEl.innerHTML = rows;
+        submitBtn.disabled = true;
+
+        bodyEl.querySelectorAll('input[name="invite_request_id"]').forEach(function (radio) {
+            radio.addEventListener('change', function () {
+                submitBtn.disabled = !bodyEl.querySelector('input[name="invite_request_id"]:checked');
+            });
+        });
+    }
+
+    modal.addEventListener('show.bs.modal', async function (event) {
+        var trigger = event.relatedTarget;
+        currentArtisanId = trigger ? trigger.getAttribute('data-artisan-user-id') : null;
+        bodyEl.innerHTML = '<p class="text-muted">Loading your open requests…</p>';
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Send invitation';
+
+        try {
+            var resp = await fetch(myRequestsUrl, { headers: { 'Accept': 'application/json' } });
+            if (!resp.ok) throw new Error('bad-status');
+            var data = await resp.json();
+            renderRequests(data.requests || []);
+        } catch (_) {
+            bodyEl.innerHTML = '<p class="text-danger mb-0">Could not load your requests. Please try again.</p>';
+        }
+    });
+
+    submitBtn.addEventListener('click', async function () {
+        var checked = bodyEl.querySelector('input[name="invite_request_id"]:checked');
+        if (!checked || !currentArtisanId) return;
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending…';
+
+        var body = new URLSearchParams();
+        body.append('request_id', checked.value);
+        body.append('artisan_user_id', currentArtisanId);
+
+        try {
+            var resp = await fetch(inviteUrl, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCsrf(),
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: body.toString(),
+            });
+            var data = {};
+            try { data = await resp.json(); } catch (_) { /* ignore */ }
+            if (resp.ok) {
+                bodyEl.innerHTML = '<p class="text-success mb-0"><strong>Invitation sent!</strong> The artisan will receive a notification.</p>';
+                submitBtn.textContent = 'Sent';
+            } else if (resp.status === 409) {
+                bodyEl.innerHTML = '<p class="text-muted mb-0">You have already invited this artisan to that request.</p>';
+                submitBtn.textContent = 'Already invited';
+            } else {
+                submitBtn.textContent = 'Send invitation';
+                submitBtn.disabled = false;
+                alert(data.error ? 'Could not invite: ' + data.error : 'Could not send invitation.');
+            }
+        } catch (_) {
+            submitBtn.textContent = 'Send invitation';
+            submitBtn.disabled = false;
+            alert('Network error — please try again.');
+        }
+    });
+})();
 </script>
 
 {% endblock %}

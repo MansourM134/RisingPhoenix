@@ -44,7 +44,7 @@
                         <span class="notif-master-label">Toggle all</span>
                         <label class="notif-master-toggle" title="Toggle all email notifications">
                             <input type="checkbox" class="notif-master-check" data-group="email"
-                                {% if prefs.email_proposal_received and prefs.email_proposal_accepted and prefs.email_proposal_rejected and prefs.email_progress_update and prefs.email_comment_added and prefs.email_completion_requested and prefs.email_completion_confirmed and prefs.email_completion_rejected and prefs.email_message_received %}checked{% endif %}>
+                                {% if prefs.email_proposal_received and prefs.email_proposal_accepted and prefs.email_proposal_rejected and prefs.email_progress_update and prefs.email_comment_added and prefs.email_completion_requested and prefs.email_completion_confirmed and prefs.email_completion_rejected and prefs.email_message_received and prefs.email_invitation_received %}checked{% endif %}>
                             <span class="notif-master-slider"></span>
                         </label>
                     </div>
@@ -59,6 +59,7 @@
                     {% include "notification/partials/pref_row.html" with field="email_completion_confirmed" checked=prefs.email_completion_confirmed label="Project Completed" desc="When the requester confirms project completion." icon="bi-trophy-fill" color="#1a7a4a" only %}
                     {% include "notification/partials/pref_row.html" with field="email_completion_rejected" checked=prefs.email_completion_rejected label="Completion Sent Back" desc="When the requester sends the work back for revision." icon="bi-arrow-counterclockwise" color="#b07c00" only %}
                     {% include "notification/partials/pref_row.html" with field="email_message_received" checked=prefs.email_message_received label="New Message" desc="When you receive a new message." icon="bi-chat-fill" color="#1a6fa8" only %}
+                    {% include "notification/partials/pref_row.html" with field="email_invitation_received" checked=prefs.email_invitation_received label="Project Invitation" desc="When a requester invites you to submit a proposal." icon="bi-person-plus-fill" color="#1a6fa8" only %}
                 </ul>
             </div>
 
@@ -76,7 +77,7 @@
                         <span class="notif-master-label">Toggle all</span>
                         <label class="notif-master-toggle" title="Toggle all in-site notifications">
                             <input type="checkbox" class="notif-master-check" data-group="insite"
-                                {% if prefs.insite_proposal_received and prefs.insite_proposal_accepted and prefs.insite_proposal_rejected and prefs.insite_progress_update and prefs.insite_comment_added and prefs.insite_completion_requested and prefs.insite_completion_confirmed and prefs.insite_completion_rejected and prefs.insite_message_received %}checked{% endif %}>
+                                {% if prefs.insite_proposal_received and prefs.insite_proposal_accepted and prefs.insite_proposal_rejected and prefs.insite_progress_update and prefs.insite_comment_added and prefs.insite_completion_requested and prefs.insite_completion_confirmed and prefs.insite_completion_rejected and prefs.insite_message_received and prefs.insite_invitation_received %}checked{% endif %}>
                             <span class="notif-master-slider"></span>
                         </label>
                     </div>
@@ -91,6 +92,7 @@
                     {% include "notification/partials/pref_row.html" with field="insite_completion_confirmed" checked=prefs.insite_completion_confirmed label="Project Completed" desc="When the requester confirms project completion." icon="bi-trophy-fill" color="#1a7a4a" only %}
                     {% include "notification/partials/pref_row.html" with field="insite_completion_rejected" checked=prefs.insite_completion_rejected label="Completion Sent Back" desc="When the requester sends the work back for revision." icon="bi-arrow-counterclockwise" color="#b07c00" only %}
                     {% include "notification/partials/pref_row.html" with field="insite_message_received" checked=prefs.insite_message_received label="New Message" desc="When you receive a new message." icon="bi-chat-fill" color="#1a6fa8" only %}
+                    {% include "notification/partials/pref_row.html" with field="insite_invitation_received" checked=prefs.insite_invitation_received label="Project Invitation" desc="When a requester invites you to submit a proposal." icon="bi-person-plus-fill" color="#1a6fa8" only %}
                 </ul>
             </div>
 

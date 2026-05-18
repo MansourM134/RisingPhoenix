@@ -219,9 +219,44 @@
         {% endif %}
       {% endif %}
 
+      {# Requester: suggested artisans + invitations sent (only while OPEN) #}
+      {% if is_requester and project_request.status == 'open' %}
+        <div class="proposal-panel-header">
+          <h2 class="proposal-panel-title">Suggested artisans</h2>
+        </div>
+        <div class="suggested-artisans-list"
+             id="invite-suggested-list"
+             data-category-id="{{ project_request.category.id }}"
+             data-request-id="{{ project_request.id }}"
+             data-suggested-url="{% url 'request:suggested_artisans_view' %}"
+             data-invite-url="{% url 'invitation:send_invitation_view' %}">
+          <p class="suggested-empty">Loading suggestions…</p>
+        </div>
+
+        {% if invitations %}
+          <div class="proposal-panel-header" style="margin-top:1.25rem;">
+            <h2 class="proposal-panel-title">
+              Invitations sent
+              <span class="proposal-count-badge">{{ invitations|length }}</span>
+            </h2>
+          </div>
+          <ul class="invitations-sent-list" id="invitations-sent-list">
+            {% for invitation in invitations %}
+              <li class="invitation-row" data-artisan-id="{{ invitation.artisan_id }}">
+                <span class="invitation-name">{{ invitation.artisan.username }}</span>
+                <span class="invitation-status invitation-status--{{ invitation.status }}">
+                  {{ invitation.get_status_display }}
+                </span>
+                <span class="invitation-when">{{ invitation.created_at|date:"M j, Y" }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endif %}
+
       {# Requester: see all proposals #}
       {% if is_requester %}
-        <div class="proposal-panel-header">
+        <div class="proposal-panel-header" {% if project_request.status == 'open' %}style="margin-top:1.25rem;"{% endif %}>
           <h2 class="proposal-panel-title">
             Proposals
             <span class="proposal-count-badge">{{ proposals|length }}</span>
@@ -376,6 +411,115 @@
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && !lightbox.hidden) closeLightbox();
   });
+})();
+
+// Suggested artisans + Invite flow (requester only, OPEN requests)
+(function () {
+  var container = document.getElementById('invite-suggested-list');
+  if (!container) return;
+
+  var categoryId = container.dataset.categoryId;
+  var requestId = container.dataset.requestId;
+  var suggestedUrl = container.dataset.suggestedUrl;
+  var inviteUrl = container.dataset.inviteUrl;
+
+  function getCsrf() {
+    var m = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/);
+    return m ? m[1] : '';
+  }
+
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  var invitedIds = new Set();
+  document.querySelectorAll('#invitations-sent-list .invitation-row').forEach(function (row) {
+    if (row.dataset.artisanId) invitedIds.add(String(row.dataset.artisanId));
+  });
+
+  function renderCards(items) {
+    if (!items.length) {
+      container.innerHTML = '<p class="suggested-empty">No matching artisans found yet for this category.</p>';
+      return;
+    }
+    container.innerHTML = items.map(function (item) {
+      var tagline = item.tagline || 'Custom craft specialist';
+      var location = item.location || 'Location not specified';
+      var alreadyInvited = invitedIds.has(String(item.artisan_user_id));
+      var btn = alreadyInvited
+        ? '<button type="button" class="invite-btn invite-btn--done" disabled>Invited</button>'
+        : '<button type="button" class="invite-btn" data-artisan-id="' + escapeHtml(item.artisan_user_id) + '">Invite</button>';
+      return (
+        '<div class="suggested-card suggested-card--invite">' +
+          '<a href="' + escapeHtml(item.workshop_url) + '" class="suggested-card-link">' +
+            '<p class="suggested-name">' + escapeHtml(item.workshop_name) + '</p>' +
+            '<p class="suggested-by">by @' + escapeHtml(item.artisan_username) + '</p>' +
+            '<p class="suggested-tagline">' + escapeHtml(tagline) + '</p>' +
+            '<p class="suggested-location">' + escapeHtml(location) + '</p>' +
+          '</a>' +
+          btn +
+        '</div>'
+      );
+    }).join('');
+  }
+
+  async function loadSuggestions() {
+    if (!categoryId) {
+      container.innerHTML = '<p class="suggested-empty">No category selected.</p>';
+      return;
+    }
+    try {
+      var resp = await fetch(suggestedUrl + '?category_id=' + encodeURIComponent(categoryId));
+      var data = await resp.json();
+      renderCards(data.artisans || []);
+    } catch (_) {
+      container.innerHTML = '<p class="suggested-empty">Could not load suggestions right now.</p>';
+    }
+  }
+
+  container.addEventListener('click', async function (e) {
+    var btn = e.target.closest('.invite-btn');
+    if (!btn || btn.disabled) return;
+    var artisanId = btn.dataset.artisanId;
+    if (!artisanId) return;
+    btn.disabled = true;
+    var originalText = btn.textContent;
+    btn.textContent = 'Sending…';
+
+    var body = new URLSearchParams();
+    body.append('request_id', requestId);
+    body.append('artisan_user_id', artisanId);
+
+    try {
+      var resp = await fetch(inviteUrl, {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': getCsrf(),
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: body.toString(),
+      });
+      var data = {};
+      try { data = await resp.json(); } catch (_) { /* ignore */ }
+      if (resp.ok || resp.status === 409) {
+        btn.textContent = 'Invited';
+        btn.classList.add('invite-btn--done');
+        invitedIds.add(String(artisanId));
+      } else {
+        btn.disabled = false;
+        btn.textContent = originalText;
+        alert(data.error ? 'Could not invite: ' + data.error : 'Could not send invitation.');
+      }
+    } catch (_) {
+      btn.disabled = false;
+      btn.textContent = originalText;
+      alert('Network error — please try again.');
+    }
+  });
+
+  loadSuggestions();
 })();
 </script>
 {% endblock %}
