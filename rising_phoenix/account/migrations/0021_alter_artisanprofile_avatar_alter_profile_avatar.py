@@ -6,7 +6,8 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0020_merge_account_heads'),
+        ('account', '0018_merge_20260517_2104'),
+        ('account', '0019_artisanprofile_stripe_connected_account_id'),
     ]
 
     operations = [

@@ -2,7 +2,7 @@ services:
   - type: web
     name: rising-phoenix
     runtime: python
-    buildCommand: "pip install -r requirements.txt && python rising_phoenix/manage.py collectstatic --noinput && python rising_phoenix/manage.py shell -c \"from django.db.migrations.recorder import MigrationRecorder; from django.utils import timezone; MigrationRecorder.Migration.objects.get_or_create(app='account', name='0020_merge_account_heads', defaults={'applied': timezone.now()})\" && python rising_phoenix/manage.py migrate"
+    buildCommand: "pip install -r requirements.txt && python rising_phoenix/manage.py collectstatic --noinput && python rising_phoenix/manage.py migrate"
     startCommand: "gunicorn rising_phoenix.wsgi:application --chdir rising_phoenix"
     envVars:
       - key: EXTERNAL_OR_NOT
