@@ -21,7 +21,7 @@ from django.views.decorators.http import require_POST
 from django.contrib.admin.views.decorators import staff_member_required
 import logging
 from .utils import send_contract_pdf_email
-
+from message.models import Conversation
 
 # Create your views here.
 
@@ -460,6 +460,11 @@ def artisan_reject_contract_view(request, contract_id):
         proposal = contract.proposal
         proposal.status = Proposal.Status.REJECTED
         proposal.save(update_fields=['status', 'updated_at'])
+        conversation = Conversation.objects.filter(proposal=contract.proposal).first()
+        if conversation:
+            conversation.is_active = False
+            conversation.save(update_fields=['is_active'])
+
 
     messages.success(request, 'Contract rejected and payment hold canceled.')
     return redirect('request:request_detail_view', request_id=contract.proposal.request.id)
