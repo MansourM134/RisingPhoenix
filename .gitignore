@@ -8,6 +8,7 @@ venv/
 # C extensions
 *.so
 .media
+rising_phoenix/media/
 
 
 

@@ -1,0 +1,226 @@
+# Demo Data Checklist
+# ============================================================
+# YOU gather: images only
+# I build:    all text, accounts, logic, relationships
+# ============================================================
+#
+# This list is updated for the CURRENT models (post-message, post-payment,
+# post-dispute apps). Old checklist had ~40 images; this one has ~55 because
+# we now also need conversation, comment, event, and dispute images.
+
+
+## IMAGES TO GATHER (~55 total)
+## Best sources: pexels.com / unsplash.com
+## Save everything into: RisingPhoenix/demo_data/images/
+## Name files clearly (e.g. woodwork_shelf.jpg, leather_wallet.jpg)
+
+
+# ── USER AVATARS (8 photos of people) ────────────────────────
+# Realistic headshots / casual portraits
+# Goes to: images/avatars/
+
+  [ ] avatar_ahmed.jpg       — young Saudi man, casual
+  [ ] avatar_noura.jpg       — young Saudi woman
+  [ ] avatar_faisal.jpg      — mid-30s man
+  [ ] avatar_sara.jpg        — young woman
+  [ ] avatar_laila.jpg       — woman in workshop / artisan setting
+  [ ] avatar_khalid.jpg      — man in workshop setting
+  [ ] avatar_iroh.jpg        — man, older, metalwork/artist vibe
+  [ ] avatar_staff.jpg       — neutral professional headshot (for the staff/moderator account)
+
+  Search: "saudi man portrait", "arab woman portrait", "artisan portrait"
+
+
+# ── WORKSHOP COVERS (1 per workshop, 3 total) ────────────────
+# Strong hero shot — wide, high quality
+# Goes to: images/workshops/
+
+  [ ] cover_iroh.jpg         — metalwork / sculpture / forge setting
+  [ ] cover_laila.jpg        — leather goods or calligraphy desk setup
+  [ ] cover_khalid.jpg       — woodworking workshop or pottery studio
+
+  Search: "metalwork workshop", "leather craft studio", "woodworking shop"
+
+
+# ── PORTFOLIO IMAGES (3 per workshop, 9 total) ───────────────
+# Finished craft items — best showcase pieces
+# Goes to: images/workshop_portfolio/
+
+  Iroh's Forge (Metalwork / Art):
+  [ ] portfolio_iroh_1.jpg   — copper or iron wall sculpture
+  [ ] portfolio_iroh_2.jpg   — decorative metal gate or panel
+  [ ] portfolio_iroh_3.jpg   — mixed-media art piece
+
+  Laila's Atelier (Leather / Calligraphy):
+  [ ] portfolio_laila_1.jpg  — handstitched leather wallet or bag
+  [ ] portfolio_laila_2.jpg  — framed Arabic calligraphy piece
+  [ ] portfolio_laila_3.jpg  — leather close-up (stitching / texture)
+
+  Khalid Craft Studio (Woodworking / Pottery):
+  [ ] portfolio_khalid_1.jpg — solid wood dining table or shelf
+  [ ] portfolio_khalid_2.jpg — glazed pottery / ceramic set
+  [ ] portfolio_khalid_3.jpg — decorative wooden panel
+
+  Search: "handmade metalwork", "leather wallet handmade", "arabic calligraphy art",
+          "handmade wooden furniture", "handmade pottery ceramics"
+
+
+# ── COMPLETED PROJECT MAIN IMAGES (1 per project, 3 total) ───
+# Best single finished piece per artisan — hero quality
+# Goes to: images/completed_projects/
+
+  [ ] completed_iroh_main.jpg    — copper sunburst or large metal art
+  [ ] completed_laila_main.jpg   — custom leather tote or calligraphy frame
+  [ ] completed_khalid_main.jpg  — walnut coffee table or ceramic dinner set
+
+
+# ── COMPLETED PROJECT EXTRA IMAGES (2 per project, 6 total) ──
+# NEW: each completed project now supports multiple before/after
+# or detail shots. 2 per project is enough.
+# Goes to: images/completed_project_images/
+
+  Iroh's project (copper sunburst):
+  [ ] completed_iroh_detail1.jpg  — close-up of patina / texture
+  [ ] completed_iroh_install.jpg  — piece mounted on a wall
+
+  Laila's project (leather tote):
+  [ ] completed_laila_detail1.jpg — stitching close-up
+  [ ] completed_laila_inuse.jpg   — tote being held / on shoulder
+
+  Khalid's project (walnut table):
+  [ ] completed_khalid_detail1.jpg — grain close-up
+  [ ] completed_khalid_room.jpg    — table in a styled room
+
+  Search: "custom metalwork finished", "bespoke leather bag", "custom wood furniture"
+
+
+# ── REQUEST REFERENCE IMAGES (~8 total) ──────────────────────
+# What the requester is imagining — inspiration / similar existing item
+# Goes to: images/requests/
+
+  [ ] ref_wallet.jpg         — bifold leather wallet with initials
+  [ ] ref_calligraphy.jpg    — Surah Al-Fatiha calligraphy art
+  [ ] ref_bookshelf.jpg      — freestanding wooden bookshelf
+  [ ] ref_mugs.jpg           — set of handmade ceramic mugs
+  [ ] ref_painting.jpg       — abstract oil painting on canvas
+  [ ] ref_ring.jpg           — minimal silver ring
+  [ ] ref_thobe.jpg          — traditional embroidered thobe
+  [ ] ref_coffee_table.jpg   — walnut coffee table hairpin legs
+
+  Search: "leather wallet initials", "thuluth calligraphy frame", "oak bookshelf",
+          "ceramic mug set handmade", "abstract warm painting", "silver engraved ring",
+          "saudi thobe embroidery", "walnut coffee table"
+
+
+# ── PROPOSAL SAMPLE IMAGES (~5 total) ────────────────────────
+# Artisan attaches these to their bid: "here's my previous similar work"
+# Goes to: images/proposals/
+
+  [ ] proposal_laila_wallet.jpg     — Laila's past leather wallet
+  [ ] proposal_laila_callig.jpg     — Laila's past calligraphy piece
+  [ ] proposal_khalid_shelf.jpg     — Khalid's past bookshelf
+  [ ] proposal_iroh_painting.jpg    — Iroh's past abstract painting
+  [ ] proposal_iroh_ring.jpg        — Iroh's past silver ring / metalwork
+
+
+# ── PROGRESS UPDATE IMAGES (~8 total) ────────────────────────
+# WIP shots: raw material → in progress → finished
+# Goes to: images/progress/
+
+  Portrait contract (Iroh painting a family portrait):
+  [ ] progress_portrait_sketch.jpg  — pencil sketch on canvas
+  [ ] progress_portrait_wip.jpg     — 70% done, colours laid in
+  [ ] progress_portrait_final.jpg   — finished varnished painting
+
+  Coffee table contract (Khalid building walnut table):
+  [ ] progress_table_slab.jpg       — raw walnut slab rough cut
+  [ ] progress_table_legs.jpg       — hairpin legs attached
+
+  Leather bag contract (Laila making tote bag):
+  [ ] progress_bag_cut.jpg          — leather panels cut and bevelled
+  [ ] progress_bag_stitch.jpg       — hand stitching in progress
+  [ ] progress_bag_final.jpg        — completed bag, conditioned
+
+
+# ── PROGRESS COMMENT IMAGES (3 total) ────────────────────────
+# NEW: requesters can attach photos when commenting on updates
+# (e.g. "here's a reference I just thought of" or "match this colour")
+# Goes to: images/progress_comments/
+
+  [ ] comment_color_swatch.jpg      — paint colour swatch / Pantone card
+  [ ] comment_room_photo.jpg        — photo of room where the piece will live
+  [ ] comment_inspiration.jpg       — extra inspiration photo from the requester
+
+
+# ── CONTRACT EVENT IMAGES (3 total) ──────────────────────────
+# NEW: when the artisan marks complete OR the requester rejects
+# completion, they can attach photos as evidence/explanation.
+# Goes to: images/progress_events/
+
+  [ ] event_complete_proof.jpg      — artisan's "it's done!" hero shot
+  [ ] event_complete_packaging.jpg  — finished piece packaged for handover
+  [ ] event_reject_issue.jpg        — requester showing a defect or wrong detail
+
+
+# ── MESSAGE / CONVERSATION IMAGES (3 total) ──────────────────
+# NEW: the message app supports inline images in chat.
+# Goes to: conversation_images/
+
+  [ ] chat_quick_ref.jpg            — a quick reference photo shared in DM
+  [ ] chat_progress_peek.jpg        — informal WIP photo, more casual than a formal update
+  [ ] chat_color_question.jpg       — close-up of a colour/material choice
+
+
+# ── DISPUTE MESSAGE IMAGES (2 total) ─────────────────────────
+# NEW: if we demo a dispute, both sides can attach evidence photos.
+# Goes to: images/disputes/
+# OPTIONAL — only if you want a dispute in the demo
+
+  [ ] dispute_evidence_damage.jpg   — close-up of alleged damage / defect
+  [ ] dispute_evidence_packed.jpg   — proof of how the item was packed/shipped
+
+
+# ============================================================
+# WHAT I BUILD (no action needed from you)
+# ============================================================
+
+  - All user accounts (5 requesters + 3 artisans + 1 staff)
+    usernames / passwords / bios / phone numbers
+  - 8 categories
+  - 3 full workshop profiles
+    name, tagline, description, services, location, phone, categories
+  - 3 completed-project showcases (one per workshop)
+  - ~11 requests across all statuses
+    (open / in_review / closed / time_ended)
+  - ~12 proposals across all statuses
+    (pending / accepted / rejected / withdrawn)
+    with realistic pitch messages, price, estimated days
+  - 3 contracts with full progress timelines
+    - progress updates with WIP captions
+    - requester comments (some with images)
+    - contract events (mark-complete handshake, including one rejection)
+  - Full conversations (5-message threads per accepted pair)
+    using the new message app, some messages with inline images
+  - Reviews with star ratings and written feedback
+  - Notification preferences (some users with categories turned off,
+    to show the settings page in action)
+  - Optional: 1 dispute thread with messages on both sides
+  - Optional: a few staff reports (flagged review, flagged request)
+
+
+# ============================================================
+# CHANGES FROM THE OLD CHECKLIST
+# ============================================================
+# What's the same:
+#   - Avatars, workshop covers, portfolio, requests, proposals, progress
+#
+# What's NEW (didn't exist when the old list was written):
+#   - Completed project EXTRA images (multiple per project, not just one)
+#   - Progress COMMENT images (requesters attaching photos to feedback)
+#   - Contract EVENT images (mark-complete / reject-complete attachments)
+#   - Conversation images (the message app didn't exist before)
+#   - Dispute images (the dispute app didn't exist before)
+#   - One extra avatar for the staff/moderator account
+#
+# What's REMOVED:
+#   - budget_min reference (Request now has only budget_max, no min field)
