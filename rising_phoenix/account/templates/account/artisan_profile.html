@@ -1,0 +1,100 @@
+{% extends "main/base.html" %}
+
+{% block sidebar %}
+{% include 'main/_sidebar.html' with active='profile' %}
+{% endblock %}
+
+{% block content %}
+<section class="py-4 py-md-5 saaf-profile-page">
+    <div class="container-lg">
+        <div class="saaf-dashboard-card saaf-profile-shell rounded-4 p-3 p-md-4 p-lg-5">
+            <div class="saaf-profile-hero">
+                <p class="saaf-eyebrow mb-2">Artisan Profile</p>
+
+                <div class="saaf-profile-hero-main">
+                    <div class="saaf-profile-avatar-wrap">
+                        {% if artisan_profile.avatar %}
+                        <img src="{{ artisan_profile.avatar.url }}" alt="{{ artisan_profile.user.username }}" class="saaf-avatar-preview saaf-profile-avatar">
+                        {% else %}
+                        <div class="saaf-avatar-fallback saaf-profile-avatar">{{ artisan_profile.user.username|first|upper }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="saaf-profile-heading-block">
+                        <h1 class="saaf-section-title mb-2">{{ artisan_profile.user.first_name }} {{ artisan_profile.user.last_name }}</h1>
+                        <p class="saaf-profile-username mb-1">@{{ artisan_profile.user.username }}</p>
+                        <p class="saaf-profile-joined mb-0">Joined {{ artisan_profile.user.date_joined|date:"F d, Y" }}</p>
+                    </div>
+
+                    <div class="saaf-profile-status-list">
+                        <span class="saaf-profile-pill">
+                            <i class="bi bi-star-fill"></i>
+                            {{ avg_rating|default:"No ratings yet" }}
+                        </span>
+
+                        <span class="saaf-profile-pill {% if artisan_profile.is_phone_verified %}saaf-profile-pill--ok{% endif %}">
+                            <i class="bi {% if artisan_profile.is_phone_verified %}bi-patch-check-fill{% else %}bi-patch-exclamation{% endif %}"></i>
+                            {% if artisan_profile.is_phone_verified %}Phone Verified{% else %}Phone Not Verified{% endif %}
+                        </span>
+
+                        <span class="saaf-profile-pill {% if artisan_profile.is_verified %}saaf-profile-pill--ok{% endif %}">
+                            <i class="bi {% if artisan_profile.is_verified %}bi-patch-check-fill{% else %}bi-hourglass-split{% endif %}"></i>
+                            {% if artisan_profile.is_verified %}Verified Artisan{% else %}Verification Pending{% endif %}
+                        </span>
+
+                        {% if artisan_profile.is_featured %}
+                        <span class="saaf-profile-pill">
+                            <i class="bi bi-award-fill"></i>
+                            Featured Artisan
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-3 g-md-4 mt-1">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="saaf-info-card saaf-profile-info-card h-100">
+                        <span class="saaf-info-label">Email</span>
+                        <p class="mb-0">{{ artisan_profile.user.email|default:"Not provided" }}</p>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-3">
+                    <div class="saaf-info-card saaf-profile-info-card h-100">
+                        <span class="saaf-info-label">Phone</span>
+                        <p class="mb-0">{{ artisan_profile.phone|default:"Not provided" }}</p>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-3">
+                    <div class="saaf-info-card saaf-profile-info-card h-100">
+                        <span class="saaf-info-label">Average Rating</span>
+                        <p class="mb-0">{{ avg_rating|default:"No ratings yet" }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="saaf-profile-bio-card mt-4">
+                <h2 class="saaf-profile-subtitle mb-2">About</h2>
+                <p class="mb-0">{{ artisan_profile.bio|default:"No bio added yet." }}</p>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2 mt-4 pt-1">
+                {% if request.user == artisan_profile.user %}
+                <a href="{% url 'account:update_artisan_profile_view' request.user.username %}" class="btn btn-saaf-primary rounded-pill d-inline-flex align-items-center gap-2">
+                    <i class="bi bi-pencil-square"></i>
+                    Edit Profile
+                </a>
+
+                {% endif %}
+
+                <a href="{% url 'main:dashboard_view' %}" class="btn btn-saaf-outline rounded-pill d-inline-flex align-items-center gap-2">
+                    <i class="bi bi-arrow-left"></i>
+                    Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

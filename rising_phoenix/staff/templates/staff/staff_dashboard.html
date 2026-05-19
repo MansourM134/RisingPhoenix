@@ -74,6 +74,48 @@
         <div class="saaf-dashboard-card saaf-staff-section-card rounded-4 p-4 mb-4">
             <div class="saaf-dashboard-table-head">
                 <div>
+                    <p class="saaf-eyebrow mb-1">Payouts</p>
+                    <h5 class="mb-0">Artisan payout actions</h5>
+                </div>
+                <span class="saaf-table-caption">Run payout processing manually for admin operations.</span>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <form method="POST" action="{% url 'payment:run_current_month_artisan_payout' %}">
+                        {% csrf_token %}
+                        <div class="saaf-info-card saaf-info-card--metric h-100">
+                            <span class="saaf-info-label">Current Month</span>
+                            <h5 class="mb-2">Run Current Month Payout</h5>
+                            <p class="mb-3 text-muted">Use this for manual or test payout processing for the current month.</p>
+                            <button type="submit" class="btn btn-saaf-primary">
+                                <i class="bi bi-cash-stack"></i>
+                                Run Current Month
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-md-6">
+                    <form method="POST" action="{% url 'payment:run_previous_month_artisan_payout' %}">
+                        {% csrf_token %}
+                        <div class="saaf-info-card saaf-info-card--metric h-100">
+                            <span class="saaf-info-label">Previous Month</span>
+                            <h5 class="mb-2">Run Previous Month Payout</h5>
+                            <p class="mb-3 text-muted">Use this for the official monthly payout after the month has ended.</p>
+                            <button type="submit" class="btn btn-saaf-outline">
+                                <i class="bi bi-calendar-check"></i>
+                                Run Previous Month
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="saaf-dashboard-card saaf-staff-section-card rounded-4 p-4 mb-4">
+            <div class="saaf-dashboard-table-head">
+                <div>
                     <p class="saaf-eyebrow mb-1">Users</p>
                     <h5 class="mb-0">Requester accounts</h5>
                 </div>

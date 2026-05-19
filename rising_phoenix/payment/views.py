@@ -513,9 +513,9 @@ def _handle_payout_result(request, result):
             f"No artisan payouts were processed for the {period_label}."
         )
 
-    return redirect('account:artisan_revenue_dashboard_view')
+    return redirect('staff:staff_dashboard_view')
 
-
+@staff_member_required
 def run_current_month_artisan_payout_view(request):
     result = process_monthly_artisan_payouts(
         target_date=timezone.localdate(),
@@ -523,7 +523,7 @@ def run_current_month_artisan_payout_view(request):
     )
     return _handle_payout_result(request, result)
 
-
+@staff_member_required
 def run_previous_month_artisan_payout_view(request):
     result = process_monthly_artisan_payouts(
         target_date=timezone.localdate(),

@@ -166,6 +166,9 @@ def is_artisan(user):
 @user_passes_test(is_artisan, login_url='main:home_view')
 def artisan_dashboard_view(request: HttpRequest):
     artisan = request.user
+    if not is_artisan(artisan):
+        messages.error(request, "Only artisan can view this page")
+        return redirect('main:home_view')
     now = timezone.now()
 
     revenues = (
@@ -290,12 +293,36 @@ def profile_view(request:HttpRequest, user_name):
     if user.is_staff:
         return redirect('staff:staff_profile_view')
     if user.groups.filter(name='artisan').exists():
-        messages.warning(request, 'Your are not allowed')
-        return redirect('main:home_view')
+        return redirect('account:artisan_profile_view', user_name=user.username)
     user_profile = get_object_or_404(Profile, user=user)
     user_reviews = user.reviews_received.all()
     avg_rating = user_reviews.aggregate(avg_rating=Avg('rating'))['avg_rating']
     return render(request,'account/profile.html',{'user_profile': user_profile, 'user_reviews': user_reviews, 'avg_rating': avg_rating})
+
+def artisan_profile_view(request: HttpRequest, user_name):
+    user = get_object_or_404(User, username=user_name)
+
+    if user.is_staff:
+        return redirect('staff:staff_profile_view')
+
+    if not user.groups.filter(name='artisan').exists():
+        messages.warning(request, 'This user is not an artisan.')
+        return redirect('main:home_view')
+
+    artisan_profile = get_object_or_404(ArtisanProfile, user=user)
+    user_reviews = user.reviews_received.all()
+    avg_rating = user_reviews.aggregate(avg_rating=Avg('rating'))['avg_rating']
+
+    return render(
+        request,
+        'account/artisan_profile.html',
+        {
+            'artisan_profile': artisan_profile,
+            'user_reviews': user_reviews,
+            'avg_rating': avg_rating,
+        }
+    )
+
 
 def update_profile_view(request:HttpRequest,user_name):
     if request.user.is_staff:
@@ -332,6 +359,73 @@ def update_profile_view(request:HttpRequest,user_name):
             messages.error(request, "something goes Wrong")
             return render(request, 'account/update_profile.html', {'user_form': user_form, 'user_profile': user_profile, 'profile_form': profile_form})
     return render(request, 'account/update_profile.html',{'user_profile': user_profile})
+
+def update_artisan_profile_view(request: HttpRequest, user_name):
+    if request.user.is_staff:
+        return redirect('staff:update_staff_profile_view')
+
+    if not request.user.is_authenticated:
+        messages.warning(request, 'You need to log in first.')
+        return redirect('account:login_view')
+
+    if user_name != request.user.username:
+        messages.warning(request, 'You are not allowed.')
+        return redirect('main:home_view')
+
+    user = get_object_or_404(User, username=user_name)
+
+    if user.is_staff:
+        return redirect('staff:update_staff_profile_view')
+
+    if not user.groups.filter(name='artisan').exists():
+        messages.warning(request, 'You are not allowed.')
+        return redirect('main:home_view')
+
+    artisan_profile = get_object_or_404(ArtisanProfile, user=user)
+
+    if request.method == 'POST':
+        user_form = CustomUserUpdateForm(request.POST, instance=user)
+        profile_form = ArtisanProfileForm(request.POST, request.FILES, instance=artisan_profile)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            with transaction.atomic():
+                user_form.save()
+
+                profile = profile_form.save(commit=False)
+
+                if 'phone' in profile_form.changed_data:
+                    profile.is_phone_verified = False
+
+                profile.save()
+
+            messages.success(request, "Your artisan profile has been updated.")
+            return redirect('account:artisan_profile_view', user_name=user.username)
+
+        messages.error(request, "Something went wrong. Please check the form.")
+        return render(
+            request,
+            'account/update_artisan_profile.html',
+            {
+                'user_form': user_form,
+                'profile_form': profile_form,
+                'artisan_profile': artisan_profile,
+                'user_obj': user,
+            }
+        )
+
+    user_form = CustomUserUpdateForm(instance=user)
+    profile_form = ArtisanProfileForm(instance=artisan_profile)
+
+    return render(
+        request,
+        'account/update_artisan_profile.html',
+        {
+            'user_form': user_form,
+            'profile_form': profile_form,
+            'artisan_profile': artisan_profile,
+            'user_obj': user,
+        }
+    )
 
 
 def verify_phone_view(request: HttpRequest, user_name):

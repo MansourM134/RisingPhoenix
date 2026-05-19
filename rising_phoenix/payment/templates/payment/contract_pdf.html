@@ -7,404 +7,564 @@
     <style>
         @page {
             size: A4;
-            margin: 22mm 16mm 20mm 16mm;
+            margin: 20mm 16mm 22mm 16mm;
 
-            @bottom-right {
-                content: "Page " counter(page) " of " counter(pages);
-                font-size: 10px;
-                color: #6b7280;
+            @bottom-center {
+                content: "Saaf Platform  ·  Contract #{{ contract.id }}  ·  Page " counter(page) " of " counter(pages);
+                font-size: 9px;
+                color: #9e8472;
+                font-family: Arial, sans-serif;
             }
         }
 
+        /* ── Saaf brand palette ── */
         :root {
-            --primary: #0f766e;
-            --primary-soft: #e6f4f1;
-            --border: #d9e2e7;
-            --text: #1f2937;
-            --muted: #6b7280;
-            --bg-soft: #f8fafc;
-            --bg-accent: #f1f5f9;
+            --clay:        #C77A5C;
+            --clay-dark:   #AE6448;
+            --clay-soft:   rgba(199,122,92,.10);
+            --clay-border: rgba(199,122,92,.25);
+            --sand:        #F3E8D8;
+            --sand-mid:    #EDE4D4;
+            --sand-dark:   #D8C2A4;
+            --brown:       #3F2D23;
+            --brown-mid:   #6A5648;
+            --muted:       #9e8472;
+            --white:       #FAF1E5;
+            --surface:     #FFF6EA;
+            --border:      rgba(96,70,51,.16);
+            --green:       #4caf7d;
+            --green-soft:  rgba(76,175,125,.12);
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: "DejaVu Sans", Arial, sans-serif;
-            font-size: 12px;
+            font-family: Arial, sans-serif;
+            font-size: 11.5px;
             line-height: 1.65;
-            color: var(--text);
-            margin: 0;
+            color: var(--brown);
+            background: #fff;
         }
 
-        h1, h2, h3, h4, p {
-            margin: 0;
-        }
+        h1,h2,h3,h4,p { margin: 0; }
 
-        .document {
-            width: 100%;
-        }
+        .document { width: 100%; }
 
+        /* ── Header ── */
         .header {
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 16px;
+            padding-bottom: 18px;
             margin-bottom: 22px;
+            border-bottom: 2.5px solid var(--clay);
+            position: relative;
+        }
+        .header::after {
+            content: "";
+            position: absolute;
+            bottom: -6px; left: 0;
+            width: 60px; height: 3px;
+            background: var(--clay-dark);
+            border-radius: 2px;
+        }
+        .header-table { width: 100%; border-collapse: collapse; }
+        .header-table td { vertical-align: middle; }
+
+        .logo { width: 52px; height: 52px; object-fit: contain; border-radius: 12px; }
+
+        .brand-name {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--brown);
+            letter-spacing: -.01em;
+            margin-left: 10px;
+            vertical-align: middle;
         }
 
-        .header-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .header-table td {
-            vertical-align: top;
-        }
-
-        .logo {
-            width: 120px;
-            max-height: 56px;
-            object-fit: contain;
-        }
-
-        .brand-block {
-            text-align: right;
-        }
-
-        .eyebrow {
-            font-size: 11px;
+        .brand-right { text-align: right; }
+        .doc-eyebrow {
+            font-size: 10px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--primary);
-            margin-bottom: 6px;
+            letter-spacing: .1em;
+            color: var(--clay);
+            margin-bottom: 4px;
         }
-
-        .title {
-            font-size: 28px;
+        .doc-title {
+            font-size: 26px;
             font-weight: 800;
-            margin-bottom: 6px;
+            color: var(--brown);
+            line-height: 1.1;
+        }
+        .doc-sub {
+            font-size: 11px;
+            color: var(--brown-mid);
+            margin-top: 3px;
         }
 
-        .subtitle {
-            color: var(--muted);
-            font-size: 12px;
-        }
-
+        /* ── Meta cards ── */
         .meta-grid {
             width: 100%;
             border-collapse: separate;
-            border-spacing: 10px;
-            margin: 18px 0 22px;
+            border-spacing: 8px;
+            margin: 18px 0 24px;
         }
-
         .meta-card {
-            background: var(--bg-soft);
+            background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 10px;
-            padding: 12px 14px;
+            padding: 11px 13px;
         }
-
+        .meta-card-accent {
+            background: linear-gradient(135deg, rgba(199,122,92,.12), rgba(199,122,92,.05));
+            border-color: var(--clay-border);
+        }
         .meta-label {
             display: block;
-            font-size: 10px;
+            font-size: 9.5px;
             text-transform: uppercase;
-            letter-spacing: 0.06em;
+            letter-spacing: .08em;
             color: var(--muted);
-            margin-bottom: 6px;
+            font-weight: 700;
+            margin-bottom: 5px;
         }
-
         .meta-value {
             font-size: 13px;
-            font-weight: 700;
-            color: var(--text);
+            font-weight: 800;
+            color: var(--brown);
+        }
+        .meta-value-clay { color: var(--clay); }
+
+        /* ── Status pill ── */
+        .status-pill {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 999px;
+            background: var(--clay-soft);
+            border: 1px solid var(--clay-border);
+            color: var(--clay-dark);
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .06em;
         }
 
+        /* ── Section ── */
         .section {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             page-break-inside: avoid;
         }
-
         .section-title {
-            font-size: 14px;
+            font-size: 11px;
             font-weight: 800;
-            color: var(--primary);
-            margin-bottom: 10px;
+            color: var(--clay);
+            text-transform: uppercase;
+            letter-spacing: .09em;
+            margin-bottom: 9px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--sand-dark);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .section-title-dot {
+            display: inline-block;
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--clay);
+            flex-shrink: 0;
         }
 
+        /* ── Card ── */
         .card {
             border: 1px solid var(--border);
             border-radius: 12px;
-            background: #fff;
-            padding: 14px 16px;
+            background: var(--surface);
+            padding: 13px 15px;
         }
 
-        .row-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .row-table td {
-            vertical-align: top;
-            padding: 6px 0;
-        }
-
-        .label {
-            width: 150px;
-            color: var(--muted);
+        .row-table { width: 100%; border-collapse: collapse; }
+        .row-table tr + tr td { border-top: 1px solid rgba(96,70,51,.07); }
+        .row-table td { padding: 6px 0; vertical-align: top; }
+        .row-label {
+            width: 140px;
+            color: var(--brown-mid);
+            font-size: 10.5px;
             font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .04em;
         }
-
-        .value {
-            color: var(--text);
-        }
+        .row-value { color: var(--brown); font-size: 11.5px; }
 
         .description-box {
-            margin-top: 10px;
-            background: var(--bg-soft);
-            border-radius: 10px;
-            padding: 12px;
+            margin-top: 11px;
+            background: var(--sand);
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            padding: 11px 13px;
             white-space: pre-wrap;
+            font-size: 11px;
+            color: var(--brown-mid);
+            line-height: 1.7;
         }
 
-        .terms {
-            background: var(--primary-soft);
-            border: 1px solid #b7ded8;
-            border-radius: 12px;
-            padding: 16px;
-        }
-
-        .terms p + p {
-            margin-top: 10px;
-        }
-
-        .acceptance-grid {
+        /* ── Parties cards ── */
+        .parties-table {
             width: 100%;
             border-collapse: separate;
-            border-spacing: 14px 0;
-            margin-top: 10px;
+            border-spacing: 10px 0;
         }
-
-        .signature-box {
-            border: 1px dashed #b8c4cc;
+        .party-card {
+            border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 14px;
-            background: #fff;
-            min-height: 110px;
+            background: var(--surface);
+            padding: 13px 15px;
         }
-
-        .signature-role {
-            font-size: 11px;
+        .party-role {
+            font-size: 9.5px;
             font-weight: 700;
-            color: var(--muted);
-            margin-bottom: 16px;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .signature-name {
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-
-        .signature-date {
-            font-size: 11px;
+            letter-spacing: .08em;
             color: var(--muted);
+            margin-bottom: 5px;
+        }
+        .party-name {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--brown);
+            margin-bottom: 2px;
+        }
+        .party-username { font-size: 10.5px; color: var(--brown-mid); }
+
+        /* ── Payment terms ── */
+        .escrow-card {
+            background: var(--green-soft);
+            border: 1px solid rgba(76,175,125,.25);
+            border-radius: 12px;
+            padding: 13px 15px;
+        }
+        .escrow-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 999px;
+            background: rgba(76,175,125,.15);
+            border: 1px solid rgba(76,175,125,.3);
+            color: #2b7a52;
+            font-size: 10px;
+            font-weight: 800;
         }
 
+        /* ── Contract terms ── */
+        .terms-box {
+            background: linear-gradient(135deg, rgba(199,122,92,.07), rgba(245,240,230,.6));
+            border: 1px solid var(--clay-border);
+            border-left: 3px solid var(--clay);
+            border-radius: 12px;
+            padding: 15px 16px;
+            font-size: 11.5px;
+            color: var(--brown-mid);
+            line-height: 1.75;
+        }
+        .terms-box p + p { margin-top: 10px; }
+        .terms-bold { color: var(--brown); font-weight: 700; }
+
+        /* ── Acceptance / signatures ── */
+        .sig-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 12px 0;
+        }
+        .sig-box {
+            border: 1px dashed var(--clay-border);
+            border-radius: 12px;
+            background: var(--surface);
+            padding: 14px 15px;
+            min-height: 108px;
+        }
+        .sig-role {
+            font-size: 9.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--muted);
+            margin-bottom: 14px;
+        }
+        .sig-avatar {
+            display: inline-block;
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--clay), var(--clay-dark));
+            text-align: center;
+            line-height: 30px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .sig-name {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--brown);
+            margin-bottom: 4px;
+        }
+        .sig-date { font-size: 10px; color: var(--muted); }
+        .sig-check {
+            display: inline-block;
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            background: var(--green);
+            text-align: center;
+            line-height: 14px;
+            font-size: 8px;
+            color: #fff;
+            margin-right: 4px;
+            vertical-align: middle;
+        }
+
+        /* ── Divider ── */
+        .divider {
+            border: none;
+            border-top: 1px solid var(--sand-dark);
+            margin: 6px 0 18px;
+        }
+
+        /* ── Footer ── */
         .footer-note {
-            margin-top: 24px;
-            font-size: 10px;
+            margin-top: 26px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border);
+            font-size: 9.5px;
             color: var(--muted);
             text-align: center;
+            line-height: 1.6;
         }
+        .footer-brand { color: var(--clay); font-weight: 700; }
 
-        .status-pill {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 999px;
-            background: var(--primary-soft);
-            color: var(--primary);
-            font-size: 11px;
+        /* ── Watermark band ── */
+        .watermark-band {
+            background: linear-gradient(90deg, var(--clay-soft), var(--sand));
+            border-radius: 8px;
+            padding: 7px 14px;
+            margin-bottom: 22px;
+            font-size: 10px;
+            color: var(--clay-dark);
             font-weight: 700;
+            text-align: center;
+            letter-spacing: .05em;
+            text-transform: uppercase;
         }
     </style>
 </head>
 <body>
-    <div class="document">
-        <div class="header">
-            <table class="header-table">
+<div class="document">
+
+    <!-- ── Header ── -->
+    <div class="header">
+        <table class="header-table">
+            <tr>
+                <td style="width:50%;">
+                    <img src="{% static 'images/logo.png' %}" alt="Saaf" class="logo">
+                    <span class="brand-name">Saaf</span>
+                </td>
+                <td class="brand-right">
+                    <div class="doc-eyebrow">Service Agreement</div>
+                    <div class="doc-title">Contract #{{ contract.id }}</div>
+                    <div class="doc-sub">Official agreement between requester and artisan</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- ── Meta cards ── -->
+    <table class="meta-grid">
+        <tr>
+            <td class="meta-card meta-card-accent">
+                <span class="meta-label">Project</span>
+                <div class="meta-value">{{ project_request.title }}</div>
+            </td>
+            <td class="meta-card meta-card-accent">
+                <span class="meta-label">Amount</span>
+                <div class="meta-value meta-value-clay">{{ proposal.price }} SAR</div>
+            </td>
+            <td class="meta-card">
+                <span class="meta-label">Duration</span>
+                <div class="meta-value">{{ proposal.estimated_days }} day{{ proposal.estimated_days|pluralize }}</div>
+            </td>
+            <td class="meta-card">
+                <span class="meta-label">Status</span>
+                <div class="meta-value">
+                    <span class="status-pill">{{ contract.get_status_display|default:contract.status }}</span>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ── Parties ── -->
+    <div class="section">
+        <div class="section-title">
+            <span class="section-title-dot"></span>
+            Parties Involved
+        </div>
+        <table class="parties-table">
+            <tr>
+                <td class="party-card">
+                    <div class="party-role">Requester (Client)</div>
+                    <div class="party-name">{{ project_request.requester.get_full_name|default:project_request.requester.username }}</div>
+                    <div class="party-username">@{{ project_request.requester.username }}</div>
+                </td>
+                <td class="party-card">
+                    <div class="party-role">Artisan (Service Provider)</div>
+                    <div class="party-name">{{ proposal.artisan.get_full_name|default:proposal.artisan.username }}</div>
+                    <div class="party-username">@{{ proposal.artisan.username }}</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- ── Request details ── -->
+    <div class="section">
+        <div class="section-title">
+            <span class="section-title-dot"></span>
+            Request Details
+        </div>
+        <div class="card">
+            <table class="row-table">
                 <tr>
-                    <td>
-                        <img src="{% static 'images/logo.png' %}" alt="Rising Phoenix logo" class="logo">
+                    <td class="row-label">Title</td>
+                    <td class="row-value">{{ project_request.title }}</td>
+                </tr>
+                <tr>
+                    <td class="row-label">Category</td>
+                    <td class="row-value">{{ project_request.category.name }}</td>
+                </tr>
+                {% if project_request.budget_max %}
+                <tr>
+                    <td class="row-label">Budget</td>
+                    <td class="row-value">{{ project_request.budget_max }} SAR</td>
+                </tr>
+                {% endif %}
+                {% if project_request.deadline %}
+                <tr>
+                    <td class="row-label">Deadline</td>
+                    <td class="row-value">{{ project_request.deadline }}</td>
+                </tr>
+                {% endif %}
+            </table>
+            <div class="description-box">{{ project_request.description }}</div>
+        </div>
+    </div>
+
+    <!-- ── Proposal details ── -->
+    <div class="section">
+        <div class="section-title">
+            <span class="section-title-dot"></span>
+            Proposal Details
+        </div>
+        <div class="card">
+            <table class="row-table">
+                <tr>
+                    <td class="row-label">Price</td>
+                    <td class="row-value" style="color:var(--clay);font-weight:800;">{{ proposal.price }} SAR</td>
+                </tr>
+                <tr>
+                    <td class="row-label">Est. Completion</td>
+                    <td class="row-value">{{ proposal.estimated_days }} day{{ proposal.estimated_days|pluralize }} from start</td>
+                </tr>
+            </table>
+            <div class="description-box">{{ proposal.message }}</div>
+        </div>
+    </div>
+
+    <!-- ── Payment terms ── -->
+    <div class="section">
+        <div class="section-title">
+            <span class="section-title-dot"></span>
+            Payment &amp; Escrow
+        </div>
+        <div class="escrow-card">
+            <table class="row-table">
+                <tr>
+                    <td class="row-label">Escrow status</td>
+                    <td class="row-value">
+                        <span class="escrow-badge">{{ escrow_payment.status }}</span>
                     </td>
-                    <td class="brand-block">
-                        <div class="eyebrow">Service Agreement</div>
-                        <div class="title">Contract #{{ contract.id }}</div>
-                        <div class="subtitle">Official agreement between requester and artisan</div>
+                </tr>
+                <tr>
+                    <td class="row-label">Payment captured</td>
+                    <td class="row-value">
+                        {% if escrow_payment.captured %}
+                            <span class="escrow-badge">Yes — funds released</span>
+                        {% else %}
+                            <span style="color:var(--muted);font-size:11px;">Not yet captured — held in escrow</span>
+                        {% endif %}
                     </td>
                 </tr>
             </table>
         </div>
+    </div>
 
-        <table class="meta-grid">
+    <!-- ── Contract terms ── -->
+    <div class="section">
+        <div class="section-title">
+            <span class="section-title-dot"></span>
+            Contract Terms
+        </div>
+        <div class="terms-box">
+            <p>
+                This contract confirms that the requester
+                <span class="terms-bold">{{ project_request.requester.get_full_name|default:project_request.requester.username }}</span>
+                has hired the artisan
+                <span class="terms-bold">{{ proposal.artisan.get_full_name|default:proposal.artisan.username }}</span>
+                to complete the work described in the request titled
+                "<span class="terms-bold">{{ project_request.title }}</span>".
+            </p>
+            <p>
+                The artisan agrees to complete the work within
+                <span class="terms-bold">{{ proposal.estimated_days }} day{{ proposal.estimated_days|pluralize }}</span>
+                for the total amount of
+                <span class="terms-bold">{{ proposal.price }} SAR</span>,
+                subject to the Saaf platform's payment and completion rules.
+                Funds are held in escrow and released only upon confirmation of project completion.
+            </p>
+        </div>
+    </div>
+
+    <!-- ── Acceptance record ── -->
+    <div class="section">
+        <div class="section-title">
+            <span class="section-title-dot"></span>
+            Acceptance Record
+        </div>
+        <table class="sig-table">
             <tr>
-                <td class="meta-card">
-                    <span class="meta-label">Project</span>
-                    <div class="meta-value">{{ project_request.title }}</div>
+                <td class="sig-box">
+                    <div class="sig-role">Requester Acceptance</div>
+                    <div class="sig-name">
+                        {{ project_request.requester.get_full_name|default:project_request.requester.username }}
+                    </div>
+                    <div class="sig-date">
+                        <span class="sig-check">✓</span>
+                        Accepted at: {{ contract.requester_accepted_at }}
+                    </div>
                 </td>
-                <td class="meta-card">
-                    <span class="meta-label">Amount</span>
-                    <div class="meta-value">{{ proposal.price }} SAR</div>
-                </td>
-                <td class="meta-card">
-                    <span class="meta-label">Duration</span>
-                    <div class="meta-value">{{ proposal.estimated_days }} day{{ proposal.estimated_days|pluralize }}</div>
-                </td>
-                <td class="meta-card">
-                    <span class="meta-label">Status</span>
-                    <div class="meta-value">
-                        <span class="status-pill">{{ contract.get_status_display|default:contract.status }}</span>
+                <td class="sig-box">
+                    <div class="sig-role">Artisan Acceptance</div>
+                    <div class="sig-name">
+                        {{ proposal.artisan.get_full_name|default:proposal.artisan.username }}
+                    </div>
+                    <div class="sig-date">
+                        <span class="sig-check">✓</span>
+                        Accepted at: {{ contract.artisan_accepted_at }}
                     </div>
                 </td>
             </tr>
         </table>
-
-        <div class="section">
-            <div class="section-title">Parties</div>
-            <div class="card">
-                <table class="row-table">
-                    <tr>
-                        <td class="label">Requester</td>
-                        <td class="value">{{ project_request.requester.get_full_name|default:project_request.requester.username }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Artisan</td>
-                        <td class="value">{{ proposal.artisan.get_full_name|default:proposal.artisan.username }}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="section-title">Request details</div>
-            <div class="card">
-                <table class="row-table">
-                    <tr>
-                        <td class="label">Title</td>
-                        <td class="value">{{ project_request.title }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Category</td>
-                        <td class="value">{{ project_request.category.name }}</td>
-                    </tr>
-                    {% if project_request.budget_max %}
-                    <tr>
-                        <td class="label">Budget</td>
-                        <td class="value">{{ project_request.budget_max }} SAR</td>
-                    </tr>
-                    {% endif %}
-                    {% if project_request.deadline %}
-                    <tr>
-                        <td class="label">Deadline</td>
-                        <td class="value">{{ project_request.deadline }}</td>
-                    </tr>
-                    {% endif %}
-                </table>
-
-                <div class="description-box">
-                    {{ project_request.description }}
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="section-title">Proposal details</div>
-            <div class="card">
-                <table class="row-table">
-                    <tr>
-                        <td class="label">Price</td>
-                        <td class="value">{{ proposal.price }} SAR</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Estimated completion</td>
-                        <td class="value">{{ proposal.estimated_days }} day{{ proposal.estimated_days|pluralize }}</td>
-                    </tr>
-                </table>
-
-                <div class="description-box">
-                    {{ proposal.message }}
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="section-title">Payment terms</div>
-            <div class="card">
-                <table class="row-table">
-                    <tr>
-                        <td class="label">Escrow status</td>
-                        <td class="value">{{ escrow_payment.status }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Captured</td>
-                        <td class="value">{% if escrow_payment.captured %}Yes{% else %}No{% endif %}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="section-title">Contract terms</div>
-            <div class="terms">
-                <p>
-                    This contract confirms that the requester
-                    <strong>{{ project_request.requester.get_full_name|default:project_request.requester.username }}</strong>
-                    has hired the artisan
-                    <strong>{{ proposal.artisan.get_full_name|default:proposal.artisan.username }}</strong>
-                    to complete the work described in the request titled
-                    “{{ project_request.title }}”.
-                </p>
-                <p>
-                    The artisan agrees to complete the work within
-                    <strong>{{ proposal.estimated_days }} day{{ proposal.estimated_days|pluralize }}</strong>
-                    for the total amount of
-                    <strong>{{ proposal.price }} SAR</strong>,
-                    subject to the platform’s payment and completion rules.
-                </p>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="section-title">Acceptance record</div>
-            <table class="acceptance-grid">
-                <tr>
-                    <td class="signature-box">
-                        <div class="signature-role">Requester acceptance</div>
-                        <div class="signature-name">
-                            {{ project_request.requester.get_full_name|default:project_request.requester.username }}
-                        </div>
-                        <div class="signature-date">
-                            Accepted at: {{ contract.requester_accepted_at }}
-                        </div>
-                    </td>
-                    <td class="signature-box">
-                        <div class="signature-role">Artisan acceptance</div>
-                        <div class="signature-name">
-                            {{ proposal.artisan.get_full_name|default:proposal.artisan.username }}
-                        </div>
-                        <div class="signature-date">
-                            Accepted at: {{ contract.artisan_accepted_at }}
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-        <div class="footer-note">
-            This document was generated automatically by Rising Phoenix and serves as the official contract record for this project.
-        </div>
     </div>
+
+    <!-- ── Footer ── -->
+    <div class="footer-note">
+        This document was generated automatically by <span class="footer-brand">Saaf</span> and serves as the official contract record for this project.<br>
+        Contract #{{ contract.id }} · Generated on {% now "N j, Y" %}
+    </div>
+
+</div>
 </body>
 </html>
