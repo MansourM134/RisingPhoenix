@@ -86,6 +86,35 @@
                             <a class="nav-link saaf-nav-link" href="{% url 'account:artisan_signup_view' %}">{% if LANGUAGE_CODE == 'ar' %}انضم كحرفي{% else %}Become an Artisan{% endif %}</a>
                         </li>
                     {% endif %}
+
+                    {% if request.user.is_authenticated %}
+                    <li class="nav-item d-lg-none"><hr class="saaf-nav-divider"></li>
+                    {% if request.user.is_staff %}
+                        <li class="nav-item d-lg-none">
+                            <a class="nav-link saaf-nav-link" href="{% url 'staff:staff_dashboard_view' %}">{% if LANGUAGE_CODE == 'ar' %}لوحة الموظف{% else %}Staff Dashboard{% endif %}</a>
+                        </li>
+                        <li class="nav-item d-lg-none">
+                            <a class="nav-link saaf-nav-link" href="{% url 'staff:staff_profile_view' %}">{% if LANGUAGE_CODE == 'ar' %}الملف الشخصي{% else %}Profile{% endif %}</a>
+                        </li>
+                    {% elif request.user.artisanprofile %}
+                        <li class="nav-item d-lg-none">
+                            <a class="nav-link saaf-nav-link" href="{% url 'account:artisan_dashboard_view' %}">{% if LANGUAGE_CODE == 'ar' %}لوحة الحرفي{% else %}Artisan Dashboard{% endif %}</a>
+                        </li>
+                        <li class="nav-item d-lg-none">
+                            <a class="nav-link saaf-nav-link" href="{% url 'message:conversation_list_view' %}">{% if LANGUAGE_CODE == 'ar' %}الرسائل{% else %}Messages{% endif %}</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item d-lg-none">
+                            <a class="nav-link saaf-nav-link" href="{% url 'main:dashboard_view' %}">{% if LANGUAGE_CODE == 'ar' %}لوحة التحكم{% else %}Dashboard{% endif %}</a>
+                        </li>
+                        <li class="nav-item d-lg-none">
+                            <a class="nav-link saaf-nav-link" href="{% url 'message:conversation_list_view' %}">{% if LANGUAGE_CODE == 'ar' %}الرسائل{% else %}Messages{% endif %}</a>
+                        </li>
+                        <li class="nav-item d-lg-none">
+                            <a class="nav-link saaf-nav-link" href="{% url 'account:profile_view' request.user.username %}">{% if LANGUAGE_CODE == 'ar' %}الملف الشخصي{% else %}Profile{% endif %}</a>
+                        </li>
+                    {% endif %}
+                    {% endif %}
                 </ul>
 
                 <div class="d-flex gap-2 align-items-center ms-auto">
@@ -798,6 +827,17 @@
               .then(function (data) { setBadge(data.count); });
         }
 
+        function positionDropdown() {
+            if (!dropdown || window.innerWidth > 991) return;
+            var rect = btn.getBoundingClientRect();
+            var w = Math.min(300, window.innerWidth - 24);
+            var top = rect.bottom + 8;
+            var left = Math.max(12, Math.min(rect.right - w, window.innerWidth - w - 12));
+            dropdown.style.top = top + 'px';
+            dropdown.style.left = left + 'px';
+            dropdown.style.right = 'auto';
+        }
+
         function openDropdown() {
             fetch(API)
                 .then(function (r) { return r.json(); })
@@ -805,6 +845,7 @@
                     if (dropdown) { dropdown.remove(); }
                     dropdown = buildDropdown(data.notifications, data.count);
                     btn.closest('.saaf-bell-wrap').appendChild(dropdown);
+                    positionDropdown();
                     isOpen = true;
 
                     var markBtn = document.getElementById('saaf-mark-all-btn');

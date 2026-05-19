@@ -1308,6 +1308,44 @@ h5 {
 	margin: 0.2rem 0 0;
 }
 
+/* ── Mobile: compact image preview & editor ── */
+@media (max-width: 520px) {
+	.img-preview-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 0.4rem;
+	}
+
+	.img-preview-item {
+		flex-direction: column;
+		align-items: stretch;
+		padding: 0.4rem;
+	}
+
+	.img-preview-item img {
+		width: 100%;
+		height: 72px;
+	}
+
+	.img-preview-right {
+		padding-top: 0;
+	}
+
+	.image-editor-canvas-wrap {
+		min-height: 200px;
+	}
+
+	.image-editor-controls {
+		flex-wrap: wrap;
+		row-gap: 0.4rem;
+	}
+
+	.image-editor-card {
+		padding: 0.75rem;
+		gap: 0.5rem;
+	}
+}
+
 /* Description character counter */
 .desc-char-counter {
 	font-size: 0.7rem;

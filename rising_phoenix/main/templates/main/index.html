@@ -18,12 +18,21 @@
     <div class="container-lg saaf-hero-content-wrap">
         <div class="saaf-hero-text">
             <p class="saaf-eyebrow">— The Saudi artisan marketplace</p>
+            {% if request.user.artisanprofile %}
+            <h1 class="saaf-hero-title mb-4">
+                Your next commission is <span class="saaf-text-accent">waiting</span>.
+            </h1>
+            <p class="saaf-description mb-4">
+                Browse open requests from clients across Saudi Arabia, submit your proposal with a price and timeline, and get paid securely once delivery is confirmed.
+            </p>
+            {% else %}
             <h1 class="saaf-hero-title mb-4">
                 Commission something made for you, by a real <span class="saaf-text-accent">artisan</span>.
             </h1>
             <p class="saaf-description mb-4">
-                Post your idea, receive proposals from vetted Saudi craftspeople, and track every step — from first sketch to final delivery.
+                Post your idea, receive proposals from skilled Saudi craftspeople, and track every step — from the first progress update to final delivery.
             </p>
+            {% endif %}
             <div class="d-flex gap-3 flex-wrap">
                 {% if request.user.is_authenticated %}
                     {% if request.user.artisanprofile %}
@@ -72,29 +81,55 @@
     <div class="container-lg">
         <div class="saaf-how-works-box">
             <p class="saaf-eyebrow text-center mb-3">— How Saaf Works</p>
+            {% if request.user.artisanprofile %}
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 <div class="col">
                     <div class="saaf-step">
                         <h3 class="saaf-step-number">1</h3>
-                        <h5 class="mb-2">Post Your Request</h5>
-                        <p class="text-muted small">Describe your piece, upload reference images, and set your budget.</p>
+                        <h5 class="mb-2">Browse Requests</h5>
+                        <p class="text-muted small">Explore open commission requests from clients. Filter by craft category, budget, and deadline.</p>
                     </div>
                 </div>
                 <div class="col">
                     <div class="saaf-step">
                         <h3 class="saaf-step-number">2</h3>
-                        <h5 class="mb-2">Receive Proposals</h5>
-                        <p class="text-muted small">Artisans send tailored offers with timelines and pricing.</p>
+                        <h5 class="mb-2">Submit a Proposal</h5>
+                        <p class="text-muted small">Send your price, timeline, and a message. Annotate reference images to show exactly what you can deliver.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="saaf-step">
+                        <h3 class="saaf-step-number saaf-step-accent">3</h3>
+                        <h5 class="mb-2">Deliver & Get Paid</h5>
+                        <p class="text-muted small">Post progress updates with photos as you work. Payment is released to you once the client confirms delivery.</p>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="col">
+                    <div class="saaf-step">
+                        <h3 class="saaf-step-number">1</h3>
+                        <h5 class="mb-2">Post Your Request</h5>
+                        <p class="text-muted small">Describe your custom piece, upload reference images, and set a budget — or leave it flexible.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="saaf-step">
+                        <h3 class="saaf-step-number">2</h3>
+                        <h5 class="mb-2">Choose Your Artisan</h5>
+                        <p class="text-muted small">Review proposals from skilled craftspeople. Compare prices and timelines, then accept the best fit.</p>
                     </div>
                 </div>
                 <div class="col">
                     <div class="saaf-step">
                         <h3 class="saaf-step-number saaf-step-accent">3</h3>
                         <h5 class="mb-2">Track & Confirm</h5>
-                        <p class="text-muted small">Follow progress updates from your artisan and confirm delivery. Payment releases only when you're satisfied.</p>
+                        <p class="text-muted small">Follow photo updates from your artisan, leave feedback, and confirm delivery. Payment releases only when you're satisfied.</p>
                     </div>
                 </div>
             </div>
+            {% endif %}
         </div>
     </div>
 </section>
@@ -103,8 +138,8 @@
 <section class="saaf-section py-5 saaf-reveal">
     <div class="container-lg">
         {% if home_feed_type == 'requests' %}
-        <p class="saaf-eyebrow text-center mb-2">— Latest requests</p>
-        <h2 class="saaf-section-title text-center mb-5">Newest project requests for artisans</h2>
+        <p class="saaf-eyebrow text-center mb-2">— Open commissions</p>
+        <h2 class="saaf-section-title text-center mb-5">Latest requests looking for an artisan</h2>
         {% if latest_requests %}
         <div class="row g-4">
             {% for project_request in latest_requests %}
@@ -178,8 +213,8 @@
         <div class="saaf-artisan-cta-banner">
             <div>
                 <p class="saaf-eyebrow mb-1">— For craftspeople</p>
-                <h3 class="saaf-artisan-cta-title mb-2">Are you a Saudi artisan?</h3>
-                <p class="text-muted mb-0">Grow your workshop on Saaf. Receive custom requests, set your own terms, and get paid securely.</p>
+                <h3 class="saaf-artisan-cta-title mb-2">Are you a Saudi craftsperson?</h3>
+                <p class="text-muted mb-0">Showcase your craft on Saaf. Receive commission requests, set your own price and timeline, and get paid securely.</p>
             </div>
             <a href="{% url 'account:artisan_signup_view' %}" class="btn btn-saaf-primary rounded-pill flex-shrink-0">Join as an Artisan</a>
         </div>

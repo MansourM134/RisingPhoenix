@@ -28,6 +28,32 @@
     .proposal-form-layout {
         grid-template-columns: 1fr;
     }
+
+    /* Show the form first, preview sidebar below on mobile */
+    .proposal-request-preview {
+        order: 2;
+        position: static;
+    }
+
+    .proposal-form-wrap {
+        order: 1;
+    }
+}
+
+@media (max-width: 520px) {
+    .proposal-form-shell {
+        padding: 1.25rem 0.75rem;
+    }
+
+    /* Reference image slots: larger touch targets */
+    .ref-img-slot {
+        flex: 0 0 80px;
+    }
+
+    .proposal-preview-img-btn img {
+        width: 80px;
+        height: 65px;
+    }
 }
 
 /* ── Request preview sidebar ── */

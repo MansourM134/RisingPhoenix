@@ -3270,6 +3270,37 @@ html[dir="rtl"] .saaf-notif-dropdown {
     width: min(360px, calc(100vw - 1rem));
 }
 
+.saaf-nav-divider {
+    border-color: var(--saaf-border);
+    margin: 0.25rem 0.75rem;
+    opacity: 1;
+}
+
+@media (max-width: 991.98px) {
+    .saaf-notif-dropdown {
+        position: fixed;
+        /* top/left set by JS */
+        width: min(300px, calc(100vw - 1.5rem));
+    }
+
+    .saaf-notif-dd-list {
+        max-height: 210px;
+    }
+
+    .saaf-notif-dd-header {
+        padding: 0.55rem 0.875rem;
+    }
+
+    .saaf-notif-dd-item {
+        padding: 0.5rem 0.875rem;
+    }
+
+    .saaf-notif-dd-footer {
+        padding: 0.5rem 0.875rem;
+        font-size: 0.8rem;
+    }
+}
+
 html[dir="rtl"] .saaf-notif-dd-item {
     text-align: right;
 }
@@ -3471,3 +3502,4 @@ html[dir="rtl"] .sidebar-badge {
 [data-theme="dark"] .list-group-item {
     color: var(--saaf-body, #E3D1BA);
 }
+

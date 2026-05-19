@@ -16,7 +16,7 @@ def home_view(request:HttpRequest):
 
     is_artisan_user = (
         request.user.is_authenticated
-        and request.user.groups.filter(name='artisan').exists()
+        and hasattr(request.user, 'artisanprofile')
     )
 
     top_rated_workshops = None

@@ -169,6 +169,17 @@
                                     <img src="{{ img.image.url }}" alt="Comment image {{ forloop.counter }}">
                                     {% if img.caption %}<span class="progress-gallery-caption">{{ img.caption }}</span>{% endif %}
                                   </button>
+                                  {% if not contract.is_completed %}
+                                    {% if is_artisan %}
+                                      <button type="button" class="progress-include-btn"
+                                        data-src="{{ img.image.url }}" data-target-zone="artisan"
+                                        title="Add to your update">Add</button>
+                                    {% elif is_requester %}
+                                      <button type="button" class="progress-include-btn"
+                                        data-src="{{ img.image.url }}" data-target-zone="requester"
+                                        title="Add to your response">Add</button>
+                                    {% endif %}
+                                  {% endif %}
                                 </div>
                               {% endfor %}
                             </div>
@@ -256,6 +267,7 @@
             placeholder="Describe your progress... (optional if adding images)"></textarea>
 
           <label class="request-label progress-upload-label" for="id_artisan_images">Images (optional)</label>
+          <p class="field-hint">Upload new images, or tap <strong>Add</strong> on any image in the timeline above to include it here.</p>
           <div class="img-upload-zone" id="artisan-img-upload-zone">
             <input type="file" id="id_artisan_images" name="images"
                    class="img-upload-input" accept="image/*" multiple>
@@ -322,6 +334,7 @@
             placeholder="{% if contract.is_completion_requested %}Describe what needs to be fixed... (optional if adding images){% else %}Leave your feedback... (optional if adding images){% endif %}"></textarea>
 
           <label class="request-label progress-upload-label" for="id_requester_images">Images (optional)</label>
+          <p class="field-hint">Upload new images, or tap <strong>Add</strong> on any image in the timeline above to include it here.</p>
           <div class="img-upload-zone" id="requester-img-upload-zone">
             <input type="file" id="id_requester_images" name="images"
                    class="img-upload-input" accept="image/*" multiple>
