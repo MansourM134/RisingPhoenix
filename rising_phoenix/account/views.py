@@ -20,7 +20,7 @@ from django.contrib.auth.forms import PasswordResetForm
 from notification.utils import send_welcome_email, send_artisan_welcome_email
 import stripe
 from django.urls import reverse
-
+from progress.models import Contract
 from django.core.paginator import Paginator
 from request.models import Request
 from staff.views import submit_report_view, my_reports_view  # re-export for account URLs
@@ -670,6 +670,16 @@ def artisan_revenue_dashboard_view(request):
     chart_labels = [item['month'].strftime('%b %Y') for item in monthly_revenues if item['month']]
     chart_totals = [float(item['total'] or 0) for item in monthly_revenues]
 
+    active_requests = Contract.objects.filter(
+        proposal__artisan=artisan,
+        status=Contract.Status.IN_PROGRESS,
+    ).select_related('proposal__request', 'proposal__artisan').order_by('-created_at')
+
+    completed_requests = Contract.objects.filter(
+        proposal__artisan=artisan,
+        status=Contract.Status.COMPLETED,
+    ).select_related('proposal__request', 'proposal__artisan').order_by('-created_at')[:5]
+
     context = {
         'total_earned': total_earned,
         'total_paid': total_paid,
@@ -680,9 +690,12 @@ def artisan_revenue_dashboard_view(request):
         'monthly_revenues': monthly_revenues,
         'chart_labels': chart_labels,
         'chart_totals': chart_totals,
+        'active_requests': active_requests,
+        'completed_requests': completed_requests,
         'page_title': 'Earnings Dashboard',
     }
     return render(request, 'account/artisan_revenue_dashboard.html', context)
+
 
 
 @login_required

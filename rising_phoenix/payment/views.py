@@ -22,6 +22,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 import logging
 from .utils import send_contract_pdf_email
 
+
 # Create your views here.
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -62,6 +63,34 @@ def add_card_view(request):
         'client_secret': setup_intent.client_secret,
         'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY,
     })
+
+@require_POST
+def remove_card_view(request, card_id):
+    card = get_object_or_404(
+        PaymentMethod,
+        id=card_id,
+        user=request.user,
+    )
+    
+    try:
+        stripe.PaymentMethod.detach(card.stripe_payment_method_id)
+    except stripe.error.StripeError:
+        messages.error(request, 'Could not remove this card right now. Please try again.')
+        return redirect('payment:my_cards')
+
+    was_default = card.is_default
+    user = card.user
+    card.delete()
+
+    if was_default:
+        next_card = user.payment_methods.order_by('-created_at').first()
+        if next_card:
+            next_card.is_default = True
+            next_card.save(update_fields=['is_default'])
+
+    messages.success(request, 'Card removed successfully.')
+    return redirect('payment:my_cards')
+
 
 
 def save_card_success(request):
@@ -387,10 +416,9 @@ def artisan_accept_contract_view(request, contract_id):
     try:
         send_contract_pdf_email(contract)
     except Exception:
-        messages.warning(request, 'Contract accepted and payment captured, but the contract email could not be sent.')
-        return redirect('progress:contract_detail_view', contract_id=contract.id)
+        messages.warning(request, 'Contract accepted, but the PDF email could not be sent.')
 
-    messages.success(request, 'Contract accepted, payment captured, and contract PDF emailed successfully.')
+    messages.success(request, 'Contract accepted and payment captured successfully.')
     return redirect('progress:contract_detail_view', contract_id=contract.id)
 
 def artisan_reject_contract_view(request, contract_id):

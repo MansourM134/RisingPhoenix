@@ -413,7 +413,127 @@
       </div>
 
     </div>
+        <!-- Active Requests -->
+    <div class="rev-panel mb-4">
+      <div class="rev-panel-title">
+        <span>
+          <i class="bi bi-hourglass-split me-1" style="color:var(--saaf-btn);"></i>
+          {% if LANGUAGE_CODE == 'ar' %}الطلبات النشطة{% else %}Active Requests{% endif %}
+        </span>
+        <small>{{ active_requests|length }}</small>
+      </div>
 
+      {% if active_requests %}
+        <div class="table-responsive">
+          <table class="rev-table">
+            <thead>
+              <tr>
+                <th>{% if LANGUAGE_CODE == 'ar' %}العنوان{% else %}Title{% endif %}</th>
+                <th>{% if LANGUAGE_CODE == 'ar' %}العميل{% else %}Requester{% endif %}</th>
+                <th>{% if LANGUAGE_CODE == 'ar' %}السعر{% else %}Price{% endif %}</th>
+                <th>{% if LANGUAGE_CODE == 'ar' %}الحالة{% else %}Status{% endif %}</th>
+                <th class="text-end">{% if LANGUAGE_CODE == 'ar' %}تفاصيل{% else %}Details{% endif %}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for contract in active_requests %}
+              <tr>
+                <td>
+                  <div style="font-weight:700;color:var(--saaf-heading);">
+                    {{ contract.proposal.request.title }}
+                  </div>
+                  <div style="font-size:.74rem;color:var(--saaf-text-muted);">
+                    #{{ contract.id }}
+                  </div>
+                </td>
+                <td>{{ contract.proposal.request.requester.get_full_name|default:contract.proposal.request.requester.username }}</td>
+                <td>{{ contract.proposal.price|floatformat:2 }}</td>
+                <td>
+                  <span class="rev-pill pill-pending">
+                    <span class="rev-pill-dot"></span>
+                    {% if LANGUAGE_CODE == 'ar' %}قيد التنفيذ{% else %}In Progress{% endif %}
+                  </span>
+                </td>
+                <td class="text-end">
+                  <a href="{% url 'progress:contract_detail_view' contract.id %}" class="saaf-dashboard-linkline">
+                    {% if LANGUAGE_CODE == 'ar' %}عرض{% else %}View{% endif %}
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <div class="rev-empty">
+          <i class="bi bi-inbox"></i>
+          <p>{% if LANGUAGE_CODE == 'ar' %}لا توجد طلبات نشطة الآن.{% else %}No active requests right now.{% endif %}</p>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Completed Requests -->
+    <div class="rev-panel mb-4">
+      <div class="rev-panel-title">
+        <span>
+          <i class="bi bi-check2-circle me-1" style="color:var(--saaf-btn);"></i>
+          {% if LANGUAGE_CODE == 'ar' %}الطلبات المكتملة{% else %}Completed Requests{% endif %}
+        </span>
+            <a href="{% url 'account:completed_orders_view' %}" class="saaf-dashboard-linkline" style="font-size:.83rem;">
+          {% if LANGUAGE_CODE == 'ar' %}عرض الكل{% else %}View all{% endif %}
+          <i class="bi bi-arrow-{% if LANGUAGE_CODE == 'ar' %}left{% else %}right{% endif %}"></i>
+        </a>
+
+      </div>
+
+      {% if completed_requests %}
+        <div class="table-responsive">
+          <table class="rev-table">
+            <thead>
+              <tr>
+                <th>{% if LANGUAGE_CODE == 'ar' %}العنوان{% else %}Title{% endif %}</th>
+                <th>{% if LANGUAGE_CODE == 'ar' %}العميل{% else %}Requester{% endif %}</th>
+                <th>{% if LANGUAGE_CODE == 'ar' %}السعر{% else %}Price{% endif %}</th>
+                <th>{% if LANGUAGE_CODE == 'ar' %}الحالة{% else %}Status{% endif %}</th>
+                <th class="text-end">{% if LANGUAGE_CODE == 'ar' %}تفاصيل{% else %}Details{% endif %}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for contract in completed_requests %}
+              <tr>
+                <td>
+                  <div style="font-weight:700;color:var(--saaf-heading);">
+                    {{ contract.proposal.request.title }}
+                  </div>
+                  <div style="font-size:.74rem;color:var(--saaf-text-muted);">
+                    #{{ contract.id }}
+                  </div>
+                </td>
+                <td>{{ contract.proposal.request.requester.get_full_name|default:contract.proposal.request.requester.username }}</td>
+                <td>{{ contract.proposal.price|floatformat:2 }}</td>
+                <td>
+                  <span class="rev-pill pill-paid">
+                    <span class="rev-pill-dot"></span>
+                    {% if LANGUAGE_CODE == 'ar' %}مكتمل{% else %}Completed{% endif %}
+                  </span>
+                </td>
+                <td class="text-end">
+                  <a href="{% url 'progress:contract_detail_view' contract.id %}" class="saaf-dashboard-linkline">
+                    {% if LANGUAGE_CODE == 'ar' %}عرض{% else %}View{% endif %}
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <div class="rev-empty">
+          <i class="bi bi-check2-circle"></i>
+          <p>{% if LANGUAGE_CODE == 'ar' %}لا توجد طلبات مكتملة بعد.{% else %}No completed requests yet.{% endif %}</p>
+        </div>
+      {% endif %}
+    </div>
     <!-- ── Recent Transactions ───────────── -->
     <div class="rev-panel">
       <div class="rev-panel-title">
