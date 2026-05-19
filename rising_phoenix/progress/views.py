@@ -106,12 +106,29 @@ def contract_detail_view(request, contract_id):
 
     latest_update_id = updates[-1].id if updates else None
 
+    from dispute.models import Dispute
+    my_open_dispute = contract.disputes.filter(
+        opened_by=request.user,
+        status__in=[Dispute.Status.OPEN, Dispute.Status.IN_REVIEW],
+    ).first()
+    dispute_eligible_status = contract.status in (
+        Contract.Status.IN_PROGRESS,
+        Contract.Status.COMPLETION_REQUESTED,
+    )
+    can_raise_dispute = (
+        (is_requester or is_artisan)
+        and dispute_eligible_status
+        and my_open_dispute is None
+    )
+
     return render(request, 'progress/contract_detail.html', {
         'contract': contract,
         'timeline': timeline,
         'is_artisan': is_artisan,
         'is_requester': is_requester,
         'latest_update_id': latest_update_id,
+        'can_raise_dispute': can_raise_dispute,
+        'my_open_dispute': my_open_dispute,
     })
 
 
@@ -221,6 +238,10 @@ def request_completion_view(request, contract_id):
         messages.error(request, 'Completion can only be requested while the project is in progress.')
         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
+    if contract.has_open_dispute:
+        messages.error(request, 'This project has an open dispute. Completion actions are paused until staff resolves it.')
+        return redirect('progress:contract_detail_view', contract_id=contract_id)
+
     body = request.POST.get('body', '').strip()[:5000]
     if body and not text_is_clean(body):
         messages.error(request, 'Your message contains inappropriate language. Please revise it.')
@@ -265,6 +286,10 @@ def confirm_completion_view(request, contract_id):
 
     if not contract.is_completion_requested:
         messages.error(request, 'There is no pending completion request.')
+        return redirect('progress:contract_detail_view', contract_id=contract_id)
+
+    if contract.has_open_dispute:
+        messages.error(request, 'This project has an open dispute. Confirmation is paused until staff resolves it.')
         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     escrow_payment = getattr(contract, 'escrow_payment', None)

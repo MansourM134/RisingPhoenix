@@ -55,9 +55,34 @@
               {% if contract.is_completion_requested %}Send Back{% else %}Give Feedback{% endif %}
             </a>
           {% endif %}
+          {% if can_raise_dispute %}
+            <a href="{% url 'dispute:raise_dispute_view' contract.id %}"
+               class="proposal-action-btn proposal-action-btn--danger">
+              <i class="bi bi-exclamation-octagon"></i> Raise a Dispute
+            </a>
+          {% elif my_open_dispute %}
+            <a href="{% url 'dispute:dispute_detail_view' my_open_dispute.id %}"
+               class="proposal-action-btn">
+              <i class="bi bi-exclamation-octagon-fill"></i> View My Dispute
+            </a>
+          {% endif %}
         </div>
       </div>
     </header>
+
+    {# ── Open dispute banner ── #}
+    {% if contract.has_open_dispute %}
+      <div class="progress-completion-banner" style="background:#fdecea;border-color:#f5c2c0;color:#8a1f1a;">
+        <i class="bi bi-exclamation-octagon-fill"></i>
+        A dispute is open on this project. Completion actions are paused until staff resolves it.
+        {% if my_open_dispute %}
+          <a href="{% url 'dispute:dispute_detail_view' my_open_dispute.id %}"
+             class="proposal-action-btn progress-banner-action" style="margin-left:12px;">
+            View My Dispute
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
 
     {# ── Completion banner ── #}
     {% if contract.is_completed %}
@@ -245,7 +270,7 @@
               formaction="{% url 'progress:post_update_view' contract.id %}">
               <i class="bi bi-send"></i> Post Update
             </button>
-            {% if contract.is_in_progress %}
+            {% if contract.is_in_progress and not contract.has_open_dispute %}
               <button type="submit" class="proposal-action-btn proposal-action-btn--accept"
                 formaction="{% url 'progress:request_completion_view' contract.id %}"
                 formnovalidate
@@ -265,7 +290,7 @@
       <div class="progress-action-card" id="requester-action-form">
 
         {# Confirm complete — separate prominent form #}
-        {% if contract.is_completion_requested %}
+        {% if contract.is_completion_requested and not contract.has_open_dispute %}
           <div class="progress-confirm-row">
             <div>
               <p class="progress-action-hint">

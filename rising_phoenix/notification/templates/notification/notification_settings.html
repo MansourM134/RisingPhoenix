@@ -63,6 +63,9 @@
                     {% include "notification/partials/pref_row.html" with field="email_completion_rejected" checked=prefs.email_completion_rejected label="Completion Sent Back" desc="When the requester sends the work back for revision." icon="bi-arrow-counterclockwise" color="#b07c00" only %}
                     {% include "notification/partials/pref_row.html" with field="email_message_received" checked=prefs.email_message_received label="New Message" desc="When you receive a new message." icon="bi-chat-fill" color="#1a6fa8" only %}
                     {% include "notification/partials/pref_row.html" with field="email_invitation_received" checked=prefs.email_invitation_received label="Project Invitation" desc="When a requester invites you to submit a proposal." icon="bi-person-plus-fill" color="#1a6fa8" only %}
+                    {% include "notification/partials/pref_row.html" with field="email_dispute_received" checked=prefs.email_dispute_received label="New Dispute" desc="When a dispute is opened on a project you are part of." icon="bi-exclamation-octagon-fill" color="#c2374f" only %}
+                    {% include "notification/partials/pref_row.html" with field="email_dispute_message_received" checked=prefs.email_dispute_message_received label="Dispute Message" desc="When staff sends you a message in an open dispute." icon="bi-chat-square-text-fill" color="#c2724f" only %}
+                    {% include "notification/partials/pref_row.html" with field="email_dispute_status_update" checked=prefs.email_dispute_status_update label="Dispute Update" desc="When a staff member resolves or updates a dispute you are part of." icon="bi-shield-check" color="#1a7a4a" only %}
                 </ul>
             </div>
 
@@ -96,6 +99,9 @@
                     {% include "notification/partials/pref_row.html" with field="insite_completion_rejected" checked=prefs.insite_completion_rejected label="Completion Sent Back" desc="When the requester sends the work back for revision." icon="bi-arrow-counterclockwise" color="#b07c00" only %}
                     {% include "notification/partials/pref_row.html" with field="insite_message_received" checked=prefs.insite_message_received label="New Message" desc="When you receive a new message." icon="bi-chat-fill" color="#1a6fa8" only %}
                     {% include "notification/partials/pref_row.html" with field="insite_invitation_received" checked=prefs.insite_invitation_received label="Project Invitation" desc="When a requester invites you to submit a proposal." icon="bi-person-plus-fill" color="#1a6fa8" only %}
+                    {% include "notification/partials/pref_row.html" with field="insite_dispute_received" checked=prefs.insite_dispute_received label="New Dispute" desc="When a dispute is opened on a project you are part of." icon="bi-exclamation-octagon-fill" color="#c2374f" only %}
+                    {% include "notification/partials/pref_row.html" with field="insite_dispute_message_received" checked=prefs.insite_dispute_message_received label="Dispute Message" desc="When staff sends you a message in an open dispute." icon="bi-chat-square-text-fill" color="#c2724f" only %}
+                    {% include "notification/partials/pref_row.html" with field="insite_dispute_status_update" checked=prefs.insite_dispute_status_update label="Dispute Update" desc="When a staff member resolves or updates a dispute you are part of." icon="bi-shield-check" color="#1a7a4a" only %}
                 </ul>
             </div>
 

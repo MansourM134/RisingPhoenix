@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'progress',
     'notification',
     'invitation',
+    'dispute',
 ]
 
 MIDDLEWARE = [
