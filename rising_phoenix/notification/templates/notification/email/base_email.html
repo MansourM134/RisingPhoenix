@@ -14,8 +14,8 @@
           <!-- Header -->
           <tr>
             <td style="background:#1c1712;padding:28px 40px;text-align:center;">
-              <img src="{{ logo }}" alt="Saaf" width="56" height="56"
-                   style="border-radius:8px;display:block;margin:0 auto 10px;border:0;">
+              {% if logo %}<img src="{{ logo }}" alt="Saaf" width="56" height="56"
+                   style="border-radius:8px;display:block;margin:0 auto 10px;border:0;">{% endif %}
               <span style="font-family:Georgia,serif;font-size:22px;color:#e8ddd3;letter-spacing:3px;display:block;">Saaf</span>
             </td>
           </tr>
@@ -31,8 +31,8 @@
           <tr>
             <td style="background:#f9f5ef;padding:20px 40px;text-align:center;border-top:1px solid #e8ddd3;">
               <p style="margin:0;font-size:12px;color:#8a7a6e;line-height:1.7;">
-                &copy; 2025 Saaf &mdash; Saudi Artisan Marketplace<br>
-                You received this because you have an account on Saaf.
+                &copy; {% now "Y" %} Saaf &mdash; Saudi Artisan Marketplace<br>
+                You received this email because you have an account on Saaf.
               </p>
             </td>
           </tr>
