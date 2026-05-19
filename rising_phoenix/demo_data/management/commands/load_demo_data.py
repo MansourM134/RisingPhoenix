@@ -28,8 +28,10 @@ from django.utils import timezone
 # Models — one import per app.
 from account.models import ArtisanProfile, Profile, Review
 from dispute.models import Dispute, DisputeMessage
+from invitation.models import Invitation
 from message.models import Conversation, Message
 from notification.models import Notification, NotificationPreference
+from payment.models import PaymentMethod, StripeCustomer
 from progress.models import (
     Contract, ContractEvent, ContractEventImage,
     ProgressComment, ProgressCommentImage,
@@ -131,7 +133,10 @@ class Command(BaseCommand):
         self._create_contracts_and_progress()
         self._create_conversations()
         self._create_reviews()
+        self._create_invitations()
         self._create_notification_preferences()
+        self._create_notifications()
+        self._create_payment_methods()
         if not opts['no_dispute']:
             self._create_dispute()
         if not opts['no_reports']:
@@ -472,6 +477,23 @@ class Command(BaseCommand):
              ('White thobe with subtle gold-thread embroidery around the collar and cuffs. '
               'For Eid.'),
              1100, 'Embroidery', 35, Request.Status.OPEN, None),
+
+            # Historical closed — used only for rating seeding
+            ('ceramic_bowl', 'faisal',
+             'Ceramic Salad Bowl Set',
+             ('Hand-thrown stoneware salad bowl with 4 matching serving bowls. '
+              'Matte grey glaze.'),
+             950, 'Pottery & Ceramics', -40, Request.Status.CLOSED, None),
+
+            ('copper_panel', 'sara',
+             'Forged Copper Wall Panel',
+             ('Geometric copper panel, ~60×80 cm, for a hallway. Patinated finish.'),
+             1800, 'Metalwork', -55, Request.Status.CLOSED, None),
+
+            ('leather_belt', 'ahmed',
+             'Hand-Stitched Leather Belt',
+             ('Vegetable-tanned leather dress belt, size 34, brass buckle, saddle-stitched.'),
+             350, 'Leather Goods', -30, Request.Status.CLOSED, None),
         ]
 
         for key, requester, title, desc, budget, cat, days_ahead, status, ref in request_defs:
@@ -568,6 +590,19 @@ class Command(BaseCommand):
              ('I can throw these — but realising it might be a stretch outside my '
               'usual work. Withdrawing in favour of Khalid.'),
              Proposal.Status.WITHDRAWN, None),
+
+            # Historical accepted proposals — for rating seeding
+            ('p_ceramic_khalid', 'ceramic_bowl', 'khalid', 920, 20,
+             'I have thrown this style before — stoneware with a matte grey ash glaze.',
+             Proposal.Status.ACCEPTED, None),
+
+            ('p_copper_iroh', 'copper_panel', 'iroh', 1750, 25,
+             'Hammered copper with a chemical patina. I can do the geometric pattern by hand.',
+             Proposal.Status.ACCEPTED, None),
+
+            ('p_belt_laila', 'leather_belt', 'laila', 340, 10,
+             'Vegetable-tanned belly leather, saddle-stitched, solid brass buckle.',
+             Proposal.Status.ACCEPTED, None),
         ]
 
         for key, req_key, artisan, price, days, msg, status, sample in proposal_defs:
@@ -734,7 +769,7 @@ class Command(BaseCommand):
                                      'Finished tote')
 
         # Completion request + confirmation
-        e4 = ContractEvent.objects.create(
+        ContractEvent.objects.create(
             contract=c3,
             event_type=ContractEvent.EventType.COMPLETION_REQUESTED,
             actor=self.users['laila'],
@@ -747,6 +782,34 @@ class Command(BaseCommand):
             actor=self.users['noura'],
             message='Received and absolutely love it. Confirming completion.',
         )
+
+        # ---- Historical contracts (no progress detail — used for rating seeding) ----
+        c4 = Contract.objects.create(
+            proposal=self.proposals['p_ceramic_khalid'],
+            status=Contract.Status.COMPLETED,
+            requester_accepted_at=timezone.now() - timedelta(days=45),
+            artisan_accepted_at=timezone.now() - timedelta(days=44),
+            completed_at=timezone.now() - timedelta(days=30),
+        )
+        self.contracts['ceramic_bowl'] = c4
+
+        c5 = Contract.objects.create(
+            proposal=self.proposals['p_copper_iroh'],
+            status=Contract.Status.COMPLETED,
+            requester_accepted_at=timezone.now() - timedelta(days=60),
+            artisan_accepted_at=timezone.now() - timedelta(days=59),
+            completed_at=timezone.now() - timedelta(days=45),
+        )
+        self.contracts['copper_panel'] = c5
+
+        c6 = Contract.objects.create(
+            proposal=self.proposals['p_belt_laila'],
+            status=Contract.Status.COMPLETED,
+            requester_accepted_at=timezone.now() - timedelta(days=35),
+            artisan_accepted_at=timezone.now() - timedelta(days=34),
+            completed_at=timezone.now() - timedelta(days=20),
+        )
+        self.contracts['leather_belt'] = c6
 
     def _attach_progress_image(self, update, image_path, caption):
         if image_path.exists():
@@ -806,19 +869,80 @@ class Command(BaseCommand):
                         msg.image.save(image_path.name, File(f), save=True)
 
     # --------------------------------------------------------------------
-    # Reviews
+    # Reviews  (signals auto-recalculate ArtisanProfile.average_rating)
     # --------------------------------------------------------------------
     def _create_reviews(self):
         self.stdout.write('  Creating reviews...')
-        # Only the completed contract gets a review.
-        tote_request = self.requests['tote']
+
+        # Laila — tote (5★) + leather belt (4★)  →  avg 4.5
         Review.objects.create(
-            request=tote_request,
+            request=self.requests['tote'],
             reviews_given=self.users['noura'],
             reviews_received=self.users['laila'],
             rating=5,
             comment=('Absolutely beautiful work. The stitching is even, the monogram is perfect, '
                      'and Laila kept me in the loop the whole way through. Will commission again.'),
+        )
+        Review.objects.create(
+            request=self.requests['leather_belt'],
+            reviews_given=self.users['ahmed'],
+            reviews_received=self.users['laila'],
+            rating=4,
+            comment='Great quality leather and clean stitching. Delivery was on time. Very happy.',
+        )
+
+        # Khalid — ceramic bowl set (4★)  →  avg 4.0
+        Review.objects.create(
+            request=self.requests['ceramic_bowl'],
+            reviews_given=self.users['faisal'],
+            reviews_received=self.users['khalid'],
+            rating=4,
+            comment=('Solid craftsmanship. The glaze colour was slightly off from what I expected, '
+                     'but the throwing quality and weight of the bowls is excellent.'),
+        )
+
+        # Iroh — copper panel (5★)  →  avg 5.0
+        Review.objects.create(
+            request=self.requests['copper_panel'],
+            reviews_given=self.users['sara'],
+            reviews_received=self.users['iroh'],
+            rating=5,
+            comment=('Stunning piece. The patina is exactly what I asked for and it arrived '
+                     'perfectly packaged. Iroh is a true craftsman.'),
+        )
+
+    # --------------------------------------------------------------------
+    # Invitations
+    # --------------------------------------------------------------------
+    def _create_invitations(self):
+        self.stdout.write('  Creating invitations...')
+
+        # Faisal invites Khalid to bookshelf → PROPOSED (Khalid already bid)
+        Invitation.objects.create(
+            request=self.requests['bookshelf'],
+            artisan=self.users['khalid'],
+            status=Invitation.Status.PROPOSED,
+            viewed_at=timezone.now() - timedelta(days=2),
+        )
+        # Noura invites Iroh to metal_sculpture → PROPOSED (Iroh already bid)
+        Invitation.objects.create(
+            request=self.requests['metal_sculpture'],
+            artisan=self.users['iroh'],
+            status=Invitation.Status.PROPOSED,
+            viewed_at=timezone.now() - timedelta(days=1),
+        )
+        # Ahmed invites Laila to ring → VIEWED (she looked but didn't bid)
+        Invitation.objects.create(
+            request=self.requests['ring'],
+            artisan=self.users['laila'],
+            status=Invitation.Status.VIEWED,
+            viewed_at=timezone.now() - timedelta(hours=6),
+        )
+        # Sara invites Khalid to mugs — PENDING (not yet viewed)
+        Invitation.objects.create(
+            request=self.requests['mugs'],
+            artisan=self.users['khalid'],
+            status=Invitation.Status.PENDING,
         )
 
     # --------------------------------------------------------------------
@@ -835,6 +959,110 @@ class Command(BaseCommand):
         faisal_prefs.email_proposal_received = False
         faisal_prefs.email_message_received = False
         faisal_prefs.save(update_fields=['email_proposal_received', 'email_message_received'])
+
+    # --------------------------------------------------------------------
+    # Notifications  (mix of read / unread to populate the bell)
+    # --------------------------------------------------------------------
+    def _create_notifications(self):
+        self.stdout.write('  Creating notifications...')
+        NT = Notification.NotifType
+
+        def n(recipient, notif_type, title, body='', is_read=True):
+            Notification.objects.create(
+                recipient=self.users[recipient],
+                notif_type=notif_type,
+                title=title,
+                body=body,
+                is_read=is_read,
+            )
+
+        # --- Ahmed (requester) ---
+        n('ahmed', NT.PROPOSAL_RECEIVED, 'New proposal on your wallet request',
+          'Iroh submitted a proposal for SAR 480.', is_read=False)
+        n('ahmed', NT.PROPOSAL_RECEIVED, 'New proposal on your portrait request',
+          'Iroh submitted a proposal for SAR 3,400.', is_read=True)
+        n('ahmed', NT.PROPOSAL_ACCEPTED, 'Your portrait proposal was accepted',
+          "You accepted Iroh's proposal. The project is now underway.", is_read=True)
+        n('ahmed', NT.PROGRESS_UPDATE, 'Iroh posted a progress update',
+          'Initial sketch on linen — proportions locked in.', is_read=True)
+        n('ahmed', NT.PROGRESS_UPDATE, 'Iroh posted another update',
+          '70% complete — warm palette is in, faces are reading well.', is_read=False)
+
+        # --- Noura (requester) ---
+        n('noura', NT.PROPOSAL_RECEIVED, 'New proposal on your calligraphy request',
+          'Laila submitted a proposal for SAR 1,100.', is_read=False)
+        n('noura', NT.COMPLETION_CONFIRMED, 'Your tote bag project is complete!',
+          "You confirmed completion of Laila's tote bag.", is_read=True)
+
+        # --- Faisal (requester) ---
+        n('faisal', NT.PROPOSAL_RECEIVED, 'New proposal on your bookshelf request',
+          'Khalid submitted a proposal for SAR 2,600.', is_read=False)
+        n('faisal', NT.INVITATION_RECEIVED, 'You were invited to a project',
+          'Check your invitations for a new request.', is_read=True)
+
+        # --- Sara (requester) ---
+        n('sara', NT.PROPOSAL_RECEIVED, 'New proposal on your mugs request',
+          'Khalid submitted a proposal for SAR 700.', is_read=False)
+        n('sara', NT.COMPLETION_REQUESTED, 'Khalid is requesting completion',
+          'Please review and confirm the coffee table delivery.', is_read=False)
+
+        # --- Laila (artisan) ---
+        n('laila', NT.PROPOSAL_ACCEPTED, 'Your tote bag proposal was accepted!',
+          'Noura accepted your proposal for SAR 1,450.', is_read=True)
+        n('laila', NT.COMMENT_ADDED, 'Noura commented on your progress update',
+          'Can the strap stitching match this colour exactly?', is_read=True)
+        n('laila', NT.INVITATION_RECEIVED, 'You were invited to a ring project',
+          'Ahmed invited you to look at a leather belt request.', is_read=False)
+
+        # --- Khalid (artisan) ---
+        n('khalid', NT.PROPOSAL_ACCEPTED, 'Your coffee table proposal was accepted!',
+          'Sara accepted your proposal for SAR 3,100.', is_read=True)
+        n('khalid', NT.COMPLETION_REJECTED, 'Sara sent back your completion request',
+          'One hairpin leg is sitting a couple of mm off — please level before confirming.',
+          is_read=True)
+        n('khalid', NT.INVITATION_RECEIVED, 'You were invited to a bookshelf project',
+          'Faisal invited you to look at his walnut bookshelf request.', is_read=True)
+
+        # --- Iroh (artisan) ---
+        n('iroh', NT.PROPOSAL_ACCEPTED, 'Your portrait proposal was accepted!',
+          'Ahmed accepted your proposal for SAR 3,400.', is_read=True)
+        n('iroh', NT.COMMENT_ADDED, 'Ahmed commented on your progress update',
+          'Love the warm tones — can the background match this dusty rose?', is_read=False)
+        n('iroh', NT.INVITATION_RECEIVED, 'You were invited to a metal sculpture project',
+          'Noura invited you to look at her decorative wall sculpture request.', is_read=True)
+
+        # --- Staff ---
+        n('staff_admin', NT.REPORT_RECEIVED, 'New report submitted',
+          'Sara reported a review as spam.', is_read=False)
+        n('staff_admin', NT.DISPUTE_RECEIVED, 'New dispute opened',
+          'Sara opened a quality dispute on the coffee table contract.', is_read=False)
+
+    # --------------------------------------------------------------------
+    # Payment methods  (Stripe test card 4242424242424242)
+    # --------------------------------------------------------------------
+    def _create_payment_methods(self):
+        self.stdout.write('  Creating payment methods...')
+        # Seed a saved Visa test card for every requester and artisan.
+        # These use fake Stripe IDs — real charges require the test PaymentIntent flow.
+        users_to_seed = ['ahmed', 'noura', 'faisal', 'sara', 'laila', 'khalid', 'iroh']
+        for username in users_to_seed:
+            u = self.users[username]
+            cus_id = f'cus_demo_{username}'
+            pm_id  = f'pm_demo_{username}'
+            StripeCustomer.objects.create(
+                user=u,
+                stripe_customer_id=cus_id,
+            )
+            PaymentMethod.objects.create(
+                user=u,
+                stripe_customer_id=cus_id,
+                stripe_payment_method_id=pm_id,
+                brand='visa',
+                last4='4242',
+                exp_month=12,
+                exp_year=2028,
+                is_default=True,
+            )
 
     # --------------------------------------------------------------------
     # Optional: one open dispute
