@@ -287,7 +287,7 @@
     <div class="rev-panel mb-4">
   <div class="rev-panel-title">
     <span>
-      <i class="bi bi-stripe me-1" style="color:var(--saaf-btn);"></i>
+      <i class="bi bi-stripe me-1" class="text-saaf-btn"></i>
       {% trans "Stripe Payouts" %}
     </span>
     <small>
@@ -307,14 +307,14 @@
     <div>
       {% if stripe_connected %}
         {% if stripe_payouts_enabled %}
-          <p class="mb-1" style="color:var(--saaf-heading);font-weight:700;">
+          <p class="mb-1" class="fw-bold text-saaf-heading">
             {% trans "Your Stripe account is ready to receive payouts." %}
           </p>
           <p class="mb-0" style="font-size:.85rem;color:var(--saaf-text-muted);">
             {% trans "You can open Stripe to manage payouts, banking, and account details." %}
           </p>
         {% else %}
-          <p class="mb-1" style="color:var(--saaf-heading);font-weight:700;">
+          <p class="mb-1" class="fw-bold text-saaf-heading">
             {% trans "Your Stripe account needs some additional information." %}
           </p>
           <p class="mb-0" style="font-size:.85rem;color:var(--saaf-text-muted);">
@@ -322,7 +322,7 @@
           </p>
         {% endif %}
       {% else %}
-        <p class="mb-1" style="color:var(--saaf-heading);font-weight:700;">
+        <p class="mb-1" class="fw-bold text-saaf-heading">
           {% trans "Connect Stripe to receive earnings and payouts to your bank account." %}
         </p>
         <p class="mb-0" style="font-size:.85rem;color:var(--saaf-text-muted);">
@@ -429,7 +429,7 @@
         <div class="rev-panel h-100">
           <div class="rev-panel-title">
             <span>
-              <i class="bi bi-graph-up me-1" style="color:var(--saaf-btn);"></i>
+              <i class="bi bi-graph-up me-1" class="text-saaf-btn"></i>
               {% trans "Monthly Revenue" %}
             </span>
             <small>{% trans "Last 12 months" %}</small>
@@ -471,11 +471,11 @@
             <div>
               <div class="rev-qs-row">
                 <span>{% trans "Completed Jobs" %}</span>
-                <strong style="color:var(--saaf-btn);">{{ this_month_jobs }}</strong>
+                <strong class="text-saaf-btn">{{ this_month_jobs }}</strong>
               </div>
               <div class="rev-qs-row">
                 <span>{% trans "Revenue" %}</span>
-                <strong style="color:var(--saaf-btn);">{{ this_month_total|floatformat:2 }}</strong>
+                <strong class="text-saaf-btn">{{ this_month_total|floatformat:2 }}</strong>
               </div>
               <div class="rev-qs-row">
                 <span>{% trans "Pending Balance" %}</span>
@@ -496,7 +496,7 @@
     <div class="rev-panel mb-4">
       <div class="rev-panel-title">
         <span>
-          <i class="bi bi-hourglass-split me-1" style="color:var(--saaf-btn);"></i>
+          <i class="bi bi-hourglass-split me-1" class="text-saaf-btn"></i>
           {% trans "Active Requests" %}
         </span>
         <small>{{ active_requests|length }}</small>
@@ -518,7 +518,7 @@
               {% for contract in active_requests %}
               <tr>
                 <td>
-                  <div style="font-weight:700;color:var(--saaf-heading);">
+                  <div class="fw-bold text-saaf-heading">
                     {{ contract.proposal.request.title }}
                   </div>
                   <div style="font-size:.74rem;color:var(--saaf-text-muted);">
@@ -555,7 +555,7 @@
     <div class="rev-panel mb-4">
       <div class="rev-panel-title">
         <span>
-          <i class="bi bi-check2-circle me-1" style="color:var(--saaf-btn);"></i>
+          <i class="bi bi-check2-circle me-1" class="text-saaf-btn"></i>
           {% trans "Completed Requests" %}
         </span>
             <a href="{% url 'account:completed_orders_view' %}" class="saaf-dashboard-linkline" style="font-size:.83rem;">
@@ -581,7 +581,7 @@
               {% for contract in completed_requests %}
               <tr>
                 <td>
-                  <div style="font-weight:700;color:var(--saaf-heading);">
+                  <div class="fw-bold text-saaf-heading">
                     {{ contract.proposal.request.title }}
                   </div>
                   <div style="font-size:.74rem;color:var(--saaf-text-muted);">
@@ -617,7 +617,7 @@
     <div class="rev-panel">
       <div class="rev-panel-title">
         <span>
-          <i class="bi bi-receipt me-1" style="color:var(--saaf-btn);"></i>
+          <i class="bi bi-receipt me-1" class="text-saaf-btn"></i>
           {% trans "Recent Transactions" %}
         </span>
         <a href="#" class="saaf-dashboard-linkline" style="font-size:.83rem;">
@@ -642,7 +642,7 @@
             {% for revenue in recent_revenues %}
             <tr>
               <td>
-                <div style="font-weight:700;color:var(--saaf-heading);">
+                <div class="fw-bold text-saaf-heading">
                   {{ revenue.contract.title|default:"—" }}
                 </div>
                 <div style="font-size:.74rem;color:var(--saaf-text-muted);">#{{ revenue.id }}</div>

@@ -53,8 +53,8 @@
         </div>
 
         {% if page_obj.has_other_pages %}
-            <div class="notif-pagination-wrap">
-                <p class="notif-pagination-count">
+            <div class="pagination-wrap">
+                <p class="saaf-page-status">
                     {% blocktrans with start=page_obj.start_index end=page_obj.end_index count=page_obj.paginator.count %}Showing {{ start }}–{{ end }} of {{ count }} notification{{ count|pluralize }}{% endblocktrans %}
                 </p>
                 <nav aria-label="{% trans 'Notifications pagination' %}">
@@ -62,57 +62,57 @@
 
                         {% if page_obj.has_previous %}
                             <li class="page-item">
-                                <a class="page-link notif-page-link" href="?page=1" title="{% trans 'First page' %}">
+                                <a class="page-link saaf-page-link" href="?page=1" title="{% trans 'First page' %}">
                                     <i class="bi bi-chevron-double-left"></i>
                                 </a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link notif-page-link" href="?page={{ page_obj.previous_page_number }}">
+                                <a class="page-link saaf-page-link" href="?page={{ page_obj.previous_page_number }}">
                                     <i class="bi bi-chevron-left me-1"></i> {% trans "Previous" %}
                                 </a>
                             </li>
                         {% else %}
                             <li class="page-item disabled">
-                                <span class="page-link notif-page-link"><i class="bi bi-chevron-double-left"></i></span>
+                                <span class="page-link saaf-page-link"><i class="bi bi-chevron-double-left"></i></span>
                             </li>
                             <li class="page-item disabled">
-                                <span class="page-link notif-page-link"><i class="bi bi-chevron-left me-1"></i> {% trans "Previous" %}</span>
+                                <span class="page-link saaf-page-link"><i class="bi bi-chevron-left me-1"></i> {% trans "Previous" %}</span>
                             </li>
                         {% endif %}
 
                         {% for num in page_obj.paginator.page_range %}
                             {% if page_obj.number == num %}
                                 <li class="page-item active">
-                                    <span class="page-link notif-page-link notif-page-current">{{ num }}</span>
+                                    <span class="page-link saaf-page-link saaf-page-current">{{ num }}</span>
                                 </li>
                             {% elif num >= page_obj.number|add:"-2" and num <= page_obj.number|add:"2" %}
                                 <li class="page-item">
-                                    <a class="page-link notif-page-link" href="?page={{ num }}">{{ num }}</a>
+                                    <a class="page-link saaf-page-link" href="?page={{ num }}">{{ num }}</a>
                                 </li>
                             {% endif %}
                         {% endfor %}
 
                         <li class="page-item disabled">
-                            <span class="page-link notif-page-link notif-page-status">{% blocktrans with total=page_obj.paginator.num_pages %}of {{ total }}{% endblocktrans %}</span>
+                            <span class="page-link saaf-page-link saaf-page-status">{% blocktrans with total=page_obj.paginator.num_pages %}of {{ total }}{% endblocktrans %}</span>
                         </li>
 
                         {% if page_obj.has_next %}
                             <li class="page-item">
-                                <a class="page-link notif-page-link" href="?page={{ page_obj.next_page_number }}">
+                                <a class="page-link saaf-page-link" href="?page={{ page_obj.next_page_number }}">
                                     {% trans "Next" %} <i class="bi bi-chevron-right ms-1"></i>
                                 </a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link notif-page-link" href="?page={{ page_obj.paginator.num_pages }}" title="{% trans 'Last page' %}">
+                                <a class="page-link saaf-page-link" href="?page={{ page_obj.paginator.num_pages }}" title="{% trans 'Last page' %}">
                                     <i class="bi bi-chevron-double-right"></i>
                                 </a>
                             </li>
                         {% else %}
                             <li class="page-item disabled">
-                                <span class="page-link notif-page-link">{% trans "Next" %} <i class="bi bi-chevron-right ms-1"></i></span>
+                                <span class="page-link saaf-page-link">{% trans "Next" %} <i class="bi bi-chevron-right ms-1"></i></span>
                             </li>
                             <li class="page-item disabled">
-                                <span class="page-link notif-page-link"><i class="bi bi-chevron-double-right"></i></span>
+                                <span class="page-link saaf-page-link"><i class="bi bi-chevron-double-right"></i></span>
                             </li>
                         {% endif %}
 
@@ -121,7 +121,7 @@
             </div>
         {% endif %}
     {% else %}
-        <div class="notif-empty">
+        <div class="notif-empty empty-state">
             <i class="bi bi-bell-slash"></i>
             <p>{% trans "You're all caught up — no notifications yet." %}</p>
         </div>
