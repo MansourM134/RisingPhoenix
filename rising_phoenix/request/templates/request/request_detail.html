@@ -370,6 +370,23 @@
         {% endif %}
       {% endif %}
 
+      {% if project_request.review %}
+        <div class="request-review-section">
+          <h2 class="request-review-heading">{% trans "Review" %}</h2>
+          <article class="request-review-card">
+            <div class="request-review-head">
+              <div class="request-review-avatar">{{ project_request.review.reviews_given.first_name|slice:":1"|upper }}</div>
+              <div>
+                <div class="request-review-author">{{ project_request.review.reviews_given.get_full_name|default:project_request.review.reviews_given.username }}</div>
+                <div class="request-review-date">{{ project_request.review.created_at|date:"N j, Y" }}</div>
+              </div>
+            </div>
+            <div class="request-review-stars">{% for i in "12345" %}{% if forloop.counter <= project_request.review.rating %}★{% else %}☆{% endif %}{% endfor %}</div>
+            {% if project_request.review.comment %}<p class="request-review-comment">{{ project_request.review.comment }}</p>{% endif %}
+          </article>
+        </div>
+      {% endif %}
+
     </div>
   </div>
 </section>

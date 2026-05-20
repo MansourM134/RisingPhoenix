@@ -450,7 +450,11 @@
                 <p class="saaf-eyebrow mb-2">{% trans "Workshop Profile" %}</p>
                 <div class="saaf-profile-hero-main">
                     <div class="saaf-profile-avatar-wrap">
+                        {% if artisan.avatar %}
+                        <img src="{{ artisan.avatar.url }}" alt="{{ artisan.user.get_full_name|default:artisan.user.username }}" class="saaf-workshop-avatar" style="object-fit:cover;">
+                        {% else %}
                         <div class="saaf-workshop-avatar">{{ artisan.user.first_name|slice:":1"|default:'A' }}</div>
+                        {% endif %}
                     </div>
 
                     <div class="saaf-profile-heading-block">
@@ -645,6 +649,11 @@
                             </div>
                             <div class="saaf-review-stars">{% for i in "12345" %}{% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}{% endfor %}</div>
                             {% if review.comment %}<p class="saaf-review-comment">{{ review.comment }}</p>{% endif %}
+                            {% if review.request_id %}
+                            <a href="{% url 'request:request_detail_view' review.request_id %}" class="saaf-review-request-link">
+                                <i class="bi bi-box-arrow-up-right"></i> {% trans "View request" %}: {{ review.request.title }}
+                            </a>
+                            {% endif %}
                         </article>
                         {% endfor %}
                     </div>
