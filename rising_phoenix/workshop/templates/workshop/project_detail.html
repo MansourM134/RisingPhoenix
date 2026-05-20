@@ -1,4 +1,5 @@
 {% extends 'main/base.html' %}
+{% load i18n %}
 
 {% block title %}{{ project.title }}{% endblock %}
 
@@ -8,7 +9,7 @@
     <p class="text-muted">{{ project.date_completed }}</p>
     <p>{{ project.description }}</p>
 
-    <h4>Images</h4>
+    <h4>{% trans "Images" %}</h4>
     {% for group, images in pair_groups.items %}
     <div class="mb-3">
         <div class="d-flex gap-2">
@@ -16,7 +17,7 @@
             <div style="flex:1">
                 <img src="{{ img.image.url }}" alt=""
                     style="width:100%;height:260px;object-fit:cover;border-radius:8px;">
-                <div class="mt-1 small text-muted">{{ img.caption }} — {{ img.is_before|yesno:"Before,After" }}</div>
+                <div class="mt-1 small text-muted">{{ img.caption }} — {% if img.is_before %}{% trans "Before" %}{% else %}{% trans "After" %}{% endif %}</div>
             </div>
             {% endfor %}
         </div>
@@ -24,6 +25,6 @@
     {% endfor %}
 
     <a href="{% url 'workshop:workshop_detail_view' artisan_id=project.workshop.artisan.user.id %}"
-        class="btn btn-secondary">Back to Workshop</a>
+        class="btn btn-secondary">{% trans "Back to Workshop" %}</a>
 </div>
 {% endblock %}

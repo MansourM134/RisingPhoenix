@@ -1,6 +1,6 @@
 {% extends "main/base.html" %}
-{% load static %}
-{% block title %}Artisan Sign Up{% endblock %}
+{% load static i18n %}
+{% block title %}{% trans "Artisan Sign Up" %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -12,9 +12,9 @@
         <div class="col-lg-7 col-md-9">
             <div class="card saaf-auth-card shadow-sm border-0 rounded-4">
                 <div class="card-body p-4 p-md-5">
-                    <h2 class="mb-3 text-center">Create Artisan Account</h2>
+                    <h2 class="mb-3 text-center">{% trans "Create Artisan Account" %}</h2>
                     <p class="text-muted text-center mb-4">
-                        Join as an artisan and showcase your work, receive proposals, and grow your profile.
+                        {% trans "Join as an artisan and showcase your work, receive proposals, and grow your profile." %}
                     </p>
 
                     {% if user_form.non_field_errors %}
@@ -38,7 +38,7 @@
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="username" class="form-label">Username</label>
+                                <label for="username" class="form-label">{% trans "Username" %}</label>
                                 <input
                                     type="text"
                                     name="username"
@@ -53,7 +53,7 @@
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="email" class="form-label">Email</label>
+                                <label for="email" class="form-label">{% trans "Email" %}</label>
                                 <input
                                     type="email"
                                     name="email"
@@ -70,7 +70,7 @@
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="first_name" class="form-label">First name</label>
+                                <label for="first_name" class="form-label">{% trans "First name" %}</label>
                                 <input
                                     type="text"
                                     name="first_name"
@@ -84,7 +84,7 @@
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="last_name" class="form-label">Last name</label>
+                                <label for="last_name" class="form-label">{% trans "Last name" %}</label>
                                 <input
                                     type="text"
                                     name="last_name"
@@ -99,7 +99,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="phone" class="form-label">Phone</label>
+                            <label for="phone" class="form-label">{% trans "Phone" %}</label>
                             <input
                                 type="tel"
                                 name="phone"
@@ -108,14 +108,14 @@
                                 placeholder="+966501234567"
                                 value="{{ profile_form.phone.value|default_if_none:'' }}"
                             >
-                                <div class="form-text">Use digits only, with optional + and country code.</div>
+                                <div class="form-text">{% trans "Use digits only, with optional + and country code." %}</div>
                             {% for error in profile_form.phone.errors %}
                                 <div class="invalid-feedback d-block">{{ error }}</div>
                             {% endfor %}
                         </div>
 
                         <div class="mb-3">
-                            <label for="bio" class="form-label">Bio</label>
+                            <label for="bio" class="form-label">{% trans "Bio" %}</label>
                             <textarea
                                 name="bio"
                                 id="bio"
@@ -129,7 +129,7 @@
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="avatar" class="form-label">Avatar</label>
+                                <label for="avatar" class="form-label">{% trans "Avatar" %}</label>
                                 <input
                                     type="file"
                                     name="avatar"
@@ -140,12 +140,12 @@
                                     <div class="invalid-feedback d-block">{{ error }}</div>
                                 {% endfor %}
                                 <div class="form-text">
-                                    You can upload your own image or choose one of the default avatars below.
+                                    {% trans "You can upload your own image or choose one of the default avatars below." %}
                                 </div>
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label class="form-label d-block">Or choose a default avatar</label>
+                                <label class="form-label d-block">{% trans "Or choose a default avatar" %}</label>
                                 <div class="d-flex flex-wrap gap-3">
                                     {% for avatar in default_avatar_choices %}
                                         <label class="default-avatar-option text-center">
@@ -158,7 +158,7 @@
                                             >
                                             <img
                                                 src="{% static 'images/avatars/defaults/'|add:avatar %}"
-                                                alt="Default avatar"
+                                                alt="{% trans 'Default avatar' %}"
                                                 class="rounded-circle border shadow-sm default-avatar-preview"
                                                 style="width: 72px; height: 72px; object-fit: cover; cursor: pointer;"
                                             >
@@ -169,7 +169,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="password1" class="form-label">Password</label>
+                                <label for="password1" class="form-label">{% trans "Password" %}</label>
                                 <input
                                     type="password"
                                     name="password1"
@@ -183,7 +183,7 @@
                             </div>
 
                             <div class="col-md-6 mb-4">
-                                <label for="password2" class="form-label">Confirm password</label>
+                                <label for="password2" class="form-label">{% trans "Confirm password" %}</label>
                                 <input
                                     type="password"
                                     name="password2"
@@ -198,13 +198,13 @@
                         </div>
 
                         <button type="submit" class="btn btn-dark w-100 rounded-3">
-                            Create Artisan Account
+                            {% trans "Create Artisan Account" %}
                         </button>
                     </form>
 
                     <p class="text-center mt-4 mb-0">
-                        Already have an account?
-                        <a href="{% url 'account:login_view' %}">Login</a>
+                        {% trans "Already have an account?" %}
+                        <a href="{% url 'account:login_view' %}">{% trans "Login" %}</a>
                     </p>
                 </div>
             </div>

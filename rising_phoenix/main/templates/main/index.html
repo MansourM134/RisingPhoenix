@@ -1,7 +1,7 @@
 {% extends 'main/base.html' %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Saaf — Saudi Artisan Marketplace{% endblock %}
+{% block title %}Saaf — {% trans "Saudi Artisan Marketplace" %}{% endblock %}
 
 {% block sidebar %}
 {% include 'main/_sidebar.html' %}
@@ -17,34 +17,34 @@
     <div class="saaf-hero-overlay"></div>
     <div class="container-lg saaf-hero-content-wrap">
         <div class="saaf-hero-text">
-            <p class="saaf-eyebrow">— The Saudi artisan marketplace</p>
+            <p class="saaf-eyebrow">{% trans "— The Saudi artisan marketplace" %}</p>
             {% if request.user.artisanprofile %}
             <h1 class="saaf-hero-title mb-4">
-                Your next commission is <span class="saaf-text-accent">waiting</span>.
+                {% trans "Your next commission is <span class=\"saaf-text-accent\">waiting</span>." %}
             </h1>
             <p class="saaf-description mb-4">
-                Browse open requests from clients across Saudi Arabia, submit your proposal with a price and timeline, and get paid securely once delivery is confirmed.
+                {% trans "Browse open requests from clients across Saudi Arabia, submit your proposal with a price and timeline, and get paid securely once delivery is confirmed." %}
             </p>
             {% else %}
             <h1 class="saaf-hero-title mb-4">
-                Commission something made for you, by a real <span class="saaf-text-accent">artisan</span>.
+                {% trans "Commission something made for you, by a real <span class=\"saaf-text-accent\">artisan</span>." %}
             </h1>
             <p class="saaf-description mb-4">
-                Post your idea, receive proposals from skilled Saudi craftspeople, and track every step — from the first progress update to final delivery.
+                {% trans "Post your idea, receive proposals from skilled Saudi craftspeople, and track every step — from the first progress update to final delivery." %}
             </p>
             {% endif %}
             <div class="d-flex gap-3 flex-wrap">
                 {% if request.user.is_authenticated %}
                     {% if request.user.artisanprofile %}
-                        <a href="{% url 'request:request_list_view' %}" class="btn btn-saaf-primary rounded-pill">Browse Requests</a>
-                        <a href="{% url 'workshop:workshop_detail_view' request.user.id %}" class="btn btn-saaf-outline rounded-pill">My Workshop</a>
+                        <a href="{% url 'request:request_list_view' %}" class="btn btn-saaf-primary rounded-pill">{% trans "Browse Requests" %}</a>
+                        <a href="{% url 'workshop:workshop_detail_view' request.user.id %}" class="btn btn-saaf-outline rounded-pill">{% trans "My Workshop" %}</a>
                     {% else %}
-                        <a href="{% url 'request:request_create_view' %}" class="btn btn-saaf-primary rounded-pill">Post a Request</a>
-                        <a href="{% url 'main:browse_view' %}" class="btn btn-saaf-outline rounded-pill">Browse Artisans</a>
+                        <a href="{% url 'request:request_create_view' %}" class="btn btn-saaf-primary rounded-pill">{% trans "Post a Request" %}</a>
+                        <a href="{% url 'main:browse_view' %}" class="btn btn-saaf-outline rounded-pill">{% trans "Browse Artisans" %}</a>
                     {% endif %}
                 {% else %}
-                    <a href="{% url 'account:signup_view' %}" class="btn btn-saaf-primary rounded-pill">Get Started Free</a>
-                    <a href="{% url 'main:browse_view' %}" class="btn btn-saaf-outline rounded-pill">Browse Artisans</a>
+                    <a href="{% url 'account:signup_view' %}" class="btn btn-saaf-primary rounded-pill">{% trans "Get Started Free" %}</a>
+                    <a href="{% url 'main:browse_view' %}" class="btn btn-saaf-outline rounded-pill">{% trans "Browse Artisans" %}</a>
                 {% endif %}
             </div>
         </div>
@@ -54,8 +54,8 @@
 <!-- What can be commissioned -->
 <section class="saaf-section py-5 saaf-reveal">
     <div class="container-lg">
-        <p class="saaf-eyebrow text-center mb-2">— Categories</p>
-        <h2 class="saaf-section-title text-center mb-5">Craft categories for custom work</h2>
+        <p class="saaf-eyebrow text-center mb-2">{% trans "— Categories" %}</p>
+        <h2 class="saaf-section-title text-center mb-5">{% trans "Craft categories for custom work" %}</h2>
         <div class="row row-cols-2 row-cols-sm-3 row-cols-md-6 g-3">
             {% for category in home_categories %}
             <div class="col">
@@ -68,7 +68,7 @@
             <div class="col">
                 <a href="{% url 'main:browse_view' %}" class="saaf-craft-card text-decoration-none">
                     <i class="bi bi-grid saaf-craft-icon"></i>
-                    <span class="saaf-craft-label">Browse all</span>
+                    <span class="saaf-craft-label">{% trans "Browse all" %}</span>
                 </a>
             </div>
             {% endfor %}
@@ -80,28 +80,28 @@
 <section class="saaf-section py-5 saaf-reveal">
     <div class="container-lg">
         <div class="saaf-how-works-box">
-            <p class="saaf-eyebrow text-center mb-3">— How Saaf Works</p>
+            <p class="saaf-eyebrow text-center mb-3">— {% trans "How Saaf Works" %}</p>
             {% if request.user.artisanprofile %}
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 <div class="col">
                     <div class="saaf-step">
                         <h3 class="saaf-step-number">1</h3>
-                        <h5 class="mb-2">Browse Requests</h5>
-                        <p class="text-muted small">Explore open commission requests from clients. Filter by craft category, budget, and deadline.</p>
+                        <h5 class="mb-2">{% trans "Browse Requests" %}</h5>
+                        <p class="text-muted small">{% trans "Explore open commission requests from clients. Filter by craft category, budget, and deadline." %}</p>
                     </div>
                 </div>
                 <div class="col">
                     <div class="saaf-step">
                         <h3 class="saaf-step-number">2</h3>
-                        <h5 class="mb-2">Submit a Proposal</h5>
-                        <p class="text-muted small">Send your price, timeline, and a message. Annotate reference images to show exactly what you can deliver.</p>
+                        <h5 class="mb-2">{% trans "Submit a Proposal" %}</h5>
+                        <p class="text-muted small">{% trans "Send your price, timeline, and a message. Annotate reference images to show exactly what you can deliver." %}</p>
                     </div>
                 </div>
                 <div class="col">
                     <div class="saaf-step">
                         <h3 class="saaf-step-number saaf-step-accent">3</h3>
-                        <h5 class="mb-2">Deliver & Get Paid</h5>
-                        <p class="text-muted small">Post progress updates with photos as you work. Payment is released to you once the client confirms delivery.</p>
+                        <h5 class="mb-2">{% trans "Deliver & Get Paid" %}</h5>
+                        <p class="text-muted small">{% trans "Post progress updates with photos as you work. Payment is released to you once the client confirms delivery." %}</p>
                     </div>
                 </div>
             </div>
@@ -110,22 +110,22 @@
                 <div class="col">
                     <div class="saaf-step">
                         <h3 class="saaf-step-number">1</h3>
-                        <h5 class="mb-2">Post Your Request</h5>
-                        <p class="text-muted small">Describe your custom piece, upload reference images, and set a budget — or leave it flexible.</p>
+                        <h5 class="mb-2">{% trans "Post Your Request" %}</h5>
+                        <p class="text-muted small">{% trans "Describe your custom piece, upload reference images, and set a budget — or leave it flexible." %}</p>
                     </div>
                 </div>
                 <div class="col">
                     <div class="saaf-step">
                         <h3 class="saaf-step-number">2</h3>
-                        <h5 class="mb-2">Choose Your Artisan</h5>
-                        <p class="text-muted small">Review proposals from skilled craftspeople. Compare prices and timelines, then accept the best fit.</p>
+                        <h5 class="mb-2">{% trans "Choose Your Artisan" %}</h5>
+                        <p class="text-muted small">{% trans "Review proposals from skilled craftspeople. Compare prices and timelines, then accept the best fit." %}</p>
                     </div>
                 </div>
                 <div class="col">
                     <div class="saaf-step">
                         <h3 class="saaf-step-number saaf-step-accent">3</h3>
-                        <h5 class="mb-2">Track & Confirm</h5>
-                        <p class="text-muted small">Follow photo updates from your artisan, leave feedback, and confirm delivery. Payment releases only when you're satisfied.</p>
+                        <h5 class="mb-2">{% trans "Track & Confirm" %}</h5>
+                        <p class="text-muted small">{% trans "Follow photo updates from your artisan, leave feedback, and confirm delivery. Payment releases only when you're satisfied." %}</p>
                     </div>
                 </div>
             </div>
@@ -138,8 +138,8 @@
 <section class="saaf-section py-5 saaf-reveal">
     <div class="container-lg">
         {% if home_feed_type == 'requests' %}
-        <p class="saaf-eyebrow text-center mb-2">— Open commissions</p>
-        <h2 class="saaf-section-title text-center mb-5">Latest requests looking for an artisan</h2>
+        <p class="saaf-eyebrow text-center mb-2">{% trans "— Open commissions" %}</p>
+        <h2 class="saaf-section-title text-center mb-5">{% trans "Latest requests looking for an artisan" %}</h2>
         {% if latest_requests %}
         <div class="row g-4">
             {% for project_request in latest_requests %}
@@ -167,12 +167,12 @@
         </div>
         {% else %}
         <div class="saaf-featured-card text-center p-4">
-            <p class="mb-0 text-muted">No recent requests yet.</p>
+            <p class="mb-0 text-muted">{% trans "No recent requests yet." %}</p>
         </div>
         {% endif %}
         {% else %}
-        <p class="saaf-eyebrow text-center mb-2">— Top rated artisans</p>
-        <h2 class="saaf-section-title text-center mb-5">Highest rated workshops on Saaf</h2>
+        <p class="saaf-eyebrow text-center mb-2">{% trans "— Top rated artisans" %}</p>
+        <h2 class="saaf-section-title text-center mb-5">{% trans "Highest rated workshops on Saaf" %}</h2>
         {% if top_rated_workshops %}
         <div class="row g-4">
             {% for workshop in top_rated_workshops %}
@@ -188,8 +188,8 @@
                         </div>
                         <div class="saaf-product-body">
                             <h5 class="mb-2">{{ workshop.workshop_name }}</h5>
-                            <p class="text-muted small mb-2">{{ workshop.tagline|default:"Saudi artisan workshop"|truncatechars:70 }}</p>
-                            <p class="saaf-price-tag mb-1">{{ workshop.location|default:"Saudi Arabia" }}</p>
+                            <p class="text-muted small mb-2">{{ workshop.tagline|default:_("Saudi artisan workshop")|truncatechars:70 }}</p>
+                            <p class="saaf-price-tag mb-1">{{ workshop.location|default:_("Saudi Arabia") }}</p>
                             <small class="text-muted">⭐ {{ workshop.avg_rating|default:0|floatformat:1 }} / 5</small>
                         </div>
                     </div>
@@ -199,7 +199,7 @@
         </div>
         {% else %}
         <div class="saaf-featured-card text-center p-4">
-            <p class="mb-0 text-muted">No published workshops yet.</p>
+            <p class="mb-0 text-muted">{% trans "No published workshops yet." %}</p>
         </div>
         {% endif %}
         {% endif %}
@@ -212,11 +212,11 @@
     <div class="container-lg">
         <div class="saaf-artisan-cta-banner">
             <div>
-                <p class="saaf-eyebrow mb-1">— For craftspeople</p>
-                <h3 class="saaf-artisan-cta-title mb-2">Are you a Saudi craftsperson?</h3>
-                <p class="text-muted mb-0">Showcase your craft on Saaf. Receive commission requests, set your own price and timeline, and get paid securely.</p>
+                <p class="saaf-eyebrow mb-1">{% trans "— For craftspeople" %}</p>
+                <h3 class="saaf-artisan-cta-title mb-2">{% trans "Are you a Saudi craftsperson?" %}</h3>
+                <p class="text-muted mb-0">{% trans "Showcase your craft on Saaf. Receive commission requests, set your own price and timeline, and get paid securely." %}</p>
             </div>
-            <a href="{% url 'account:artisan_signup_view' %}" class="btn btn-saaf-primary rounded-pill flex-shrink-0">Join as an Artisan</a>
+            <a href="{% url 'account:artisan_signup_view' %}" class="btn btn-saaf-primary rounded-pill flex-shrink-0">{% trans "Join as an Artisan" %}</a>
         </div>
     </div>
 </section>

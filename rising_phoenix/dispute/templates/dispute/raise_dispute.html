@@ -1,6 +1,7 @@
 {% extends "main/base.html" %}
+{% load i18n %}
 
-{% block title %}Raise a Dispute{% endblock %}
+{% block title %}{% trans "Raise a Dispute" %}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -81,18 +82,15 @@
 {% block content %}
 <div class="dispute-shell">
     <div class="dispute-card">
-        <p class="dispute-eyebrow"><i class="bi bi-exclamation-octagon-fill"></i> Raise a Dispute</p>
-        <h1 class="dispute-title">Open a dispute on this project</h1>
-        <p class="dispute-sub">
-            Our staff will review the conversation and progress, message you and the other party privately,
-            and resolve the issue. Completion actions on this project are paused while a dispute is open.
-        </p>
+        <p class="dispute-eyebrow"><i class="bi bi-exclamation-octagon-fill"></i> {% trans "Raise a Dispute" %}</p>
+        <h1 class="dispute-title">{% trans "Open a dispute on this project" %}</h1>
+        <p class="dispute-sub">{% trans "Our staff will review the conversation and progress, message you and the other party privately, and resolve the issue. Completion actions on this project are paused while a dispute is open." %}</p>
 
         <div class="target-box">
-            <strong>Project:</strong> {{ contract.proposal.request.title }}<br>
-            <strong>Requester:</strong> {{ contract.requester.username }} &middot;
-            <strong>Artisan:</strong> {{ contract.artisan.username }}<br>
-            <strong>Status:</strong> {{ contract.get_status_display }}
+            <strong>{% trans "Project:" %}</strong> {{ contract.proposal.request.title }}<br>
+            <strong>{% trans "Requester:" %}</strong> {{ contract.requester.username }} &middot;
+            <strong>{% trans "Artisan:" %}</strong> {{ contract.artisan.username }}<br>
+            <strong>{% trans "Status:" %}</strong> {{ contract.get_status_display }}
         </div>
 
         <form method="POST">
@@ -108,9 +106,9 @@
 
             <div class="dispute-actions">
                 <button type="submit" class="btn-submit">
-                    <i class="bi bi-exclamation-octagon-fill"></i> Open Dispute
+                    <i class="bi bi-exclamation-octagon-fill"></i> {% trans "Open Dispute" %}
                 </button>
-                <a href="{% url 'progress:contract_detail_view' contract.id %}" class="btn-cancel">Cancel</a>
+                <a href="{% url 'progress:contract_detail_view' contract.id %}" class="btn-cancel">{% trans "Cancel" %}</a>
             </div>
         </form>
     </div>

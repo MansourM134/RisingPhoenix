@@ -10,6 +10,7 @@ from notification.utils import notify
 from .models import StripeCustomer, PaymentMethod, EscrowPayment
 from django.conf import settings
 from django.contrib import messages
+from django.utils.translation import gettext as _
 import stripe
 from request.models import Request
 from proposal.models import Proposal
@@ -75,7 +76,7 @@ def remove_card_view(request, card_id):
     try:
         stripe.PaymentMethod.detach(card.stripe_payment_method_id)
     except stripe.error.StripeError:
-        messages.error(request, 'Could not remove this card right now. Please try again.')
+        messages.error(request, _('Could not remove this card right now. Please try again.'))
         return redirect('payment:my_cards')
 
     was_default = card.is_default
@@ -88,7 +89,7 @@ def remove_card_view(request, card_id):
             next_card.is_default = True
             next_card.save(update_fields=['is_default'])
 
-    messages.success(request, 'Card removed successfully.')
+    messages.success(request, _('Card removed successfully.'))
     return redirect('payment:my_cards')
 
 
@@ -128,15 +129,15 @@ def proposal_checkout_view(request, proposal_id):
     project_request = proposal.request
 
     if project_request.requester != request.user:
-        messages.error(request, 'Only the requester can pay for this proposal.')
+        messages.error(request, _('Only the requester can pay for this proposal.'))
         return redirect('request:request_detail_view', request_id=project_request.id)
 
     if not proposal.is_pending:
-        messages.error(request, 'This proposal is no longer pending.')
+        messages.error(request, _('This proposal is no longer pending.'))
         return redirect('request:request_detail_view', request_id=project_request.id)
 
     if project_request.status == Request.Status.CLOSED:
-        messages.error(request, 'This request is already closed.')
+        messages.error(request, _('This request is already closed.'))
         return redirect('request:request_detail_view', request_id=project_request.id)
 
     cards = request.user.payment_methods.all().order_by('-is_default', '-created_at')
@@ -166,24 +167,24 @@ def artisan_contract_review_view(request, contract_id):
     )
 
     if request.user != contract.artisan:
-        messages.error(request, 'Only the artisan can review this contract.')
+        messages.error(request, _('Only the artisan can review this contract.'))
         return redirect('request:request_detail_view', request_id=contract.proposal.request.id)
 
     if contract.status == Contract.Status.CANCELED:
-        messages.error(request, 'This contract has been canceled.')
+        messages.error(request, _('This contract has been canceled.'))
         return redirect('progress:contract_detail_view', contract_id=contract.id)
 
     if contract.status == Contract.Status.COMPLETED:
-        messages.info(request, 'This contract has already been completed.')
+        messages.info(request, _('This contract has already been completed.'))
         return redirect('progress:contract_detail_view', contract_id=contract.id)
 
     if not contract.requester_accepted_at:
-        messages.error(request, 'The requester has not accepted this contract yet.')
+        messages.error(request, _('The requester has not accepted this contract yet.'))
         return redirect('request:request_detail_view', request_id=contract.proposal.request.id)
 
     escrow_payment = getattr(contract, 'escrow_payment', None)
     if not escrow_payment or escrow_payment.status != 'authorized' or escrow_payment.captured:
-        messages.error(request, 'This contract does not have a valid authorized payment hold.')
+        messages.error(request, _('This contract does not have a valid authorized payment hold.'))
         return redirect('request:request_detail_view', request_id=contract.proposal.request.id)
 
     context = {
@@ -204,21 +205,21 @@ def confirm_proposal_payment_view(request, proposal_id):
     project_request = proposal.request
 
     if project_request.requester != request.user:
-        messages.error(request, 'Only the requester can pay for this proposal.')
+        messages.error(request, _('Only the requester can pay for this proposal.'))
         return redirect('request:request_detail_view', request_id=project_request.id)
 
     if proposal.status != Proposal.Status.PENDING:
-        messages.error(request, 'This proposal is no longer available for payment.')
+        messages.error(request, _('This proposal is no longer available for payment.'))
         return redirect('request:request_detail_view', request_id=project_request.id)
 
     payment_method_id = request.POST.get('payment_method')
     if not payment_method_id:
-        messages.error(request, 'Please select a payment method.')
+        messages.error(request, _('Please select a payment method.'))
         return redirect('payment:proposal_checkout_view', proposal_id=proposal.id)
 
     stripe_customer = getattr(request.user, 'stripe_customer', None)
     if not stripe_customer:
-        messages.error(request, 'Please add a card first.')
+        messages.error(request, _('Please add a card first.'))
         return redirect('payment:add_card')
 
     selected_card = request.user.payment_methods.filter(
@@ -226,7 +227,7 @@ def confirm_proposal_payment_view(request, proposal_id):
     ).first()
 
     if not selected_card:
-        messages.error(request, 'Selected payment method is invalid.')
+        messages.error(request, _('Selected payment method is invalid.'))
         return redirect('payment:proposal_checkout_view', proposal_id=proposal.id)
 
     amount_in_halalas = int(Decimal(proposal.price) * 100)
@@ -248,10 +249,10 @@ def confirm_proposal_payment_view(request, proposal_id):
             }
         )
     except stripe.error.CardError as e:
-        messages.error(request, e.user_message or 'Your card was declined.')
+        messages.error(request, e.user_message or _('Your card was declined.'))
         return redirect('payment:proposal_checkout_view', proposal_id=proposal.id)
     except stripe.error.StripeError:
-        messages.error(request, 'Unable to process payment right now.')
+        messages.error(request, _('Unable to process payment right now.'))
         return redirect('payment:proposal_checkout_view', proposal_id=proposal.id)
 
     if payment_intent.status != 'requires_capture':
@@ -318,7 +319,7 @@ def confirm_proposal_payment_view(request, proposal_id):
         link=reverse('progress:contract_detail_view', kwargs={'contract_id': contract.id}),
     )
 
-    messages.success(request, 'Payment authorized successfully. The contract was sent to the artisan for approval.')
+    messages.success(request, _('Payment authorized successfully. The contract was sent to the artisan for approval.'))
     return redirect('progress:contract_detail_view', contract_id=contract.id)
 
 
@@ -339,40 +340,40 @@ def artisan_accept_contract_view(request, contract_id):
     )
 
     if request.method != 'POST':
-        messages.error(request, 'Invalid request method.')
+        messages.error(request, _('Invalid request method.'))
         return redirect('payment:artisan_contract_review_view', contract_id=contract.id)
 
     if request.user != contract.artisan:
-        messages.error(request, 'Only the artisan can accept this contract.')
+        messages.error(request, _('Only the artisan can accept this contract.'))
         return redirect('request:request_detail_view', request_id=contract.proposal.request.id)
 
     if contract.status == Contract.Status.COMPLETED:
-        messages.info(request, 'This contract has already been completed.')
+        messages.info(request, _('This contract has already been completed.'))
         return redirect('progress:contract_detail_view', contract_id=contract.id)
 
     if contract.status == Contract.Status.CANCELED:
-        messages.error(request, 'This contract has been canceled.')
+        messages.error(request, _('This contract has been canceled.'))
         return redirect('request:request_detail_view', request_id=contract.proposal.request.id)
 
     if not contract.requester_accepted_at:
-        messages.error(request, 'The requester must accept the contract first.')
+        messages.error(request, _('The requester must accept the contract first.'))
         return redirect('payment:artisan_contract_review_view', contract_id=contract.id)
 
     if contract.artisan_accepted_at:
-        messages.info(request, 'You already accepted this contract.')
+        messages.info(request, _('You already accepted this contract.'))
         return redirect('progress:contract_detail_view', contract_id=contract.id)
 
     if contract.status != Contract.Status.PENDING_ARTISAN:
-        messages.error(request, 'This contract is not waiting for artisan acceptance.')
+        messages.error(request, _('This contract is not waiting for artisan acceptance.'))
         return redirect('request:request_detail_view', request_id=contract.proposal.request.id)
 
     escrow_payment = getattr(contract, 'escrow_payment', None)
     if not escrow_payment:
-        messages.error(request, 'No authorized escrow payment was found for this contract.')
+        messages.error(request, _('No authorized escrow payment was found for this contract.'))
         return redirect('payment:artisan_contract_review_view', contract_id=contract.id)
 
     if escrow_payment.status != 'authorized' or escrow_payment.captured:
-        messages.error(request, 'This escrow payment is not in a valid authorized state.')
+        messages.error(request, _('This escrow payment is not in a valid authorized state.'))
         return redirect('payment:artisan_contract_review_view', contract_id=contract.id)
 
     expires_at = escrow_payment.created_at + timedelta(days=7)
@@ -391,13 +392,13 @@ def artisan_accept_contract_view(request, contract_id):
         contract.status = Contract.Status.CANCELED
         contract.save(update_fields=['status', 'updated_at'])
 
-        messages.error(request, 'This payment hold expired after 7 days. The contract can no longer be accepted.')
+        messages.error(request, _('This payment hold expired after 7 days. The contract can no longer be accepted.'))
         return redirect('request:request_detail_view', request_id=contract.proposal.request.id)
 
     try:
         stripe.PaymentIntent.capture(escrow_payment.stripe_payment_intent_id)
     except stripe.error.StripeError:
-        messages.error(request, 'The payment could not be captured. Please try again.')
+        messages.error(request, _('The payment could not be captured. Please try again.'))
         return redirect('payment:artisan_contract_review_view', contract_id=contract.id)
 
     with transaction.atomic():
@@ -416,9 +417,9 @@ def artisan_accept_contract_view(request, contract_id):
     try:
         send_contract_pdf_email(contract)
     except Exception:
-        messages.warning(request, 'Contract accepted, but the PDF email could not be sent.')
+        messages.warning(request, _('Contract accepted, but the PDF email could not be sent.'))
 
-    messages.success(request, 'Contract accepted and payment captured successfully.')
+    messages.success(request, _('Contract accepted and payment captured successfully.'))
     return redirect('progress:contract_detail_view', contract_id=contract.id)
 
 def artisan_reject_contract_view(request, contract_id):
@@ -428,16 +429,16 @@ def artisan_reject_contract_view(request, contract_id):
     )
 
     if request.method != 'POST':
-        messages.error(request, 'Invalid request method.')
+        messages.error(request, _('Invalid request method.'))
         return redirect('payment:artisan_contract_review_view', contract_id=contract.id)
 
     if request.user != contract.artisan:
-        messages.error(request, 'Only the artisan can reject this contract.')
+        messages.error(request, _('Only the artisan can reject this contract.'))
         return redirect('request:request_detail_view', request_id=contract.proposal.request.id)
 
     escrow_payment = getattr(contract, 'escrow_payment', None)
     if not escrow_payment:
-        messages.error(request, 'No escrow payment was found for this contract.')
+        messages.error(request, _('No escrow payment was found for this contract.'))
         return redirect('payment:artisan_contract_review_view', contract_id=contract.id)
 
     if escrow_payment.status == 'authorized' and not escrow_payment.captured:
@@ -447,7 +448,7 @@ def artisan_reject_contract_view(request, contract_id):
                 cancellation_reason='abandoned',
             )
         except stripe.error.StripeError:
-            messages.error(request, 'Unable to cancel the payment hold right now.')
+            messages.error(request, _('Unable to cancel the payment hold right now.'))
             return redirect('payment:artisan_contract_review_view', contract_id=contract.id)
 
     with transaction.atomic():
@@ -466,7 +467,7 @@ def artisan_reject_contract_view(request, contract_id):
             conversation.save(update_fields=['is_active'])
 
 
-    messages.success(request, 'Contract rejected and payment hold canceled.')
+    messages.success(request, _('Contract rejected and payment hold canceled.'))
     return redirect('request:request_detail_view', request_id=contract.proposal.request.id)
 
 logger = logging.getLogger(__name__)

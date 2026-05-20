@@ -1,6 +1,7 @@
 {% extends "main/base.html" %}
+{% load i18n %}
 
-{% block title %}Add Card{% endblock %}
+{% block title %}{% trans "Add Card" %}{% endblock %}
 
 {% block content %}
 <div class="container py-5">
@@ -8,12 +9,12 @@
         <div class="col-lg-6">
             <div class="card shadow-sm border-0">
                 <div class="card-body p-4">
-                    <h2 class="mb-4">Add a Card</h2>
+                    <h2 class="mb-4">{% trans "Add a Card" %}</h2>
 
                     <form id="payment-form">
                         <div id="payment-element" class="mb-3"></div>
                         <button id="submit" class="btn btn-primary w-100">
-                            Save Card
+                            {% trans "Save Card" %}
                         </button>
                         <div id="error-message" class="text-danger mt-3"></div>
                     </form>

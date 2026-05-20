@@ -1,6 +1,7 @@
 {% extends "main/base.html" %}
+{% load i18n %}
 
-{% block title %}My Reports{% endblock %}
+{% block title %}{% trans "My Reports" %}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -66,9 +67,9 @@
 
 {% block content %}
 <div class="page-shell">
-    <p class="page-eyebrow"><i class="bi bi-flag-fill"></i> My Activity</p>
-    <h1 class="page-title">My Reports</h1>
-    <p class="page-sub">Track the status of reports you have submitted to the moderation team.</p>
+    <p class="page-eyebrow"><i class="bi bi-flag-fill"></i> {% trans "My Activity" %}</p>
+    <h1 class="page-title">{% trans "My Reports" %}</h1>
+    <p class="page-sub">{% trans "Track the status of reports you have submitted to the moderation team." %}</p>
 
     {% if messages %}
         {% for message in messages %}
@@ -85,11 +86,11 @@
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th>What was reported</th>
-                        <th>Reason</th>
-                        <th>Status</th>
-                        <th>Submitted</th>
-                        <th>Resolution note</th>
+                        <th>{% trans "What was reported" %}</th>
+                        <th>{% trans "Reason" %}</th>
+                        <th>{% trans "Status" %}</th>
+                        <th>{% trans "Submitted" %}</th>
+                        <th>{% trans "Resolution note" %}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -106,23 +107,23 @@
                             {% elif report.content_type == 'portfolio_image' and report.reported_portfolio_image %}
                                 {{ report.reported_portfolio_image.caption|default:"(no caption)" }}
                             {% elif report.content_type == 'review' and report.reported_review %}
-                                Review by {{ report.reported_review.reviews_given.username }}
+                                {% blocktrans with username=report.reported_review.reviews_given.username %}Review by {{ username }}{% endblocktrans %}
                             {% elif report.content_type == 'message' and report.reported_message %}
-                                Message from {{ report.reported_message.sender.username }}
+                                {% blocktrans with username=report.reported_message.sender.username %}Message from {{ username }}{% endblocktrans %}
                             {% else %}
-                                <span class="text-muted">[removed]</span>
+                                <span class="text-muted">{% trans "[removed]" %}</span>
                             {% endif %}
                         </td>
                         <td>{{ report.get_reason_display }}</td>
                         <td>
                             {% if report.status == 'pending' %}
-                                <span class="badge bg-warning text-dark">Pending</span>
+                                <span class="badge bg-warning text-dark">{% trans "Pending" %}</span>
                             {% elif report.status == 'reviewed' %}
-                                <span class="badge bg-info text-dark">Under Review</span>
+                                <span class="badge bg-info text-dark">{% trans "Under Review" %}</span>
                             {% elif report.status == 'resolved' %}
-                                <span class="badge bg-success">Resolved</span>
+                                <span class="badge bg-success">{% trans "Resolved" %}</span>
                             {% elif report.status == 'dismissed' %}
-                                <span class="badge bg-secondary">Dismissed</span>
+                                <span class="badge bg-secondary">{% trans "Dismissed" %}</span>
                             {% endif %}
                         </td>
                         <td class="text-muted" style="white-space:nowrap;">
@@ -139,7 +140,7 @@
         {% else %}
         <div class="empty-state">
             <i class="bi bi-flag"></i>
-            <p class="mb-0">You haven't submitted any reports yet.</p>
+            <p class="mb-0">{% trans "You haven't submitted any reports yet." %}</p>
         </div>
         {% endif %}
     </div>

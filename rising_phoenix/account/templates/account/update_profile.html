@@ -1,4 +1,5 @@
 {% extends "main/base.html" %}
+{% load i18n %}
 
 {% block sidebar %}
 {% include 'main/_sidebar.html' with active='profile' %}
@@ -8,57 +9,57 @@
 <section class="py-4 py-md-5">
     <div class="container-lg">
         <div class="saaf-dashboard-card rounded-4 p-4 p-md-5">
-            <p class="saaf-eyebrow mb-2">Profile</p>
-            <h1 class="saaf-section-title mb-4">Update Profile</h1>
+            <p class="saaf-eyebrow mb-2">{% trans "Profile" %}</p>
+            <h1 class="saaf-section-title mb-4">{% trans "Update Profile" %}</h1>
 
             <form action="" method="post" enctype="multipart/form-data" class="row g-3">
                 {% csrf_token %}
 
                 <div class="col-md-6">
-                    <label for="first_name" class="form-label">First Name</label>
+                    <label for="first_name" class="form-label">{% trans "First Name" %}</label>
                     <input type="text" class="form-control {% if user_form.first_name.errors %}is-invalid{% endif %}" id="first_name" name="first_name" value="{{ user_form.first_name.value|default:user.first_name|default:'' }}">
                     {% for error in user_form.first_name.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
                 </div>
 
                 <div class="col-md-6">
-                    <label for="last_name" class="form-label">Last Name</label>
+                    <label for="last_name" class="form-label">{% trans "Last Name" %}</label>
                     <input type="text" class="form-control {% if user_form.last_name.errors %}is-invalid{% endif %}" id="last_name" name="last_name" value="{{ user_form.last_name.value|default:user.last_name|default:'' }}">
                     {% for error in user_form.last_name.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
                 </div>
 
                 <div class="col-md-6">
-                    <label for="username" class="form-label">Username</label>
+                    <label for="username" class="form-label">{% trans "Username" %}</label>
                     <input type="text" class="form-control {% if user_form.username.errors %}is-invalid{% endif %}" id="username" name="username" value="{{ user_form.username.value|default:user.username|default:'' }}">
                     {% for error in user_form.username.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
                 </div>
 
                 <div class="col-md-6">
-                    <label for="email" class="form-label">Email</label>
+                    <label for="email" class="form-label">{% trans "Email" %}</label>
                     <input type="email" class="form-control {% if user_form.email.errors %}is-invalid{% endif %}" id="email" name="email" value="{{ user_form.email.value|default:user.email|default:'' }}">
                     {% for error in user_form.email.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
                 </div>
 
                 <div class="col-md-6">
-                    <label for="phone" class="form-label">Phone</label>
+                    <label for="phone" class="form-label">{% trans "Phone" %}</label>
                     <input type="tel" class="form-control {% if profile_form.phone.errors %}is-invalid{% endif %}" id="phone" name="phone" value="{{ user_profile.phone|default:'' }}">
                     {% for error in profile_form.phone.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
                 </div>
 
                 <div class="col-md-6">
-                    <label for="avatar" class="form-label">Avatar</label>
+                    <label for="avatar" class="form-label">{% trans "Avatar" %}</label>
                     <input type="file" class="form-control {% if profile_form.avatar.errors %}is-invalid{% endif %}" id="avatar" name="avatar">
                     {% for error in profile_form.avatar.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
                 </div>
 
                 <div class="col-12">
-                    <label for="bio" class="form-label">Bio</label>
+                    <label for="bio" class="form-label">{% trans "Bio" %}</label>
                     <textarea class="form-control {% if profile_form.bio.errors %}is-invalid{% endif %}" id="bio" name="bio" rows="4">{{ profile_form.bio.value|default:user_profile.bio|default:'' }}</textarea>
                     {% for error in profile_form.bio.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
                 </div>
 
                 <div class="col-12 d-flex flex-wrap gap-2">
-                    <button type="submit" class="btn btn-saaf-primary rounded-pill">Save Changes</button>
-                    <a href="{% url 'account:profile_view' user.username %}" class="btn btn-saaf-outline rounded-pill">Back to Profile</a>
+                    <button type="submit" class="btn btn-saaf-primary rounded-pill">{% trans "Save Changes" %}</button>
+                    <a href="{% url 'account:profile_view' user.username %}" class="btn btn-saaf-outline rounded-pill">{% trans "Back to Profile" %}</a>
                 </div>
             </form>
         </div>

@@ -1,8 +1,7 @@
 {% extends 'main/base.html' %}
+{% load i18n %}
 
-{% block title %}
-Completed Projects
-{% endblock %}
+{% block title %}{% trans "Completed Projects" %}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -132,11 +131,11 @@ Completed Projects
 <div class="project-shell">
 
     <h1 class="page-title">
-        Completed Projects
+        {% trans "Completed Projects" %}
     </h1>
 
     <div class="page-subtitle">
-        Explore completed requests by {{ workshop.workshop_name }}
+        {% blocktrans with name=workshop.workshop_name %}Explore completed requests by {{ name }}{% endblocktrans %}
     </div>
 
     {% if projects %}
@@ -172,7 +171,7 @@ Completed Projects
                             {% else %}
 
                                 <div class="empty-image">
-                                    No Image
+                                    {% trans "No Image" %}
                                 </div>
 
                             {% endif %}
@@ -201,7 +200,7 @@ Completed Projects
 
                     {% if project.is_featured %}
                     <div class="verified-badge">
-                        ✓ Verified Completed Project
+                        ✓ {% trans "Verified Completed Project" %}
                     </div>
                     {% endif %}
 
@@ -218,7 +217,7 @@ Completed Projects
     {% else %}
 
     <div class="empty-projects">
-        No completed projects available yet.
+        {% trans "No completed projects available yet." %}
     </div>
 
     {% endif %}

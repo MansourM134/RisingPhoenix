@@ -1,6 +1,7 @@
 {% extends "main/base.html" %}
+{% load i18n %}
 
-{% block title %}Dispute on {{ contract.proposal.request.title }}{% endblock %}
+{% block title %}{% blocktrans with title=contract.proposal.request.title %}Dispute on {{ title }}{% endblocktrans %}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -63,11 +64,11 @@
 
 {% block content %}
 <div class="dispute-shell">
-    <p class="dispute-eyebrow"><i class="bi bi-exclamation-octagon-fill"></i> Dispute</p>
+    <p class="dispute-eyebrow"><i class="bi bi-exclamation-octagon-fill"></i> {% trans "Dispute" %}</p>
     <h1 class="dispute-h1">{{ contract.proposal.request.title }}</h1>
     <p class="dispute-sub">
         <a href="{% url 'progress:contract_detail_view' contract.id %}" class="text-decoration-none">
-            <i class="bi bi-arrow-left"></i> Back to project
+            <i class="bi bi-arrow-left"></i> {% trans "Back to project" %}
         </a>
     </p>
 
@@ -81,24 +82,24 @@
     {% endif %}
 
     <div class="info-card">
-        <h3>Dispute summary</h3>
+        <h3>{% trans "Dispute summary" %}</h3>
         <div class="info-row">
             <span>
-                <strong>Status:</strong>
+                <strong>{% trans "Status:" %}</strong>
                 {% if dispute.status == 'open' %}
-                    <span class="status-pill badge-status-open">Open</span>
+                    <span class="status-pill badge-status-open">{% trans "Open" %}</span>
                 {% elif dispute.status == 'in_review' %}
-                    <span class="status-pill badge-status-review">Under Review</span>
+                    <span class="status-pill badge-status-review">{% trans "Under Review" %}</span>
                 {% elif dispute.status == 'resolved' %}
-                    <span class="status-pill badge-status-resolved">Resolved</span>
+                    <span class="status-pill badge-status-resolved">{% trans "Resolved" %}</span>
                 {% elif dispute.status == 'dismissed' %}
-                    <span class="status-pill badge-status-dismissed">Dismissed</span>
+                    <span class="status-pill badge-status-dismissed">{% trans "Dismissed" %}</span>
                 {% endif %}
             </span>
-            <span><strong>Reason:</strong> {{ dispute.get_reason_display }}</span>
-            <span><strong>Opened by:</strong> {{ dispute.opened_by.username|default:"[deleted]" }}</span>
-            <span><strong>Opened:</strong> {{ dispute.created_at|date:"M j, Y · g:i a" }}</span>
-            {% if other_party %}<span><strong>Other party:</strong> {{ other_party.username }}</span>{% endif %}
+            <span><strong>{% trans "Reason:" %}</strong> {{ dispute.get_reason_display }}</span>
+            <span><strong>{% trans "Opened by:" %}</strong> {{ dispute.opened_by.username|default:"[deleted]" }}</span>
+            <span><strong>{% trans "Opened:" %}</strong> {{ dispute.created_at|date:"M j, Y · g:i a" }}</span>
+            {% if other_party %}<span><strong>{% trans "Other party:" %}</strong> {{ other_party.username }}</span>{% endif %}
         </div>
         <hr style="margin:14px 0;border-color:var(--border-light);">
         <p style="margin:0;color:#2c1f1a;white-space:pre-wrap;">{{ dispute.description }}</p>
@@ -113,8 +114,8 @@
 
     <div class="thread-card">
         <div class="thread-header">
-            <h3><i class="bi bi-chat-square-text-fill"></i> Your private channel with staff</h3>
-            <p class="small mb-0">Only you and the moderation team can see these messages. The other party has their own separate channel.</p>
+            <h3><i class="bi bi-chat-square-text-fill"></i> {% trans "Your private channel with staff" %}</h3>
+            <p class="small mb-0">{% trans "Only you and the moderation team can see these messages. The other party has their own separate channel." %}</p>
         </div>
         <div class="thread-body">
             {% if thread %}
@@ -124,15 +125,13 @@
                             {% if msg.image %}<a href="{{ msg.image.url }}" target="_blank"><img class="msg-image" src="{{ msg.image.url }}" alt="attachment"></a>{% endif %}
                         </div>
                         <div class="msg-meta">
-                            {% if msg.sender == request.user %}You{% elif msg.sender.is_staff %}Staff — {{ msg.sender.username }}{% else %}{{ msg.sender.username }}{% endif %}
+                            {% if msg.sender == request.user %}{% trans "You" %}{% elif msg.sender.is_staff %}{% blocktrans with username=msg.sender.username %}Staff — {{ username }}{% endblocktrans %}{% else %}{{ msg.sender.username }}{% endif %}
                             · {{ msg.created_at|date:"M j · g:i a" }}
                         </div>
                     </div>
                 {% endfor %}
             {% else %}
-                <div class="thread-empty">
-                    No messages yet. Send the first one or wait for staff to reach out.
-                </div>
+                <div class="thread-empty">{% trans "No messages yet. Send the first one or wait for staff to reach out." %}</div>
             {% endif %}
         </div>
         {% if dispute.is_open %}
@@ -141,17 +140,17 @@
             {{ message_form.body }}
             <div class="compose-actions">
                 <label class="text-muted small mb-0">
-                    <i class="bi bi-paperclip"></i> Optional image:
+                    <i class="bi bi-paperclip"></i> {% trans "Optional image:" %}
                     {{ message_form.image }}
                 </label>
                 <button type="submit" class="btn btn-saaf-primary">
-                    <i class="bi bi-send"></i> Send
+                    <i class="bi bi-send"></i> {% trans "Send" %}
                 </button>
             </div>
         </form>
         {% else %}
         <div class="compose-card text-center text-muted small">
-            This dispute is closed. You can no longer send messages.
+            {% trans "This dispute is closed. You can no longer send messages." %}
         </div>
         {% endif %}
     </div>

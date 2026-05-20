@@ -1,112 +1,38 @@
 {% extends 'main/base.html' %}
 {% load i18n %}
 
-{% block title %}{% if LANGUAGE_CODE == 'ar' %}الشروط والأحكام | سعف{% else %}Terms and Conditions | Saaf{% endif %}{% endblock %}
+{% block title %}{% trans "Terms and Conditions" %} | Saaf{% endblock %}
 
 {% block content %}
 <section class="container-lg py-5">
     <div class="row justify-content-center">
         <div class="col-lg-10">
             <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5">
-                <h1 class="fw-bold mb-4">{% if LANGUAGE_CODE == 'ar' %}الشروط والأحكام{% else %}Terms and Conditions{% endif %}</h1>
+                <h1 class="fw-bold mb-4">{% trans "Terms and Conditions" %}</h1>
 
-                {% if LANGUAGE_CODE == 'ar' %}
-                    <h5 class="fw-bold mt-4">1. القبول بالشروط</h5>
-                    <p>
-                        باستخدامك لمنصة سعف، فإنك توافق على الالتزام بهذه الشروط والأحكام. في حال عدم الموافقة على أي بند،
-                        يرجى التوقف عن استخدام المنصة.
-                    </p>
+                <h5 class="fw-bold mt-4">{% trans "1. Acceptance of Terms" %}</h5>
+                <p>{% blocktrans %}By using Saaf, you agree to comply with these Terms and Conditions. If you do not agree with any part, you should stop using the platform.{% endblocktrans %}</p>
 
-                    <h5 class="fw-bold mt-4">2. استخدام المنصة</h5>
-                    <p>
-                        يلتزم المستخدم باستخدام المنصة بشكل قانوني ومسؤول، وعدم إساءة استخدام الخدمات أو محاولة الوصول غير المصرح به
-                        لأي جزء من النظام أو بيانات المستخدمين الآخرين.
-                    </p>
+                <h5 class="fw-bold mt-4">{% trans "2. Platform Usage" %}</h5>
+                <p>{% blocktrans %}Users must use the platform lawfully and responsibly. Any misuse, abuse, or unauthorized access attempt to system components or user data is strictly prohibited.{% endblocktrans %}</p>
 
-                    <h5 class="fw-bold mt-4">3. الحسابات والمعلومات</h5>
-                    <p>
-                        يتحمل كل مستخدم مسؤولية دقة المعلومات المقدمة عند التسجيل وتحديثها بشكل مستمر، كما يتحمل مسؤولية الحفاظ
-                        على سرية بيانات الدخول وعدم مشاركتها مع الآخرين.
-                    </p>
+                <h5 class="fw-bold mt-4">{% trans "3. Accounts and Information" %}</h5>
+                <p>{% blocktrans %}Each user is responsible for providing accurate registration details, keeping information updated, and protecting account credentials from unauthorized use.{% endblocktrans %}</p>
 
-                    <h5 class="fw-bold mt-4">4. الطلبات والتعاملات</h5>
-                    <p>
-                        المنصة توفر وسيلة لربط العملاء بالحرفيين وتسهيل تنفيذ الطلبات. يلتزم الطرفان بتقديم معلومات واضحة عن المتطلبات
-                        والمدة والتكلفة، وتجنب أي ممارسات مضللة أو غير عادلة.
-                    </p>
+                <h5 class="fw-bold mt-4">{% trans "4. Requests and Transactions" %}</h5>
+                <p>{% blocktrans %}Saaf facilitates connections between customers and artisans. Both parties are expected to communicate requirements, timelines, and pricing clearly and fairly.{% endblocktrans %}</p>
 
-                    <h5 class="fw-bold mt-4">5. المحتوى والملكية الفكرية</h5>
-                    <p>
-                        جميع العلامات التجارية والشعارات والتصميمات والمحتويات الخاصة بمنصة سعف محمية بحقوق الملكية الفكرية.
-                        لا يجوز نسخ أو إعادة نشر أي جزء من محتوى المنصة دون إذن مسبق.
-                    </p>
+                <h5 class="fw-bold mt-4">{% trans "5. Content and Intellectual Property" %}</h5>
+                <p>{% blocktrans %}All platform branding, designs, and content are protected by intellectual property rights. Reuse or reproduction without prior permission is not allowed.{% endblocktrans %}</p>
 
-                    <h5 class="fw-bold mt-4">6. السلوك المحظور</h5>
-                    <p>
-                        يمنع نشر محتوى مسيء أو احتيالي أو مخالف للأنظمة، ويحق للمنصة تعليق أو إيقاف أي حساب يثبت مخالفته
-                        لهذه الشروط دون إشعار مسبق.
-                    </p>
+                <h5 class="fw-bold mt-4">{% trans "6. Prohibited Conduct" %}</h5>
+                <p>{% blocktrans %}Fraudulent, abusive, or unlawful content is prohibited. Saaf may suspend or terminate accounts that violate these terms.{% endblocktrans %}</p>
 
-                    <h5 class="fw-bold mt-4">7. تحديد المسؤولية</h5>
-                    <p>
-                        تسعى المنصة لتقديم خدمة مستقرة وموثوقة، لكنها لا تضمن خلو الخدمة من الانقطاعات التقنية بشكل كامل.
-                        لا تتحمل المنصة المسؤولية عن الأضرار الناتجة عن استخدام الخدمة خارج الإطار المتعارف عليه.
-                    </p>
+                <h5 class="fw-bold mt-4">{% trans "7. Limitation of Liability" %}</h5>
+                <p>{% blocktrans %}Saaf aims to provide a reliable service but cannot guarantee uninterrupted technical availability at all times. The platform is not liable for damages arising from improper or unauthorized use.{% endblocktrans %}</p>
 
-                    <h5 class="fw-bold mt-4">8. تحديث الشروط</h5>
-                    <p class="mb-0">
-                        يحق لمنصة سعف تعديل هذه الشروط والأحكام في أي وقت. استمرارك في استخدام المنصة بعد نشر التعديلات
-                        يعد موافقة ضمنية على النسخة المحدثة.
-                    </p>
-                {% else %}
-                    <h5 class="fw-bold mt-4">1. Acceptance of Terms</h5>
-                    <p>
-                        By using Saaf, you agree to comply with these Terms and Conditions. If you do not agree with any part,
-                        you should stop using the platform.
-                    </p>
-
-                    <h5 class="fw-bold mt-4">2. Platform Usage</h5>
-                    <p>
-                        Users must use the platform lawfully and responsibly. Any misuse, abuse, or unauthorized access attempt
-                        to system components or user data is strictly prohibited.
-                    </p>
-
-                    <h5 class="fw-bold mt-4">3. Accounts and Information</h5>
-                    <p>
-                        Each user is responsible for providing accurate registration details, keeping information updated,
-                        and protecting account credentials from unauthorized use.
-                    </p>
-
-                    <h5 class="fw-bold mt-4">4. Requests and Transactions</h5>
-                    <p>
-                        Saaf facilitates connections between customers and artisans. Both parties are expected to communicate
-                        requirements, timelines, and pricing clearly and fairly.
-                    </p>
-
-                    <h5 class="fw-bold mt-4">5. Content and Intellectual Property</h5>
-                    <p>
-                        All platform branding, designs, and content are protected by intellectual property rights.
-                        Reuse or reproduction without prior permission is not allowed.
-                    </p>
-
-                    <h5 class="fw-bold mt-4">6. Prohibited Conduct</h5>
-                    <p>
-                        Fraudulent, abusive, or unlawful content is prohibited. Saaf may suspend or terminate accounts
-                        that violate these terms.
-                    </p>
-
-                    <h5 class="fw-bold mt-4">7. Limitation of Liability</h5>
-                    <p>
-                        Saaf aims to provide a reliable service but cannot guarantee uninterrupted technical availability at all times.
-                        The platform is not liable for damages arising from improper or unauthorized use.
-                    </p>
-
-                    <h5 class="fw-bold mt-4">8. Terms Updates</h5>
-                    <p class="mb-0">
-                        Saaf may update these Terms and Conditions at any time. Continued use of the platform after updates
-                        means you accept the revised version.
-                    </p>
-                {% endif %}
+                <h5 class="fw-bold mt-4">{% trans "8. Terms Updates" %}</h5>
+                <p class="mb-0">{% blocktrans %}Saaf may update these Terms and Conditions at any time. Continued use of the platform after updates means you accept the revised version.{% endblocktrans %}</p>
             </div>
         </div>
     </div>

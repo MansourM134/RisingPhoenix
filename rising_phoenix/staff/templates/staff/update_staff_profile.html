@@ -1,4 +1,5 @@
 {% extends "main/base.html" %}
+{% load i18n %}
 
 {% block sidebar %}
 {% include 'main/_sidebar.html' with active='profile' %}
@@ -8,39 +9,39 @@
 <section class="py-4 py-md-5">
     <div class="container-lg">
         <div class="saaf-dashboard-card rounded-4 p-4 p-md-5">
-            <p class="saaf-eyebrow mb-2">Staff Profile</p>
-            <h1 class="saaf-section-title mb-2">Edit Profile</h1>
-            <p class="text-muted mb-4">Update your staff profile information.</p>
+            <p class="saaf-eyebrow mb-2">{% trans "Staff Profile" %}</p>
+            <h1 class="saaf-section-title mb-2">{% trans "Edit Profile" %}</h1>
+            <p class="text-muted mb-4">{% trans "Update your staff profile information." %}</p>
 
             <form method="post" enctype="multipart/form-data" class="row g-3">
                 {% csrf_token %}
                 <div class="col-md-6">
-                    <label class="form-label">Display Name</label>
+                    <label class="form-label">{% trans "Display Name" %}</label>
                     {{ form.display_name }}
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">Role</label>
+                    <label class="form-label">{% trans "Role" %}</label>
                     {{ form.role }}
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">Phone</label>
+                    <label class="form-label">{% trans "Phone" %}</label>
                     {{ form.phone }}
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">Avatar</label>
+                    <label class="form-label">{% trans "Avatar" %}</label>
                     {{ form.avatar }}
                 </div>
                 <div class="col-12">
-                    <label class="form-label">Bio</label>
+                    <label class="form-label">{% trans "Bio" %}</label>
                     {{ form.bio }}
                 </div>
 
                 <div class="col-12 d-flex flex-wrap gap-2 pt-2">
                     <button type="submit" class="btn btn-saaf-primary rounded-pill d-inline-flex align-items-center gap-2">
                         <i class="bi bi-check2-circle"></i>
-                        Save Changes
+                        {% trans "Save Changes" %}
                     </button>
-                    <a href="{% url 'staff:staff_profile_view' %}" class="btn btn-saaf-outline rounded-pill">Cancel</a>
+                    <a href="{% url 'staff:staff_profile_view' %}" class="btn btn-saaf-outline rounded-pill">{% trans "Cancel" %}</a>
                 </div>
             </form>
         </div>

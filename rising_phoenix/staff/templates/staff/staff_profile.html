@@ -1,4 +1,5 @@
 {% extends "main/base.html" %}
+{% load i18n %}
 
 {% block sidebar %}
 {% include 'main/_sidebar.html' with active='profile' %}
@@ -9,7 +10,7 @@
     <div class="container-lg">
         <div class="saaf-dashboard-card saaf-profile-shell rounded-4 p-3 p-md-4 p-lg-5">
             <div class="saaf-profile-hero">
-                <p class="saaf-eyebrow mb-2">Staff Profile</p>
+                <p class="saaf-eyebrow mb-2">{% trans "Staff Profile" %}</p>
 
                 <div class="saaf-profile-hero-main">
                     <div class="saaf-profile-avatar-wrap">
@@ -29,7 +30,7 @@
                     <div class="saaf-profile-status-list">
                         <span class="saaf-profile-pill saaf-profile-pill--ok">
                             <i class="bi bi-shield-check"></i>
-                            Staff Account
+                            {% trans "Staff Account" %}
                         </span>
                     </div>
                 </div>
@@ -38,40 +39,42 @@
             <div class="row g-3 g-md-4 mt-1">
                 <div class="col-sm-6 col-lg-4">
                     <div class="saaf-info-card saaf-profile-info-card h-100">
-                        <span class="saaf-info-label">Email</span>
-                        <p class="mb-0">{{ request.user.email|default:"Not provided" }}</p>
+                        <span class="saaf-info-label">{% trans "Email" %}</span>
+                        {% trans "Not provided" as not_provided %}
+                        <p class="mb-0">{{ request.user.email|default:not_provided }}</p>
                     </div>
                 </div>
 
                 <div class="col-sm-6 col-lg-4">
                     <div class="saaf-info-card saaf-profile-info-card h-100">
-                        <span class="saaf-info-label">Phone</span>
-                        <p class="mb-0">{{ staff_profile.phone|default:"Not provided" }}</p>
+                        <span class="saaf-info-label">{% trans "Phone" %}</span>
+                        <p class="mb-0">{{ staff_profile.phone|default:not_provided }}</p>
                     </div>
                 </div>
 
                 <div class="col-sm-6 col-lg-4">
                     <div class="saaf-info-card saaf-profile-info-card h-100">
-                        <span class="saaf-info-label">Joined</span>
+                        <span class="saaf-info-label">{% trans "Joined" %}</span>
                         <p class="mb-0">{{ request.user.date_joined|date:"F d, Y" }}</p>
                     </div>
                 </div>
             </div>
 
             <div class="saaf-profile-bio-card mt-4">
-                <h2 class="saaf-profile-subtitle mb-2">About</h2>
-                <p class="mb-0">{{ staff_profile.bio|default:"No bio added yet." }}</p>
+                <h2 class="saaf-profile-subtitle mb-2">{% trans "About" %}</h2>
+                {% trans "No bio added yet." as no_bio %}
+                <p class="mb-0">{{ staff_profile.bio|default:no_bio }}</p>
             </div>
 
             <div class="d-flex flex-wrap gap-2 mt-4 pt-1">
                 <a href="{% url 'staff:update_staff_profile_view' %}" class="btn btn-saaf-primary rounded-pill d-inline-flex align-items-center gap-2">
                     <i class="bi bi-pencil-square"></i>
-                    Edit Profile
+                    {% trans "Edit Profile" %}
                 </a>
 
                 <a href="{% url 'staff:staff_dashboard_view' %}" class="btn btn-saaf-outline rounded-pill d-inline-flex align-items-center gap-2">
                     <i class="bi bi-arrow-left"></i>
-                    Back to Dashboard
+                    {% trans "Back to Dashboard" %}
                 </a>
             </div>
         </div>

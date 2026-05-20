@@ -1,8 +1,8 @@
 {% extends 'main/base.html' %}
-{% load static %}
+{% load static i18n %}
 
 
-{% block title %}{% if edit_mode %}Edit Request{% else %}Create Request{% endif %}{% endblock %}
+{% block title %}{% if edit_mode %}{% trans "Edit Request" %}{% else %}{% trans "Create Request" %}{% endif %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/request.css' %}">
@@ -25,13 +25,13 @@
 >
   <div class="request-form-wrap">
     <header class="request-hero">
-      <p class="request-eyebrow">{% if edit_mode %}Update Your Idea{% else %}Post Your Idea{% endif %}</p>
-      <h1 class="mb-2">{% if edit_mode %}Edit Request{% else %}Create a New Request{% endif %}</h1>
+      <p class="request-eyebrow">{% if edit_mode %}{% trans "Update Your Idea" %}{% else %}{% trans "Post Your Idea" %}{% endif %}</p>
+      <h1 class="mb-2">{% if edit_mode %}{% trans "Edit Request" %}{% else %}{% trans "Create a New Request" %}{% endif %}</h1>
       <p class="request-sub">
         {% if edit_mode %}
-          Refine your details, update budget/timeline, and manage reference images.
+          {% trans "Refine your details, update budget/timeline, and manage reference images." %}
         {% else %}
-          Share your concept, budget in SAR, and timeline so artisans can submit proposals.
+          {% trans "Share your concept, budget in SAR, and timeline so artisans can submit proposals." %}
         {% endif %}
       </p>
     </header>
@@ -56,36 +56,36 @@
           <div class="field-full">
             <label class="request-label" for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
             {{ form.description }}
-            <p class="desc-char-counter"><span id="desc-char-count">0</span> characters</p>
+            <p class="desc-char-counter"><span id="desc-char-count">0</span> {% trans "characters" %}</p>
             <div class="ai-refine-row">
-              <button type="button" id="ai-refine-btn" class="ai-refine-btn">Refine with AI</button>
+              <button type="button" id="ai-refine-btn" class="ai-refine-btn">{% trans "Refine with AI" %}</button>
               <span id="ai-refine-loader" class="ai-refine-loader" aria-hidden="true" hidden></span>
               <span id="ai-refine-status" class="ai-refine-status" aria-live="polite"></span>
             </div>
             <div id="ai-review-panel" class="ai-review-panel" hidden>
-              <p class="ai-review-title">AI Suggestion Review</p>
+              <p class="ai-review-title">{% trans "AI Suggestion Review" %}</p>
               <div class="ai-diff-grid">
                 <div>
-                  <label class="request-label" for="ai-original-text">Current description</label>
+                  <label class="request-label" for="ai-original-text">{% trans "Current description" %}</label>
                   <textarea id="ai-original-text" class="request-textarea ai-readonly" readonly></textarea>
                 </div>
                 <div>
-                  <label class="request-label" for="ai-suggested-text">AI suggestion (editable)</label>
+                  <label class="request-label" for="ai-suggested-text">{% trans "AI suggestion (editable)" %}</label>
                   <textarea id="ai-suggested-text" class="request-textarea"></textarea>
                 </div>
               </div>
               <div>
-                <p class="request-label">What changed</p>
+                <p class="request-label">{% trans "What changed" %}</p>
                 <div id="ai-diff-output" class="ai-diff-output"></div>
               </div>
               <div id="ai-missing-details" class="ai-missing-details" hidden>
-                <p class="request-label">To strengthen your request, consider answering:</p>
+                <p class="request-label">{% trans "To strengthen your request, consider answering:" %}</p>
                 <ul id="ai-missing-list" class="ai-missing-list"></ul>
               </div>
               <div class="ai-actions">
-                <button type="button" id="ai-accept-btn" class="ai-refine-btn">Accept</button>
-                <button type="button" id="ai-retry-btn" class="ai-refine-btn ai-secondary-btn">Refine further</button>
-                <button type="button" id="ai-reject-btn" class="ai-refine-btn ai-danger-btn">Reject</button>
+                <button type="button" id="ai-accept-btn" class="ai-refine-btn">{% trans "Accept" %}</button>
+                <button type="button" id="ai-retry-btn" class="ai-refine-btn ai-secondary-btn">{% trans "Refine further" %}</button>
+                <button type="button" id="ai-reject-btn" class="ai-refine-btn ai-danger-btn">{% trans "Reject" %}</button>
               </div>
             </div>
             {% for error in form.description.errors %}<p class="request-error">{{ error }}</p>{% endfor %}
@@ -98,49 +98,49 @@
           </div>
 
           <div>
-            <label class="request-label" for="{{ form.deadline.id_for_label }}">Deadline</label>
+            <label class="request-label" for="{{ form.deadline.id_for_label }}">{% trans "Deadline" %}</label>
             {{ form.deadline }}
-            <p class="field-hint">Leave blank for no deadline</p>
+            <p class="field-hint">{% trans "Leave blank for no deadline" %}</p>
             {% for error in form.deadline.errors %}<p class="request-error">{{ error }}</p>{% endfor %}
           </div>
 
           <div>
             <label class="request-label" for="{{ form.budget_max.id_for_label }}">{{ form.budget_max.label }}</label>
             {{ form.budget_max }}
-            <p class="field-hint">Leave blank if flexible</p>
+            <p class="field-hint">{% trans "Leave blank if flexible" %}</p>
             {% for error in form.budget_max.errors %}<p class="request-error">{{ error }}</p>{% endfor %}
           </div>
 
           <div class="field-full">
             {% if edit_mode and existing_images %}
-              <p class="request-label">Current images</p>
+              <p class="request-label">{% trans "Current images" %}</p>
               <div class="existing-img-grid">
                 {% for image in existing_images %}
                   <label class="existing-img-item">
-                    <img src="{{ image.image.url }}" alt="Existing reference image">
+                    <img src="{{ image.image.url }}" alt="{% trans "Existing reference image" %}">
                     <input
                       type="text"
                       class="request-input existing-img-caption"
                       name="existing_image_caption_{{ image.id }}"
                       value="{{ image.caption }}"
                       maxlength="160"
-                      placeholder="Optional note for this image"
+                      placeholder="{% trans "Optional note for this image" %}"
                     >
                     <span class="existing-img-remove">
                       <input type="checkbox" name="delete_image_ids" value="{{ image.id }}">
-                      Remove
+                      {% trans "Remove" %}
                     </span>
                   </label>
                 {% endfor %}
               </div>
             {% endif %}
 
-            <label class="request-label" for="id_reference_images">Reference images</label>
+            <label class="request-label" for="id_reference_images">{% trans "Reference images" %}</label>
             <div class="img-upload-zone" id="img-upload-zone">
               <input type="file" id="id_reference_images" name="reference_images"
                      class="img-upload-input" accept="image/*" multiple>
-              <p class="img-upload-text">Click or drag images here</p>
-              <p class="img-upload-sub">Up to 5 &bull; JPEG, PNG, WebP &bull; Annotate to highlight what you want changed</p>
+              <p class="img-upload-text">{% trans "Click or drag images here" %}</p>
+              <p class="img-upload-sub">{% trans "Up to 5 · JPEG, PNG, WebP · Annotate to highlight what you want changed" %}</p>
             </div>
             <p id="img-count-badge" class="img-count-badge" hidden></p>
             <div id="img-preview-grid" class="img-preview-grid" hidden></div>
@@ -148,28 +148,28 @@
             <div class="image-editor-modal" id="image-editor-modal" hidden>
               <div class="image-editor-card">
                 <div class="image-editor-head">
-                  <p class="mb-0">Mark Up Image</p>
-                  <button type="button" class="image-editor-close" id="image-editor-close" aria-label="Close">&times;</button>
+                  <p class="mb-0">{% trans "Mark Up Image" %}</p>
+                  <button type="button" class="image-editor-close" id="image-editor-close" aria-label="{% trans "Close" %}">&times;</button>
                 </div>
 
-                <p class="image-editor-hint">Draw or highlight the parts you want changed. Annotations are saved with the image.</p>
+                <p class="image-editor-hint">{% trans "Draw or highlight the parts you want changed. Annotations are saved with the image." %}</p>
 
                 <div class="image-editor-controls">
                   <div class="editor-tool-group">
-                    <button type="button" class="editor-tool-btn is-active" id="editor-mode-draw">&#9998; Draw</button>
-                    <button type="button" class="editor-tool-btn" id="editor-mode-highlight">&#9744; Highlight</button>
+                    <button type="button" class="editor-tool-btn is-active" id="editor-mode-draw">&#9998; {% trans "Draw" %}</button>
+                    <button type="button" class="editor-tool-btn" id="editor-mode-highlight">&#9744; {% trans "Highlight" %}</button>
                   </div>
                   <div class="editor-color-group" id="editor-color-group">
-                    <button type="button" class="editor-color-swatch is-active" data-color="#e53935" style="background:#e53935;" title="Red"></button>
-                    <button type="button" class="editor-color-swatch" data-color="#ff9800" style="background:#ff9800;" title="Orange"></button>
-                    <button type="button" class="editor-color-swatch" data-color="#ffeb3b" style="background:#ffeb3b;" title="Yellow"></button>
-                    <button type="button" class="editor-color-swatch" data-color="#43a047" style="background:#43a047;" title="Green"></button>
-                    <button type="button" class="editor-color-swatch" data-color="#1e88e5" style="background:#1e88e5;" title="Blue"></button>
-                    <button type="button" class="editor-color-swatch" data-color="#1c1712" style="background:#1c1712;" title="Black"></button>
+                    <button type="button" class="editor-color-swatch is-active" data-color="#e53935" style="background:#e53935;" title="{% trans "Red" %}"></button>
+                    <button type="button" class="editor-color-swatch" data-color="#ff9800" style="background:#ff9800;" title="{% trans "Orange" %}"></button>
+                    <button type="button" class="editor-color-swatch" data-color="#ffeb3b" style="background:#ffeb3b;" title="{% trans "Yellow" %}"></button>
+                    <button type="button" class="editor-color-swatch" data-color="#43a047" style="background:#43a047;" title="{% trans "Green" %}"></button>
+                    <button type="button" class="editor-color-swatch" data-color="#1e88e5" style="background:#1e88e5;" title="{% trans "Blue" %}"></button>
+                    <button type="button" class="editor-color-swatch" data-color="#1c1712" style="background:#1c1712;" title="{% trans "Black" %}"></button>
                   </div>
                   <div class="editor-tool-group" id="editor-width-group">
-                    <button type="button" class="editor-tool-btn is-active" data-width="3" id="editor-width-thin">Thin</button>
-                    <button type="button" class="editor-tool-btn" data-width="7" id="editor-width-thick">Thick</button>
+                    <button type="button" class="editor-tool-btn is-active" data-width="3" id="editor-width-thin">{% trans "Thin" %}</button>
+                    <button type="button" class="editor-tool-btn" data-width="7" id="editor-width-thick">{% trans "Thick" %}</button>
                   </div>
                 </div>
 
@@ -178,17 +178,17 @@
                 </div>
 
                 <div class="image-editor-toolbar">
-                  <button type="button" class="image-editor-btn image-editor-btn-primary" id="editor-save">Save Edits</button>
-                  <button type="button" class="image-editor-btn" id="editor-undo">Undo</button>
-                  <button type="button" class="image-editor-btn" id="editor-clear-all">Clear All</button>
-                  <button type="button" class="image-editor-btn" id="editor-cancel">Cancel</button>
+                  <button type="button" class="image-editor-btn image-editor-btn-primary" id="editor-save">{% trans "Save Edits" %}</button>
+                  <button type="button" class="image-editor-btn" id="editor-undo">{% trans "Undo" %}</button>
+                  <button type="button" class="image-editor-btn" id="editor-clear-all">{% trans "Clear All" %}</button>
+                  <button type="button" class="image-editor-btn" id="editor-cancel">{% trans "Cancel" %}</button>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <button type="submit" class="request-submit">{% if edit_mode %}Save changes{% else %}Post request{% endif %}</button>
+        <button type="submit" class="request-submit">{% if edit_mode %}{% trans "Save changes" %}{% else %}{% trans "Post request" %}{% endif %}</button>
       </form>
     </div>
   </div>

@@ -1,56 +1,22 @@
 {% extends 'main/base.html' %}
 {% load i18n %}
 
-{% block title %}{% if LANGUAGE_CODE == 'ar' %}من نحن | سعف{% else %}About Us | Saaf{% endif %}{% endblock %}
+{% block title %}{% trans "About Us" %} | Saaf{% endblock %}
 
 {% block content %}
 <section class="container-lg py-5">
     <div class="row justify-content-center">
         <div class="col-lg-10">
             <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5">
-                <h1 class="fw-bold mb-4">{% if LANGUAGE_CODE == 'ar' %}من نحن{% else %}About Us{% endif %}</h1>
+                <h1 class="fw-bold mb-4">{% trans "About Us" %}</h1>
 
-                {% if LANGUAGE_CODE == 'ar' %}
-                    <p class="mb-3">
-                        مشروع سعف هو منصة سعودية رقمية تهدف إلى تمكين الحرفيين والحرفيات من عرض أعمالهم اليدوية بطريقة احترافية،
-                        وربطهم مباشرة بالعملاء الباحثين عن منتجات مخصصة وفريدة. الفكرة الأساسية في سعف تقوم على دعم الاقتصاد الإبداعي المحلي
-                        وإحياء الحرف التقليدية بروح عصرية تناسب احتياجات اليوم.
-                    </p>
-                    <p class="mb-3">
-                        نؤمن أن كل قطعة يدوية تحمل قصة، وأن الحرفي لا يقدم منتجا فقط بل يقدم خبرة فنية وهوية ثقافية. لذلك صممنا المنصة
-                        لتكون مساحة واضحة وآمنة تسهل على العميل اكتشاف الحرفي المناسب، ومتابعة الطلبات، والتواصل المباشر، والدفع بشكل منظم.
-                        في المقابل يحصل الحرفي على بيئة تساعده في إدارة الطلبات واستقبال العروض وبناء سمعة مهنية قوية.
-                    </p>
-                    <p class="mb-3">
-                        يعمل سعف على تحسين تجربة الطرفين من خلال واجهة استخدام سهلة، نظام طلبات مرن، وإشعارات فورية تساعد على تسريع
-                        دورة العمل من الفكرة الأولى حتى التسليم النهائي. كما نحرص على أن تكون تجربة الاستخدام متاحة باللغتين العربية والإنجليزية
-                        مع دعم كامل لاتجاه الكتابة من اليمين إلى اليسار.
-                    </p>
-                    <p class="mb-0">
-                        رؤيتنا هي أن يصبح سعف الوجهة الأولى للحرف اليدوية المخصصة في المملكة، وأن يساهم بشكل حقيقي في فتح فرص جديدة
-                        للحرفيين الموهوبين، وتعزيز حضور المنتجات المحلية في السوق الرقمي، وبناء مجتمع يقدّر الجودة والابتكار والعمل اليدوي الأصيل.
-                    </p>
-                {% else %}
-                    <p class="mb-3">
-                        Saaf is a Saudi digital platform built to empower artisans by giving them a professional way to present their handmade work
-                        and connect directly with customers looking for custom, one-of-a-kind pieces. At its core, Saaf supports the local creative economy
-                        and helps traditional craftsmanship grow in a modern digital environment.
-                    </p>
-                    <p class="mb-3">
-                        We believe every handmade product carries a story. Artisans do not simply deliver an item; they deliver skill, identity,
-                        and culture. That is why Saaf is designed as a clear and trusted space where customers can discover the right artisan,
-                        submit requests, communicate directly, and complete payments in an organized workflow.
-                    </p>
-                    <p class="mb-3">
-                        On the artisan side, the platform offers tools that simplify order management, proposal handling, and reputation building.
-                        On the customer side, Saaf provides a smooth journey from idea to final delivery, supported by fast notifications and a clean,
-                        easy-to-use interface.
-                    </p>
-                    <p class="mb-0">
-                        Our vision is for Saaf to become the leading destination for customized handmade work in Saudi Arabia, opening real opportunities
-                        for talented artisans and strengthening the digital presence of local products through quality, authenticity, and creativity.
-                    </p>
-                {% endif %}
+                <p class="mb-3">{% blocktrans %}Saaf is a Saudi digital platform built to empower artisans by giving them a professional way to present their handmade work and connect directly with customers looking for custom, one-of-a-kind pieces. At its core, Saaf supports the local creative economy and helps traditional craftsmanship grow in a modern digital environment.{% endblocktrans %}</p>
+
+                <p class="mb-3">{% blocktrans %}We believe every handmade product carries a story. Artisans do not simply deliver an item; they deliver skill, identity, and culture. That is why Saaf is designed as a clear and trusted space where customers can discover the right artisan, submit requests, communicate directly, and complete payments in an organized workflow.{% endblocktrans %}</p>
+
+                <p class="mb-3">{% blocktrans %}On the artisan side, the platform offers tools that simplify order management, proposal handling, and reputation building. On the customer side, Saaf provides a smooth journey from idea to final delivery, supported by fast notifications and a clean, easy-to-use interface.{% endblocktrans %}</p>
+
+                <p class="mb-0">{% blocktrans %}Our vision is for Saaf to become the leading destination for customized handmade work in Saudi Arabia, opening real opportunities for talented artisans and strengthening the digital presence of local products through quality, authenticity, and creativity.{% endblocktrans %}</p>
             </div>
         </div>
     </div>

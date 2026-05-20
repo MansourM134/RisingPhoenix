@@ -1,8 +1,7 @@
 {% extends 'main/base.html' %}
+{% load i18n %}
 
-{% block title %}
-Portfolio
-{% endblock %}
+{% block title %}{% trans "Portfolio" %}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -146,25 +145,15 @@ Portfolio
 
     <div class="portfolio-header">
         <div>
-            <h1 class="page-title">
-                Portfolio
-            </h1>
-
-            <p class="page-subtitle">
-                Explore portfolio images by {{ workshop.workshop_name }}
-            </p>
+            <h1 class="page-title">{% trans "Portfolio" %}</h1>
+            <p class="page-subtitle">{% blocktrans with name=workshop.workshop_name %}Explore portfolio images by {{ name }}{% endblocktrans %}</p>
         </div>
 
         <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;">
             {% if can_edit_portfolio %}
-            <a href="{% url 'workshop:upload_portfolio_view' %}" class="btn btn-saaf-primary rounded-pill">
-                add images
-            </a>
+            <a href="{% url 'workshop:upload_portfolio_view' %}" class="btn btn-saaf-primary rounded-pill">{% trans "Add images" %}</a>
             {% endif %}
-
-            <a href="{% url 'workshop:workshop_detail_view' artisan.user.id %}" class="btn btn-saaf-outline rounded-pill">
-                Back to Workshop
-            </a>
+            <a href="{% url 'workshop:workshop_detail_view' artisan.user.id %}" class="btn btn-saaf-outline rounded-pill">{% trans "Back to Workshop" %}</a>
         </div>
     </div>
 
@@ -177,7 +166,7 @@ Portfolio
         <div class="portfolio-card">
 
             {% if can_edit_portfolio %}
-            <form method="post" class="portfolio-delete-form" onsubmit="return confirm('Are you sure you want to delete this image?')">
+            <form method="post" class="portfolio-delete-form" onsubmit="return confirm('{% trans "Are you sure you want to delete this image?" %}')">
                 {% csrf_token %}
                 <input type="hidden" name="delete_portfolio_image_id" value="{{ image.id }}">
                 <button type="submit" class="portfolio-delete-btn">
@@ -187,9 +176,7 @@ Portfolio
             {% endif %}
 
             {% if image.is_pinned %}
-            <span class="portfolio-badge">
-                Pinned
-            </span>
+            <span class="portfolio-badge">{% trans "Pinned" %}</span>
             {% endif %}
 
             <img src="{{ image.image.url }}" alt="{{ image.caption|default:workshop.workshop_name }}">
@@ -203,7 +190,7 @@ Portfolio
                 {% csrf_token %}
                 <input type="hidden" name="toggle_pin_image_id" value="{{ image.id }}">
                 <button type="submit" class="btn btn-sm {% if image.is_pinned %}btn-saaf-primary{% else %}btn-saaf-outline{% endif %} rounded-pill">
-                    {% if image.is_pinned %}Unpin{% else %}Pin{% endif %}
+                    {% if image.is_pinned %}{% trans "Unpin" %}{% else %}{% trans "Pin" %}{% endif %}
                 </button>
             </form>
             {% endif %}
@@ -220,29 +207,15 @@ Portfolio
 
         {% if page_obj.has_previous %}
 
-        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
-
-            Previous
-
-        </a>
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">{% trans "Previous" %}</a>
 
         {% endif %}
 
-        <span class="page-current">
-
-            Page {{ page_obj.number }}
-            of
-            {{ page_obj.paginator.num_pages }}
-
-        </span>
+        <span class="page-current">{% blocktrans with num=page_obj.number total=page_obj.paginator.num_pages %}Page {{ num }} of {{ total }}{% endblocktrans %}</span>
 
         {% if page_obj.has_next %}
 
-        <a class="page-link" href="?page={{ page_obj.next_page_number }}">
-
-            Next
-
-        </a>
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}">{% trans "Next" %}</a>
 
         {% endif %}
 
@@ -252,9 +225,7 @@ Portfolio
 
     {% else %}
 
-    <div class="empty-portfolio">
-        No portfolio images uploaded yet.
-    </div>
+    <div class="empty-portfolio">{% trans "No portfolio images uploaded yet." %}</div>
 
     {% endif %}
 

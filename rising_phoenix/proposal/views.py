@@ -2,6 +2,7 @@ import logging
 
 from django.conf import settings
 from django.contrib import messages
+from django.utils.translation import gettext as _
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -71,20 +72,20 @@ def submit_proposal_view(request, request_id):
     )
 
     if not _is_artisan(request.user):
-        messages.error(request, 'Only artisans can submit proposals.')
+        messages.error(request, _('Only artisans can submit proposals.'))
         return redirect('request:request_detail_view', request_id=request_id)
 
     if project_request.requester == request.user:
-        messages.error(request, 'You cannot submit a proposal for your own request.')
+        messages.error(request, _('You cannot submit a proposal for your own request.'))
         return redirect('request:request_detail_view', request_id=request_id)
 
     if project_request.status not in [Request.Status.OPEN, Request.Status.IN_REVIEW]:
-        messages.error(request, 'This request is no longer accepting proposals.')
+        messages.error(request, _('This request is no longer accepting proposals.'))
         return redirect('request:request_detail_view', request_id=request_id)
 
     existing = Proposal.objects.filter(request=project_request, artisan=request.user).first()
     if existing and existing.status != Proposal.Status.WITHDRAWN:
-        messages.info(request, 'You have already submitted a proposal for this request.')
+        messages.info(request, _('You have already submitted a proposal for this request.'))
         return redirect('request:request_detail_view', request_id=request_id)
 
     if request.method == 'POST':
@@ -104,7 +105,7 @@ def submit_proposal_view(request, request_id):
                 if project_request.status == Request.Status.OPEN:
                     project_request.status = Request.Status.IN_REVIEW
                     project_request.save(update_fields=['status'])
-                messages.success(request, 'Your proposal has been submitted.')
+                messages.success(request, _('Your proposal has been submitted.'))
                 notify(
                     project_request.requester,
                     Notification.NotifType.PROPOSAL_RECEIVED,
@@ -114,7 +115,7 @@ def submit_proposal_view(request, request_id):
                 )
                 return redirect('request:request_detail_view', request_id=request_id)
             except IntegrityError:
-                messages.error(request, 'You have already submitted a proposal for this request.')
+                messages.error(request, _('You have already submitted a proposal for this request.'))
                 return redirect('request:request_detail_view', request_id=request_id)
     else:
         form = ProposalForm(instance=existing if existing else None)
@@ -136,11 +137,11 @@ def edit_proposal_view(request, proposal_id):
     )
 
     if proposal.artisan != request.user:
-        messages.error(request, 'You can only edit your own proposals.')
+        messages.error(request, _('You can only edit your own proposals.'))
         return redirect('request:request_detail_view', request_id=proposal.request_id)
 
     if not proposal.is_pending:
-        messages.error(request, 'You can only edit a pending proposal.')
+        messages.error(request, _('You can only edit a pending proposal.'))
         return redirect('proposal:my_proposals_view')
 
     if request.method == 'POST':
@@ -164,7 +165,7 @@ def edit_proposal_view(request, proposal_id):
             for msg in skipped:
                 messages.warning(request, f'Image skipped: {msg}')
 
-            messages.success(request, 'Proposal updated.')
+            messages.success(request, _('Proposal updated.'))
             return redirect('request:request_detail_view', request_id=proposal.request_id)
     else:
         form = ProposalForm(instance=proposal)
@@ -185,15 +186,15 @@ def withdraw_proposal_view(request, proposal_id):
     project_request = proposal.request
 
     if request.method != 'POST':
-        messages.error(request, 'Invalid action.')
+        messages.error(request, _('Invalid action.'))
         return redirect('request:request_detail_view', request_id=project_request.id)
 
     if proposal.artisan != request.user:
-        messages.error(request, 'You can only withdraw your own proposals.')
+        messages.error(request, _('You can only withdraw your own proposals.'))
         return redirect('request:request_detail_view', request_id=project_request.id)
 
     if not proposal.is_pending:
-        messages.error(request, 'Only pending proposals can be withdrawn.')
+        messages.error(request, _('Only pending proposals can be withdrawn.'))
         return redirect('request:request_detail_view', request_id=project_request.id)
     proposal.status = Proposal.Status.WITHDRAWN
     proposal.save(update_fields=['status', 'updated_at'])
@@ -209,7 +210,7 @@ def withdraw_proposal_view(request, proposal_id):
                 project_request.status = Request.Status.OPEN
                 project_request.save(update_fields=['status'])
 
-    messages.success(request, 'Your proposal has been withdrawn.')
+    messages.success(request, _('Your proposal has been withdrawn.'))
     return redirect('request:request_detail_view', request_id=proposal.request_id)
 
 
@@ -219,19 +220,19 @@ def accept_proposal_view(request, proposal_id):
     project_request = proposal.request
 
     if request.method != 'POST':
-        messages.error(request, 'Invalid action.')
+        messages.error(request, _('Invalid action.'))
         return redirect('request:request_detail_view', request_id=project_request.id)
 
     if project_request.requester != request.user:
-        messages.error(request, 'Only the requester can accept proposals.')
+        messages.error(request, _('Only the requester can accept proposals.'))
         return redirect('request:request_detail_view', request_id=project_request.id)
 
     if not proposal.is_pending:
-        messages.error(request, 'This proposal is no longer pending.')
+        messages.error(request, _('This proposal is no longer pending.'))
         return redirect('request:request_detail_view', request_id=project_request.id)
 
     if project_request.status == Request.Status.CLOSED:
-        messages.error(request, 'This request is already closed.')
+        messages.error(request, _('This request is already closed.'))
         return redirect('request:request_detail_view', request_id=project_request.id)
 
     proposal.status = Proposal.Status.ACCEPTED
@@ -278,15 +279,15 @@ def reject_proposal_view(request, proposal_id):
     project_request = proposal.request
 
     if request.method != 'POST':
-        messages.error(request, 'Invalid action.')
+        messages.error(request, _('Invalid action.'))
         return redirect('request:request_detail_view', request_id=project_request.id)
 
     if project_request.requester != request.user:
-        messages.error(request, 'Only the requester can reject proposals.')
+        messages.error(request, _('Only the requester can reject proposals.'))
         return redirect('request:request_detail_view', request_id=project_request.id)
 
     if not proposal.is_pending:
-        messages.error(request, 'This proposal is no longer pending.')
+        messages.error(request, _('This proposal is no longer pending.'))
         return redirect('request:request_detail_view', request_id=project_request.id)
 
     proposal.status = Proposal.Status.REJECTED
@@ -305,7 +306,7 @@ def reject_proposal_view(request, proposal_id):
 @login_required
 def my_proposals_view(request):
     if not _is_artisan(request.user):
-        messages.error(request, 'Only artisans have proposals.')
+        messages.error(request, _('Only artisans have proposals.'))
         return redirect('main:home_view')
 
     qs = (

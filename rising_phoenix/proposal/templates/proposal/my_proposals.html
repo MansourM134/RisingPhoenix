@@ -1,5 +1,5 @@
 {% extends 'main/base.html' %}
-{% load static %}
+{% load static i18n %}
 
 {% block title %}My Proposals{% endblock %}
 
@@ -12,9 +12,9 @@
 <section class="request-shell">
   <div class="request-container">
     <header class="request-hero">
-      <p class="request-eyebrow">Artisan Dashboard</p>
-      <h1 class="mb-2">My Proposals</h1>
-      <p class="request-sub">Track the status of all proposals you have submitted.</p>
+      <p class="request-eyebrow">{% trans "Artisan Dashboard" %}</p>
+      <h1 class="mb-2">{% trans "My Proposals" %}</h1>
+      <p class="request-sub">{% trans "Track the status of all proposals you have submitted." %}</p>
     </header>
 
     {% if proposals %}
@@ -27,21 +27,21 @@
                   <a href="{% url 'request:request_detail_view' proposal.request.id %}">{{ proposal.request.title }}</a>
                 </p>
                 <p class="proposal-card-meta">
-                  {{ proposal.request.category.name }} &bull; by {{ proposal.request.requester.username }}
+                  {{ proposal.request.category.name }} &bull; {% blocktrans with username=proposal.request.requester.username %}by {{ username }}{% endblocktrans %}
                 </p>
               </div>
               {% if proposal.status == 'accepted' and proposal.contract %}
                 {% with c=proposal.contract %}
                   {% if c.status == 'completed' %}
-                    <span class="proposal-status-pill proposal-status-pill--completed">Completed</span>
+                    <span class="proposal-status-pill proposal-status-pill--completed">{% trans "Completed" %}</span>
                   {% elif c.status == 'completion_requested' %}
-                    <span class="proposal-status-pill proposal-status-pill--completion-requested">Awaiting Confirmation</span>
+                    <span class="proposal-status-pill proposal-status-pill--completion-requested">{% trans "Awaiting Confirmation" %}</span>
                   {% else %}
-                    <span class="proposal-status-pill proposal-status-pill--in-progress">In Progress</span>
+                    <span class="proposal-status-pill proposal-status-pill--in-progress">{% trans "In Progress" %}</span>
                   {% endif %}
                 {% endwith %}
               {% elif proposal.status == 'rejected' and proposal.request.status == 'closed' %}
-                <span class="proposal-status-pill proposal-status-pill--rejected">Another was selected</span>
+                <span class="proposal-status-pill proposal-status-pill--rejected">{% trans "Another was selected" %}</span>
               {% else %}
                 <span class="proposal-status-pill proposal-status-pill--{{ proposal.status }}">{{ proposal.get_status_display }}</span>
               {% endif %}
@@ -49,15 +49,15 @@
 
             <div class="proposal-card-body">
               <div class="proposal-card-stat">
-                <span class="proposal-stat-label">Your price</span>
+                <span class="proposal-stat-label">{% trans "Your price" %}</span>
                 <span class="proposal-stat-value">{{ proposal.price|floatformat:"-2" }} SAR</span>
               </div>
               <div class="proposal-card-stat">
-                <span class="proposal-stat-label">Est. completion</span>
-                <span class="proposal-stat-value">{{ proposal.estimated_days }} day{{ proposal.estimated_days|pluralize }}</span>
+                <span class="proposal-stat-label">{% trans "Est. completion" %}</span>
+                <span class="proposal-stat-value">{% blocktrans with days=proposal.estimated_days %}{{ days }} day{{ days|pluralize }}{% endblocktrans %}</span>
               </div>
               <div class="proposal-card-stat">
-                <span class="proposal-stat-label">Submitted</span>
+                <span class="proposal-stat-label">{% trans "Submitted" %}</span>
                 <span class="proposal-stat-value">{{ proposal.created_at|date:"N j, Y" }}</span>
               </div>
             </div>
@@ -68,7 +68,7 @@
               {% if imgs %}
                 <div class="proposal-card-gallery">
                   {% for img in imgs %}
-                    <img src="{{ img.image.url }}" alt="Proposal image {{ forloop.counter }}"
+                    <img src="{{ img.image.url }}" alt="{% blocktrans with n=forloop.counter %}Proposal image {{ n }}{% endblocktrans %}"
                       class="proposal-gallery-thumb" title="{{ img.caption }}">
                   {% endfor %}
                 </div>
@@ -77,36 +77,36 @@
 
             {% if proposal.is_pending %}
               <div class="proposal-card-actions">
-                <a href="{% url 'proposal:edit_proposal_view' proposal.id %}" class="proposal-action-btn">Edit</a>
+                <a href="{% url 'proposal:edit_proposal_view' proposal.id %}" class="proposal-action-btn">{% trans "Edit" %}</a>
                 <form method="post" action="{% url 'proposal:withdraw_proposal_view' proposal.id %}" style="display:inline;">
                   {% csrf_token %}
                   <button type="submit" class="proposal-action-btn proposal-action-btn--danger"
-                    data-confirm-title="Withdraw Proposal"
-                    data-confirm-body="Your proposal will be withdrawn and you will no longer be considered for this project."
-                    data-confirm-variant="danger">Withdraw</button>
+                    data-confirm-title="{% trans "Withdraw Proposal" %}"
+                    data-confirm-body="{% trans "Your proposal will be withdrawn and you will no longer be considered for this project." %}"
+                    data-confirm-variant="danger">{% trans "Withdraw" %}</button>
                 </form>
                 {% if proposal.conversation %}
                   <a href="{% url 'message:conversation_detail_view' proposal.conversation.id %}" class="proposal-action-btn">
-                    <i class="bi bi-chat-dots-fill"></i> Open Chat
+                    <i class="bi bi-chat-dots-fill"></i> {% trans "Open Chat" %}
                   </a>
                 {% else %}
                   <a href="{% url 'message:start_conversation_view' proposal.id %}" class="proposal-action-btn">
-                    <i class="bi bi-chat-dots-fill"></i> Start Chat
+                    <i class="bi bi-chat-dots-fill"></i> {% trans "Start Chat" %}
                   </a>
                 {% endif %}
               </div>
             {% elif proposal.is_accepted and proposal.contract %}
               <div class="proposal-card-actions">
                 <a href="{% url 'progress:contract_detail_view' proposal.contract.id %}" class="proposal-action-btn proposal-action-btn--accept">
-                  <i class="bi bi-box-arrow-up-right"></i> View Project
+                  <i class="bi bi-box-arrow-up-right"></i> {% trans "View Project" %}
                 </a>
                 {% if proposal.conversation %}
                   <a href="{% url 'message:conversation_detail_view' proposal.conversation.id %}" class="proposal-action-btn">
-                    <i class="bi bi-chat-dots-fill"></i> Open Chat
+                    <i class="bi bi-chat-dots-fill"></i> {% trans "Open Chat" %}
                   </a>
                 {% else %}
                   <a href="{% url 'message:start_conversation_view' proposal.id %}" class="proposal-action-btn">
-                    <i class="bi bi-chat-dots-fill"></i> Start Chat
+                    <i class="bi bi-chat-dots-fill"></i> {% trans "Start Chat" %}
                   </a>
                 {% endif %}
               </div>
@@ -118,20 +118,20 @@
       {% if page_obj.has_other_pages %}
         <div class="proposal-pagination-wrap">
           <p class="proposal-pagination-count">
-            Showing {{ page_obj.start_index }}–{{ page_obj.end_index }} of {{ page_obj.paginator.count }} proposal{{ page_obj.paginator.count|pluralize }}
+            {% blocktrans with start=page_obj.start_index end=page_obj.end_index count=page_obj.paginator.count %}Showing {{ start }}–{{ end }} of {{ count }} proposal{{ count|pluralize }}{% endblocktrans %}
           </p>
-          <nav aria-label="Proposals pagination">
+          <nav aria-label="{% trans "Proposals pagination" %}">
             <ul class="pagination align-items-center flex-wrap gap-1 mb-0">
 
               {% if page_obj.has_previous %}
                 <li class="page-item">
-                  <a class="page-link proposal-page-link" href="?page=1" title="First page">
+                  <a class="page-link proposal-page-link" href="?page=1" title="{% trans "First page" %}">
                     <i class="bi bi-chevron-double-left"></i>
                   </a>
                 </li>
                 <li class="page-item">
                   <a class="page-link proposal-page-link" href="?page={{ page_obj.previous_page_number }}">
-                    <i class="bi bi-chevron-left me-1"></i> Previous
+                    <i class="bi bi-chevron-left me-1"></i> {% trans "Previous" %}
                   </a>
                 </li>
               {% else %}
@@ -139,7 +139,7 @@
                   <span class="page-link proposal-page-link"><i class="bi bi-chevron-double-left"></i></span>
                 </li>
                 <li class="page-item disabled">
-                  <span class="page-link proposal-page-link"><i class="bi bi-chevron-left me-1"></i> Previous</span>
+                  <span class="page-link proposal-page-link"><i class="bi bi-chevron-left me-1"></i> {% trans "Previous" %}</span>
                 </li>
               {% endif %}
 
@@ -156,23 +156,23 @@
               {% endfor %}
 
               <li class="page-item disabled">
-                <span class="page-link proposal-page-link proposal-page-status">of {{ page_obj.paginator.num_pages }}</span>
+                <span class="page-link proposal-page-link proposal-page-status">{% blocktrans with total=page_obj.paginator.num_pages %}of {{ total }}{% endblocktrans %}</span>
               </li>
 
               {% if page_obj.has_next %}
                 <li class="page-item">
                   <a class="page-link proposal-page-link" href="?page={{ page_obj.next_page_number }}">
-                    Next <i class="bi bi-chevron-right ms-1"></i>
+                    {% trans "Next" %} <i class="bi bi-chevron-right ms-1"></i>
                   </a>
                 </li>
                 <li class="page-item">
-                  <a class="page-link proposal-page-link" href="?page={{ page_obj.paginator.num_pages }}" title="Last page">
+                  <a class="page-link proposal-page-link" href="?page={{ page_obj.paginator.num_pages }}" title="{% trans "Last page" %}">
                     <i class="bi bi-chevron-double-right"></i>
                   </a>
                 </li>
               {% else %}
                 <li class="page-item disabled">
-                  <span class="page-link proposal-page-link">Next <i class="bi bi-chevron-right ms-1"></i></span>
+                  <span class="page-link proposal-page-link">{% trans "Next" %} <i class="bi bi-chevron-right ms-1"></i></span>
                 </li>
                 <li class="page-item disabled">
                   <span class="page-link proposal-page-link"><i class="bi bi-chevron-double-right"></i></span>
@@ -187,8 +187,8 @@
     {% else %}
       <div class="request-detail-card page-empty-state">
         <i class="bi bi-send page-empty-state-icon"></i>
-        <p class="page-empty-state-text">You have not submitted any proposals yet.</p>
-        <a href="{% url 'request:request_list_view' %}" class="request-action">Browse requests</a>
+        <p class="page-empty-state-text">{% trans "You have not submitted any proposals yet." %}</p>
+        <a href="{% url 'request:request_list_view' %}" class="request-action">{% trans "Browse requests" %}</a>
       </div>
     {% endif %}
   </div>

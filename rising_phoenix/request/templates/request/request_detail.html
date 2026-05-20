@@ -1,5 +1,5 @@
 {% extends 'main/base.html' %}
-{% load static %}
+{% load static i18n %}
 
 {% block title %}{{ project_request.title }}{% endblock %}
 
@@ -22,16 +22,16 @@
         <div>
           <p class="request-tag">{{ project_request.category.name }}</p>
           <h1 class="request-detail-title">{{ project_request.title }}</h1>
-          <p class="request-detail-by">Requested by {{ project_request.requester.username }}</p>
+          <p class="request-detail-by">{% blocktrans with username=project_request.requester.username %}Requested by {{ username }}{% endblocktrans %}</p>
         </div>
         <div class="request-detail-actions">
-          <a href="{% url 'request:request_list_view' %}" class="page-link">Back to browse</a>
+          <a href="{% url 'request:request_list_view' %}" class="page-link">{% trans "Back to browse" %}</a>
           {% if user.is_authenticated and user == project_request.requester and project_request.status != 'closed' and project_request.status != 'time_ended' %}
-            <a href="{% url 'request:request_edit_view' project_request.id %}" class="request-action">Edit request</a>
+            <a href="{% url 'request:request_edit_view' project_request.id %}" class="request-action">{% trans "Edit request" %}</a>
           {% endif %}
           {% if user.is_authenticated and user != project_request.requester %}
             <a href="{% url 'account:submit_report_view' 'request' project_request.id %}" class="request-report-link">
-              <i class="bi bi-flag"></i> Report
+              <i class="bi bi-flag"></i> {% trans "Report" %}
             </a>
           {% endif %}
         </div>
@@ -39,21 +39,21 @@
 
       <div class="request-detail-meta">
         <div class="request-detail-meta-item">
-          <span class="request-label">Budget</span>
+          <span class="request-label">{% trans "Budget" %}</span>
           <p class="mb-0">
             {% if project_request.budget_max %}
               {{ project_request.budget_max|floatformat:"-2" }} SAR
             {% else %}
-              Flexible
+              {% trans "Flexible" %}
             {% endif %}
           </p>
         </div>
         <div class="request-detail-meta-item">
-          <span class="request-label">Deadline</span>
-          <p class="mb-0">{{ project_request.deadline|default:"Flexible" }}</p>
+          <span class="request-label">{% trans "Deadline" %}</span>
+          <p class="mb-0">{{ project_request.deadline|default:_("Flexible") }}</p>
         </div>
         <div class="request-detail-meta-item">
-          <span class="request-label">Status</span>
+          <span class="request-label">{% trans "Status" %}</span>
           <p class="mb-0">
             {% if project_request.status == 'open' %}
               <span class="status-pill status-open">{{ project_request.get_status_display }}</span>
@@ -67,14 +67,14 @@
           </p>
         </div>
         <div class="request-detail-meta-item">
-          <span class="request-label">Posted</span>
+          <span class="request-label">{% trans "Posted" %}</span>
           <p class="mb-0">{{ project_request.created_at|date:"N j, Y" }}</p>
         </div>
       </div>
 
       {% if has_images %}
         <div class="request-detail-body">
-          <h2 class="request-detail-subtitle">Reference Images</h2>
+          <h2 class="request-detail-subtitle">{% trans "Reference Images" %}</h2>
           <div class="request-detail-gallery">
             {% for image in images %}
               <div class="request-detail-gallery-item">
@@ -82,9 +82,9 @@
                   class="gallery-img-btn"
                   data-src="{{ image.image.url }}"
                   data-caption="{{ image.caption }}"
-                  aria-label="View image {{ forloop.counter }} full size"
+                  aria-label="{% blocktrans with n=forloop.counter %}View image {{ n }} full size{% endblocktrans %}"
                 >
-                  <img src="{{ image.image.url }}" alt="Reference image {{ forloop.counter }} for {{ project_request.title }}">
+                  <img src="{{ image.image.url }}" alt="{% blocktrans with n=forloop.counter title=project_request.title %}Reference image {{ n }} for {{ title }}{% endblocktrans %}">
                 </button>
                 {% if image.caption %}
                   <p class="request-image-caption">{{ image.caption }}</p>
@@ -96,23 +96,23 @@
       {% endif %}
 
       <div class="request-detail-body">
-        <h2 class="request-detail-subtitle">Project Description</h2>
+        <h2 class="request-detail-subtitle">{% trans "Project Description" %}</h2>
         <p class="request-detail-description">{{ project_request.description|linebreaksbr }}</p>
       </div>
 
       {% if project_request.status == 'time_ended' %}
         <div class="request-time-ended-note" role="status">
           {% if project_request.deadline %}
-            This request was automatically marked as time ended because the deadline ({{ project_request.deadline }}) has passed.
+            {% blocktrans with date=project_request.deadline %}This request was automatically marked as time ended because the deadline ({{ date }}) has passed.{% endblocktrans %}
           {% else %}
-            This request has ended.
+            {% trans "This request has ended." %}
           {% endif %}
           {% if is_requester %}
             <form method="post" action="{% url 'request:reopen_request_view' project_request.id %}" class="reopen-form">
               {% csrf_token %}
-              <label for="new_deadline">Set a new deadline to reopen:</label>
+              <label for="new_deadline">{% trans "Set a new deadline to reopen:" %}</label>
               <input type="date" name="new_deadline" id="new_deadline" class="request-input reopen-date-input" required>
-              <button type="submit" class="request-action reopen-btn">Reopen Request</button>
+              <button type="submit" class="request-action reopen-btn">{% trans "Reopen Request" %}</button>
             </form>
           {% endif %}
         </div>
@@ -126,57 +126,57 @@
       {% if not is_requester %}
         {% if not user.is_authenticated %}
           <div class="proposal-cta-box">
-            <p>Want to work on this project? <a href="{% url 'account:login_view' %}">Log in</a> to submit a proposal.</p>
+            <p>{% trans "Want to work on this project?" %} <a href="{% url 'account:login_view' %}">{% trans "Log in" %}</a> {% trans "to submit a proposal." %}</p>
           </div>
 
         {% elif not is_artisan %}
           <div class="proposal-cta-box">
-            <p>Only artisans can submit proposals. <a href="{% url 'account:artisan_signup_view' %}">Become an artisan</a> to get started.</p>
+            <p>{% trans "Only artisans can submit proposals." %} <a href="{% url 'account:artisan_signup_view' %}">{% trans "Become an artisan" %}</a> {% trans "to get started." %}</p>
           </div>
 
         {% elif can_submit %}
           <div class="proposal-panel-header">
-            <h2 class="proposal-panel-title">Interested in this project?</h2>
-            <a href="{% url 'proposal:submit_proposal_view' project_request.id %}" class="request-action">Submit a proposal</a>
+            <h2 class="proposal-panel-title">{% trans "Interested in this project?" %}</h2>
+            <a href="{% url 'proposal:submit_proposal_view' project_request.id %}" class="request-action">{% trans "Submit a proposal" %}</a>
           </div>
 
         {% elif user_proposal %}
           <div class="proposal-panel-header">
-            <h2 class="proposal-panel-title">Your Proposal</h2>
+            <h2 class="proposal-panel-title">{% trans "Your Proposal" %}</h2>
             <div class="proposal-panel-header-actions">
               {% if user_proposal.is_pending %}
-                <a href="{% url 'proposal:edit_proposal_view' user_proposal.id %}" class="proposal-action-btn">Edit</a>
+                <a href="{% url 'proposal:edit_proposal_view' user_proposal.id %}" class="proposal-action-btn">{% trans "Edit" %}</a>
                 <form method="post" action="{% url 'proposal:withdraw_proposal_view' user_proposal.id %}" style="display:inline;">
                   {% csrf_token %}
                   <button type="submit" class="proposal-action-btn proposal-action-btn--danger"
-                    data-confirm-title="Withdraw Proposal"
-                    data-confirm-body="Your proposal will be withdrawn and you will no longer be considered for this project."
-                    data-confirm-variant="danger">Withdraw</button>
+                    data-confirm-title="{% trans "Withdraw Proposal" %}"
+                    data-confirm-body="{% trans "Your proposal will be withdrawn and you will no longer be considered for this project." %}"
+                    data-confirm-variant="danger">{% trans "Withdraw" %}</button>
                 </form>
               {% elif user_proposal.status == 'withdrawn' and project_request.status == 'open' or user_proposal.status == 'withdrawn' and project_request.status == 'in_review' %}
                 <a href="{% url 'proposal:submit_proposal_view' project_request.id %}" class="proposal-action-btn proposal-action-btn--accept">
-                  Re-submit Proposal
+                  {% trans "Re-submit Proposal" %}
                 </a>
               {% endif %}
               {% if user_proposal.is_accepted and user_proposal.contract %}
                 <a href="{% url 'progress:contract_detail_view' user_proposal.contract.id %}" class="proposal-action-btn proposal-action-btn--accept">
-                  <i class="bi bi-box-arrow-up-right"></i> View Project
+                  <i class="bi bi-box-arrow-up-right"></i> {% trans "View Project" %}
                 </a>
               {% endif %}
               {% if user_proposal.is_contract_approval and user_proposal.contract %}
                 <a href="{% url 'payment:artisan_contract_review_view' user_proposal.contract.id %}"
                    class="proposal-action-btn proposal-action-btn--accept">
-                  <i class="bi bi-file-earmark-text"></i> Accept Contract
+                  <i class="bi bi-file-earmark-text"></i> {% trans "Accept Contract" %}
                 </a>
               {% endif %}
             </div>
             {% if user_proposal.conversation %}
               <a href="{% url 'message:conversation_detail_view' user_proposal.conversation.id %}" class="proposal-action-btn">
-                <i class="bi bi-chat-dots-fill"></i> Open Chat
+                <i class="bi bi-chat-dots-fill"></i> {% trans "Open Chat" %}
               </a>
             {% else %}
               <a href="{% url 'message:start_conversation_view' user_proposal.id %}" class="proposal-action-btn">
-                <i class="bi bi-chat-dots-fill"></i> Start Chat
+                <i class="bi bi-chat-dots-fill"></i> {% trans "Start Chat" %}
               </a>
             {% endif %}
           </div>

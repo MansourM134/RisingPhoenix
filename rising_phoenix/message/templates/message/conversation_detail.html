@@ -1,6 +1,7 @@
 {% extends "main/base.html" %}
+{% load i18n %}
 
-{% block title %}Conversation{% endblock %}
+{% block title %}{% trans "Conversation" %}{% endblock %}
 
 {% block content %}
 <section class="py-4 py-lg-5 saaf-chat-page">
@@ -8,21 +9,21 @@
                 <div class="saaf-chat-detail-card">
                     <header class="saaf-chat-detail-head">
                         <div class="saaf-chat-head-main">
-                            <p class="saaf-eyebrow mb-1">Conversation</p>
+                            <p class="saaf-eyebrow mb-1">{% trans "Conversation" %}</p>
                             <h1 class="saaf-chat-head-title mb-2">{{ conversation.proposal.request.title }}</h1>
                             <p class="text-muted mb-0 small">
                                 {% if request.user == conversation.requester %}
-                                    Talking with artisan: {{ conversation.artisan.get_full_name|default:conversation.artisan.username }}
+                                    {% blocktrans with name=conversation.artisan.get_full_name|default:conversation.artisan.username %}Talking with artisan: {{ name }}{% endblocktrans %}
                                 {% else %}
-                                    Talking with requester: {{ conversation.requester.get_full_name|default:conversation.requester.username }}
+                                    {% blocktrans with name=conversation.requester.get_full_name|default:conversation.requester.username %}Talking with requester: {{ name }}{% endblocktrans %}
                                 {% endif %}
                             </p>
                         </div>
 
                         <div class="saaf-chat-head-actions">
-                            <span class="saaf-chat-proposal-pill">Proposal #{{ conversation.proposal.id }}</span>
+                            <span class="saaf-chat-proposal-pill">{% blocktrans with id=conversation.proposal.id %}Proposal #{{ id }}{% endblocktrans %}</span>
                             <a href="{% url 'message:conversation_list_view' %}" class="btn btn-saaf-outline rounded-pill">
-                                Back to Conversations
+                                {% trans "Back to Conversations" %}
                             </a>
                         </div>
                     </header>
@@ -36,7 +37,7 @@
                                         <div class="saaf-chat-bubble-head">
                                             <span class="saaf-chat-sender">
                                                 {% if msg.sender == request.user %}
-                                                    You
+                                                    {% trans "You" %}
                                                 {% else %}
                                                     {{ msg.sender.get_full_name|default:msg.sender.username }}
                                                 {% endif %}
@@ -51,7 +52,7 @@
                                                 <a href="{{ msg.image.url }}" target="_blank">
                                                     <img
                                                         src="{{ msg.image.url }}"
-                                                        alt="Conversation image"
+                                                        alt="{% trans 'Conversation image' %}"
                                                         class="img-fluid saaf-chat-image {% if msg.sender != request.user %}border{% endif %}"
                                                     >
                                                 </a>
@@ -67,7 +68,7 @@
                                         {% if msg.sender != request.user %}
                                         <div class="mt-2">
                                             <a href="{% url 'account:submit_report_view' 'message' msg.id %}" class="saaf-chat-report-link">
-                                                <i class="bi bi-flag"></i> Report
+                                                <i class="bi bi-flag"></i> {% trans "Report" %}
                                             </a>
                                         </div>
                                         {% endif %}
@@ -76,9 +77,9 @@
                             {% endfor %}
                         {% else %}
                             <div class="saaf-chat-empty-state" id="empty-chat">
-                                <h5 class="fw-bold mb-2">No messages yet</h5>
+                                <h5 class="fw-bold mb-2">{% trans "No messages yet" %}</h5>
                                 <p class="text-muted mb-0">
-                                    Start the conversation by sending your first message.
+                                    {% trans "Start the conversation by sending your first message." %}
                                 </p>
                             </div>
                         {% endif %}
@@ -91,19 +92,19 @@
                                 {% csrf_token %}
 
                                 <div class="mb-3 mb-md-2">
-                                    <label for="body" class="form-label fw-semibold mb-2">Your message</label>
+                                    <label for="body" class="form-label fw-semibold mb-2">{% trans "Your message" %}</label>
                                     <textarea
                                         name="body"
                                         id="body"
                                         rows="3"
                                         class="form-control rounded-4 saaf-chat-textarea"
-                                        placeholder="Write your message here..."
+                                        placeholder="{% trans 'Write your message here...' %}"
                                     ></textarea>
                                 </div>
 
                                 <div class="saaf-chat-composer-row">
                                     <div class="saaf-chat-file-input-wrap">
-                                        <label for="image" class="form-label fw-semibold mb-2">Attach image</label>
+                                        <label for="image" class="form-label fw-semibold mb-2">{% trans "Attach image" %}</label>
                                         <input
                                             type="file"
                                             name="image"
@@ -111,23 +112,23 @@
                                             class="form-control rounded-4"
                                             accept="image/*"
                                         >
-                                        <p class="saaf-chat-helper-text mb-0">JPEG, PNG, WebP, GIF, up to 5 MB.</p>
+                                        <p class="saaf-chat-helper-text mb-0">{% trans "JPEG, PNG, WebP, GIF, up to 5 MB." %}</p>
                                     </div>
 
                                     <div class="saaf-chat-submit-wrap">
                                         <button type="button" id="send-btn" class="btn btn-saaf-primary rounded-pill px-4 w-100">
-                                            Send Message
+                                            {% trans "Send Message" %}
                                         </button>
                                     </div>
                                 </div>
 
                                 <div id="image-preview-wrapper" class="mb-3 d-none">
-                                    <p class="fw-semibold small text-muted mb-2">Image preview</p>
+                                    <p class="fw-semibold small text-muted mb-2">{% trans "Image preview" %}</p>
                                     <div class="position-relative d-inline-block">
                                         <img
                                             id="image-preview"
                                             src=""
-                                            alt="Selected image preview"
+                                            alt="{% trans 'Selected image preview' %}"
                                             class="img-fluid rounded-4 border saaf-chat-preview-image"
                                         >
                                         <button
@@ -146,8 +147,8 @@
                                 <div class="d-flex align-items-start gap-2">
                                     <i class="bi bi-lock"></i>
                                     <div>
-                                        <strong>Conversation closed.</strong>
-                                        You can still view the full message history, but you can’t send new messages.
+                                        <strong>{% trans "Conversation closed." %}</strong>
+                                        {% trans "You can still view the full message history, but you can't send new messages." %}
                                     </div>
                                 </div>
                             </div>

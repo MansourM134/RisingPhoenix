@@ -1,17 +1,18 @@
 {% extends "main/base.html" %}
+{% load i18n %}
 
-{% block title %}Report Management{% endblock %}
+{% block title %}{% trans "Report Management" %}{% endblock %}
 
 {% block content %}
 <div class="container py-5">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="fw-bold">Report Management</h1>
-            <p class="text-muted">Review and resolve user-submitted reports</p>
+            <h1 class="fw-bold">{% trans "Report Management" %}</h1>
+            <p class="text-muted">{% trans "Review and resolve user-submitted reports" %}</p>
         </div>
         <a href="{% url 'staff:staff_dashboard_view' %}" class="btn btn-outline-secondary btn-sm">
-            <i class="bi bi-arrow-left"></i> Dashboard
+            <i class="bi bi-arrow-left"></i> {% trans "Dashboard" %}
         </a>
     </div>
 
@@ -37,7 +38,7 @@
     <div class="card shadow-sm border-0">
         <div class="card-header bg-dark text-white">
             <h5 class="mb-0">
-                Reports
+                {% trans "Reports" %}
                 <span class="badge bg-secondary ms-2">{{ reports.count }}</span>
             </h5>
         </div>
@@ -47,13 +48,13 @@
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th>Reporter</th>
-                        <th>Type</th>
-                        <th>Target</th>
-                        <th>Reason</th>
-                        <th>Details</th>
-                        <th>Submitted</th>
-                        <th>Action</th>
+                        <th>{% trans "Reporter" %}</th>
+                        <th>{% trans "Type" %}</th>
+                        <th>{% trans "Target" %}</th>
+                        <th>{% trans "Reason" %}</th>
+                        <th>{% trans "Details" %}</th>
+                        <th>{% trans "Submitted" %}</th>
+                        <th>{% trans "Action" %}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -73,11 +74,11 @@
                             {% elif report.content_type == 'portfolio_image' and report.reported_portfolio_image %}
                                 {{ report.reported_portfolio_image.caption|default:"(no caption)" }}
                             {% elif report.content_type == 'review' and report.reported_review %}
-                                Review by {{ report.reported_review.reviews_given.username }}
+                                {% blocktrans with username=report.reported_review.reviews_given.username %}Review by {{ username }}{% endblocktrans %}
                             {% elif report.content_type == 'message' and report.reported_message %}
-                                Message from {{ report.reported_message.sender.username }}
+                                {% blocktrans with username=report.reported_message.sender.username %}Message from {{ username }}{% endblocktrans %}
                             {% else %}
-                                <span class="text-muted">[removed]</span>
+                                <span class="text-muted">{% trans "[removed]" %}</span>
                             {% endif %}
                         </td>
                         <td>{{ report.get_reason_display }}</td>
@@ -92,7 +93,7 @@
                             <button class="btn btn-sm btn-outline-dark"
                                     data-bs-toggle="modal"
                                     data-bs-target="#resolveModal{{ report.id }}">
-                                Review
+                                {% trans "Review" %}
                             </button>
 
                             <!-- Resolve modal -->
@@ -100,15 +101,14 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title">Resolve Report #{{ report.id }}</h5>
+                                            <h5 class="modal-title">{% blocktrans with id=report.id %}Resolve Report #{{ id }}{% endblocktrans %}</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
                                         <form method="POST" action="{% url 'staff:resolve_report_view' report.id %}">
                                             {% csrf_token %}
                                             <div class="modal-body">
                                                 <p class="text-muted small mb-3">
-                                                    Reported by <strong>{{ report.reporter.username|default:"[deleted]" }}</strong>
-                                                    on {{ report.created_at|date:"M j, Y" }}
+                                                    {% blocktrans with reporter=report.reporter.username|default:"[deleted]" date=report.created_at|date:"M j, Y" %}Reported by <strong>{{ reporter }}</strong> on {{ date }}{% endblocktrans %}
                                                 </p>
                                                 {% if report.details %}
                                                 <div class="alert alert-light border mb-3" style="font-size:0.875rem;">
@@ -116,25 +116,25 @@
                                                 </div>
                                                 {% endif %}
                                                 <div class="mb-3">
-                                                    <label class="form-label fw-bold">Resolution note (optional)</label>
+                                                    <label class="form-label fw-bold">{% trans "Resolution note (optional)" %}</label>
                                                     <textarea name="resolution_note" class="form-control" rows="3"
-                                                              placeholder="Explain the action taken..."></textarea>
+                                                              placeholder="{% trans 'Explain the action taken...' %}"></textarea>
                                                 </div>
                                                 <div class="mb-1">
-                                                    <label class="form-label fw-bold">Action</label>
+                                                    <label class="form-label fw-bold">{% trans "Action" %}</label>
                                                 </div>
                                                 <div class="d-flex gap-2">
                                                     <button type="submit" name="action" value="reviewed"
                                                             class="btn btn-info btn-sm text-white">
-                                                        Mark Under Review
+                                                        {% trans "Mark Under Review" %}
                                                     </button>
                                                     <button type="submit" name="action" value="resolved"
                                                             class="btn btn-success btn-sm">
-                                                        Resolve
+                                                        {% trans "Resolve" %}
                                                     </button>
                                                     <button type="submit" name="action" value="dismissed"
                                                             class="btn btn-secondary btn-sm">
-                                                        Dismiss
+                                                        {% trans "Dismiss" %}
                                                     </button>
                                                 </div>
                                             </div>
@@ -144,9 +144,9 @@
                             </div>
                             {% else %}
                                 {% if report.status == 'resolved' %}
-                                    <span class="badge bg-success">Resolved</span>
+                                    <span class="badge bg-success">{% trans "Resolved" %}</span>
                                 {% else %}
-                                    <span class="badge bg-secondary">Dismissed</span>
+                                    <span class="badge bg-secondary">{% trans "Dismissed" %}</span>
                                 {% endif %}
                             {% endif %}
                         </td>
@@ -157,7 +157,7 @@
             {% else %}
             <div class="text-center py-5 text-muted">
                 <i class="bi bi-flag fs-1 d-block mb-3" style="color:#d9b9a8;"></i>
-                No reports with status "{{ status_filter }}".
+                {% blocktrans with status=status_filter %}No reports with status "{{ status }}".{% endblocktrans %}
             </div>
             {% endif %}
         </div>

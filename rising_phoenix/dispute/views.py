@@ -2,6 +2,7 @@ import mimetypes
 
 from django.conf import settings
 from django.contrib import messages
+from django.utils.translation import gettext as _
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Q
@@ -53,12 +54,12 @@ def raise_dispute_view(request: HttpRequest, contract_id: int) -> HttpResponse:
     )
 
     if not _user_is_party(request.user, contract):
-        messages.error(request, 'You are not part of this project.')
+        messages.error(request, _('You are not part of this project.'))
         return redirect('main:home_view')
 
     eligible_statuses = (Contract.Status.IN_PROGRESS, Contract.Status.COMPLETION_REQUESTED)
     if contract.status not in eligible_statuses:
-        messages.error(request, 'A dispute can only be opened on an active project.')
+        messages.error(request, _('A dispute can only be opened on an active project.'))
         return redirect('progress:contract_detail_view', contract_id=contract.id)
 
     existing = contract.disputes.filter(
@@ -66,7 +67,7 @@ def raise_dispute_view(request: HttpRequest, contract_id: int) -> HttpResponse:
         status__in=[Dispute.Status.OPEN, Dispute.Status.IN_REVIEW],
     ).first()
     if existing:
-        messages.warning(request, 'You already have an open dispute on this project.')
+        messages.warning(request, _('You already have an open dispute on this project.'))
         return redirect('dispute:dispute_detail_view', dispute_id=existing.id)
 
     if request.method == 'POST':
@@ -74,7 +75,7 @@ def raise_dispute_view(request: HttpRequest, contract_id: int) -> HttpResponse:
         if form.is_valid():
             description = form.cleaned_data['description'].strip()
             if not text_is_clean(description):
-                messages.error(request, 'Your description contains inappropriate language. Please revise it.')
+                messages.error(request, _('Your description contains inappropriate language. Please revise it.'))
             else:
                 dispute = form.save(commit=False)
                 dispute.contract = contract
@@ -102,7 +103,7 @@ def raise_dispute_view(request: HttpRequest, contract_id: int) -> HttpResponse:
                         link=reverse('staff:dispute_detail_view', kwargs={'dispute_id': dispute.id}),
                     )
 
-                messages.success(request, 'Your dispute has been opened. Our team will review it shortly.')
+                messages.success(request, _('Your dispute has been opened. Our team will review it shortly.'))
                 return redirect('dispute:dispute_detail_view', dispute_id=dispute.id)
     else:
         form = DisputeForm()
@@ -135,7 +136,7 @@ def dispute_detail_view(request: HttpRequest, dispute_id: int) -> HttpResponse:
     )
 
     if not dispute.involves(request.user):
-        messages.error(request, 'You do not have access to this dispute.')
+        messages.error(request, _('You do not have access to this dispute.'))
         return redirect('main:home_view')
 
     thread = (
@@ -161,22 +162,22 @@ def party_send_message_view(request: HttpRequest, dispute_id: int) -> HttpRespon
     dispute = get_object_or_404(Dispute, id=dispute_id)
 
     if not dispute.involves(request.user):
-        messages.error(request, 'You do not have access to this dispute.')
+        messages.error(request, _('You do not have access to this dispute.'))
         return redirect('main:home_view')
 
     if not dispute.is_open:
-        messages.error(request, 'This dispute is already resolved.')
+        messages.error(request, _('This dispute is already resolved.'))
         return redirect('dispute:dispute_detail_view', dispute_id=dispute.id)
 
     body = (request.POST.get('body') or '').strip()
     image = request.FILES.get('image')
 
     if not body and not image:
-        messages.error(request, 'Please write a message or attach an image.')
+        messages.error(request, _('Please write a message or attach an image.'))
         return redirect('dispute:dispute_detail_view', dispute_id=dispute.id)
 
     if body and not text_is_clean(body):
-        messages.error(request, 'Your message contains inappropriate language. Please revise it.')
+        messages.error(request, _('Your message contains inappropriate language. Please revise it.'))
         return redirect('dispute:dispute_detail_view', dispute_id=dispute.id)
 
     cleaned_image, image_error = _validate_image(image)
@@ -202,5 +203,5 @@ def party_send_message_view(request: HttpRequest, dispute_id: int) -> HttpRespon
             link=link_for_staff,
         )
 
-    messages.success(request, 'Message sent.')
+    messages.success(request, _('Message sent.'))
     return redirect('dispute:dispute_detail_view', dispute_id=dispute.id)

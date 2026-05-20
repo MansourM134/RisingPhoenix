@@ -1,13 +1,13 @@
 {% extends 'notification/email/base_email.html' %}
+{% load i18n %}
 {% block body %}
 
-<p style="margin:0 0 4px;font-size:13px;color:#c2724f;text-transform:uppercase;letter-spacing:1.5px;">Contract Confirmed</p>
+<p style="margin:0 0 4px;font-size:13px;color:#c2724f;text-transform:uppercase;letter-spacing:1.5px;">{% trans "Contract Confirmed" %}</p>
 <h2 style="margin:12px 0 16px;font-size:24px;color:#1c1712;font-family:Georgia,serif;line-height:1.3;">
-  Your contract is ready.
+  {% trans "Your contract is ready." %}
 </h2>
 <p style="margin:0 0 24px;font-size:15px;color:#3d3530;line-height:1.7;">
-  The contract for <strong>{{ project_request.title }}</strong> has been accepted by both parties.
-  Your signed copy is attached to this email as a PDF — keep it for your records.
+  {% blocktrans with title=project_request.title %}The contract for <strong>{{ title }}</strong> has been accepted by both parties. Your signed copy is attached to this email as a PDF — keep it for your records.{% endblocktrans %}
 </p>
 
 <!-- Contract summary box -->
@@ -18,26 +18,26 @@
       <table cellpadding="0" cellspacing="0" width="100%">
         <tr>
           <td style="padding:0 0 10px;">
-            <p style="margin:0;font-size:12px;color:#8a7a6e;text-transform:uppercase;letter-spacing:1px;">Project</p>
+            <p style="margin:0;font-size:12px;color:#8a7a6e;text-transform:uppercase;letter-spacing:1px;">{% trans "Project" %}</p>
             <p style="margin:4px 0 0;font-size:15px;color:#1c1712;font-weight:bold;">{{ project_request.title }}</p>
           </td>
         </tr>
         <tr>
           <td style="padding:0 0 10px;">
-            <p style="margin:0;font-size:12px;color:#8a7a6e;text-transform:uppercase;letter-spacing:1px;">Artisan</p>
+            <p style="margin:0;font-size:12px;color:#8a7a6e;text-transform:uppercase;letter-spacing:1px;">{% trans "Artisan" %}</p>
             <p style="margin:4px 0 0;font-size:15px;color:#1c1712;">{{ proposal.artisan.get_full_name|default:proposal.artisan.username }}</p>
           </td>
         </tr>
         <tr>
           <td style="padding:0 0 10px;">
-            <p style="margin:0;font-size:12px;color:#8a7a6e;text-transform:uppercase;letter-spacing:1px;">Agreed Price</p>
+            <p style="margin:0;font-size:12px;color:#8a7a6e;text-transform:uppercase;letter-spacing:1px;">{% trans "Agreed Price" %}</p>
             <p style="margin:4px 0 0;font-size:15px;color:#1c1712;">{{ proposal.price }} SAR</p>
           </td>
         </tr>
         <tr>
           <td style="padding:0;">
-            <p style="margin:0;font-size:12px;color:#8a7a6e;text-transform:uppercase;letter-spacing:1px;">Delivery</p>
-            <p style="margin:4px 0 0;font-size:15px;color:#1c1712;">{{ proposal.duration_days }} day{{ proposal.duration_days|pluralize }}</p>
+            <p style="margin:0;font-size:12px;color:#8a7a6e;text-transform:uppercase;letter-spacing:1px;">{% trans "Delivery" %}</p>
+            <p style="margin:4px 0 0;font-size:15px;color:#1c1712;">{% blocktrans with days=proposal.duration_days %}{{ days }} day{{ days|pluralize }}{% endblocktrans %}</p>
           </td>
         </tr>
       </table>
@@ -50,14 +50,14 @@
     <td style="background:#c2724f;border-radius:8px;">
       <a href="{{ site_url }}/requests/{{ project_request.id }}/"
          style="display:block;padding:13px 32px;color:#ffffff;text-decoration:none;font-size:14px;font-weight:bold;font-family:Georgia,serif;letter-spacing:0.5px;">
-        View Project &rarr;
+        {% trans "View Project" %} &rarr;
       </a>
     </td>
   </tr>
 </table>
 
 <p style="margin:0;font-size:13px;color:#8a7a6e;line-height:1.7;">
-  You can track progress, send messages, and manage this project from your Saaf dashboard at any time.
+  {% trans "You can track progress, send messages, and manage this project from your Saaf dashboard at any time." %}
 </p>
 
 {% endblock %}

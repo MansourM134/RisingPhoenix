@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.utils.translation import gettext as _
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import HttpRequest, HttpResponse, JsonResponse
@@ -19,7 +20,7 @@ def start_conversation_view(request: HttpRequest, proposal_id: int) -> HttpRespo
     artisan = proposal.artisan
 
     if request.user not in (requester, artisan):
-        messages.error(request, "You are not allowed to start this conversation.")
+        messages.error(request, _("You are not allowed to start this conversation."))
         return redirect('main:home_view')
 
     conversation, created = Conversation.objects.get_or_create(
@@ -31,7 +32,7 @@ def start_conversation_view(request: HttpRequest, proposal_id: int) -> HttpRespo
     )
 
     if created:
-        messages.success(request, "Conversation started successfully.")
+        messages.success(request, _("Conversation started successfully."))
         recipient = artisan if request.user == requester else requester
         notify(
             recipient=recipient,
@@ -71,7 +72,7 @@ def conversation_detail_view(request, conversation_id):
 
     if request.method == "POST":
         if not conversation.is_active:
-            error_message = 'This conversation is closed. You can still view the message history.'
+            error_message = _('This conversation is closed. You can still view the message history.')
 
             if is_ajax:
                 return JsonResponse({'error': error_message, 'conversation_closed': True}, status=403)
@@ -85,7 +86,7 @@ def conversation_detail_view(request, conversation_id):
         if body and not text_is_clean(body):
             if is_ajax:
                 return JsonResponse({'error': 'Your message contains inappropriate language. Please revise it.'}, status=400)
-            messages.error(request, 'Your message contains inappropriate language. Please revise it.')
+            messages.error(request, _('Your message contains inappropriate language. Please revise it.'))
             return redirect('message:conversation_detail_view', conversation_id=conversation.id)
 
         image_error = None

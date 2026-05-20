@@ -1,4 +1,5 @@
 {% extends 'main/base.html' %}
+{% load i18n %}
 
 {% block sidebar %}
 {% include 'main/_sidebar.html' with active='staff' %}
@@ -11,41 +12,41 @@
             <div class="saaf-dashboard-hero-grid">
                 <div>
                     <div class="saaf-dashboard-kicker-row">
-                        <p class="saaf-eyebrow mb-0">Admin</p>
-                        <span class="saaf-hero-chip"><i class="bi bi-shield-lock"></i> Moderation Surface</span>
+                        <p class="saaf-eyebrow mb-0">{% trans "Admin" %}</p>
+                        <span class="saaf-hero-chip"><i class="bi bi-shield-lock"></i> {% trans "Moderation Surface" %}</span>
                     </div>
-                    <h1 class="saaf-section-title mb-2">Staff Dashboard</h1>
-                    <p class="text-muted mb-0">A tighter command center for moderation, artisan management, reporting, and category maintenance.</p>
+                    <h1 class="saaf-section-title mb-2">{% trans "Staff Dashboard" %}</h1>
+                    <p class="text-muted mb-0">{% trans "A tighter command center for moderation, artisan management, reporting, and category maintenance." %}</p>
 
                     <div class="saaf-dashboard-hero-actions">
                         <a href="{% url 'staff:report_list_view' %}" class="saaf-quick-action-btn">
                             <i class="bi bi-flag"></i>
-                            Review Reports
+                            {% trans "Review Reports" %}
                         </a>
                         <a href="{% url 'staff:dispute_list_view' %}" class="saaf-quick-action-btn">
                             <i class="bi bi-exclamation-octagon"></i>
-                            Review Disputes
+                            {% trans "Review Disputes" %}
                         </a>
                         <a href="{% url 'staff:staff_profile_view' %}" class="saaf-quick-action-btn saaf-quick-action-btn--soft">
                             <i class="bi bi-person-circle"></i>
-                            My Staff Profile
+                            {% trans "My Staff Profile" %}
                         </a>
                     </div>
                 </div>
 
                 <div class="saaf-dashboard-side-panel">
                     <div class="saaf-dashboard-side-card">
-                        <span class="saaf-info-label">Pending Reports</span>
+                        <span class="saaf-info-label">{% trans "Pending Reports" %}</span>
                         <h3 class="saaf-dashboard-side-title">{{ pending_reports_count }}</h3>
-                        <p class="mb-0 text-muted">Items still waiting for moderation review.</p>
+                        <p class="mb-0 text-muted">{% trans "Items still waiting for moderation review." %}</p>
                     </div>
                     <div class="saaf-dashboard-mini-stats">
                         <div class="saaf-dashboard-mini-stat">
-                            <span class="saaf-info-label">Users</span>
+                            <span class="saaf-info-label">{% trans "Users" %}</span>
                             <strong>{{ total_users }}</strong>
                         </div>
                         <div class="saaf-dashboard-mini-stat">
-                            <span class="saaf-info-label">Artisans</span>
+                            <span class="saaf-info-label">{% trans "Artisans" %}</span>
                             <strong>{{ total_artisans }}</strong>
                         </div>
                     </div>
@@ -55,29 +56,29 @@
 
         <div class="saaf-dashboard-section-head mb-3">
             <div>
-                <p class="saaf-eyebrow mb-1">Overview</p>
-                <h2 class="saaf-dashboard-section-title mb-0">Platform health at a glance</h2>
+                <p class="saaf-eyebrow mb-1">{% trans "Overview" %}</p>
+                <h2 class="saaf-dashboard-section-title mb-0">{% trans "Platform health at a glance" %}</h2>
             </div>
         </div>
 
         <div class="row g-3 g-xl-4 mb-4">
-            <div class="col-6 col-md-4 col-xl"><div class="saaf-info-card saaf-info-card--metric"><span class="saaf-info-label">Users</span><h5 class="mb-0">{{ total_users }}</h5><p class="mb-0 text-muted">All requester accounts</p></div></div>
-            <div class="col-6 col-md-4 col-xl"><div class="saaf-info-card saaf-info-card--metric"><span class="saaf-info-label">Banned Users</span><h5 class="mb-0">{{ banned_users }}</h5><p class="mb-0 text-muted">Restricted requester access</p></div></div>
-            <div class="col-6 col-md-4 col-xl"><div class="saaf-info-card saaf-info-card--metric"><span class="saaf-info-label">Artisans</span><h5 class="mb-0">{{ total_artisans }}</h5><p class="mb-0 text-muted">Registered makers</p></div></div>
-            <div class="col-6 col-md-4 col-xl"><div class="saaf-info-card saaf-info-card--metric"><span class="saaf-info-label">Verified</span><h5 class="mb-0">{{ verified_artisans }}</h5><p class="mb-0 text-muted">Approved artisan profiles</p></div></div>
-            <div class="col-6 col-md-4 col-xl"><div class="saaf-info-card saaf-info-card--metric"><span class="saaf-info-label">Featured</span><h5 class="mb-0">{{ featured_artisans }}</h5><p class="mb-0 text-muted">Highlighted creators</p></div></div>
-            <div class="col-6 col-md-4 col-xl"><div class="saaf-info-card saaf-info-card--metric"><span class="saaf-info-label">Banned Artisans</span><h5 class="mb-0">{{ banned_artisans }}</h5><p class="mb-0 text-muted">Restricted artisan accounts</p></div></div>
-            <div class="col-12 col-md-6 col-xl"><div class="saaf-info-card saaf-info-card--metric saaf-info-card--alert"><span class="saaf-info-label">Pending Reports</span><h5 class="mb-1"><a href="{% url 'staff:report_list_view' %}" class="saaf-staff-inline-link">{{ pending_reports_count }}</a></h5><p class="mb-0 text-muted">Open moderation queue</p></div></div>
-            <div class="col-12 col-md-6 col-xl"><div class="saaf-info-card saaf-info-card--metric saaf-info-card--alert"><span class="saaf-info-label">Open Disputes</span><h5 class="mb-1"><a href="{% url 'staff:dispute_list_view' %}" class="saaf-staff-inline-link">{{ pending_disputes_count }}</a></h5><p class="mb-0 text-muted">Awaiting staff resolution</p></div></div>
+            <div class="col-6 col-md-4 col-xl"><div class="saaf-info-card saaf-info-card--metric"><span class="saaf-info-label">{% trans "Users" %}</span><h5 class="mb-0">{{ total_users }}</h5><p class="mb-0 text-muted">{% trans "All requester accounts" %}</p></div></div>
+            <div class="col-6 col-md-4 col-xl"><div class="saaf-info-card saaf-info-card--metric"><span class="saaf-info-label">{% trans "Banned Users" %}</span><h5 class="mb-0">{{ banned_users }}</h5><p class="mb-0 text-muted">{% trans "Restricted requester access" %}</p></div></div>
+            <div class="col-6 col-md-4 col-xl"><div class="saaf-info-card saaf-info-card--metric"><span class="saaf-info-label">{% trans "Artisans" %}</span><h5 class="mb-0">{{ total_artisans }}</h5><p class="mb-0 text-muted">{% trans "Registered makers" %}</p></div></div>
+            <div class="col-6 col-md-4 col-xl"><div class="saaf-info-card saaf-info-card--metric"><span class="saaf-info-label">{% trans "Verified" %}</span><h5 class="mb-0">{{ verified_artisans }}</h5><p class="mb-0 text-muted">{% trans "Approved artisan profiles" %}</p></div></div>
+            <div class="col-6 col-md-4 col-xl"><div class="saaf-info-card saaf-info-card--metric"><span class="saaf-info-label">{% trans "Featured" %}</span><h5 class="mb-0">{{ featured_artisans }}</h5><p class="mb-0 text-muted">{% trans "Highlighted creators" %}</p></div></div>
+            <div class="col-6 col-md-4 col-xl"><div class="saaf-info-card saaf-info-card--metric"><span class="saaf-info-label">{% trans "Banned Artisans" %}</span><h5 class="mb-0">{{ banned_artisans }}</h5><p class="mb-0 text-muted">{% trans "Restricted artisan accounts" %}</p></div></div>
+            <div class="col-12 col-md-6 col-xl"><div class="saaf-info-card saaf-info-card--metric saaf-info-card--alert"><span class="saaf-info-label">{% trans "Pending Reports" %}</span><h5 class="mb-1"><a href="{% url 'staff:report_list_view' %}" class="saaf-staff-inline-link">{{ pending_reports_count }}</a></h5><p class="mb-0 text-muted">{% trans "Open moderation queue" %}</p></div></div>
+            <div class="col-12 col-md-6 col-xl"><div class="saaf-info-card saaf-info-card--metric saaf-info-card--alert"><span class="saaf-info-label">{% trans "Open Disputes" %}</span><h5 class="mb-1"><a href="{% url 'staff:dispute_list_view' %}" class="saaf-staff-inline-link">{{ pending_disputes_count }}</a></h5><p class="mb-0 text-muted">{% trans "Awaiting staff resolution" %}</p></div></div>
         </div>
 
         <div class="saaf-dashboard-card saaf-staff-section-card rounded-4 p-4 mb-4">
             <div class="saaf-dashboard-table-head">
                 <div>
-                    <p class="saaf-eyebrow mb-1">Payouts</p>
-                    <h5 class="mb-0">Artisan payout actions</h5>
+                    <p class="saaf-eyebrow mb-1">{% trans "Payouts" %}</p>
+                    <h5 class="mb-0">{% trans "Artisan payout actions" %}</h5>
                 </div>
-                <span class="saaf-table-caption">Run payout processing manually for admin operations.</span>
+                <span class="saaf-table-caption">{% trans "Run payout processing manually for admin operations." %}</span>
             </div>
 
             <div class="row g-3">
@@ -85,12 +86,12 @@
                     <form method="POST" action="{% url 'payment:run_current_month_artisan_payout' %}">
                         {% csrf_token %}
                         <div class="saaf-info-card saaf-info-card--metric h-100">
-                            <span class="saaf-info-label">Current Month</span>
-                            <h5 class="mb-2">Run Current Month Payout</h5>
-                            <p class="mb-3 text-muted">Use this for manual or test payout processing for the current month.</p>
+                            <span class="saaf-info-label">{% trans "Current Month" %}</span>
+                            <h5 class="mb-2">{% trans "Run Current Month Payout" %}</h5>
+                            <p class="mb-3 text-muted">{% trans "Use this for manual or test payout processing for the current month." %}</p>
                             <button type="submit" class="btn btn-saaf-primary">
                                 <i class="bi bi-cash-stack"></i>
-                                Run Current Month
+                                {% trans "Run Current Month" %}
                             </button>
                         </div>
                     </form>
@@ -100,12 +101,12 @@
                     <form method="POST" action="{% url 'payment:run_previous_month_artisan_payout' %}">
                         {% csrf_token %}
                         <div class="saaf-info-card saaf-info-card--metric h-100">
-                            <span class="saaf-info-label">Previous Month</span>
-                            <h5 class="mb-2">Run Previous Month Payout</h5>
-                            <p class="mb-3 text-muted">Use this for the official monthly payout after the month has ended.</p>
+                            <span class="saaf-info-label">{% trans "Previous Month" %}</span>
+                            <h5 class="mb-2">{% trans "Run Previous Month Payout" %}</h5>
+                            <p class="mb-3 text-muted">{% trans "Use this for the official monthly payout after the month has ended." %}</p>
                             <button type="submit" class="btn btn-saaf-outline">
                                 <i class="bi bi-calendar-check"></i>
-                                Run Previous Month
+                                {% trans "Run Previous Month" %}
                             </button>
                         </div>
                     </form>
@@ -116,29 +117,29 @@
         <div class="saaf-dashboard-card saaf-staff-section-card rounded-4 p-4 mb-4">
             <div class="saaf-dashboard-table-head">
                 <div>
-                    <p class="saaf-eyebrow mb-1">Users</p>
-                    <h5 class="mb-0">Requester accounts</h5>
+                    <p class="saaf-eyebrow mb-1">{% trans "Users" %}</p>
+                    <h5 class="mb-0">{% trans "Requester accounts" %}</h5>
                 </div>
-                <span class="saaf-table-caption">Ban and restore access when needed.</span>
+                <span class="saaf-table-caption">{% trans "Ban and restore access when needed." %}</span>
             </div>
             <div class="table-responsive">
                 <table class="table align-middle saaf-dashboard-table">
-                    <thead><tr><th>Username</th><th>Email</th><th>Status</th><th>Ban Reason</th><th>Action</th></tr></thead>
+                    <thead><tr><th>{% trans "Username" %}</th><th>{% trans "Email" %}</th><th>{% trans "Status" %}</th><th>{% trans "Ban Reason" %}</th><th>{% trans "Action" %}</th></tr></thead>
                     <tbody>
                         {% for profile in profiles %}
                         <tr>
                             <td>{{ profile.user.username }}</td>
                             <td>{{ profile.user.email }}</td>
-                            <td>{% if profile.is_banned %}<span class="badge text-bg-danger">Banned</span>{% else %}<span class="badge text-bg-success">Active</span>{% endif %}</td>
+                            <td>{% if profile.is_banned %}<span class="badge text-bg-danger">{% trans "Banned" %}</span>{% else %}<span class="badge text-bg-success">{% trans "Active" %}</span>{% endif %}</td>
                             <td>{{ profile.ban_reason|default:"-" }}</td>
                             <td>
                                 <form method="POST" action="{% url 'staff:ban_user_view' profile.user.id %}" class="d-flex gap-2">
                                     {% csrf_token %}
                                     {% if not profile.is_banned %}
-                                    <input type="text" name="ban_reason" class="form-control form-control-sm" placeholder="Reason">
-                                    <button class="btn btn-sm btn-saaf-primary">Ban</button>
+                                    <input type="text" name="ban_reason" class="form-control form-control-sm" placeholder="{% trans 'Reason' %}">
+                                    <button class="btn btn-sm btn-saaf-primary">{% trans "Ban" %}</button>
                                     {% else %}
-                                    <button class="btn btn-sm btn-saaf-outline">Unban</button>
+                                    <button class="btn btn-sm btn-saaf-outline">{% trans "Unban" %}</button>
                                     {% endif %}
                                 </form>
                             </td>
@@ -152,42 +153,42 @@
         <div class="saaf-dashboard-card saaf-staff-section-card rounded-4 p-4 mb-4">
             <div class="saaf-dashboard-table-head">
                 <div>
-                    <p class="saaf-eyebrow mb-1">Artisans</p>
-                    <h5 class="mb-0">Verification and featuring</h5>
+                    <p class="saaf-eyebrow mb-1">{% trans "Artisans" %}</p>
+                    <h5 class="mb-0">{% trans "Verification and featuring" %}</h5>
                 </div>
-                <span class="saaf-table-caption">Manage trust, visibility, and account access.</span>
+                <span class="saaf-table-caption">{% trans "Manage trust, visibility, and account access." %}</span>
             </div>
             <div class="table-responsive">
                 <table class="table align-middle saaf-dashboard-table">
-                    <thead><tr><th>Username</th><th>Verified</th><th>Feature</th><th>Status</th><th>Ban Action</th><th>Feature Action</th><th>Verify Action</th></tr></thead>
+                    <thead><tr><th>{% trans "Username" %}</th><th>{% trans "Verified" %}</th><th>{% trans "Feature" %}</th><th>{% trans "Status" %}</th><th>{% trans "Ban Action" %}</th><th>{% trans "Feature Action" %}</th><th>{% trans "Verify Action" %}</th></tr></thead>
                     <tbody>
                         {% for artisan in artisan_profiles %}
                         <tr>
                             <td>{{ artisan.user.username }}</td>
-                            <td>{% if artisan.is_verified %}<span class="badge text-bg-success">Verified</span>{% else %}<span class="badge text-bg-secondary">Not verified</span>{% endif %}</td>
-                            <td>{% if artisan.is_featured %}<span class="badge text-bg-warning">Featured</span>{% else %}<span class="badge text-bg-light">No</span>{% endif %}</td>
-                            <td>{% if artisan.is_banned %}<span class="badge text-bg-danger">Banned</span>{% else %}<span class="badge text-bg-success">Active</span>{% endif %}</td>
+                            <td>{% if artisan.is_verified %}<span class="badge text-bg-success">{% trans "Verified" %}</span>{% else %}<span class="badge text-bg-secondary">{% trans "Not verified" %}</span>{% endif %}</td>
+                            <td>{% if artisan.is_featured %}<span class="badge text-bg-warning">{% trans "Featured" %}</span>{% else %}<span class="badge text-bg-light">{% trans "No" %}</span>{% endif %}</td>
+                            <td>{% if artisan.is_banned %}<span class="badge text-bg-danger">{% trans "Banned" %}</span>{% else %}<span class="badge text-bg-success">{% trans "Active" %}</span>{% endif %}</td>
                             <td>
                                 <form method="POST" action="{% url 'staff:ban_artisan_view' artisan.user.id %}" class="d-flex gap-2">
                                     {% csrf_token %}
                                     {% if not artisan.is_banned %}
-                                    <input type="text" name="ban_reason" class="form-control form-control-sm" placeholder="Reason">
-                                    <button class="btn btn-sm btn-saaf-primary">Ban</button>
+                                    <input type="text" name="ban_reason" class="form-control form-control-sm" placeholder="{% trans 'Reason' %}">
+                                    <button class="btn btn-sm btn-saaf-primary">{% trans "Ban" %}</button>
                                     {% else %}
-                                    <button class="btn btn-sm btn-saaf-outline">Unban</button>
+                                    <button class="btn btn-sm btn-saaf-outline">{% trans "Unban" %}</button>
                                     {% endif %}
                                 </form>
                             </td>
                             <td>
                                 <form method="POST" action="{% url 'staff:feature_artisan_view' artisan.user.id %}">
                                     {% csrf_token %}
-                                    <button class="btn btn-sm btn-saaf-outline">{% if artisan.is_featured %}Remove{% else %}Feature{% endif %}</button>
+                                    <button class="btn btn-sm btn-saaf-outline">{% if artisan.is_featured %}{% trans "Remove" %}{% else %}{% trans "Feature" %}{% endif %}</button>
                                 </form>
                             </td>
                             <td>
                                 <form method="POST" action="{% url 'staff:verify_artisan_view' artisan.user.id %}">
                                     {% csrf_token %}
-                                    <button class="btn btn-sm btn-saaf-outline">{% if artisan.is_verified %}Unverify{% else %}Verify{% endif %}</button>
+                                    <button class="btn btn-sm btn-saaf-outline">{% if artisan.is_verified %}{% trans "Unverify" %}{% else %}{% trans "Verify" %}{% endif %}</button>
                                 </form>
                             </td>
                         </tr>
@@ -200,20 +201,20 @@
         <div class="saaf-dashboard-card saaf-staff-section-card rounded-4 p-4">
             <div class="saaf-dashboard-table-head">
                 <div>
-                    <p class="saaf-eyebrow mb-1">Catalog</p>
-                    <h5 class="mb-0">Categories</h5>
+                    <p class="saaf-eyebrow mb-1">{% trans "Catalog" %}</p>
+                    <h5 class="mb-0">{% trans "Categories" %}</h5>
                 </div>
-                <span class="saaf-table-caption">Keep the marketplace structure clear and current.</span>
+                <span class="saaf-table-caption">{% trans "Keep the marketplace structure clear and current." %}</span>
             </div>
             <form method="POST" action="{% url 'staff:add_category_view' %}" class="row g-2 mb-3">
                 {% csrf_token %}
-                <div class="col-md-4"><input type="text" name="name" class="form-control" placeholder="Category name" required></div>
-                <div class="col-md-5"><input type="text" name="description" class="form-control" placeholder="Description"></div>
-                <div class="col-md-3"><button class="btn btn-saaf-primary w-100">Add Category</button></div>
+                <div class="col-md-4"><input type="text" name="name" class="form-control" placeholder="{% trans 'Category name' %}" required></div>
+                <div class="col-md-5"><input type="text" name="description" class="form-control" placeholder="{% trans 'Description' %}"></div>
+                <div class="col-md-3"><button class="btn btn-saaf-primary w-100">{% trans "Add Category" %}</button></div>
             </form>
             <div class="table-responsive">
                 <table class="table align-middle mb-0 saaf-dashboard-table">
-                    <thead><tr><th>Name</th><th>Description</th><th>Workshops</th></tr></thead>
+                    <thead><tr><th>{% trans "Name" %}</th><th>{% trans "Description" %}</th><th>{% trans "Workshops" %}</th></tr></thead>
                     <tbody>
                         {% for category in categories %}
                         <tr>

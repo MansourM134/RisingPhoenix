@@ -1,4 +1,5 @@
 {% extends "main/base.html" %}
+{% load i18n %}
 
 {% block sidebar %}
 {% include 'main/_sidebar.html' with active='workshop' %}
@@ -8,50 +9,50 @@
 <section class="py-4 py-md-5">
     <div class="container-lg">
         <div class="saaf-dashboard-card rounded-4 p-4 p-md-5">
-            <p class="saaf-eyebrow mb-2">Workshop</p>
-            <h1 class="saaf-section-title mb-4">{% if is_edit %}Update Workshop Profile{% else %}Create Workshop Profile{% endif %}</h1>
+            <p class="saaf-eyebrow mb-2">{% trans "Workshop" %}</p>
+            <h1 class="saaf-section-title mb-4">{% if is_edit %}{% trans "Update Workshop Profile" %}{% else %}{% trans "Create Workshop Profile" %}{% endif %}</h1>
 
             <form method="post" enctype="multipart/form-data" class="row g-3">
                 {% csrf_token %}
 
                 <div class="col-md-6">
-                    <label for="id_workshop_name" class="form-label">Workshop Name</label>
+                    <label for="id_workshop_name" class="form-label">{% trans "Workshop Name" %}</label>
                     {{ form.workshop_name }}
                     {% for error in form.workshop_name.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
                 </div>
 
                 <div class="col-md-6">
-                    <label for="id_location" class="form-label">Location</label>
+                    <label for="id_location" class="form-label">{% trans "Location" %}</label>
                     {{ form.location }}
                     {% for error in form.location.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
                 </div>
 
                 <div class="col-md-6">
-                    <label for="id_tagline" class="form-label">Tagline</label>
+                    <label for="id_tagline" class="form-label">{% trans "Tagline" %}</label>
                     {{ form.tagline }}
                     {% for error in form.tagline.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
                 </div>
 
                 <div class="col-md-6">
-                    <label for="id_phone" class="form-label">Phone</label>
+                    <label for="id_phone" class="form-label">{% trans "Phone" %}</label>
                     {{ form.phone }}
                     {% for error in form.phone.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
                 </div>
 
                 <div class="col-12">
-                    <label for="id_description" class="form-label">Description</label>
+                    <label for="id_description" class="form-label">{% trans "Description" %}</label>
                     {{ form.description }}
                     {% for error in form.description.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
                 </div>
 
                 <div class="col-12">
-                    <label for="id_services" class="form-label">Services</label>
+                    <label for="id_services" class="form-label">{% trans "Services" %}</label>
                     {{ form.services }}
                     {% for error in form.services.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
                 </div>
 
                 <div class="col-12">
-                    <label class="form-label">Categories</label>
+                    <label class="form-label">{% trans "Categories" %}</label>
                     <div class="row g-2">
                         {% for choice in form.categories %}
                         <div class="col-md-4">
@@ -66,7 +67,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label for="id_cover_image" class="form-label">Cover Image</label>
+                    <label for="id_cover_image" class="form-label">{% trans "Cover Image" %}</label>
                     {{ form.cover_image }}
                     {% for error in form.cover_image.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
                 </div>
@@ -74,13 +75,13 @@
                 <div class="col-md-6 d-flex align-items-end">
                     <label class="saaf-check-card w-100">
                         {{ form.is_published }}
-                        <span>Publish workshop profile</span>
+                        <span>{% trans "Publish workshop profile" %}</span>
                     </label>
                 </div>
 
                 <div class="col-12 d-flex flex-wrap gap-2">
-                    <button type="submit" class="btn btn-saaf-primary rounded-pill">{% if is_edit %}Save Changes{% else %}Create Workshop{% endif %}</button>
-                    <a href="{% url 'account:artisan_dashboard_view' %}" class="btn btn-saaf-outline rounded-pill">Back</a>
+                    <button type="submit" class="btn btn-saaf-primary rounded-pill">{% if is_edit %}{% trans "Save Changes" %}{% else %}{% trans "Create Workshop" %}{% endif %}</button>
+                    <a href="{% url 'account:artisan_dashboard_view' %}" class="btn btn-saaf-outline rounded-pill">{% trans "Back" %}</a>
                 </div>
             </form>
         </div>

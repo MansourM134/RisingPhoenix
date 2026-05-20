@@ -1,3 +1,4 @@
+{% load i18n %}
 {% if request.user.is_authenticated %}
 <button id="saaf-sidebar-toggle" class="saaf-sidebar-toggle" aria-label="Toggle sidebar" title="Toggle sidebar">
     <i class="bi bi-chevron-right"></i>
@@ -6,49 +7,49 @@
     <button id="saaf-sidebar-mini-toggle" class="saaf-sidebar-mini-toggle" aria-label="Collapse sidebar" title="Collapse sidebar">
         <i class="bi bi-chevron-left"></i>
     </button>
-    <p class="sidebar-label">{% if LANGUAGE_CODE == 'ar' %}مساحتي{% else %}My Space{% endif %}</p>
+    <p class="sidebar-label">{% trans "My Space" %}</p>
 
     {% if request.user.is_staff %}
-    <a href="{% url 'staff:staff_dashboard_view' %}" class="sidebar-btn {% if active == 'staff' %}sidebar-btn-active{% endif %}" aria-label="{% if LANGUAGE_CODE == 'ar' %}لوحة الموظف{% else %}Staff Dashboard{% endif %}" title="{% if LANGUAGE_CODE == 'ar' %}لوحة الموظف{% else %}Staff Dashboard{% endif %}">
+    <a href="{% url 'staff:staff_dashboard_view' %}" class="sidebar-btn {% if active == 'staff' %}sidebar-btn-active{% endif %}" aria-label="{% trans 'Staff Dashboard' %}" title="{% trans 'Staff Dashboard' %}">
         <i class="bi bi-shield-lock"></i>
         {% if active == 'staff' %}<span class="sidebar-active-indicator"></span>{% endif %}
     </a>
     {% endif %}
 
     {% if request.user.artisanprofile %}
-    <a href="{% url 'account:artisan_dashboard_view' %}" class="sidebar-btn {% if active == 'artisan_dashboard' %}sidebar-btn-active{% endif %}" aria-label="{% if LANGUAGE_CODE == 'ar' %}لوحة الحرفي{% else %}Artisan Dashboard{% endif %}" title="{% if LANGUAGE_CODE == 'ar' %}لوحة الحرفي{% else %}Artisan Dashboard{% endif %}">
+    <a href="{% url 'account:artisan_dashboard_view' %}" class="sidebar-btn {% if active == 'artisan_dashboard' %}sidebar-btn-active{% endif %}" aria-label="{% trans 'Artisan Dashboard' %}" title="{% trans 'Artisan Dashboard' %}">
         <i class="bi bi-grid-1x2-fill"></i>
         {% if active == 'artisan_dashboard' %}<span class="sidebar-active-indicator"></span>{% endif %}
     </a>
 
-    <a href="{% url 'proposal:my_proposals_view' %}" class="sidebar-btn {% if active == 'my_proposals' %}sidebar-btn-active{% endif %}" aria-label="{% if LANGUAGE_CODE == 'ar' %}عروضي{% else %}My Proposals{% endif %}" title="{% if LANGUAGE_CODE == 'ar' %}عروضي{% else %}My Proposals{% endif %}">
+    <a href="{% url 'proposal:my_proposals_view' %}" class="sidebar-btn {% if active == 'my_proposals' %}sidebar-btn-active{% endif %}" aria-label="{% trans 'My Proposals' %}" title="{% trans 'My Proposals' %}">
         <i class="bi bi-send"></i>
         {% if active == 'my_proposals' %}<span class="sidebar-active-indicator"></span>{% endif %}
     </a>
 
-    <a href="{% url 'message:conversation_list_view' %}" class="sidebar-btn {% if active == 'messages' %}sidebar-btn-active{% endif %}" aria-label="{% if LANGUAGE_CODE == 'ar' %}الرسائل{% else %}Messages{% endif %}" title="{% if LANGUAGE_CODE == 'ar' %}الرسائل{% else %}Messages{% endif %}">
+    <a href="{% url 'message:conversation_list_view' %}" class="sidebar-btn {% if active == 'messages' %}sidebar-btn-active{% endif %}" aria-label="{% trans 'Messages' %}" title="{% trans 'Messages' %}">
         <i class="bi bi-chat-dots"></i>
         {% if active == 'messages' %}<span class="sidebar-active-indicator"></span>{% endif %}
     </a>
     {% else %}
-    <a href="{% url 'main:dashboard_view' %}" class="sidebar-btn {% if active == 'dashboard' %}sidebar-btn-active{% endif %}" aria-label="{% if LANGUAGE_CODE == 'ar' %}لوحة التحكم{% else %}Dashboard{% endif %}" title="{% if LANGUAGE_CODE == 'ar' %}لوحة التحكم{% else %}Dashboard{% endif %}">
+    <a href="{% url 'main:dashboard_view' %}" class="sidebar-btn {% if active == 'dashboard' %}sidebar-btn-active{% endif %}" aria-label="{% trans 'Dashboard' %}" title="{% trans 'Dashboard' %}">
         <i class="bi bi-grid-1x2-fill"></i>
         {% if active == 'dashboard' %}<span class="sidebar-active-indicator"></span>{% endif %}
     </a>
 
-    <a href="{% url 'request:my_requests_view' %}" class="sidebar-btn {% if active == 'my_requests' %}sidebar-btn-active{% endif %}" aria-label="{% if LANGUAGE_CODE == 'ar' %}طلباتي{% else %}My Requests{% endif %}" title="{% if LANGUAGE_CODE == 'ar' %}طلباتي{% else %}My Requests{% endif %}">
+    <a href="{% url 'request:my_requests_view' %}" class="sidebar-btn {% if active == 'my_requests' %}sidebar-btn-active{% endif %}" aria-label="{% trans 'My Requests' %}" title="{% trans 'My Requests' %}">
         <i class="bi bi-file-text"></i>
         {% if active == 'my_requests' %}<span class="sidebar-active-indicator"></span>{% endif %}
     </a>
 
-    <a href="{% url 'message:conversation_list_view' %}" class="sidebar-btn {% if active == 'messages' %}sidebar-btn-active{% endif %}" aria-label="{% if LANGUAGE_CODE == 'ar' %}الرسائل{% else %}Messages{% endif %}" title="{% if LANGUAGE_CODE == 'ar' %}الرسائل{% else %}Messages{% endif %}">
+    <a href="{% url 'message:conversation_list_view' %}" class="sidebar-btn {% if active == 'messages' %}sidebar-btn-active{% endif %}" aria-label="{% trans 'Messages' %}" title="{% trans 'Messages' %}">
         <i class="bi bi-chat-dots"></i>
         {% if active == 'messages' %}<span class="sidebar-active-indicator"></span>{% endif %}
     </a>
 
     <div class="sidebar-divider"></div>
 
-    <a href="{% url 'request:request_create_view' %}" class="sidebar-btn sidebar-btn-new {% if active == 'post_request' %}sidebar-btn-active{% endif %}" aria-label="{% if LANGUAGE_CODE == 'ar' %}أضف طلبًا جديدًا{% else %}Post New Request{% endif %}" title="{% if LANGUAGE_CODE == 'ar' %}أضف طلبًا جديدًا{% else %}Post New Request{% endif %}">
+    <a href="{% url 'request:request_create_view' %}" class="sidebar-btn sidebar-btn-new {% if active == 'post_request' %}sidebar-btn-active{% endif %}" aria-label="{% trans 'Post New Request' %}" title="{% trans 'Post New Request' %}">
         <i class="bi bi-plus-lg"></i>
         {% if active == 'post_request' %}<span class="sidebar-active-indicator"></span>{% endif %}
     </a>
@@ -57,17 +58,17 @@
     <div class="sidebar-divider"></div>
 
     {% if request.user.is_staff %}
-    <a href="{% url 'staff:staff_profile_view' %}" class="sidebar-btn {% if active == 'profile' %}sidebar-btn-active{% endif %}" aria-label="{% if LANGUAGE_CODE == 'ar' %}الملف الشخصي{% else %}Profile{% endif %}" title="{% if LANGUAGE_CODE == 'ar' %}الملف الشخصي{% else %}Profile{% endif %}">
+    <a href="{% url 'staff:staff_profile_view' %}" class="sidebar-btn {% if active == 'profile' %}sidebar-btn-active{% endif %}" aria-label="{% trans 'Profile' %}" title="{% trans 'Profile' %}">
         <i class="bi bi-person-circle"></i>
         {% if active == 'profile' %}<span class="sidebar-active-indicator"></span>{% endif %}
     </a>
     {% elif request.user.artisanprofile %}
-    <a href="{% url 'workshop:workshop_detail_view' request.user.id %}" class="sidebar-btn {% if active == 'workshop' %}sidebar-btn-active{% endif %}" aria-label="{% if LANGUAGE_CODE == 'ar' %}ورشتي{% else %}My Workshop{% endif %}" title="{% if LANGUAGE_CODE == 'ar' %}ورشتي{% else %}My Workshop{% endif %}">
+    <a href="{% url 'workshop:workshop_detail_view' request.user.id %}" class="sidebar-btn {% if active == 'workshop' %}sidebar-btn-active{% endif %}" aria-label="{% trans 'My Workshop' %}" title="{% trans 'My Workshop' %}">
         <i class="bi bi-shop"></i>
         {% if active == 'workshop' %}<span class="sidebar-active-indicator"></span>{% endif %}
     </a>
     {% else %}
-    <a href="{% url 'account:profile_view' request.user.username %}" class="sidebar-btn {% if active == 'profile' %}sidebar-btn-active{% endif %}" aria-label="{% if LANGUAGE_CODE == 'ar' %}الملف الشخصي{% else %}Profile{% endif %}" title="{% if LANGUAGE_CODE == 'ar' %}الملف الشخصي{% else %}Profile{% endif %}">
+    <a href="{% url 'account:profile_view' request.user.username %}" class="sidebar-btn {% if active == 'profile' %}sidebar-btn-active{% endif %}" aria-label="{% trans 'Profile' %}" title="{% trans 'Profile' %}">
         <i class="bi bi-person-circle"></i>
         {% if active == 'profile' %}<span class="sidebar-active-indicator"></span>{% endif %}
     </a>
