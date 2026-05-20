@@ -3179,6 +3179,39 @@ a.saaf-notif-dd-item {
         color: var(--saaf-cream);
     }
 
+    [data-theme="dark"] .saaf-chat-detail-head {
+        background: linear-gradient(160deg, rgba(56, 41, 30, 0.96), rgba(44, 33, 26, 0.96));
+        border-bottom-color: rgba(219, 191, 155, 0.16);
+    }
+
+    [data-theme="dark"] .saaf-chat-detail-card .card-footer {
+        background: rgba(44, 33, 26, 0.96) !important;
+        border-top-color: rgba(219, 191, 155, 0.16) !important;
+    }
+
+    [data-theme="dark"] .saaf-profile-hero {
+        background: linear-gradient(140deg, rgba(56, 44, 36, 0.95), rgba(47, 37, 30, 0.95));
+        border-color: rgba(232, 199, 164, 0.26);
+    }
+
+    [data-theme="dark"] .saaf-profile-pill {
+        background: rgba(232, 199, 164, 0.18);
+        border-color: rgba(232, 199, 164, 0.34);
+        color: #F2E4D1;
+    }
+
+    [data-theme="dark"] .saaf-profile-pill--ok {
+        background: rgba(74, 124, 89, 0.3);
+        border-color: rgba(125, 173, 137, 0.45);
+        color: #d9f2e3;
+    }
+
+    [data-theme="dark"] .saaf-profile-info-card,
+    [data-theme="dark"] .saaf-profile-bio-card {
+        background: rgba(52, 41, 34, 0.94);
+        border-color: rgba(232, 199, 164, 0.26);
+    }
+
     [data-theme="dark"] .saaf-chat-scroll {
         background: linear-gradient(180deg, rgba(50, 38, 28, 0.96), rgba(40, 30, 23, 0.96));
     }
