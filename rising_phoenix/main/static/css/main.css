@@ -1,3 +1,40 @@
+/* TheYearofHandicrafts — Arabic font */
+@font-face {
+    font-family: 'TheYearofHandicrafts';
+    src: url('../fonts/theyearofhandcrafts/TheYearofHandicrafts-Regular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'TheYearofHandicrafts';
+    src: url('../fonts/theyearofhandcrafts/TheYearofHandicrafts-Medium.otf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'TheYearofHandicrafts';
+    src: url('../fonts/theyearofhandcrafts/TheYearofHandicrafts-SemiBold.otf') format('opentype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'TheYearofHandicrafts';
+    src: url('../fonts/theyearofhandcrafts/TheYearofHandicrafts-Bold.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'TheYearofHandicrafts';
+    src: url('../fonts/theyearofhandcrafts/TheYearofHandicrafts-Black.otf') format('opentype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* ============================================
    SAAF - Color Variables & Customization
    ============================================ */
@@ -34,7 +71,50 @@
     --cream: var(--saaf-bg);
     --white: var(--saaf-white);
     --sand-dark: #D8C2A4;
+
+    /* Border-radius scale */
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+    --radius-pill: 999px;
+
+    /* Spacing scale */
+    --space-xs: 0.5rem;
+    --space-sm: 0.75rem;
+    --space-md: 1rem;
+    --space-lg: 1.25rem;
+    --space-xl: 1.5rem;
+    --space-2xl: 2rem;
+
+    /* Extra shadow token */
+    --saaf-shadow-xs: 0 2px 8px rgba(77, 52, 36, 0.08);
+
+    /* Semantic colors */
+    --saaf-success: #4f7150;
+    --saaf-warning: #9b7348;
+    --saaf-surface-dark: #2f2822;
 }
+
+/* ============================================
+   Shared Utility Classes
+   ============================================ */
+
+.empty-state {
+    text-align: center;
+    padding: var(--space-2xl) var(--space-xl);
+    border: 1.5px dashed var(--saaf-border);
+    border-radius: var(--radius-md);
+    color: var(--saaf-text-muted);
+}
+
+[data-theme="dark"] .empty-state {
+    border-color: rgba(232, 199, 164, 0.2);
+    color: var(--saaf-cream-text);
+    opacity: 0.7;
+}
+
+.text-saaf-btn    { color: var(--saaf-btn); }
+.text-saaf-heading { color: var(--saaf-heading); }
 
 /* ============================================
    Global Styles
@@ -64,11 +144,12 @@ body {
     display: grid;
     grid-template-rows: auto 1fr auto;
     line-height: 1.6;
-    text-align: left;
+    text-align: start;
     max-height: none;
+}
 
 :lang(ar) {
-    font-family: 'Cairo', sans-serif;
+    font-family: 'TheYearofHandicrafts', sans-serif;
 }
 
 :focus-visible {
@@ -76,7 +157,7 @@ body {
     outline-offset: 2px;
 }
 
-h1, h2, h3, h4, h5, h6,
+h1, h2, h3, h4, h5, h6 {
     opacity: 1;
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
@@ -172,10 +253,9 @@ a:hover {
 }
 
 .saaf-logo {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     border-radius: 12px;
-    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -185,7 +265,7 @@ a:hover {
 .saaf-logo-img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     display: block;
 }
 
@@ -1859,6 +1939,7 @@ a.saaf-notif-dd-item {
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+     line-clamp: 2;
     -webkit-box-orient: vertical;
     line-height: 1.45;
 }
@@ -2451,6 +2532,21 @@ a.saaf-notif-dd-item {
     line-height: 1.6;
 }
 
+.saaf-review-request-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--saaf-accent, #8a6d3b);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.saaf-review-request-link:hover {
+    text-decoration: underline;
+}
+
 [data-theme="dark"] .saaf-review-card {
     background: #2f2621;
     border-color: rgba(245, 230, 211, 0.16);
@@ -2601,6 +2697,51 @@ a.saaf-notif-dd-item {
 
     .saaf-profile-joined {
         font-size: 0.85rem;
+    }
+
+    /* Fix 1: Hide orphaned sidebar toggle button on mobile */
+    .saaf-sidebar-toggle,
+    .saaf-sidebar-mini-toggle {
+        display: none !important;
+    }
+
+    /* Fix 2: Hero section too tall on phones */
+    .saaf-hero {
+        padding-top: 3.5rem;
+        padding-bottom: 3rem;
+        min-height: 60vh;
+        margin: 0.4rem;
+        border-radius: 16px;
+    }
+
+    /* Fix 3: Portrait image too large on phones */
+    .saaf-portrait-image {
+        width: 160px;
+        height: 160px;
+        font-size: 3.5rem;
+        border-radius: 14px;
+    }
+
+    /* Fix 4: Section padding too heavy on mobile */
+    .saaf-section {
+        padding: 2.5rem 0;
+    }
+}
+
+/* Fix 5: Sub-480px breakpoint for very small phones */
+@media (max-width: 480px) {
+    .saaf-hero-title {
+        font-size: 1.3rem;
+    }
+
+    .saaf-section-title {
+        font-size: 1.25rem;
+    }
+
+    .saaf-hero {
+        padding-top: 3rem;
+        padding-bottom: 2.5rem;
+        min-height: 50vh;
     }
 }
 
@@ -3320,20 +3461,6 @@ html[dir="rtl"] .saaf-sidebar-toggle {
     right: 12px;
 }
 
-html[dir="rtl"] .saaf-nav-wrapper .ms-auto {
-    margin-left: 0 !important;
-    margin-right: auto !important;
-}
-
-html[dir="rtl"] .saaf-nav-wrapper .ms-lg-3 {
-    margin-left: 0 !important;
-    margin-right: 1rem !important;
-}
-
-html[dir="rtl"] .saaf-nav-wrapper .navbar-collapse {
-    text-align: right;
-}
-
 html[dir="rtl"] .saaf-notif-dropdown {
     right: auto;
     left: 0;
@@ -3389,6 +3516,28 @@ html[dir="rtl"] .saaf-notif-badge {
 html[dir="rtl"] .sidebar-badge {
     left: auto;
     right: -4px;
+}
+
+/* Navbar: right-align nav links and button group in the mobile collapsed menu */
+@media (max-width: 991.98px) {
+    html[dir="rtl"] .saaf-nav-wrapper .navbar-nav {
+        align-items: flex-start;
+    }
+    html[dir="rtl"] .saaf-nav-wrapper .navbar-collapse > .d-flex {
+        align-self: flex-start;
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+}
+
+/* Hero: move text block to the right side in RTL */
+html[dir="rtl"] .saaf-hero-text {
+    margin-left: auto;
+}
+
+/* Hero: flip overlay gradient so the dark side is behind the RTL text */
+html[dir="rtl"] .saaf-hero-overlay {
+    background: linear-gradient(240deg, rgba(20, 13, 9, 0.7), rgba(20, 13, 9, 0.4));
 }
 
 /* Auth pages readability */

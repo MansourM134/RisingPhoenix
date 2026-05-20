@@ -435,6 +435,7 @@ def refine_request_view(request: HttpRequest):
     user_text = (payload.get('text') or '').strip()
     category_name = (payload.get('category_name') or '').strip()[:80]
     previous_suggestion = (payload.get('previous_suggestion') or '').strip()
+    user_answers = (payload.get('user_answers') or '').strip()[:600]
     if not user_text:
         return JsonResponse({'error': 'Please provide request text to refine.'}, status=400)
 
@@ -455,7 +456,7 @@ def refine_request_view(request: HttpRequest):
     model_for_cache = getattr(settings, 'OPENAI_MODEL', 'gpt-4o-mini')
     cache_key = None
     if cache_ttl > 0:
-        cache_input = f'{model_for_cache}:{category_name}:{previous_suggestion}:{user_text}'
+        cache_input = f'{model_for_cache}:{category_name}:{previous_suggestion}:{user_answers}:{user_text}'
         text_hash = hashlib.sha256(cache_input.encode('utf-8')).hexdigest()
         cache_key = f'ai_refine_cache:{text_hash}'
         cached_response = cache.get(cache_key)
@@ -499,11 +500,11 @@ def refine_request_view(request: HttpRequest):
     category_line = f' The request is in the category: {category_name}.' if category_name else ''
     system_prompt = (
         f'You are an expert consultant for a Saudi custom-item marketplace.{category_line} '
-        'Rewrite the buyer\'s request in clear, natural first-person English. '
+        'Rewrite the buyer\'s request in clear, natural first-person language. '
+        'IMPORTANT: Always respond in the exact same language the buyer used. If the buyer wrote in Arabic, respond in Arabic. If in English, respond in English. '
         'Stay under 80 words. Include only details that are stated or clearly implied — do not invent specifics. '
         'Return JSON only: {"refined_text":"string","missing_details":["string"],"confidence":0.0}. '
-        'Each item in missing_details must be a short question the buyer should answer to strengthen their request '
-        '(e.g. "What size do you need?", "Do you have a preferred material?"). '
+        'Each item in missing_details must be a short question the buyer should answer to strengthen their request, written in the same language as the buyer. '
         'Include up to 4 questions. Keep confidence between 0 and 1.'
     )
 
@@ -529,11 +530,22 @@ def refine_request_view(request: HttpRequest):
             return JsonResponse({'error': 'Your text could not be processed. Please rephrase and try again.'}, status=400)
 
         if previous_suggestion:
+            if user_answers:
+                follow_up = (
+                    f'Here are my answers to your questions:\n{user_answers}\n\n'
+                    'Please rewrite my request incorporating these answers. '
+                    'Then identify any remaining gaps and list them as new follow-up questions in missing_details.'
+                )
+            else:
+                follow_up = (
+                    'Please refine this further, making it clearer and more specific. '
+                    'Identify any remaining gaps and list them as questions in missing_details.'
+                )
             messages_payload = [
                 {'role': 'system', 'content': system_prompt},
                 {'role': 'user', 'content': user_text},
                 {'role': 'assistant', 'content': previous_suggestion},
-                {'role': 'user', 'content': 'Please refine this further, making it clearer and more specific.'},
+                {'role': 'user', 'content': follow_up},
             ]
         else:
             messages_payload = [

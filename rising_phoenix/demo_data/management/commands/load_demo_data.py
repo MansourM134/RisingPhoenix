@@ -77,7 +77,7 @@ def _img(folder, filename):
 
 DEMO_USERNAMES = [
     'ahmed', 'noura', 'faisal', 'sara',           # requesters
-    'laila', 'khalid', 'iroh',                    # artisans
+    'laila', 'khalid', 'fahad',                    # artisans
     'staff_admin',                                # staff
 ]
 
@@ -212,9 +212,9 @@ class Command(BaseCommand):
             ('khalid', 'Khalid', 'Al-Dossari','+966512345006',
              'Woodworker and potter. I build what lasts.',
              'avatar_khalid.jpg'),
-            ('iroh',   'Iroh',   'Al-Sayed',  '+966512345007',
+            ('fahad',   'Fahad',   'Al-Sayed',  '+966512345007',
              'Metalwork, painting, and silver jewelry. Custom work only.',
-             'avatar_iroh.jpg'),
+             'avatar_fahad.jpg'),
         ]
         for username, first, last, phone, bio, avatar in artisans:
             u = User.objects.create_user(
@@ -233,9 +233,9 @@ class Command(BaseCommand):
             self.users[username] = u
             self.artisan_profiles[username] = ap
 
-        # Featured flag — Iroh gets featured
-        self.artisan_profiles['iroh'].is_featured = True
-        self.artisan_profiles['iroh'].save(update_fields=['is_featured'])
+        # Featured flag — Fahad gets featured
+        self.artisan_profiles['fahad'].is_featured = True
+        self.artisan_profiles['fahad'].save(update_fields=['is_featured'])
 
         # Staff
         staff_user = User.objects.create_user(
@@ -290,8 +290,8 @@ class Command(BaseCommand):
                 'categories':    ['Woodworking', 'Pottery & Ceramics'],
                 'portfolio_folder': 'Khalid Craft Studio',
             }),
-            ('iroh', {
-                'workshop_name': "Iroh's Forge",
+            ('fahad', {
+                'workshop_name': "Fahad's Forge",
                 'tagline':       'Metalwork, painting, and silver — bespoke only.',
                 'description':   ('Mixed-media studio. Forged copper and iron sculpture, '
                                   'oil and acrylic painting, and one-off silver jewelry.'),
@@ -301,7 +301,7 @@ class Command(BaseCommand):
                 'location':      'Dammam',
                 'phone':         '+966512345007',
                 'categories':    ['Metalwork', 'Painting & Art', 'Jewelry'],
-                'portfolio_folder': 'iroh_forge',
+                'portfolio_folder': 'fahad_forge',
             }),
         ]
 
@@ -340,14 +340,14 @@ class Command(BaseCommand):
         self.stdout.write('  Creating completed-project showcases...')
 
         showcase_defs = [
-            ('iroh', {
+            ('fahad', {
                 'title': 'Copper Sunburst Wall Sculpture',
                 'description': ('A 1.4 m forged copper sunburst, custom-finished with a '
                                 'verdigris patina. Installed in a private villa entry.'),
-                'main_image':   _img('completed_projects', 'completed_iroh_main.jpg'),
+                'main_image':   _img('completed_projects', 'completed_fahad_main.jpg'),
                 'extra_images': [
-                    _img('completed_project_images', 'completed_iroh_detail1.jpg'),
-                    _img('completed_project_images', 'completed_iroh_install.jpg'),
+                    _img('completed_project_images', 'completed_fahad_detail1.jpg'),
+                    _img('completed_project_images', 'completed_fahad_install.jpg'),
                 ],
                 'is_featured': True,
             }),
@@ -429,7 +429,7 @@ class Command(BaseCommand):
              750, 'Pottery & Ceramics', 28, Request.Status.IN_REVIEW,
              _img('requests', 'ref_mugs.jpg')),
 
-            # Closed — has an accepted proposal → Iroh's portrait contract
+            # Closed — has an accepted proposal → Fahad's portrait contract
             ('portrait', 'ahmed',
              'Family Portrait Painting (Abstract Style)',
              ('Oil on canvas, abstract / impressionist style, of my family of 4. '
@@ -536,12 +536,12 @@ class Command(BaseCommand):
               'part of the look. Cream + soft blue rim is in my regular palette.'),
              Proposal.Status.PENDING, None),
 
-            # Iroh's accepted proposal for the portrait → contract IN_PROGRESS
-            ('p_portrait_iroh', 'portrait', 'iroh', 3400, 42,
+            # Fahad's accepted proposal for the portrait → contract IN_PROGRESS
+            ('p_portrait_fahad', 'portrait', 'fahad', 3400, 42,
              ('I would love to take this on. Oil on linen, warm palette, loose '
               'impressionist handling. Final piece will be varnished and ready to hang. '
               'See attached for a similar piece I did recently.'),
-             Proposal.Status.ACCEPTED, 'proposal_iroh_painting.jpg'),
+             Proposal.Status.ACCEPTED, 'proposal_fahad_painting.jpg'),
 
             # Laila's rejected bid on the same portrait (she also paints sometimes)
             ('p_portrait_laila', 'portrait', 'laila', 3800, 50,
@@ -549,11 +549,11 @@ class Command(BaseCommand):
               'before starting.'),
              Proposal.Status.REJECTED, None),
 
-            # Iroh's pending bid on the ring
-            ('p_ring_iroh', 'ring', 'iroh', 580, 14,
+            # Fahad's pending bid on the ring
+            ('p_ring_fahad', 'ring', 'fahad', 580, 14,
              ('Hand-forged from a sterling silver bar, lightly hammered then polished. '
               'Will fit-check before final polish.'),
-             Proposal.Status.PENDING, 'proposal_iroh_ring.jpg'),
+             Proposal.Status.PENDING, 'proposal_fahad_ring.jpg'),
 
             # Khalid's accepted proposal for the coffee table
             ('p_table_khalid', 'coffee_table', 'khalid', 3100, 35,
@@ -568,8 +568,8 @@ class Command(BaseCommand):
               'my past wallet work attached.'),
              Proposal.Status.ACCEPTED, 'proposal_laila_wallet.jpg'),
 
-            # Iroh's pending bid on the metal sculpture
-            ('p_metal_iroh', 'metal_sculpture', 'iroh', 2100, 30,
+            # Fahad's pending bid on the metal sculpture
+            ('p_metal_fahad', 'metal_sculpture', 'fahad', 2100, 30,
              ('Forged copper, organic sunburst shape, ~85 cm. I can finish with a '
               'patina or leave it polished — your call.'),
              Proposal.Status.PENDING, None),
@@ -581,12 +581,12 @@ class Command(BaseCommand):
 
             # Khalid's pending bid on the wallet (cross-discipline — not perfect match,
             # included for status variety)
-            ('p_wallet_iroh', 'wallet', 'iroh', 480, 14,
+            ('p_wallet_fahad', 'wallet', 'fahad', 480, 14,
              ('I do some leatherwork on the side — happy to take this on.'),
              Proposal.Status.PENDING, None),
 
-            # Iroh's withdrawn bid on the mugs (out of his lane)
-            ('p_mugs_iroh', 'mugs', 'iroh', 800, 30,
+            # Fahad's withdrawn bid on the mugs (out of his lane)
+            ('p_mugs_fahad', 'mugs', 'fahad', 800, 30,
              ('I can throw these — but realising it might be a stretch outside my '
               'usual work. Withdrawing in favour of Khalid.'),
              Proposal.Status.WITHDRAWN, None),
@@ -596,7 +596,7 @@ class Command(BaseCommand):
              'I have thrown this style before — stoneware with a matte grey ash glaze.',
              Proposal.Status.ACCEPTED, None),
 
-            ('p_copper_iroh', 'copper_panel', 'iroh', 1750, 25,
+            ('p_copper_fahad', 'copper_panel', 'fahad', 1750, 25,
              'Hammered copper with a chemical patina. I can do the geometric pattern by hand.',
              Proposal.Status.ACCEPTED, None),
 
@@ -627,9 +627,9 @@ class Command(BaseCommand):
     def _create_contracts_and_progress(self):
         self.stdout.write('  Creating contracts + progress timelines...')
 
-        # ---- Contract 1: Iroh's portrait painting (IN_PROGRESS) ----
+        # ---- Contract 1: Fahad's portrait painting (IN_PROGRESS) ----
         c1 = Contract.objects.create(
-            proposal=self.proposals['p_portrait_iroh'],
+            proposal=self.proposals['p_portrait_fahad'],
             status=Contract.Status.IN_PROGRESS,
             requester_accepted_at=timezone.now() - timedelta(days=15),
             artisan_accepted_at=timezone.now() - timedelta(days=14),
@@ -794,7 +794,7 @@ class Command(BaseCommand):
         self.contracts['ceramic_bowl'] = c4
 
         c5 = Contract.objects.create(
-            proposal=self.proposals['p_copper_iroh'],
+            proposal=self.proposals['p_copper_fahad'],
             status=Contract.Status.COMPLETED,
             requester_accepted_at=timezone.now() - timedelta(days=60),
             artisan_accepted_at=timezone.now() - timedelta(days=59),
@@ -824,11 +824,11 @@ class Command(BaseCommand):
 
         # Each accepted proposal gets a conversation.
         convo_defs = [
-            ('p_portrait_iroh', 'ahmed', 'iroh', [
-                ('ahmed', 'Hi Iroh! Excited to start. I will send the family photos shortly.', None),
-                ('iroh',  'Perfect. Any preference on background tone — warmer or cooler?', None),
+            ('p_portrait_fahad', 'ahmed', 'fahad', [
+                ('ahmed', 'Hi Fahad! Excited to start. I will send the family photos shortly.', None),
+                ('fahad',  'Perfect. Any preference on background tone — warmer or cooler?', None),
                 ('ahmed', 'Warm. Something like sunset.', None),
-                ('iroh',  'Got it. Sending a quick palette test for approval.',
+                ('fahad',  'Got it. Sending a quick palette test for approval.',
                           _img('conversation_images', 'chat_color_question.jpg')),
                 ('ahmed', 'Love it. Go for it!', None),
             ]),
@@ -901,14 +901,14 @@ class Command(BaseCommand):
                      'but the throwing quality and weight of the bowls is excellent.'),
         )
 
-        # Iroh — copper panel (5★)  →  avg 5.0
+        # Fahad — copper panel (5★)  →  avg 5.0
         Review.objects.create(
             request=self.requests['copper_panel'],
             reviews_given=self.users['sara'],
-            reviews_received=self.users['iroh'],
+            reviews_received=self.users['fahad'],
             rating=5,
             comment=('Stunning piece. The patina is exactly what I asked for and it arrived '
-                     'perfectly packaged. Iroh is a true craftsman.'),
+                     'perfectly packaged. Fahad is a true craftsman.'),
         )
 
     # --------------------------------------------------------------------
@@ -924,10 +924,10 @@ class Command(BaseCommand):
             status=Invitation.Status.PROPOSED,
             viewed_at=timezone.now() - timedelta(days=2),
         )
-        # Noura invites Iroh to metal_sculpture → PROPOSED (Iroh already bid)
+        # Noura invites Fahad to metal_sculpture → PROPOSED (Fahad already bid)
         Invitation.objects.create(
             request=self.requests['metal_sculpture'],
-            artisan=self.users['iroh'],
+            artisan=self.users['fahad'],
             status=Invitation.Status.PROPOSED,
             viewed_at=timezone.now() - timedelta(days=1),
         )
@@ -978,14 +978,14 @@ class Command(BaseCommand):
 
         # --- Ahmed (requester) ---
         n('ahmed', NT.PROPOSAL_RECEIVED, 'New proposal on your wallet request',
-          'Iroh submitted a proposal for SAR 480.', is_read=False)
+          'Fahad submitted a proposal for SAR 480.', is_read=False)
         n('ahmed', NT.PROPOSAL_RECEIVED, 'New proposal on your portrait request',
-          'Iroh submitted a proposal for SAR 3,400.', is_read=True)
+          'Fahad submitted a proposal for SAR 3,400.', is_read=True)
         n('ahmed', NT.PROPOSAL_ACCEPTED, 'Your portrait proposal was accepted',
-          "You accepted Iroh's proposal. The project is now underway.", is_read=True)
-        n('ahmed', NT.PROGRESS_UPDATE, 'Iroh posted a progress update',
+          "You accepted Fahad's proposal. The project is now underway.", is_read=True)
+        n('ahmed', NT.PROGRESS_UPDATE, 'Fahad posted a progress update',
           'Initial sketch on linen — proportions locked in.', is_read=True)
-        n('ahmed', NT.PROGRESS_UPDATE, 'Iroh posted another update',
+        n('ahmed', NT.PROGRESS_UPDATE, 'Fahad posted another update',
           '70% complete — warm palette is in, faces are reading well.', is_read=False)
 
         # --- Noura (requester) ---
@@ -1023,12 +1023,12 @@ class Command(BaseCommand):
         n('khalid', NT.INVITATION_RECEIVED, 'You were invited to a bookshelf project',
           'Faisal invited you to look at his walnut bookshelf request.', is_read=True)
 
-        # --- Iroh (artisan) ---
-        n('iroh', NT.PROPOSAL_ACCEPTED, 'Your portrait proposal was accepted!',
+        # --- Fahad (artisan) ---
+        n('fahad', NT.PROPOSAL_ACCEPTED, 'Your portrait proposal was accepted!',
           'Ahmed accepted your proposal for SAR 3,400.', is_read=True)
-        n('iroh', NT.COMMENT_ADDED, 'Ahmed commented on your progress update',
+        n('fahad', NT.COMMENT_ADDED, 'Ahmed commented on your progress update',
           'Love the warm tones — can the background match this dusty rose?', is_read=False)
-        n('iroh', NT.INVITATION_RECEIVED, 'You were invited to a metal sculpture project',
+        n('fahad', NT.INVITATION_RECEIVED, 'You were invited to a metal sculpture project',
           'Noura invited you to look at her decorative wall sculpture request.', is_read=True)
 
         # --- Staff ---
@@ -1044,7 +1044,7 @@ class Command(BaseCommand):
         self.stdout.write('  Creating payment methods...')
         # Seed a saved Visa test card for every requester and artisan.
         # These use fake Stripe IDs — real charges require the test PaymentIntent flow.
-        users_to_seed = ['ahmed', 'noura', 'faisal', 'sara', 'laila', 'khalid', 'iroh']
+        users_to_seed = ['ahmed', 'noura', 'faisal', 'sara', 'laila', 'khalid', 'fahad']
         for username in users_to_seed:
             u = self.users[username]
             cus_id = f'cus_demo_{username}'
