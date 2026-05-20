@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Saaf — Earnings Report</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 13px;
+      color: #3F2D23;
+      background: #FAF1E5;
+      padding: 40px;
+    }
+
+    /* Header */
+    .pdf-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 28px;
+      padding-bottom: 18px;
+      border-bottom: 2px solid #E9D9C3;
+    }
+    .pdf-brand { font-size: 22px; font-weight: 700; color: #3F2D23; }
+    .pdf-brand span { color: #C77A5C; }
+    .pdf-meta { text-align: right; font-size: 11px; color: #6A5648; }
+    .pdf-meta strong { display: block; font-size: 13px; color: #3F2D23; }
+
+    /* Stat cards */
+    .pdf-stats {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .pdf-stat {
+      flex: 1;
+      background: #fff;
+      border: 1px solid #E9D9C3;
+      border-radius: 10px;
+      padding: 14px 16px;
+      border-top: 3px solid #C77A5C;
+    }
+    .pdf-stat.green { border-top-color: #4caf7d; }
+    .pdf-stat.blue  { border-top-color: #5b8dee; }
+    .pdf-stat.amber { border-top-color: #d4a92d; }
+    .pdf-stat-num {
+      font-size: 18px;
+      font-weight: 700;
+      color: #38261E;
+      margin-bottom: 3px;
+    }
+    .pdf-stat-lbl {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: #6A5648;
+      font-weight: 600;
+    }
+
+    /* Section title */
+    .pdf-section-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: #6A5648;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #E9D9C3;
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 28px;
+    }
+    thead th {
+      background: #E9D9C3;
+      padding: 8px 10px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: #6A5648;
+      font-weight: 700;
+      text-align: left;
+    }
+    tbody td {
+      padding: 9px 10px;
+      border-bottom: 1px solid #F0E2D1;
+      font-size: 12px;
+      color: #594638;
+    }
+    tbody tr:last-child td { border-bottom: none; }
+    .td-title { font-weight: 700; color: #38261E; }
+    .td-id    { font-size: 10px; color: #6A5648; }
+
+    /* Pills */
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .pill-paid    { background: rgba(91,141,238,.12); color: #2244a8; }
+    .pill-earned  { background: rgba(76,175,125,.13); color: #2b7a52; }
+    .pill-pending { background: rgba(212,169,45,.13); color: #7a5a00; }
+    .pill-canceled{ background: rgba(192,57,43,.12);  color: #a93226; }
+
+    /* Footer */
+    .pdf-footer {
+      margin-top: 32px;
+      padding-top: 14px;
+      border-top: 1px solid #E9D9C3;
+      font-size: 10px;
+      color: #6A5648;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="pdf-header">
+    <div>
+      <div class="pdf-brand">Saaf<span>.</span></div>
+      <div style="font-size:11px;color:#6A5648;margin-top:3px;">Earnings Report</div>
+    </div>
+    <div class="pdf-meta">
+      <strong>{{ artisan.get_full_name|default:artisan.username }}</strong>
+      {{ artisan.email }}<br>
+      Generated: {{ generated_at|date:"M d, Y — H:i" }}
+    </div>
+  </div>
+
+  <!-- Stat cards -->
+  <div class="pdf-stats">
+    <div class="pdf-stat">
+      <div class="pdf-stat-num">{{ total_earned|floatformat:2 }}</div>
+      <div class="pdf-stat-lbl">Total Earned</div>
+    </div>
+    <div class="pdf-stat blue">
+      <div class="pdf-stat-num">{{ total_paid|floatformat:2 }}</div>
+      <div class="pdf-stat-lbl">Total Paid Out</div>
+    </div>
+    <div class="pdf-stat green">
+      <div class="pdf-stat-num">{{ current_balance|floatformat:2 }}</div>
+      <div class="pdf-stat-lbl">Current Balance</div>
+    </div>
+    <div class="pdf-stat amber">
+      <div class="pdf-stat-num">{{ this_month_total|floatformat:2 }}</div>
+      <div class="pdf-stat-lbl">This Month ({{ this_month_jobs }} jobs)</div>
+    </div>
+  </div>
+
+  <!-- Transactions table -->
+  <div class="pdf-section-title">Recent Transactions</div>
+  <table>
+    <thead>
+      <tr>
+        <th>Contract</th>
+        <th>Net Amount</th>
+        <th>Status</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for revenue in recent_revenues %}
+      <tr>
+        <td>
+          <div class="td-title">{{ revenue.contract.title|default:"—" }}</div>
+          <div class="td-id">#{{ revenue.id }}</div>
+        </td>
+        <td style="font-weight:700;">{{ revenue.net_amount|floatformat:2 }}</td>
+        <td>
+          {% if revenue.status == 'paid' %}
+            <span class="pill pill-paid">Paid</span>
+          {% elif revenue.status == 'earned' %}
+            <span class="pill pill-earned">Earned</span>
+          {% elif revenue.status == 'canceled' %}
+            <span class="pill pill-canceled">Canceled</span>
+          {% else %}
+            <span class="pill pill-pending">Pending</span>
+          {% endif %}
+        </td>
+        <td>{{ revenue.created_at|date:"M d, Y" }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="4" style="text-align:center;color:#6A5648;padding:20px;">
+          No transactions yet.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="pdf-footer">
+    Saaf Marketplace — Confidential earnings report for {{ artisan.get_full_name|default:artisan.username }}
+  </div>
+
+</body>
+</html>

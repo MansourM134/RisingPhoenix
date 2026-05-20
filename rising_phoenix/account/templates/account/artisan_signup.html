@@ -99,21 +99,27 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="phone" class="form-label">{% trans "Phone" %}</label>
+                        <label for="phone_display" class="form-label">{% trans "Phone" %}</label>
+
+                        <div class="iti-saaf-wrap">
                             <input
-                                type="tel"
-                                name="phone"
-                                id="phone"
-                                class="form-control {% if profile_form.phone.errors %}is-invalid{% endif %}"
-                                placeholder="+966501234567"
-                                value="{{ profile_form.phone.value|default_if_none:'' }}"
+                            type="tel"
+                            id="phone_display"
+                            class="form-control {% if profile_form.phone.errors %}is-invalid{% endif %}"
+                            autocomplete="tel"
                             >
-                                <div class="form-text">{% trans "Use digits only, with optional + and country code." %}</div>
-                            {% for error in profile_form.phone.errors %}
-                                <div class="invalid-feedback d-block">{{ error }}</div>
-                            {% endfor %}
                         </div>
 
+                        <!-- Hidden field Django reads -->
+                        <input type="hidden" id="phone" name="phone" value="{{ profile_form.phone.value|default_if_none:'' }}">
+
+                        <div class="form-text">{% trans "Select your country then enter your number." %}</div>
+                        <div id="phone-error" class="invalid-feedback" style="display:none;"></div>
+
+                        {% for error in profile_form.phone.errors %}
+                            <div class="invalid-feedback d-block">{{ error }}</div>
+                        {% endfor %}
+                        </div>
                         <div class="mb-3">
                             <label for="bio" class="form-label">{% trans "Bio" %}</label>
                             <textarea
@@ -211,4 +217,78 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@24.6.0/build/js/intlTelInput.min.js"></script>
+<script>
+(function () {
+  var displayInput = document.getElementById('phone_display');
+  var hiddenInput  = document.getElementById('phone');
+  var errorDiv     = document.getElementById('phone-error');
+
+  if (!displayInput) return;
+
+  // Pre-fill display input from existing value (edit profile case)
+  var existing = hiddenInput.value;
+  if (existing) displayInput.value = existing;
+
+  var iti = window.intlTelInput(displayInput, {
+    initialCountry: 'sa',
+    countrySearch: true,
+    separateDialCode: true,
+    loadUtilsOnInit: 'https://cdn.jsdelivr.net/npm/intl-tel-input@24.6.0/build/js/utils.js',
+    countryOrder: ['sa', 'ae', 'kw', 'bh', 'qa', 'om', 'jo', 'eg'],
+  });
+
+  // Dynamically adjust padding to match the flag badge width
+  function adjustPadding() {
+    var badge = displayInput.closest('.iti').querySelector('.iti__selected-flag');
+    if (badge) displayInput.style.paddingLeft = (badge.offsetWidth + 8) + 'px';
+  }
+  displayInput.addEventListener('countrychange', adjustPadding);
+  setTimeout(adjustPadding, 100); // run once after iti renders
+
+  var errorMap = [
+    '{% trans "Invalid number" %}',
+    '{% trans "Invalid country code" %}',
+    '{% trans "Number too short" %}',
+    '{% trans "Number too long" %}',
+    '{% trans "Invalid number" %}',
+  ];
+
+  function validate() {
+    var val = displayInput.value.trim();
+    errorDiv.style.display = 'none';
+    displayInput.classList.remove('is-invalid');
+
+    if (!val) return true;
+
+    if (iti.isValidNumber()) {
+      hiddenInput.value = iti.getNumber(); // E.164 format
+      return true;
+    } else {
+      var code = iti.getValidationError();
+      errorDiv.textContent = errorMap[code] || errorMap[0];
+      errorDiv.style.display = 'block';
+      displayInput.classList.add('is-invalid');
+      hiddenInput.value = '';
+      return false;
+    }
+  }
+
+  displayInput.addEventListener('blur', validate);
+
+  var form = displayInput.closest('form');
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      if (!validate()) {
+        e.preventDefault();
+        displayInput.focus();
+      }
+    });
+  }
+})();
+</script>
 {% endblock %}

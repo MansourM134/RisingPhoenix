@@ -3,216 +3,336 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@24.6.0/build/css/intlTelInput.css">
+<style>
+  /* ── intl-tel-input Saaf theme fix ── */
+  .iti-saaf-wrap .iti { width: 100%; display: block; }
+
+  .iti--separate-dial-code input.form-control {
+    padding-left: 90px !important;
+  }
+  .iti--separate-dial-code .iti__selected-dial-code {
+    font-size: .85rem;
+    color: var(--saaf-body);
+  }
+  .iti__dropdown-content {
+    border-radius: 12px;
+    border: 1px solid var(--saaf-border);
+    box-shadow: var(--saaf-shadow-lg);
+    font-family: 'Poppins', sans-serif;
+  }
+  .iti__search-input {
+    border-radius: 8px !important;
+    border: 1px solid var(--saaf-border) !important;
+    font-family: 'Poppins', sans-serif;
+    font-size: .87rem;
+  }
+  [data-theme="dark"] .iti__dropdown-content {
+    background: var(--saaf-surface-2);
+    border-color: var(--saaf-border);
+    color: var(--saaf-cream-text);
+  }
+  [data-theme="dark"] .iti__search-input {
+    background: var(--saaf-surface-1);
+    color: var(--saaf-cream-text);
+  }
+  [data-theme="dark"] .iti__country:hover {
+    background: var(--saaf-beige);
+  }
+</style>
 {% endblock %}
+
 
 {% block content %}
 <section class="py-5">
-    <div class="container">
-        <div class="row justify-content-center align-items-center min-vh-100 py-4">
-            <div class="col-lg-10 col-xl-8">
-                <div class="card saaf-auth-card shadow-sm border-0">
-                    <div class="card-body p-4 p-md-5">
-                        <div class="text-center mb-4">
-                            <h1 class="h3 mb-2">{% trans "Sign Up" %}</h1>
-                            <p class="text-muted mb-0">{% trans "Create your account in a few simple steps." %}</p>
-                        </div>
+  <div class="container">
+    <div class="row justify-content-center align-items-center min-vh-100 py-4">
+      <div class="col-lg-10 col-xl-8">
+        <div class="card saaf-auth-card shadow-sm border-0">
+          <div class="card-body p-4 p-md-5">
 
-                        <form action="" method="post" enctype="multipart/form-data" class="row g-3">
-                            {% csrf_token %}
-                            {% if user_form.non_field_errors %}
-                                <div class="col-12">
-                                    <div class="alert alert-danger mb-0">
-                                        {% for error in user_form.non_field_errors %}
-                                            <div>{{ error }}</div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
-
-                            {% if profile_form.non_field_errors %}
-                                <div class="col-12">
-                                    <div class="alert alert-danger mb-0">
-                                        {% for error in profile_form.non_field_errors %}
-                                            <div>{{ error }}</div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
-
-                            <div class="col-md-6">
-                                <label for="first_name" class="form-label">{% trans "First Name" %}</label>
-                                <input
-                                    type="text"
-                                    class="form-control {% if user_form.first_name.errors %}is-invalid{% endif %}"
-                                    id="first_name"
-                                    name="first_name"
-                                    placeholder="{% trans 'Enter your first name' %}"
-                                    value="{{ user_form.first_name.value|default:'' }}"
-                                >
-                                {% for error in user_form.first_name.errors %}
-                                    <div class="invalid-feedback d-block">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-
-                            <div class="col-md-6">
-                                <label for="last_name" class="form-label">{% trans "Last Name" %}</label>
-                                <input
-                                    type="text"
-                                    class="form-control {% if user_form.last_name.errors %}is-invalid{% endif %}"
-                                    id="last_name"
-                                    name="last_name"
-                                    placeholder="{% trans 'Enter your last name' %}"
-                                    value="{{ user_form.last_name.value|default:'' }}"
-                                >
-                                {% for error in user_form.last_name.errors %}
-                                    <div class="invalid-feedback d-block">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-
-                            <div class="col-12">
-                                <label for="username" class="form-label">{% trans "Username" %}</label>
-                                <input
-                                    type="text"
-                                    class="form-control {% if user_form.username.errors %}is-invalid{% endif %}"
-                                    id="username"
-                                    name="username"
-                                    placeholder="{% trans 'Choose a username' %}"
-                                    value="{{ user_form.username.value|default:'' }}"
-                                >
-                                {% for error in user_form.username.errors %}
-                                    <div class="invalid-feedback d-block">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-
-                            <div class="col-12">
-                                <label for="email" class="form-label">{% trans "Email" %}</label>
-                                <input
-                                    type="email"
-                                    class="form-control {% if user_form.email.errors %}is-invalid{% endif %}"
-                                    id="email"
-                                    name="email"
-                                    placeholder="{% trans 'Enter your email' %}"
-                                    value="{{ user_form.email.value|default:'' }}"
-                                >
-                                {% for error in user_form.email.errors %}
-                                    <div class="invalid-feedback d-block">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-
-                            <div class="col-md-6">
-                                <label for="password1" class="form-label">{% trans "Password" %}</label>
-                                <input
-                                    type="password"
-                                    class="form-control {% if user_form.password1.errors %}is-invalid{% endif %}"
-                                    id="password1"
-                                    name="password1"
-                                    placeholder="{% trans 'Enter your password' %}"
-                                >
-                                {% for error in user_form.password1.errors %}
-                                    <div class="invalid-feedback d-block">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-
-                            <div class="col-md-6">
-                                <label for="password2" class="form-label">{% trans "Confirm Password" %}</label>
-                                <input
-                                    type="password"
-                                    class="form-control {% if user_form.password2.errors %}is-invalid{% endif %}"
-                                    id="password2"
-                                    name="password2"
-                                    placeholder="{% trans 'Confirm your password' %}"
-                                >
-                                {% for error in user_form.password2.errors %}
-                                    <div class="invalid-feedback d-block">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-
-                            <div class="col-md-6">
-                                <label for="phone" class="form-label">{% trans "Phone" %}</label>
-                                <input
-                                    type="tel"
-                                    class="form-control {% if profile_form.phone.errors %}is-invalid{% endif %}"
-                                    id="phone"
-                                    name="phone"
-                                    placeholder="+966501234567"
-                                    value="{{ profile_form.phone.value|default:'' }}"
-                                    title="{% trans 'Enter a valid phone number, for example +966501234567' %}"
-                                >
-                                <div class="form-text">{% trans "Use digits only, with optional + and country code." %}</div>
-
-                                {% for error in profile_form.phone.errors %}
-                                    <div class="invalid-feedback d-block">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-
- <div class="col-md-6">
-                                <label for="avatar" class="form-label">{% trans "Upload Your Avatar" %}</label>
-                                <input
-                                    type="file"
-                                    name="avatar"
-                                    id="avatar"
-                                    class="form-control {% if profile_form.avatar.errors %}is-invalid{% endif %}"
-                                >
-                                {% for error in profile_form.avatar.errors %}
-                                    <div class="invalid-feedback d-block">{{ error }}</div>
-                                {% endfor %}
-                                <div class="form-text">{% trans "You can upload your own image or choose one of the default avatars below." %}</div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label d-block">{% trans "Or choose a default avatar" %}</label>
-                                <div class="d-flex flex-wrap gap-3">
-                                    {% for avatar in default_avatar_choices %}
-                                        <label class="default-avatar-option text-center">
-                                            <input
-                                                type="radio"
-                                                name="default_avatar"
-                                                value="{{ avatar }}"
-                                                class="d-none"
-                                                {% if request.POST.default_avatar == avatar %}checked{% endif %}
-                                            >
-                                            <img
-                                                src="{% static 'images/avatars/defaults/'|add:avatar %}"
-                                                alt="{% trans 'Default avatar' %}"
-                                                class="rounded-circle border shadow-sm default-avatar-preview"
-                                                style="width: 72px; height: 72px; object-fit: cover; cursor: pointer;"
-                                            >
-                                        </label>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <label for="bio" class="form-label">{% trans "Bio" %}</label>
-                                <textarea
-                                    name="bio"
-                                    id="bio"
-                                    rows="4"
-                                    class="form-control {% if profile_form.bio.errors %}is-invalid{% endif %}"
-                                    placeholder="{% trans 'Write something about yourself' %}"
-                                >{{ profile_form.bio.value|default:'' }}</textarea>
-                                {% for error in profile_form.bio.errors %}
-                                    <div class="invalid-feedback d-block">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-
-                            <div class="col-12 d-grid">
-                                <button type="submit" class="btn btn-primary">{% trans "Create Account" %}</button>
-                            </div>
-
-                            <div class="col-12">
-                                <p class="text-center mb-0">
-                                    {% trans "Already have an account?" %}
-                                    <a href="{% url 'account:login_view' %}">{% trans "Sign in" %}</a>
-                                </p>
-                            <p class="text-center mb-0">
-                                <a href="{% url 'account:artisan_signup_view' %}">{% trans "Are your artisan?" %}</a>
-                            </p>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+            <div class="text-center mb-4">
+              <h1 class="h3 mb-2">{% trans "Sign Up" %}</h1>
+              <p class="text-muted mb-0">{% trans "Create your account in a few simple steps." %}</p>
             </div>
+
+            <form action="" method="post" enctype="multipart/form-data" class="row g-3">
+              {% csrf_token %}
+
+              {% if user_form.non_field_errors %}
+                <div class="col-12">
+                  <div class="alert alert-danger mb-0">
+                    {% for error in user_form.non_field_errors %}
+                      <div>{{ error }}</div>
+                    {% endfor %}
+                  </div>
+                </div>
+              {% endif %}
+
+              {% if profile_form.non_field_errors %}
+                <div class="col-12">
+                  <div class="alert alert-danger mb-0">
+                    {% for error in profile_form.non_field_errors %}
+                      <div>{{ error }}</div>
+                    {% endfor %}
+                  </div>
+                </div>
+              {% endif %}
+
+              <!-- First Name -->
+              <div class="col-md-6">
+                <label for="first_name" class="form-label">{% trans "First Name" %}</label>
+                <input
+                  type="text"
+                  class="form-control {% if user_form.first_name.errors %}is-invalid{% endif %}"
+                  id="first_name" name="first_name"
+                  placeholder="{% trans 'Enter your first name' %}"
+                  value="{{ user_form.first_name.value|default:'' }}"
+                >
+                {% for error in user_form.first_name.errors %}
+                  <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+              </div>
+
+              <!-- Last Name -->
+              <div class="col-md-6">
+                <label for="last_name" class="form-label">{% trans "Last Name" %}</label>
+                <input
+                  type="text"
+                  class="form-control {% if user_form.last_name.errors %}is-invalid{% endif %}"
+                  id="last_name" name="last_name"
+                  placeholder="{% trans 'Enter your last name' %}"
+                  value="{{ user_form.last_name.value|default:'' }}"
+                >
+                {% for error in user_form.last_name.errors %}
+                  <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+              </div>
+
+              <!-- Username -->
+              <div class="col-12">
+                <label for="username" class="form-label">{% trans "Username" %}</label>
+                <input
+                  type="text"
+                  class="form-control {% if user_form.username.errors %}is-invalid{% endif %}"
+                  id="username" name="username"
+                  placeholder="{% trans 'Choose a username' %}"
+                  value="{{ user_form.username.value|default:'' }}"
+                >
+                {% for error in user_form.username.errors %}
+                  <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+              </div>
+
+              <!-- Email -->
+              <div class="col-12">
+                <label for="email" class="form-label">{% trans "Email" %}</label>
+                <input
+                  type="email"
+                  class="form-control {% if user_form.email.errors %}is-invalid{% endif %}"
+                  id="email" name="email"
+                  placeholder="{% trans 'Enter your email' %}"
+                  value="{{ user_form.email.value|default:'' }}"
+                >
+                {% for error in user_form.email.errors %}
+                  <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+              </div>
+
+              <!-- Password -->
+              <div class="col-md-6">
+                <label for="password1" class="form-label">{% trans "Password" %}</label>
+                <input
+                  type="password"
+                  class="form-control {% if user_form.password1.errors %}is-invalid{% endif %}"
+                  id="password1" name="password1"
+                  placeholder="{% trans 'Enter your password' %}"
+                >
+                {% for error in user_form.password1.errors %}
+                  <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+              </div>
+
+              <!-- Confirm Password -->
+              <div class="col-md-6">
+                <label for="password2" class="form-label">{% trans "Confirm Password" %}</label>
+                <input
+                  type="password"
+                  class="form-control {% if user_form.password2.errors %}is-invalid{% endif %}"
+                  id="password2" name="password2"
+                  placeholder="{% trans 'Confirm your password' %}"
+                >
+                {% for error in user_form.password2.errors %}
+                  <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+              </div>
+
+              <!-- Phone -->
+              <div class="col-md-6">
+                <label for="phone_display" class="form-label">{% trans "Phone" %}</label>
+                <div class="iti-saaf-wrap">
+                  <input
+                    type="tel"
+                    id="phone_display"
+                    class="form-control {% if profile_form.phone.errors %}is-invalid{% endif %}"
+                    autocomplete="tel"
+                  >
+                </div>
+                <!-- Hidden field Django actually reads -->
+                <input type="hidden" id="phone" name="phone" value="{{ profile_form.phone.value|default:'' }}">
+                <div class="form-text">{% trans "Select your country then enter your number." %}</div>
+                <div id="phone-error" class="invalid-feedback" style="display:none;"></div>
+                {% for error in profile_form.phone.errors %}
+                  <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+              </div>
+
+              <!-- Avatar upload -->
+              <div class="col-md-6">
+                <label for="avatar" class="form-label">{% trans "Upload Your Avatar" %}</label>
+                <input
+                  type="file"
+                  name="avatar" id="avatar"
+                  class="form-control {% if profile_form.avatar.errors %}is-invalid{% endif %}"
+                >
+                {% for error in profile_form.avatar.errors %}
+                  <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+                <div class="form-text">{% trans "You can upload your own image or choose one of the default avatars below." %}</div>
+              </div>
+
+              <!-- Default avatars -->
+              <div class="col-md-6">
+                <label class="form-label d-block">{% trans "Or choose a default avatar" %}</label>
+                <div class="d-flex flex-wrap gap-3">
+                  {% for avatar in default_avatar_choices %}
+                    <label class="default-avatar-option text-center">
+                      <input
+                        type="radio"
+                        name="default_avatar"
+                        value="{{ avatar }}"
+                        class="d-none"
+                        {% if request.POST.default_avatar == avatar %}checked{% endif %}
+                      >
+                      <img
+                        src="{% static 'images/avatars/defaults/'|add:avatar %}"
+                        alt="{% trans 'Default avatar' %}"
+                        class="rounded-circle border shadow-sm default-avatar-preview"
+                        style="width:72px;height:72px;object-fit:cover;cursor:pointer;"
+                      >
+                    </label>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <!-- Bio -->
+              <div class="col-12">
+                <label for="bio" class="form-label">{% trans "Bio" %}</label>
+                <textarea
+                  name="bio" id="bio" rows="4"
+                  class="form-control {% if profile_form.bio.errors %}is-invalid{% endif %}"
+                  placeholder="{% trans 'Write something about yourself' %}"
+                >{{ profile_form.bio.value|default:'' }}</textarea>
+                {% for error in profile_form.bio.errors %}
+                  <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+              </div>
+
+              <!-- Submit -->
+              <div class="col-12 d-grid">
+                <button type="submit" class="btn btn-primary">{% trans "Create Account" %}</button>
+              </div>
+
+              <!-- Links -->
+              <div class="col-12">
+                <p class="text-center mb-0">
+                  {% trans "Already have an account?" %}
+                  <a href="{% url 'account:login_view' %}">{% trans "Sign in" %}</a>
+                </p>
+                <p class="text-center mb-0">
+                  <a href="{% url 'account:artisan_signup_view' %}">{% trans "Are you an artisan?" %}</a>
+                </p>
+              </div>
+
+            </form>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </section>
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@24.6.0/build/js/intlTelInput.min.js"></script>
+<script>
+(function () {
+  var displayInput = document.getElementById('phone_display');
+  var hiddenInput  = document.getElementById('phone');
+  var errorDiv     = document.getElementById('phone-error');
+
+  if (!displayInput) return;
+
+  // Pre-fill display input from existing value (edit profile case)
+  var existing = hiddenInput.value;
+  if (existing) displayInput.value = existing;
+
+  var iti = window.intlTelInput(displayInput, {
+    initialCountry: 'sa',
+    countrySearch: true,
+    separateDialCode: true,
+    loadUtilsOnInit: 'https://cdn.jsdelivr.net/npm/intl-tel-input@24.6.0/build/js/utils.js',
+    countryOrder: ['sa', 'ae', 'kw', 'bh', 'qa', 'om', 'jo', 'eg'],
+  });
+
+  // Dynamically adjust padding to match the flag badge width
+  function adjustPadding() {
+    var badge = displayInput.closest('.iti').querySelector('.iti__selected-flag');
+    if (badge) displayInput.style.paddingLeft = (badge.offsetWidth + 8) + 'px';
+  }
+  displayInput.addEventListener('countrychange', adjustPadding);
+  setTimeout(adjustPadding, 100); // run once after iti renders
+
+  var errorMap = [
+    '{% trans "Invalid number" %}',
+    '{% trans "Invalid country code" %}',
+    '{% trans "Number too short" %}',
+    '{% trans "Number too long" %}',
+    '{% trans "Invalid number" %}',
+  ];
+
+  function validate() {
+    var val = displayInput.value.trim();
+    errorDiv.style.display = 'none';
+    displayInput.classList.remove('is-invalid');
+
+    if (!val) return true;
+
+    if (iti.isValidNumber()) {
+      hiddenInput.value = iti.getNumber(); // E.164 format
+      return true;
+    } else {
+      var code = iti.getValidationError();
+      errorDiv.textContent = errorMap[code] || errorMap[0];
+      errorDiv.style.display = 'block';
+      displayInput.classList.add('is-invalid');
+      hiddenInput.value = '';
+      return false;
+    }
+  }
+
+  displayInput.addEventListener('blur', validate);
+
+  var form = displayInput.closest('form');
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      if (!validate()) {
+        e.preventDefault();
+        displayInput.focus();
+      }
+    });
+  }
+})();
+</script>
 {% endblock %}

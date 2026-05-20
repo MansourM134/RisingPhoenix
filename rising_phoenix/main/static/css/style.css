@@ -471,3 +471,67 @@
 .default-avatar-option:hover .default-avatar-preview {
     transform: scale(1.05);
 }
+
+/* ── intl-tel-input v24 — Saaf theme ── */
+.iti-saaf-wrap { position: relative; }
+.iti-saaf-wrap .iti { width: 100%; display: block; }
+
+/* The actual input — padding is set dynamically by JS adjustPadding()
+   so we only set a safe fallback here */
+.iti-saaf-wrap input.form-control {
+  padding-left: 90px !important;
+}
+
+/* Flag button container */
+.iti__flag-container { z-index: 10; }
+
+/* Dial code text next to flag */
+.iti--separate-dial-code .iti__selected-dial-code {
+  font-size: .84rem;
+  color: var(--saaf-body);
+}
+
+/* Dropdown */
+.iti__dropdown-content {
+  border-radius: 12px;
+  border: 1px solid var(--saaf-border);
+  box-shadow: var(--saaf-shadow-lg);
+  font-family: 'Poppins', sans-serif;
+  min-width: 280px;
+}
+
+/* Search box inside dropdown */
+.iti__search-input {
+  border-radius: 8px !important;
+  border: 1px solid var(--saaf-border) !important;
+  font-family: 'Poppins', sans-serif;
+  font-size: .87rem;
+  width: calc(100% - 16px) !important;
+  margin: 8px !important;
+  padding: .4rem .7rem !important;
+}
+
+/* Country list items */
+.iti__country-list { font-family: 'Poppins', sans-serif; font-size: .87rem; }
+.iti__country-name { color: var(--saaf-body); }
+.iti__dial-code    { color: var(--saaf-text-muted); }
+
+/* ── Dark mode ── */
+[data-theme="dark"] .iti__dropdown-content {
+  background: var(--saaf-surface-2);
+  border-color: var(--saaf-border);
+}
+[data-theme="dark"] .iti__search-input {
+  background: var(--saaf-surface-1) !important;
+  border-color: var(--saaf-border) !important;
+  color: var(--saaf-cream-text);
+}
+[data-theme="dark"] .iti__country-name { color: var(--saaf-cream-text); }
+[data-theme="dark"] .iti__dial-code    { color: rgba(242,228,209,.6); }
+[data-theme="dark"] .iti__country.iti__highlight,
+[data-theme="dark"] .iti__country:hover {
+  background: var(--saaf-beige);
+}
+[data-theme="dark"] .iti--separate-dial-code .iti__selected-flag {
+  background: transparent;
+}

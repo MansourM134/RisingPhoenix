@@ -25,6 +25,9 @@ from progress.models import Contract
 from django.core.paginator import Paginator
 from request.models import Request
 from staff.views import submit_report_view, my_reports_view  # re-export for account URLs
+from django.template.loader import render_to_string
+from django.utils.timezone import now
+import weasyprint
 # Create your views here.
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -298,6 +301,45 @@ def artisan_dashboard_view(request: HttpRequest):
     }
 
     return render(request, 'account/artisan_dashboard.html', context)
+
+
+def artisan_revenue_pdf_view(request):
+    artisan = request.user
+    profile = getattr(artisan, 'artisanprofile', None)
+
+    # Reuse the same queryset logic from your dashboard view
+
+
+    revenues = ArtisanRevenue.objects.filter(contract__proposal__artisan=artisan)
+    total_earned  = revenues.aggregate(Sum('net_amount'))['net_amount__sum'] or 0
+    total_paid    = revenues.filter(status='paid').aggregate(Sum('net_amount'))['net_amount__sum'] or 0
+    current_balance = total_earned - total_paid
+
+    this_month = now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    this_month_revenues = revenues.filter(created_at__gte=this_month)
+    this_month_total = this_month_revenues.aggregate(Sum('net_amount'))['net_amount__sum'] or 0
+    this_month_jobs  = this_month_revenues.count()
+
+    recent_revenues = revenues.order_by('-created_at')[:20]
+
+    context = {
+        'artisan': artisan,
+        'total_earned': total_earned,
+        'total_paid': total_paid,
+        'current_balance': current_balance,
+        'this_month_total': this_month_total,
+        'this_month_jobs': this_month_jobs,
+        'recent_revenues': recent_revenues,
+        'generated_at': timezone.now(),
+    }
+
+    html_string = render_to_string('account/revenue_pdf.html', context, request=request)
+    pdf_file = weasyprint.HTML(string=html_string, base_url=request.build_absolute_uri('/')).write_pdf()
+
+    response = HttpResponse(pdf_file, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="saaf-earnings-{timezone.now().strftime("%Y-%m-%d")}.pdf"'
+    return response
+
 
 def profile_view(request:HttpRequest, user_name):
     user = get_object_or_404(User, username = user_name)
