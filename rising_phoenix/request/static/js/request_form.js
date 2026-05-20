@@ -33,6 +33,7 @@
     var retryBtn = document.getElementById('ai-retry-btn');
     var rejectBtn = document.getElementById('ai-reject-btn');
     var loaderEl = document.getElementById('ai-refine-loader');
+    var answersBtn = document.getElementById('ai-answers-btn');
 
     if (!refineBtn || !statusEl || !descriptionEl || !panelEl || !originalEl || !suggestedEl || !diffOutputEl || !acceptBtn || !retryBtn || !rejectBtn || !loaderEl || !refineUrl) {
       return;
@@ -74,9 +75,14 @@
         missingDetailsPanel.hidden = true;
         return;
       }
-      missingListEl.innerHTML = questions
-        .map(function (q) { return '<li class="ai-missing-item">' + escapeHtml(q) + '</li>'; })
-        .join('');
+      missingListEl.innerHTML = questions.map(function (q) {
+        return (
+          '<li class="ai-missing-item">' +
+            '<span class="ai-question-text">' + escapeHtml(q) + '</span>' +
+            '<input type="text" class="ai-answer-input" placeholder="Your answer…" />' +
+          '</li>'
+        );
+      }).join('');
       missingDetailsPanel.hidden = false;
     }
 
@@ -85,6 +91,8 @@
       retryBtn.disabled = isBusy;
       acceptBtn.disabled = isBusy;
       rejectBtn.disabled = isBusy;
+      if (answersBtn) answersBtn.disabled = isBusy;
+      missingListEl.querySelectorAll('.ai-answer-input').forEach(function (inp) { inp.disabled = isBusy; });
       loaderEl.hidden = !isBusy;
       refineBtn.textContent = isBusy ? 'Processing...' : 'Refine with AI';
     }
@@ -106,6 +114,7 @@
         var body = { text: text };
         if (opts.categoryName) body.category_name = opts.categoryName;
         if (opts.previousSuggestion) body.previous_suggestion = opts.previousSuggestion;
+        if (opts.userAnswers) body.user_answers = opts.userAnswers;
 
         var response = await fetch(refineUrl, {
           method: 'POST',
@@ -158,6 +167,33 @@
         previousSuggestion: suggestedEl.value.trim()
       });
     });
+
+    // Refine with answers: collect per-question inputs and send them back
+    if (answersBtn) {
+      answersBtn.addEventListener('click', async function () {
+        var pairs = [];
+        missingListEl.querySelectorAll('.ai-missing-item').forEach(function (item) {
+          var q = item.querySelector('.ai-question-text');
+          var a = item.querySelector('.ai-answer-input');
+          if (q && a && a.value.trim()) {
+            pairs.push('Q: ' + q.textContent + '\nA: ' + a.value.trim());
+          }
+        });
+        if (!pairs.length) {
+          statusEl.textContent = 'Answer at least one question first.';
+          statusEl.classList.add('error');
+          var first = missingListEl.querySelector('.ai-answer-input');
+          if (first) first.focus();
+          return;
+        }
+        await refineText({
+          text: originalEl.value,
+          categoryName: getCategoryName(),
+          previousSuggestion: suggestedEl.value.trim(),
+          userAnswers: pairs.join('\n\n')
+        });
+      });
+    }
 
     acceptBtn.addEventListener('click', function () {
       descriptionEl.value = suggestedEl.value.trim();
