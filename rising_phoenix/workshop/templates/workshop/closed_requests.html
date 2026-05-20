@@ -1,0 +1,105 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}
+Closed Requests
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/request.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="request-shell">
+    <div class="request-container">
+
+        <header class="request-hero mb-3">
+            <div class="request-row">
+                <div>
+                    <p class="request-eyebrow mb-1">Workshop</p>
+                    <h1 class="mb-2">Closed Requests</h1>
+                    <p class="request-sub">All closed requests linked to accepted proposals for {{ workshop.workshop_name }}.</p>
+                </div>
+                <div>
+                    <a href="{% url 'workshop:workshop_detail_view' artisan.user.id %}" class="request-action">Back to Workshop</a>
+                </div>
+            </div>
+        </header>
+
+        <div class="request-grid">
+            {% for project_request in requests %}
+            <article class="request-card">
+
+                {% with project_request.images.first as cover %}
+                {% if cover %}
+                <a href="{% url 'request:request_detail_view' project_request.id %}" class="request-card-link-media">
+                    <img src="{{ cover.image.url }}" alt="{{ project_request.title }}" class="request-card-img">
+                </a>
+                {% else %}
+                <a href="{% url 'request:request_detail_view' project_request.id %}" class="request-card-no-img" tabindex="-1" aria-hidden="true">
+                    <span class="request-card-no-img-label">{{ project_request.category.name }}</span>
+                </a>
+                {% endif %}
+                {% endwith %}
+
+                <p class="request-tag">{{ project_request.category.name }}</p>
+
+                <h2 class="request-card-title">
+                    <a href="{% url 'request:request_detail_view' project_request.id %}" class="request-card-title-link">
+                        {{ project_request.title }}
+                    </a>
+                </h2>
+
+                <p class="request-card-meta-by">by {{ project_request.requester.username }}</p>
+
+                <p class="request-card-desc">{{ project_request.description|truncatewords:24 }}</p>
+
+                <div class="request-meta">
+                    <div class="request-meta-row">
+                        <span>
+                            {% if project_request.budget_max %}
+                            {{ project_request.budget_max|floatformat:"-2" }} SAR
+                            {% else %}
+                            Budget flexible
+                            {% endif %}
+                        </span>
+
+                        <span class="status-pill status-closed">Closed</span>
+                    </div>
+
+                    <p class="mb-0">
+                        Deadline: {{ project_request.deadline|default:"Flexible" }}
+                    </p>
+
+                    <p class="mb-0 request-card-proposals">
+                        <i class="bi bi-file-earmark-text"></i>
+                        {{ project_request.proposals.count }} proposal{{ project_request.proposals.count|pluralize }}
+                    </p>
+
+                    <div class="request-card-actions">
+                        <a href="{% url 'request:request_detail_view' project_request.id %}" class="request-card-cta">View details</a>
+                    </div>
+                </div>
+            </article>
+            {% empty %}
+            <div class="request-empty">No completed orders yet.</div>
+            {% endfor %}
+        </div>
+
+        {% if page_obj.has_other_pages %}
+        <nav class="browse-pagination">
+            {% if page_obj.has_previous %}
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+
+            <span class="page-current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+            {% if page_obj.has_next %}
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            {% endif %}
+        </nav>
+        {% endif %}
+
+    </div>
+</section>
+{% endblock %}

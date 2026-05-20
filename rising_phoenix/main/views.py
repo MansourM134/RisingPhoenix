@@ -4,9 +4,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group, User
 from workshop.models import Category
 from workshop.models import WorkshopProfile
-from django.db.models import Q, Avg
+from django.db.models import Q, Avg, Count
 from django.core.paginator import Paginator
 from request.models import Request
+from proposal.models import Proposal
+from notification.models import Notification
+from message.models import Conversation, Message
 
 
 # Create your views here.
@@ -52,7 +55,63 @@ def home_view(request:HttpRequest):
 
 @login_required(login_url='account:login_view')
 def dashboard_view(request: HttpRequest):
-    return render(request, 'main/dashboard.html')
+    context = {}
+
+    is_artisan_user = hasattr(request.user, 'artisanprofile')
+    is_requester = not is_artisan_user and not request.user.is_staff
+
+    if is_requester:
+        my_requests_qs = Request.objects.filter(requester=request.user)
+        status_filter = request.GET.get('request_status', 'all')
+
+        filtered_requests_qs = my_requests_qs
+        if status_filter in {
+            Request.Status.OPEN,
+            Request.Status.IN_REVIEW,
+            Request.Status.CLOSED,
+            Request.Status.TIME_ENDED,
+        }:
+            filtered_requests_qs = filtered_requests_qs.filter(status=status_filter)
+
+        my_requests_recent = (
+            filtered_requests_qs
+            .select_related('category')
+            .annotate(proposal_count=Count('proposals'))
+            .order_by('-created_at')[:5]
+        )
+
+        proposals_qs = Proposal.objects.filter(request__requester=request.user)
+        unread_notifications_count = Notification.objects.filter(
+            recipient=request.user,
+            is_read=False,
+        ).count()
+
+        notifications_recent = Notification.objects.filter(
+            recipient=request.user
+        ).order_by('-created_at')[:5]
+
+        requester_conversations = Conversation.objects.filter(requester=request.user)
+        unread_messages_count = Message.objects.filter(
+            conversation__in=requester_conversations,
+            is_read=False,
+        ).exclude(sender=request.user).count()
+
+        context.update({
+            'request_status': status_filter,
+            'my_requests_total': my_requests_qs.count(),
+            'requests_open_total': my_requests_qs.filter(status=Request.Status.OPEN).count(),
+            'requests_in_review_total': my_requests_qs.filter(status=Request.Status.IN_REVIEW).count(),
+            'requests_closed_total': my_requests_qs.filter(status=Request.Status.CLOSED).count(),
+            'proposals_total': proposals_qs.count(),
+            'proposals_pending_total': proposals_qs.filter(status=Proposal.Status.PENDING).count(),
+            'unread_notifications_count': unread_notifications_count,
+            'notifications_recent': notifications_recent,
+            'unread_messages_count': unread_messages_count,
+            'active_conversations_count': requester_conversations.filter(is_active=True).count(),
+            'my_requests_recent': my_requests_recent,
+        })
+
+    return render(request, 'main/dashboard.html', context)
 
 def browse_view(request: HttpRequest):
     artisans = User.objects.filter(

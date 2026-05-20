@@ -484,6 +484,23 @@ a:hover {
     border-color: var(--saaf-border) !important;
 }
 
+[data-theme="dark"] .bg-light-subtle,
+[data-theme="dark"] .bg-body-tertiary,
+[data-theme="dark"] .bg-body-secondary,
+[data-theme="dark"] .bg-white,
+[data-theme="dark"] .card-footer.bg-white {
+    background: var(--saaf-surface-2) !important;
+    color: var(--saaf-cream-text) !important;
+    border-color: var(--saaf-border) !important;
+}
+
+[data-theme="dark"] .text-muted,
+[data-theme="dark"] .small.text-muted,
+[data-theme="dark"] .form-text,
+[data-theme="dark"] .text-body-secondary {
+    color: rgba(242, 228, 209, 0.82) !important;
+}
+
 [data-theme="dark"] .form-control,
 [data-theme="dark"] .form-select,
 [data-theme="dark"] .input-group-text {

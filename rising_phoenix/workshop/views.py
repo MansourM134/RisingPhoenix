@@ -425,6 +425,38 @@ def workshop_detail_view(request, artisan_id):
     )
 
 
+def closed_requests_view(request, artisan_id):
+    """Public list of closed requests linked to an artisan's accepted proposals."""
+    try:
+        artisan_profile = ArtisanProfile.objects.get(user_id=artisan_id)
+        workshop = WorkshopProfile.objects.get(artisan=artisan_profile)
+    except (ArtisanProfile.DoesNotExist, WorkshopProfile.DoesNotExist):
+        messages.error(request, "Workshop not found.")
+        return redirect('main:home_view')
+
+    completed_requests = (
+        Request.objects.filter(
+            status=Request.Status.CLOSED,
+            proposals__artisan=artisan_profile.user,
+            proposals__status=Proposal.Status.ACCEPTED,
+        )
+        .distinct()
+        .order_by('-created_at')
+    )
+
+    paginator = Paginator(completed_requests, 6)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'workshop': workshop,
+        'artisan': artisan_profile,
+        'requests': page_obj,
+        'page_obj': page_obj,
+    }
+    return render(request, 'workshop/closed_requests.html', context)
+
+
 def portfolio_list_view(request, artisan_id):
     """List all portfolio images for an artisan workshop."""
 

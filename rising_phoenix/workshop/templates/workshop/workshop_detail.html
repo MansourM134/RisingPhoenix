@@ -3,7 +3,7 @@
 {% block title %}{{ workshop.workshop_name }}{% endblock %}
 
 {% block sidebar %}
-{% if request.user.is_authenticated and request.user == artisan.user %}
+{% if request.user.is_authenticated %}
 {% include 'main/_sidebar.html' with active='workshop' %}
 {% endif %}
 {% endblock %}
@@ -149,7 +149,7 @@
     }
 
     .saaf-workshop-page .saaf-workshop-profile-cover + .saaf-workshop-profile-hero .saaf-profile-avatar-wrap {
-        margin-top: -66px;
+        margin-top: -75px;
         margin-inline-end: 0.65rem;
     }
 
@@ -175,6 +175,16 @@
 
     .saaf-workshop-page .saaf-profile-avatar-wrap {
         grid-area: avatar;
+        position: relative;
+        z-index: 3;
+    }
+
+    .saaf-workshop-page .saaf-profile-hero .saaf-eyebrow {
+        position: relative;
+        z-index: 4;
+        display: none !important;
+        margin-bottom: 0.55rem !important;
+        padding-inline-start: 0.2rem;
     }
 
     .saaf-workshop-page .saaf-profile-heading-block {
@@ -243,6 +253,139 @@
         margin-top: 0.65rem !important;
     }
 
+    [data-theme="dark"] .saaf-workshop-page .saaf-profile-status-list .saaf-profile-pill {
+        background: rgba(250, 241, 229, 0.14);
+        border: 1px solid rgba(232, 199, 164, 0.28);
+        color: var(--saaf-cream-text);
+    }
+
+    [data-theme="dark"] .saaf-workshop-page .saaf-profile-status-list .saaf-profile-pill--ok {
+        background: rgba(90, 146, 112, 0.22);
+        border-color: rgba(130, 194, 157, 0.4);
+        color: #d9f6e8;
+    }
+
+    [data-theme="dark"] .saaf-workshop-page .saaf-info-card.saaf-profile-info-card,
+    [data-theme="dark"] .saaf-workshop-page .saaf-profile-bio-card {
+        background: rgba(36, 26, 19, 0.62);
+        border: 1px solid rgba(232, 199, 164, 0.22);
+    }
+
+    [data-theme="dark"] .saaf-workshop-page .saaf-profile-bio-card .saaf-profile-subtitle,
+    [data-theme="dark"] .saaf-workshop-page .saaf-info-card.saaf-profile-info-card p,
+    [data-theme="dark"] .saaf-workshop-page .saaf-info-card.saaf-profile-info-card .saaf-info-label,
+    [data-theme="dark"] .saaf-workshop-page .saaf-profile-bio-card p {
+        color: var(--saaf-cream-text) !important;
+    }
+
+    [data-theme="dark"] .saaf-workshop-page .saaf-profile-bio-card .saaf-workshop-tag {
+        background: rgba(250, 241, 229, 0.12);
+        border-color: rgba(232, 199, 164, 0.24);
+        color: var(--saaf-cream-text);
+    }
+
+    #inviteArtisanModal .modal-content {
+        background: #ffffff;
+        border: 1px solid #dcc9b3;
+    }
+
+    #inviteArtisanModal .modal-header,
+    #inviteArtisanModal .modal-footer {
+        border-color: #e4d6c6;
+    }
+
+    #inviteArtisanModal .modal-title {
+        color: #5c4a3f;
+    }
+
+    #inviteArtisanModal .modal-body,
+    #inviteArtisanModal .form-check-label {
+        color: #4a3f33;
+    }
+
+    #inviteArtisanModal .text-muted {
+        color: #6f5e50 !important;
+    }
+
+    #inviteArtisanModal .form-check-input {
+        border-color: #cbb8a6;
+    }
+
+    #inviteArtisanModal .form-check-input:checked {
+        background-color: #c2724f;
+        border-color: #c2724f;
+    }
+
+    #inviteArtisanModal .btn-saaf-outline {
+        background: #ffffff;
+        color: #6b4826;
+        border-color: #d8ccba;
+    }
+
+    #inviteArtisanModal .btn-saaf-primary {
+        background: #c2724f;
+        color: #ffffff;
+        border-color: #c2724f;
+    }
+
+    #inviteArtisanModal .btn-saaf-primary:disabled {
+        background: #e5d8c7;
+        color: #8d7b68;
+        border-color: #e5d8c7;
+    }
+
+    [data-theme="dark"] #inviteArtisanModal .modal-content {
+        background: #2b211b;
+        border-color: rgba(232, 199, 164, 0.32);
+    }
+
+    [data-theme="dark"] #inviteArtisanModal .modal-header,
+    [data-theme="dark"] #inviteArtisanModal .modal-footer {
+        border-color: rgba(232, 199, 164, 0.24);
+    }
+
+    [data-theme="dark"] #inviteArtisanModal .modal-title,
+    [data-theme="dark"] #inviteArtisanModal .modal-body,
+    [data-theme="dark"] #inviteArtisanModal .form-check-label {
+        color: #f2e4d1;
+    }
+
+    [data-theme="dark"] #inviteArtisanModal .text-muted {
+        color: rgba(242, 228, 209, 0.82) !important;
+    }
+
+    [data-theme="dark"] #inviteArtisanModal .btn-close {
+        filter: invert(1) brightness(1.2);
+    }
+
+    [data-theme="dark"] #inviteArtisanModal .form-check-input {
+        background-color: rgba(36, 27, 21, 0.9);
+        border-color: rgba(232, 199, 164, 0.48);
+    }
+
+    [data-theme="dark"] #inviteArtisanModal .form-check-input:checked {
+        background-color: #d48b68;
+        border-color: #d48b68;
+    }
+
+    [data-theme="dark"] #inviteArtisanModal .btn-saaf-outline {
+        background: transparent;
+        color: #f2e4d1;
+        border-color: rgba(232, 199, 164, 0.48);
+    }
+
+    [data-theme="dark"] #inviteArtisanModal .btn-saaf-primary {
+        background: #d48b68;
+        color: #ffffff;
+        border-color: #d48b68;
+    }
+
+    [data-theme="dark"] #inviteArtisanModal .btn-saaf-primary:disabled {
+        background: rgba(212, 139, 104, 0.36);
+        color: rgba(255, 255, 255, 0.86);
+        border-color: rgba(212, 139, 104, 0.5);
+    }
+
     .saaf-workshop-page .saaf-workshop-pagination {
         margin-top: 0.65rem !important;
     }
@@ -265,7 +408,7 @@
         }
 
         .saaf-workshop-page .saaf-workshop-profile-cover + .saaf-workshop-profile-hero .saaf-profile-avatar-wrap {
-            margin-top: -52px;
+            margin-top: -60px;
         }
 
         .saaf-workshop-page .saaf-profile-hero-main {
@@ -442,7 +585,7 @@
                 <div class="saaf-dashboard-card rounded-4 p-4 mb-4">
                     <div class="saaf-workshop-section-head mb-3">
                         <h2 class="mb-0">Closed Requests</h2>
-                        <a href="{% url 'account:completed_orders_view' %}" class="btn btn-sm btn-saaf-outline rounded-pill">View all</a>
+                        <a href="{% url 'workshop:closed_requests_view' artisan.user.id %}" class="btn btn-sm btn-saaf-outline rounded-pill">View all</a>
                     </div>
 
                     {% if completed_orders %}

@@ -3,8 +3,96 @@
 
 {% block title %}Contract Review{% endblock %}
 
+{% block extra_css %}
+<style>
+    [data-theme="dark"] .contract-review-page {
+        color: #F2E4D1;
+    }
+
+    [data-theme="dark"] .contract-review-page .card,
+    [data-theme="dark"] .contract-review-page .payment-card-option {
+        background: #2b211b !important;
+        border-color: rgba(232, 199, 164, 0.28) !important;
+    }
+
+    [data-theme="dark"] .contract-review-page .border,
+    [data-theme="dark"] .contract-review-page hr {
+        border-color: rgba(232, 199, 164, 0.24) !important;
+    }
+
+    [data-theme="dark"] .contract-review-page .bg-light-subtle,
+    [data-theme="dark"] .contract-review-page .bg-white,
+    [data-theme="dark"] .contract-review-page .bg-body-tertiary {
+        background: #3d3530 !important;
+        color: #F2E4D1 !important;
+    }
+
+    [data-theme="dark"] .contract-review-page,
+    [data-theme="dark"] .contract-review-page h1,
+    [data-theme="dark"] .contract-review-page h2,
+    [data-theme="dark"] .contract-review-page h3,
+    [data-theme="dark"] .contract-review-page h4,
+    [data-theme="dark"] .contract-review-page h5,
+    [data-theme="dark"] .contract-review-page h6,
+    [data-theme="dark"] .contract-review-page .fw-bold,
+    [data-theme="dark"] .contract-review-page .fw-semibold,
+    [data-theme="dark"] .contract-review-page .fw-medium {
+        color: #F2E4D1 !important;
+    }
+
+    [data-theme="dark"] .contract-review-page .text-muted,
+    [data-theme="dark"] .contract-review-page .small.text-muted {
+        color: rgba(242, 228, 209, 0.82) !important;
+    }
+
+    [data-theme="dark"] .contract-review-page .text-bg-light {
+        background: rgba(232, 199, 164, 0.22) !important;
+        color: #F2E4D1 !important;
+        border: 1px solid rgba(232, 199, 164, 0.34);
+    }
+
+    [data-theme="dark"] .contract-review-page .text-bg-primary,
+    [data-theme="dark"] .contract-review-page .badge.text-bg-primary {
+        background: #D48B68 !important;
+        color: #FFFFFF !important;
+    }
+
+    [data-theme="dark"] .contract-review-page .alert-info {
+        background: rgba(54, 88, 112, 0.35) !important;
+        color: #F2E4D1 !important;
+        border: 1px solid rgba(120, 166, 196, 0.38) !important;
+    }
+
+    [data-theme="dark"] .contract-review-page .alert-info i {
+        color: #b9d8ee;
+    }
+
+    [data-theme="dark"] .contract-review-page .btn-outline-secondary {
+        color: #F2E4D1;
+        border-color: rgba(232, 199, 164, 0.46);
+        background: transparent;
+    }
+
+    [data-theme="dark"] .contract-review-page .btn-outline-secondary:hover {
+        background: rgba(232, 199, 164, 0.2);
+        color: #FFFFFF;
+        border-color: rgba(232, 199, 164, 0.66);
+    }
+
+    [data-theme="dark"] .contract-review-page .form-check-input {
+        background-color: rgba(36, 27, 21, 0.9);
+        border-color: rgba(232, 199, 164, 0.48);
+    }
+
+    [data-theme="dark"] .contract-review-page .form-check-input:checked {
+        background-color: #D48B68;
+        border-color: #D48B68;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container py-4 py-lg-5">
+<div class="container py-4 py-lg-5 contract-review-page">
     <div class="row g-4">
         <div class="col-lg-8">
             <div class="card border-0 shadow-sm rounded-4 h-100">

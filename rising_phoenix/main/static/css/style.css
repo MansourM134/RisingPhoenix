@@ -44,6 +44,25 @@
     box-shadow: 0 10px 26px rgba(28, 18, 8, 0.07) !important;
 }
 
+/* Keep filter header typography consistent across Browse Artisans and Requests pages */
+.filter-panel h5 {
+    font-size: 1.15rem;
+    line-height: 1.28;
+    letter-spacing: -0.01em;
+}
+
+.filter-panel p.small {
+    font-size: 0.95rem !important;
+    line-height: 1.35;
+}
+
+.filter-panel .btn.btn-sm {
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.42rem 1.05rem;
+    line-height: 1.25;
+}
+
 .filter-panel .form-control,
 .filter-panel .form-select {
     border: 1px solid rgba(126, 97, 70, 0.18);
@@ -99,6 +118,28 @@
 .artisan-avatar-fallback {
     background: var(--saaf-brown-light);
     color: var(--saaf-cream-text, #F2E4D1);
+}
+
+.artisan-avatar-wrap {
+    width: 72px;
+    height: 72px;
+    min-width: 72px;
+    overflow: hidden;
+    border: 1px solid var(--saaf-border);
+}
+
+.artisan-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.artisan-avatar-wrap .artisan-avatar-fallback {
+    width: 100%;
+    height: 100%;
+    font-size: 1.5rem;
+    font-weight: 700;
 }
 
 .artisan-rating-badge {
@@ -215,6 +256,19 @@
     .filter-panel {
         position: static;
     }
+
+    .filter-panel h5 {
+        font-size: 1.06rem;
+    }
+
+    .filter-panel p.small {
+        font-size: 0.88rem !important;
+    }
+
+    .filter-panel .btn.btn-sm {
+        font-size: 0.84rem;
+        padding: 0.38rem 0.9rem;
+    }
 }
 
 @media (max-width: 767.98px) {
@@ -318,6 +372,10 @@
 
 [data-theme="dark"] .filter-panel .form-control::placeholder {
     color: rgba(242, 227, 207, 0.72) !important;
+}
+
+[data-theme="dark"] .artisan-avatar-wrap {
+    border-color: rgba(242, 228, 209, 0.34);
 }
 
 .pagination-wrap .pagination {
