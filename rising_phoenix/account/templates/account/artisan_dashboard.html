@@ -210,9 +210,19 @@
     background: linear-gradient(180deg, rgba(74,56,39,.9), rgba(56,41,30,.92));
     border-color: rgba(219,191,155,.12);
   }
+  [data-theme="dark"] .rev-stat-label,
+  [data-theme="dark"] .rev-panel-title small,
+  [data-theme="dark"] .rev-empty,
+  [data-theme="dark"] .rev-empty p {
+    color: rgba(242, 228, 209, .82) !important;
+  }
   [data-theme="dark"] .rev-stat-value,
   [data-theme="dark"] .rev-panel-title { color: var(--saaf-cream-text); }
-  [data-theme="dark"] .rev-table thead th { background: rgba(56,41,30,.9); }
+  [data-theme="dark"] .rev-table thead th {
+    background: rgba(56,41,30,.9);
+    color: rgba(242, 228, 209, .86);
+    border-bottom-color: rgba(232, 199, 164, .2);
+  }
   [data-theme="dark"] .rev-table tbody tr:hover td { background: rgba(255,248,238,.04); }
   [data-theme="dark"] .rev-goal-bar { background: rgba(219,191,155,.18); }
   [data-theme="dark"] .rbadge-up  { background: rgba(76,175,125,.18); color: #68d4a0; }
@@ -223,6 +233,20 @@
   [data-theme="dark"] .pill-earned  { background: rgba(76,175,125,.18);  color: #68d4a0; }
   [data-theme="dark"] .pill-paid    { background: rgba(91,141,238,.18);  color: #8eb3f5; }
   [data-theme="dark"] .pill-pending { background: rgba(212,169,45,.18);  color: #f0c84a; }
+  [data-theme="dark"] .saaf-dashboard-linkline {
+    color: #E3D1BA;
+  }
+  [data-theme="dark"] .saaf-dashboard-linkline:hover {
+    color: #F2E4D1;
+  }
+  [data-theme="dark"] .rev-page-header .saaf-section-title,
+  [data-theme="dark"] .rev-page-header .saaf-eyebrow,
+  [data-theme="dark"] .rev-page-header p {
+    color: #F2E4D1 !important;
+  }
+  [data-theme="dark"] .rev-page-header {
+    box-shadow: 0 10px 22px rgba(8, 5, 4, .32);
+  }
 
   /* ── Page header ── */
   .rev-page-header {
