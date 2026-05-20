@@ -416,39 +416,52 @@
 }
 
 .proposal-status-pill--pending {
-    background: #F5EDDC;
-    color: #856404;
+    background: #f0d9ca;
+    color: #8b4513;
+    border: 1px solid #dab89f;
+    font-weight: 700;
 }
 
 .proposal-status-pill--accepted {
-    background: #d1e7dd;
-    color: #0f5132;
+    background: #d4e8de;
+    color: #2e6d54;
+    border: 1px solid #a8d4ba;
+    font-weight: 700;
 }
 
 .proposal-status-pill--rejected {
-    background: #F3E2E0;
-    color: #842029;
+    background: #f5d1c8;
+    color: #8b3a3a;
+    border: 1px solid #e0b5a7;
+    font-weight: 700;
 }
 
 .proposal-status-pill--withdrawn {
-    background: #e2e3e5;
-    color: #41464b;
+    background: #dcc9b3;
+    color: #5c4a3f;
+    border: 1px solid #cbb8a6;
+    font-weight: 700;
 }
 
 .proposal-status-pill--in-progress {
-    background: #cfe2ff;
-    color: #084298;
+    background: #bfd7f5;
+    color: #1e3a8a;
+    border: 1px solid #93b5e8;
+    font-weight: 700;
 }
 
 .proposal-status-pill--completion-requested {
-    background: #fff3cd;
-    color: #664d03;
+    background: #f9e8b5;
+    color: #8b6914;
+    border: 1px solid #f0dfa6;
+    font-weight: 700;
 }
 
 .proposal-status-pill--completed {
-    background: #d1e7dd;
-    color: #0a3622;
-    font-weight: 600;
+    background: #d4e8de;
+    color: #2e6d54;
+    border: 1px solid #a8d4ba;
+    font-weight: 700;
 }
 
 /* ── Action Buttons ── */
@@ -734,23 +747,87 @@
 }
 
 [data-theme="dark"] .proposal-status-pill--pending {
-    background: rgba(212, 139, 104, 0.2);
-    color: var(--saaf-cream-text, #F2E4D1);
+    background: rgba(212, 139, 104, 0.35);
+    color: #FFFFFF;
+    border: 1px solid rgba(212, 139, 104, 0.6);
+    font-weight: 700;
 }
 
 [data-theme="dark"] .proposal-status-pill--accepted {
-    background: rgba(125, 138, 99, 0.26);
-    color: var(--saaf-cream-text, #F2E4D1);
+    background: rgba(125, 138, 99, 0.35);
+    color: #FFFFFF;
+    border: 1px solid rgba(125, 138, 99, 0.6);
+    font-weight: 700;
 }
 
 [data-theme="dark"] .proposal-status-pill--rejected {
-    background: rgba(167, 93, 82, 0.28);
-    color: var(--saaf-cream-text, #F2E4D1);
+    background: rgba(167, 93, 82, 0.35);
+    color: #FFFFFF;
+    border: 1px solid rgba(167, 93, 82, 0.6);
+    font-weight: 700;
 }
 
 [data-theme="dark"] .proposal-status-pill--withdrawn {
-    background: rgba(201, 183, 159, 0.16);
-    color: var(--saaf-cream-text, #F2E4D1);
+    background: rgba(201, 183, 159, 0.3);
+    color: #FFFFFF;
+    border: 1px solid rgba(201, 183, 159, 0.6);
+    font-weight: 700;
+}
+
+[data-theme="dark"] .proposal-status-pill--in-progress {
+    background: rgba(30, 58, 138, 0.35);
+    color: #FFFFFF;
+    border: 1px solid rgba(30, 58, 138, 0.6);
+    font-weight: 700;
+}
+
+[data-theme="dark"] .proposal-status-pill--completion-requested {
+    background: rgba(139, 105, 20, 0.35);
+    color: #FFFFFF;
+    border: 1px solid rgba(139, 105, 20, 0.6);
+    font-weight: 700;
+}
+
+[data-theme="dark"] .proposal-status-pill--completed {
+    background: rgba(125, 138, 99, 0.35);
+    color: #FFFFFF;
+    border: 1px solid rgba(125, 138, 99, 0.6);
+    font-weight: 700;
+}
+[data-theme="dark"] .proposal-action-btn {
+    border-color: #D48B68;
+    color: #F2E4D1;
+    background: transparent;
+}
+[data-theme="dark"] .proposal-action-btn:hover {
+    background: rgba(212, 139, 104, 0.4);
+    color: #FFFFFF;
+}
+[data-theme="dark"] .proposal-action-btn--accept {
+    border-color: #4a7c59;
+    color: #9ec28f;
+}
+[data-theme="dark"] .proposal-action-btn--accept:hover {
+    background: rgba(74, 124, 89, 0.4);
+    color: #FFFFFF;
+}
+[data-theme="dark"] .proposal-action-btn--filled {
+    background: #4a7c59;
+    color: #FFFFFF;
+    border-color: #4a7c59;
+}
+[data-theme="dark"] .proposal-action-btn--filled:hover {
+    background: #3a6349;
+    border-color: #3a6349;
+    color: #FFFFFF;
+}
+[data-theme="dark"] .proposal-action-btn--danger {
+    border-color: #c2724f;
+    color: #f4a390;
+}
+[data-theme="dark"] .proposal-action-btn--danger:hover {
+    background: rgba(194, 114, 79, 0.4);
+    color: #FFFFFF;
 }
 
 /* ── Pagination ── */
@@ -843,4 +920,34 @@
 
 [data-theme="dark"] .proposal-page-status {
     color: var(--saaf-cream-text, #F2E4D1) !important;
+}
+
+/* ── Dark mode: Proposal request preview sidebar ── */
+[data-theme="dark"] .proposal-request-preview {
+    background: linear-gradient(155deg, #2a2019 0%, #332720 100%);
+    border-color: rgba(232, 199, 164, 0.24);
+    color: #F2E4D1;
+}
+
+[data-theme="dark"] .proposal-request-preview .request-eyebrow,
+[data-theme="dark"] .proposal-request-preview .request-label {
+    color: rgba(242, 228, 209, 0.75);
+}
+
+[data-theme="dark"] .proposal-preview-title {
+    color: #F2E4D1;
+}
+
+[data-theme="dark"] .proposal-preview-meta,
+[data-theme="dark"] .proposal-preview-description,
+[data-theme="dark"] .proposal-request-preview p {
+    color: #E3D1BA;
+}
+
+[data-theme="dark"] .proposal-request-preview .proposal-stat-label {
+    color: rgba(242, 228, 209, 0.7);
+}
+
+[data-theme="dark"] .proposal-request-preview .proposal-stat-value {
+    color: #F2E4D1;
 }

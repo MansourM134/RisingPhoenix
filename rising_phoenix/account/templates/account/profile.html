@@ -5,6 +5,51 @@
 {% include 'main/_sidebar.html' with active='profile' %}
 {% endblock %}
 
+{% block extra_css %}
+<style>
+    [data-theme="dark"] .saaf-profile-page .saaf-profile-shell::before {
+        background:
+            radial-gradient(circle at 90% 10%, rgba(212, 139, 104, 0.18), transparent 36%),
+            radial-gradient(circle at 12% 82%, rgba(232, 199, 164, 0.1), transparent 30%);
+    }
+
+    [data-theme="dark"] .saaf-profile-page .saaf-profile-hero {
+        background: linear-gradient(140deg, rgba(56, 44, 36, 0.95), rgba(47, 37, 30, 0.95));
+        border-color: rgba(232, 199, 164, 0.26);
+    }
+
+    [data-theme="dark"] .saaf-profile-page .saaf-profile-username,
+    [data-theme="dark"] .saaf-profile-page .saaf-profile-joined,
+    [data-theme="dark"] .saaf-profile-page .saaf-info-label,
+    [data-theme="dark"] .saaf-profile-page .saaf-profile-bio-card p {
+        color: rgba(242, 228, 209, 0.86) !important;
+    }
+
+    [data-theme="dark"] .saaf-profile-page .saaf-profile-pill {
+        background: rgba(232, 199, 164, 0.18);
+        border-color: rgba(232, 199, 164, 0.34);
+        color: #F2E4D1;
+    }
+
+    [data-theme="dark"] .saaf-profile-page .saaf-profile-pill--ok {
+        background: rgba(74, 124, 89, 0.3);
+        border-color: rgba(125, 173, 137, 0.45);
+        color: #d9f2e3;
+    }
+
+    [data-theme="dark"] .saaf-profile-page .saaf-profile-info-card,
+    [data-theme="dark"] .saaf-profile-page .saaf-profile-bio-card {
+        background: rgba(52, 41, 34, 0.94);
+        border-color: rgba(232, 199, 164, 0.26);
+    }
+
+    [data-theme="dark"] .saaf-profile-page .saaf-profile-info-card p,
+    [data-theme="dark"] .saaf-profile-page .saaf-profile-subtitle {
+        color: #F2E4D1;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <section class="py-4 py-md-5 saaf-profile-page">
     <div class="container-lg">

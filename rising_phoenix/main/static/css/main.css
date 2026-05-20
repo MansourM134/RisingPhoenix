@@ -214,6 +214,15 @@ a:hover {
     background-color: rgba(224, 210, 180, 0.7);
 }
 
+.saaf-nav-wrapper .navbar-toggler {
+    border-color: rgba(92, 70, 52, 0.28);
+    padding: 0.45rem 0.55rem;
+}
+
+.saaf-nav-wrapper .navbar-toggler:focus {
+    box-shadow: 0 0 0 0.18rem rgba(160, 127, 98, 0.18);
+}
+
 .saaf-account-toggle {
     border: 0.5px solid var(--saaf-brown);
     display: inline-flex;
@@ -461,6 +470,19 @@ a:hover {
     border-bottom-color: rgba(232, 199, 164, 0.2);
 }
 
+[data-theme="dark"] .saaf-nav-wrapper .navbar-toggler {
+    border-color: rgba(232, 199, 164, 0.22);
+    background-color: rgba(56, 42, 31, 0.5);
+}
+
+[data-theme="dark"] .saaf-nav-wrapper .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28242, 228, 209, 0.96%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2.35' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+[data-theme="dark"] .saaf-nav-wrapper .navbar-toggler:focus {
+    box-shadow: 0 0 0 0.18rem rgba(232, 199, 164, 0.22);
+}
+
 [data-theme="dark"] .card,
 [data-theme="dark"] .saaf-dashboard-card,
 [data-theme="dark"] .saaf-info-card,
@@ -482,6 +504,23 @@ a:hover {
     background: var(--saaf-beige) !important;
     color: var(--saaf-brown) !important;
     border-color: var(--saaf-border) !important;
+}
+
+[data-theme="dark"] .bg-light-subtle,
+[data-theme="dark"] .bg-body-tertiary,
+[data-theme="dark"] .bg-body-secondary,
+[data-theme="dark"] .bg-white,
+[data-theme="dark"] .card-footer.bg-white {
+    background: var(--saaf-surface-2) !important;
+    color: var(--saaf-cream-text) !important;
+    border-color: var(--saaf-border) !important;
+}
+
+[data-theme="dark"] .text-muted,
+[data-theme="dark"] .small.text-muted,
+[data-theme="dark"] .form-text,
+[data-theme="dark"] .text-body-secondary {
+    color: rgba(242, 228, 209, 0.82) !important;
 }
 
 [data-theme="dark"] .form-control,
@@ -3160,6 +3199,39 @@ a.saaf-notif-dd-item {
     [data-theme="dark"] .saaf-chat-bubble--other,
     [data-theme="dark"] .saaf-chat-empty-state i {
         color: var(--saaf-cream);
+    }
+
+    [data-theme="dark"] .saaf-chat-detail-head {
+        background: linear-gradient(160deg, rgba(56, 41, 30, 0.96), rgba(44, 33, 26, 0.96));
+        border-bottom-color: rgba(219, 191, 155, 0.16);
+    }
+
+    [data-theme="dark"] .saaf-chat-detail-card .card-footer {
+        background: rgba(44, 33, 26, 0.96) !important;
+        border-top-color: rgba(219, 191, 155, 0.16) !important;
+    }
+
+    [data-theme="dark"] .saaf-profile-hero {
+        background: linear-gradient(140deg, rgba(56, 44, 36, 0.95), rgba(47, 37, 30, 0.95));
+        border-color: rgba(232, 199, 164, 0.26);
+    }
+
+    [data-theme="dark"] .saaf-profile-pill {
+        background: rgba(232, 199, 164, 0.18);
+        border-color: rgba(232, 199, 164, 0.34);
+        color: #F2E4D1;
+    }
+
+    [data-theme="dark"] .saaf-profile-pill--ok {
+        background: rgba(74, 124, 89, 0.3);
+        border-color: rgba(125, 173, 137, 0.45);
+        color: #d9f2e3;
+    }
+
+    [data-theme="dark"] .saaf-profile-info-card,
+    [data-theme="dark"] .saaf-profile-bio-card {
+        background: rgba(52, 41, 34, 0.94);
+        border-color: rgba(232, 199, 164, 0.26);
     }
 
     [data-theme="dark"] .saaf-chat-scroll {

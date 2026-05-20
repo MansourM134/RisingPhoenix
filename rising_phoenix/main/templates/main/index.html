@@ -60,18 +60,29 @@
             {% for category in home_categories %}
             <div class="col">
                 <a href="{% url 'main:browse_view' %}?category={{ category.id }}" class="saaf-craft-card text-decoration-none">
+                    {% if category.name == 'Calligraphy' %}
+                    <i class="bi bi-pen-fill saaf-craft-icon"></i>
+                    {% elif category.name == 'Embroidery' %}
+                    <i class="bi bi-scissors saaf-craft-icon"></i>
+                    {% elif category.name == 'Leather Goods' %}
+                    <i class="bi bi-bag-fill saaf-craft-icon"></i>
+                    {% elif category.name == 'Metalwork' %}
+                    <i class="bi bi-hammer saaf-craft-icon"></i>
+                    {% elif category.name == 'Painting & Art' %}
+                    <i class="bi bi-palette-fill saaf-craft-icon"></i>
+                    {% else %}
                     <i class="bi bi-grid saaf-craft-icon"></i>
+                    {% endif %}
                     <span class="saaf-craft-label">{{ category.name }}</span>
                 </a>
             </div>
-            {% empty %}
+            {% endfor %}
             <div class="col">
                 <a href="{% url 'main:browse_view' %}" class="saaf-craft-card text-decoration-none">
                     <i class="bi bi-grid saaf-craft-icon"></i>
                     <span class="saaf-craft-label">{% trans "Browse all" %}</span>
                 </a>
             </div>
-            {% endfor %}
         </div>
     </div>
 </section>

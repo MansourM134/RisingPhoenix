@@ -9,6 +9,216 @@
 {% endif %}
 {% endblock %}
 
+{% block extra_css %}
+<style>
+    .saaf-client-overview-card {
+        border: 1px solid var(--saaf-border);
+        border-radius: 16px;
+        padding: 1rem 1.1rem;
+        background: var(--saaf-card-bg);
+        box-shadow: var(--saaf-shadow-sm);
+        height: 100%;
+    }
+    .saaf-client-overview-label {
+        display: block;
+        font-size: .72rem;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: var(--saaf-text-muted);
+        font-weight: 700;
+        margin-bottom: .35rem;
+    }
+    .saaf-client-overview-value {
+        font-size: 1.55rem;
+        line-height: 1.1;
+        color: var(--saaf-heading);
+        font-weight: 700;
+    }
+    .saaf-client-overview-meta {
+        font-size: .82rem;
+        color: var(--saaf-text-muted);
+    }
+    .saaf-client-filter {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
+        align-items: center;
+    }
+    .saaf-client-filter select {
+        min-width: 170px;
+        border: 1px solid var(--saaf-border);
+        border-radius: 999px;
+        padding: .35rem .8rem;
+        background: var(--saaf-card-bg);
+        color: var(--saaf-body);
+    }
+    .saaf-client-notif-list {
+        display: flex;
+        flex-direction: column;
+        gap: .7rem;
+    }
+    .saaf-client-notif-item {
+        display: flex;
+        gap: .65rem;
+        align-items: flex-start;
+        border: 1px solid var(--saaf-border);
+        border-radius: 12px;
+        padding: .72rem .78rem;
+        background: rgba(250, 241, 229, .35);
+    }
+    [data-theme="dark"] .saaf-client-notif-item {
+        background: rgba(255, 248, 238, .03);
+    }
+    [data-theme="dark"] .saaf-client-filter select {
+        background: rgba(44, 33, 26, .96);
+        border-color: rgba(232, 199, 164, .34);
+        color: var(--saaf-cream-text);
+    }
+    [data-theme="dark"] .saaf-client-filter select option {
+        background: #2b211b;
+        color: var(--saaf-cream-text);
+    }
+    .saaf-client-notif-dot {
+        width: .55rem;
+        height: .55rem;
+        margin-top: .35rem;
+        border-radius: 50%;
+        background: var(--saaf-btn);
+        flex: 0 0 auto;
+    }
+
+    .saaf-requests-table {
+        border-collapse: separate;
+        border-spacing: 0;
+        overflow: hidden;
+        border-radius: 14px;
+        border: 1px solid var(--saaf-border);
+        background: linear-gradient(180deg, rgba(245, 235, 216, .82), rgba(236, 223, 201, .78));
+    }
+
+    .saaf-requests-table thead th {
+        background: rgba(224, 206, 176, .58);
+        color: var(--saaf-heading);
+        font-size: .82rem;
+        font-weight: 700;
+        letter-spacing: .03em;
+        border-bottom: 1px solid var(--saaf-border);
+        padding: .85rem .95rem;
+    }
+
+    .saaf-requests-table tbody td {
+        padding: .85rem .95rem;
+        border-bottom: 1px solid rgba(96, 70, 51, .1);
+        background: rgba(244, 233, 214, .6);
+    }
+
+    .saaf-requests-table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+    .saaf-requests-table tbody tr:hover td {
+        background: rgba(232, 214, 187, .55);
+    }
+
+    .saaf-req-status-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: .24rem .68rem;
+        border-radius: 999px;
+        font-size: .76rem;
+        font-weight: 700;
+        text-transform: capitalize;
+        border: 1px solid transparent;
+    }
+
+    .saaf-req-status-pill--open {
+        background: rgba(76, 175, 125, .14);
+        color: #2e7a56;
+        border-color: rgba(76, 175, 125, .26);
+    }
+
+    .saaf-req-status-pill--in-review {
+        background: rgba(212, 169, 45, .15);
+        color: #7a5a00;
+        border-color: rgba(212, 169, 45, .28);
+    }
+
+    .saaf-req-status-pill--closed,
+    .saaf-req-status-pill--time-ended {
+        background: rgba(192, 57, 43, .12);
+        color: #8e2f24;
+        border-color: rgba(192, 57, 43, .24);
+    }
+
+    .saaf-req-open-link {
+        display: inline-flex;
+        align-items: center;
+        gap: .3rem;
+        padding: .28rem .66rem;
+        border-radius: 999px;
+        background: rgba(199, 122, 92, .12);
+        color: var(--saaf-btn);
+        font-weight: 700;
+        text-decoration: none;
+        border: 1px solid rgba(199, 122, 92, .24);
+    }
+
+    .saaf-req-open-link:hover {
+        background: rgba(199, 122, 92, .2);
+        color: var(--saaf-btn-hover);
+    }
+
+    [data-theme="dark"] .saaf-requests-table {
+        background: linear-gradient(180deg, rgba(50, 38, 28, .93), rgba(40, 30, 23, .95));
+        border-color: rgba(219, 191, 155, .14);
+    }
+
+    [data-theme="dark"] .saaf-requests-table thead th {
+        background: rgba(56, 41, 30, .95);
+        color: #F2E4D1;
+        border-bottom-color: rgba(219, 191, 155, .16);
+    }
+
+    [data-theme="dark"] .saaf-requests-table tbody td {
+        border-bottom-color: rgba(219, 191, 155, .1);
+    }
+
+    [data-theme="dark"] .saaf-requests-table tbody tr:hover td {
+        background: rgba(255, 248, 238, .04);
+    }
+
+    [data-theme="dark"] .saaf-req-status-pill--open {
+        background: rgba(76, 175, 125, .24);
+        color: #88d9ad;
+        border-color: rgba(76, 175, 125, .34);
+    }
+
+    [data-theme="dark"] .saaf-req-status-pill--in-review {
+        background: rgba(212, 169, 45, .24);
+        color: #f0c84a;
+        border-color: rgba(212, 169, 45, .34);
+    }
+
+    [data-theme="dark"] .saaf-req-status-pill--closed,
+    [data-theme="dark"] .saaf-req-status-pill--time-ended {
+        background: rgba(192, 57, 43, .22);
+        color: #e8a59c;
+        border-color: rgba(192, 57, 43, .34);
+    }
+
+    [data-theme="dark"] .saaf-req-open-link {
+        background: rgba(212, 139, 104, .2);
+        color: #F2E4D1;
+        border-color: rgba(212, 139, 104, .36);
+    }
+
+    [data-theme="dark"] .saaf-req-open-link:hover {
+        background: rgba(212, 139, 104, .3);
+        color: #FFFFFF;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <section class="py-4 py-md-5 saaf-dashboard-shell">
     <div class="container-lg">
@@ -178,6 +388,135 @@
             </div>
             {% endif %}
         </div>
+
+        {% if not request.user.artisanprofile and not request.user.is_staff %}
+        <div class="saaf-dashboard-section-head mb-3 mt-4">
+            <div>
+                <p class="saaf-eyebrow mb-1">Client Overview</p>
+                <h2 class="saaf-dashboard-section-title mb-0">تنبيهاتك وطلباتك</h2>
+            </div>
+        </div>
+
+        <div class="row g-3 g-lg-4 mb-4">
+            <div class="col-6 col-lg-3">
+                <a href="{% url 'request:my_requests_view' %}" class="saaf-tile-link">
+                    <div class="saaf-client-overview-card">
+                        <span class="saaf-client-overview-label">My Requests</span>
+                        <div class="saaf-client-overview-value">{{ my_requests_total|default:0 }}</div>
+                        <div class="saaf-client-overview-meta">Open {{ requests_open_total|default:0 }} • In review {{ requests_in_review_total|default:0 }}</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-lg-3">
+                <a href="{% url 'notification:notification_list_view' %}" class="saaf-tile-link">
+                    <div class="saaf-client-overview-card">
+                        <span class="saaf-client-overview-label">Unread Notifications</span>
+                        <div class="saaf-client-overview-value">{{ unread_notifications_count|default:0 }}</div>
+                        <div class="saaf-client-overview-meta">Go to notification center</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-lg-3">
+                <a href="{% url 'message:conversation_list_view' %}" class="saaf-tile-link">
+                    <div class="saaf-client-overview-card">
+                        <span class="saaf-client-overview-label">Unread Messages</span>
+                        <div class="saaf-client-overview-value">{{ unread_messages_count|default:0 }}</div>
+                        <div class="saaf-client-overview-meta">Active chats {{ active_conversations_count|default:0 }}</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-lg-3">
+                <a href="{% url 'request:my_requests_view' %}" class="saaf-tile-link">
+                    <div class="saaf-client-overview-card">
+                        <span class="saaf-client-overview-label">Pending Proposals</span>
+                        <div class="saaf-client-overview-value">{{ proposals_pending_total|default:0 }}</div>
+                        <div class="saaf-client-overview-meta">Total proposals {{ proposals_total|default:0 }}</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="row g-3 g-lg-4">
+            <div class="col-lg-5">
+                <div class="saaf-dashboard-card rounded-4 p-4 h-100">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h5 class="mb-0">Latest Notifications</h5>
+                        <a href="{% url 'notification:notification_list_view' %}" class="saaf-dashboard-linkline">View all <i class="bi bi-arrow-right-short"></i></a>
+                    </div>
+
+                    {% if notifications_recent %}
+                    <div class="saaf-client-notif-list">
+                        {% for notif in notifications_recent %}
+                        <a href="{{ notif.link|default:'#' }}" class="saaf-tile-link">
+                            <div class="saaf-client-notif-item">
+                                <span class="saaf-client-notif-dot"></span>
+                                <div>
+                                    <div style="font-weight:700;color:var(--saaf-heading);">{{ notif.title }}</div>
+                                    <div style="font-size:.83rem;color:var(--saaf-text-muted);">{{ notif.created_at|date:'M d, Y' }}</div>
+                                </div>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-muted mb-0">No recent notifications.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="saaf-dashboard-card rounded-4 p-4 h-100">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+                        <h5 class="mb-0">My Latest Requests</h5>
+                        <form method="get" class="saaf-client-filter">
+                            <label for="request_status" class="saaf-info-label mb-0">Status</label>
+                            <select name="request_status" id="request_status" onchange="this.form.submit()">
+                                <option value="all" {% if request_status == 'all' %}selected{% endif %}>All</option>
+                                <option value="open" {% if request_status == 'open' %}selected{% endif %}>Open</option>
+                                <option value="in_review" {% if request_status == 'in_review' %}selected{% endif %}>In Review</option>
+                                <option value="closed" {% if request_status == 'closed' %}selected{% endif %}>Closed</option>
+                                <option value="time_ended" {% if request_status == 'time_ended' %}selected{% endif %}>Time Ended</option>
+                            </select>
+                        </form>
+                    </div>
+
+                    {% if my_requests_recent %}
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0 saaf-requests-table">
+                            <thead>
+                                <tr>
+                                    <th>Request</th>
+                                    <th>Status</th>
+                                    <th>Proposals</th>
+                                    <th class="text-end">View</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for req in my_requests_recent %}
+                                <tr>
+                                    <td>
+                                        <div style="font-weight:700;color:var(--saaf-heading);">{{ req.title }}</div>
+                                        <div style="font-size:.8rem;color:var(--saaf-text-muted);">{{ req.created_at|date:'M d, Y' }}</div>
+                                    </td>
+                                    <td>
+                                        <span class="saaf-req-status-pill {% if req.status == 'open' %}saaf-req-status-pill--open{% elif req.status == 'in_review' %}saaf-req-status-pill--in-review{% elif req.status == 'closed' %}saaf-req-status-pill--closed{% elif req.status == 'time_ended' %}saaf-req-status-pill--time-ended{% endif %}">
+                                            {{ req.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>{{ req.proposal_count }}</td>
+                                    <td class="text-end"><a href="{% url 'request:request_detail_view' req.id %}" class="saaf-req-open-link">Open <i class="bi bi-arrow-right-short"></i></a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-muted mb-0">No requests found for this filter.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </section>
 {% endblock %}
