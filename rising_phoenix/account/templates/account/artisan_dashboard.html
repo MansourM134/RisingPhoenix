@@ -6,713 +6,405 @@
 
 {% block extra_css %}
 <style>
-  /* ── Revenue Dashboard — Saaf-native styles ── */
-
-  .rev-shell {
-    position: relative;
-    padding-left: 80px; /* clear the 68px floating sidebar + its left offset */
-  }
-
-  @media (max-width: 768px) {
-    .rev-shell {
-      padding-left: 0; /* sidebar is hidden on mobile */
-    }
-  }
-  .rev-shell::before {
-    content: "";
-    position: absolute;
-    inset: 0 auto auto 1.5rem;
-    width: 18rem; height: 18rem;
-    background: radial-gradient(circle, rgba(199,122,92,.15) 0%, transparent 70%);
-    pointer-events: none;
-    filter: blur(6px);
-    z-index: 0;
-  }
-
   /* ── Stat cards ── */
   .rev-stat-card {
-    position: relative;
-    z-index: 1;
     background: var(--saaf-card-bg);
     border: 1px solid var(--saaf-border);
     border-radius: 18px;
-    padding: 1.35rem 1.4rem;
+    padding: 1.25rem 1.3rem;
     box-shadow: var(--saaf-shadow-sm);
     transition: transform .22s ease, box-shadow .22s ease;
     overflow: hidden;
+    height: 100%;
+    position: relative;
   }
-  .rev-stat-card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--saaf-shadow-lg);
-  }
+  .rev-stat-card:hover { transform: translateY(-3px); box-shadow: var(--saaf-shadow-lg); }
   .rev-stat-card::before {
     content: "";
     position: absolute;
-    top: 0; left: 0;
-    width: 4px; height: 100%;
+    inset: 0 auto 0 0;
+    width: 4px;
     background: var(--saaf-btn);
     border-radius: 4px 0 0 4px;
   }
-  .rev-stat-card.accent-green::before  { background: #4caf7d; }
-  .rev-stat-card.accent-blue::before   { background: #5b8dee; }
-  .rev-stat-card.accent-amber::before  { background: #d4a92d; }
+  .rev-stat-card.accent-green::before { background: #4caf7d; }
+  .rev-stat-card.accent-blue::before  { background: #5b8dee; }
+  .rev-stat-card.accent-amber::before { background: #d4a92d; }
 
   .rev-stat-icon {
-    width: 42px; height: 42px;
-    border-radius: 11px;
+    width: 38px; height: 38px;
+    border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     background: rgba(199,122,92,.12);
     color: var(--saaf-btn);
-    margin-bottom: .9rem;
+    margin-bottom: .7rem;
   }
-  .rev-stat-card.accent-green .rev-stat-icon { background: rgba(76,175,125,.12); color: #4caf7d; }
-  .rev-stat-card.accent-blue  .rev-stat-icon { background: rgba(91,141,238,.12); color: #5b8dee; }
-  .rev-stat-card.accent-amber .rev-stat-icon { background: rgba(212,169,45,.12); color: #b8900a; }
+  .rev-stat-card.accent-green .rev-stat-icon { background: rgba(76,175,125,.12);  color: #4caf7d; }
+  .rev-stat-card.accent-blue  .rev-stat-icon { background: rgba(91,141,238,.12);  color: #5b8dee; }
+  .rev-stat-card.accent-amber .rev-stat-icon { background: rgba(212,169,45,.12);  color: #b8900a; }
 
   .rev-stat-value {
     font-family: 'Poppins', sans-serif;
-    font-size: 1.8rem;
+    font-size: clamp(1.1rem, 4vw, 1.7rem);
     font-weight: 700;
     color: var(--saaf-heading);
     line-height: 1.1;
+    word-break: break-all;
   }
   .rev-stat-label {
-    font-size: .74rem;
+    font-size: .7rem;
     color: var(--saaf-text-muted);
     text-transform: uppercase;
-    letter-spacing: .08em;
+    letter-spacing: .07em;
     font-weight: 600;
-    margin-top: .3rem;
+    margin-top: .25rem;
   }
   .rev-stat-badge {
-    position: absolute;
-    top: 1.1rem; right: 1.1rem;
-    font-size: .68rem;
-    padding: .22rem .6rem;
+    display: inline-flex; align-items: center; gap: .25rem;
+    margin-top: .55rem;
+    font-size: .65rem;
+    padding: .18rem .55rem;
     border-radius: 20px;
     font-weight: 700;
   }
   .rbadge-up   { background: rgba(76,175,125,.14); color: #2e7a56; }
   .rbadge-info { background: rgba(91,141,238,.13); color: #2a54b8; }
 
-  /* ── Panel card (chart / table) ── */
+  /* ── Panel ── */
   .rev-panel {
-    position: relative;
-    z-index: 1;
     background: var(--saaf-card-bg);
     border: 1px solid var(--saaf-border);
     border-radius: 18px;
-    padding: 1.5rem 1.6rem;
+    padding: 1.4rem 1.5rem;
     box-shadow: var(--saaf-shadow-sm);
   }
   .rev-panel-title {
-    font-size: 1rem;
+    font-size: .95rem;
     font-weight: 700;
     color: var(--saaf-heading);
-    margin-bottom: 1.1rem;
+    margin-bottom: 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: .5rem;
+    gap: .4rem;
   }
   .rev-panel-title small {
-    font-size: .76rem;
-    font-weight: 400;
+    font-size: .72rem; font-weight: 400;
     color: var(--saaf-text-muted);
-    text-transform: uppercase;
-    letter-spacing: .07em;
+    text-transform: uppercase; letter-spacing: .07em;
   }
 
   /* ── Progress bar ── */
-  .rev-goal-bar {
-    height: 6px;
-    border-radius: 4px;
-    background: var(--saaf-beige);
-    overflow: hidden;
-    margin: .5rem 0 .35rem;
+  .rev-goal-bar { height: 6px; border-radius: 4px; background: var(--saaf-beige); overflow: hidden; margin: .4rem 0 .3rem; }
+  .rev-goal-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--saaf-btn), #e8a870); transition: width 1.2s cubic-bezier(.4,0,.2,1); }
+
+  /* ── Quick stats ── */
+  .rev-qs-row {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: .5rem; padding: .42rem 0;
+    border-bottom: 1px solid rgba(96,70,51,.07);
+    font-size: .85rem;
   }
-  .rev-goal-fill {
-    height: 100%;
-    border-radius: 4px;
-    background: linear-gradient(90deg, var(--saaf-btn), #e8a870);
-    transition: width 1.2s cubic-bezier(.4,0,.2,1);
-  }
+  .rev-qs-row:last-child { border-bottom: none; }
+  .rev-qs-row span   { color: var(--saaf-body); }
+  .rev-qs-row strong { color: var(--saaf-heading); font-weight: 700; text-align: end; flex-shrink: 0; }
 
   /* ── Table ── */
-  .rev-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-  }
+  .rev-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 500px; }
   .rev-table thead th {
-    font-size: .72rem;
-    text-transform: uppercase;
-    letter-spacing: .09em;
-    color: var(--saaf-text-muted);
-    font-weight: 700;
-    padding: .6rem 1rem;
+    font-size: .68rem; text-transform: uppercase; letter-spacing: .08em;
+    color: var(--saaf-text-muted); font-weight: 700;
+    padding: .55rem .9rem;
     border-bottom: 1px solid var(--saaf-border);
-    background: var(--saaf-beige);
-    white-space: nowrap;
+    background: var(--saaf-beige); white-space: nowrap;
   }
   .rev-table thead th:first-child { border-radius: 8px 0 0 8px; }
   .rev-table thead th:last-child  { border-radius: 0 8px 8px 0; }
   .rev-table tbody tr { transition: background .15s; }
   .rev-table tbody tr:hover td { background: rgba(250,241,229,.6); }
   .rev-table tbody td {
-    padding: .9rem 1rem;
-    font-size: .87rem;
+    padding: .8rem .9rem; font-size: .84rem;
     border-bottom: 1px solid rgba(96,70,51,.07);
-    color: var(--saaf-body);
-    vertical-align: middle;
+    color: var(--saaf-body); vertical-align: middle;
   }
   .rev-table tbody tr:last-child td { border-bottom: none; }
 
-  /* Status pills */
-  .rev-pill {
-    display: inline-flex; align-items: center; gap: .3rem;
-    padding: .25rem .7rem;
-    border-radius: 20px;
-    font-size: .72rem;
-    font-weight: 700;
-  }
-  .rev-pill-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  /* ── Pills ── */
+  .rev-pill { display: inline-flex; align-items: center; gap: .25rem; padding: .2rem .6rem; border-radius: 20px; font-size: .68rem; font-weight: 700; white-space: nowrap; }
+  .rev-pill-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex: 0 0 auto; }
   .pill-earned  { background: rgba(76,175,125,.13);  color: #2b7a52; }
   .pill-paid    { background: rgba(91,141,238,.12);  color: #2244a8; }
   .pill-pending { background: rgba(212,169,45,.13);  color: #7a5a00; }
 
-  /* ── Empty state ── */
-  .rev-empty {
-    text-align: center;
-    padding: 3rem 1rem;
-    color: var(--saaf-text-muted);
-  }
-  .rev-empty i { font-size: 2.2rem; opacity: .35; margin-bottom: .65rem; display: block; }
+  /* ── Empty ── */
+  .rev-empty { text-align: center; padding: 2.5rem 1rem; color: var(--saaf-text-muted); }
+  .rev-empty i { font-size: 2rem; opacity: .3; margin-bottom: .5rem; display: block; }
 
-  /* ── Quick stats inside panel ── */
-  .rev-qs-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: .5rem 0;
-    border-bottom: 1px solid rgba(96,70,51,.07);
-    font-size: .87rem;
-  }
-  .rev-qs-row:last-child { border-bottom: none; }
-  .rev-qs-row span { color: var(--saaf-body); }
-  .rev-qs-row strong { color: var(--saaf-heading); font-weight: 700; }
-
-  /* ── Dark mode overrides ── */
+  /* ── Dark mode ── */
   [data-theme="dark"] .rev-stat-card,
   [data-theme="dark"] .rev-panel {
     background: linear-gradient(180deg, rgba(74,56,39,.9), rgba(56,41,30,.92));
     border-color: rgba(219,191,155,.12);
   }
+  [data-theme="dark"] .rev-stat-value,
+  [data-theme="dark"] .rev-panel-title { color: var(--saaf-cream-text); }
   [data-theme="dark"] .rev-stat-label,
   [data-theme="dark"] .rev-panel-title small,
   [data-theme="dark"] .rev-empty,
-  [data-theme="dark"] .rev-empty p {
-    color: rgba(242, 228, 209, .82) !important;
-  }
-  [data-theme="dark"] .rev-stat-value,
-  [data-theme="dark"] .rev-panel-title { color: var(--saaf-cream-text); }
-  [data-theme="dark"] .rev-table thead th {
-    background: rgba(56,41,30,.9);
-    color: rgba(242, 228, 209, .86);
-    border-bottom-color: rgba(232, 199, 164, .2);
-  }
+  [data-theme="dark"] .rev-empty p { color: rgba(242,228,209,.8) !important; }
+  [data-theme="dark"] .rev-table thead th { background: rgba(56,41,30,.9); color: rgba(242,228,209,.86); border-bottom-color: rgba(232,199,164,.2); }
   [data-theme="dark"] .rev-table tbody tr:hover td { background: rgba(255,248,238,.04); }
-  [data-theme="dark"] .rev-goal-bar { background: rgba(219,191,155,.18); }
-  [data-theme="dark"] .rbadge-up  { background: rgba(76,175,125,.18); color: #68d4a0; }
-  [data-theme="dark"] .rbadge-info { background: rgba(91,141,238,.18); color: #8eb3f5; }
-  [data-theme="dark"] .rev-qs-row span  { color: var(--saaf-body); }
-  [data-theme="dark"] .rev-qs-row strong { color: var(--saaf-cream-text); }
   [data-theme="dark"] .rev-table tbody td { color: var(--saaf-body); border-color: rgba(219,191,155,.07); }
-  [data-theme="dark"] .pill-earned  { background: rgba(76,175,125,.18);  color: #68d4a0; }
-  [data-theme="dark"] .pill-paid    { background: rgba(91,141,238,.18);  color: #8eb3f5; }
-  [data-theme="dark"] .pill-pending { background: rgba(212,169,45,.18);  color: #f0c84a; }
-  [data-theme="dark"] .saaf-dashboard-linkline {
-    color: #E3D1BA;
-  }
-  [data-theme="dark"] .saaf-dashboard-linkline:hover {
-    color: #F2E4D1;
-  }
-  [data-theme="dark"] .rev-page-header .saaf-section-title,
-  [data-theme="dark"] .rev-page-header .saaf-eyebrow,
-  [data-theme="dark"] .rev-page-header p {
-    color: #F2E4D1 !important;
-  }
-  [data-theme="dark"] .rev-page-header {
-    box-shadow: 0 10px 22px rgba(8, 5, 4, .32);
-  }
-
-  /* ── Page header ── */
-  .rev-page-header {
-    background: linear-gradient(145deg, rgba(245,240,230,.96), rgba(224,210,180,.6));
-    border: 1px solid var(--saaf-border);
-    border-radius: 20px;
-    padding: 1.4rem 1.6rem;
-    position: relative;
-    z-index: 1;
-    overflow: hidden;
-  }
-  .rev-page-header::after {
-    content: "";
-    position: absolute;
-    inset: auto -3rem -4rem auto;
-    width: 14rem; height: 14rem;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(199,122,92,.18) 0%, transparent 70%);
-  }
-  [data-theme="dark"] .rev-page-header {
-    background: linear-gradient(145deg, rgba(56,41,30,.9), rgba(44,33,26,.92));
-    border-color: rgba(219,191,155,.14);
-  }
-
-  @media (max-width: 767.98px) {
-    .rev-stat-value { font-size: 1.5rem; }
-    .rev-page-header { padding: 1.1rem; }
-    .rev-panel { padding: 1.1rem 1rem; }
-  }
+  [data-theme="dark"] .rev-goal-bar  { background: rgba(219,191,155,.18); }
+  [data-theme="dark"] .rbadge-up     { background: rgba(76,175,125,.18);  color: #68d4a0; }
+  [data-theme="dark"] .rbadge-info   { background: rgba(91,141,238,.18);  color: #8eb3f5; }
+  [data-theme="dark"] .rev-qs-row span   { color: var(--saaf-body); }
+  [data-theme="dark"] .rev-qs-row strong { color: var(--saaf-cream-text); }
+  [data-theme="dark"] .pill-earned  { background: rgba(76,175,125,.18); color: #68d4a0; }
+  [data-theme="dark"] .pill-paid    { background: rgba(91,141,238,.18); color: #8eb3f5; }
+  [data-theme="dark"] .pill-pending { background: rgba(212,169,45,.18); color: #f0c84a; }
+  [data-theme="dark"] .saaf-dashboard-linkline { color: #E3D1BA; }
+  [data-theme="dark"] .saaf-dashboard-linkline:hover { color: #F2E4D1; }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="saaf-main rev-shell">
-  <div class="container-fluid px-0">
+<section class="saaf-section py-4 py-lg-5">
+  <div class="container-lg">
 
-    <!-- ── Page Header ───────────────────── -->
+    <!-- ── Stripe panel ── -->
     <div class="rev-panel mb-4">
-  <div class="rev-panel-title">
-    <span>
-      <i class="bi bi-stripe me-1" style="color:var(--saaf-btn);"></i>
-      {% if LANGUAGE_CODE == 'ar' %}مدفوعات Stripe{% else %}Stripe Payouts{% endif %}
-    </span>
-    <small>
-      {% if stripe_connected %}
-        {% if stripe_payouts_enabled %}
-          {% if LANGUAGE_CODE == 'ar' %}جاهز للسحب{% else %}Payouts enabled{% endif %}
-        {% else %}
-          {% if LANGUAGE_CODE == 'ar' %}يتطلب استكمال{% else %}Setup required{% endif %}
-        {% endif %}
-      {% else %}
-        {% if LANGUAGE_CODE == 'ar' %}غير متصل{% else %}Not connected{% endif %}
-      {% endif %}
-    </small>
-  </div>
-
-  <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
-    <div>
-      {% if stripe_connected %}
-        {% if stripe_payouts_enabled %}
-          <p class="mb-1" style="color:var(--saaf-heading);font-weight:700;">
-            {% if LANGUAGE_CODE == 'ar' %}حساب Stripe الخاص بك جاهز لاستقبال الدفعات.{% else %}Your Stripe account is ready to receive payouts.{% endif %}
-          </p>
-          <p class="mb-0" style="font-size:.85rem;color:var(--saaf-text-muted);">
-            {% if LANGUAGE_CODE == 'ar' %}يمكنك فتح لوحة Stripe لإدارة الدفعات والحساب البنكي.{% else %}You can open Stripe to manage payouts, banking, and account details.{% endif %}
-          </p>
-        {% else %}
-          <p class="mb-1" style="color:var(--saaf-heading);font-weight:700;">
-            {% if LANGUAGE_CODE == 'ar' %}حساب Stripe يحتاج إلى بعض المعلومات الإضافية.{% else %}Your Stripe account needs some additional information.{% endif %}
-          </p>
-          <p class="mb-0" style="font-size:.85rem;color:var(--saaf-text-muted);">
-            {{ stripe_status_message }}
-          </p>
-        {% endif %}
-      {% else %}
-        <p class="mb-1" style="color:var(--saaf-heading);font-weight:700;">
-          {% if LANGUAGE_CODE == 'ar' %}اربط Stripe لتلقي الأرباح وتحويلها إلى حسابك.{% else %}Connect Stripe to receive earnings and payouts to your bank account.{% endif %}
-        </p>
-        <p class="mb-0" style="font-size:.85rem;color:var(--saaf-text-muted);">
-          {% if LANGUAGE_CODE == 'ar' %}سيتم توجيهك إلى Stripe لإعداد حساب الاستلام الخاص بك.{% else %}You’ll be redirected to Stripe to complete your payout setup.{% endif %}
-        </p>
-      {% endif %}
-    </div>
-
-    <div class="d-flex gap-2 flex-wrap">
-      {% if stripe_connected %}
-        {% if stripe_payouts_enabled %}
-          <a href="{% url 'account:artisan_connect_stripe_view' %}" class="btn btn-saaf-primary rounded-pill">
-            <i class="bi bi-box-arrow-up-right me-1"></i>
-            {% if LANGUAGE_CODE == 'ar' %}فتح Stripe{% else %}Open Stripe{% endif %}
-          </a>
-        {% else %}
-          <a href="{% url 'account:artisan_connect_stripe_refresh_view' %}" class="btn btn-saaf-primary rounded-pill">
-            <i class="bi bi-arrow-repeat me-1"></i>
-            {% if LANGUAGE_CODE == 'ar' %}متابعة الإعداد{% else %}Continue Setup{% endif %}
-          </a>
-        {% endif %}
-      {% else %}
-        <a href="{% url 'account:artisan_connect_stripe_view' %}" class="btn btn-saaf-primary rounded-pill">
-          <i class="bi bi-stripe me-1"></i>
-          {% if LANGUAGE_CODE == 'ar' %}ربط Stripe{% else %}Connect Stripe{% endif %}
-        </a>
-      {% endif %}
-    </div>
-  </div>
-</div>
-
-    <div class="rev-page-header mb-4">
-      <div class="d-flex align-items-start justify-content-between flex-wrap gap-3">
+      <div class="rev-panel-title">
+        <span><i class="bi bi-stripe me-1" style="color:var(--saaf-btn);"></i>{% if LANGUAGE_CODE == 'ar' %}مدفوعات Stripe{% else %}Stripe Payouts{% endif %}</span>
+        <small>
+          {% if stripe_connected %}{% if stripe_payouts_enabled %}{% if LANGUAGE_CODE == 'ar' %}جاهز للسحب{% else %}Payouts enabled{% endif %}{% else %}{% if LANGUAGE_CODE == 'ar' %}يتطلب استكمال{% else %}Setup required{% endif %}{% endif %}
+          {% else %}{% if LANGUAGE_CODE == 'ar' %}غير متصل{% else %}Not connected{% endif %}{% endif %}
+        </small>
+      </div>
+      <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
         <div>
-          <div class="saaf-eyebrow mb-1">
-            <i class="bi bi-bar-chart-line me-1"></i>
-            {% if LANGUAGE_CODE == 'ar' %}لوحة الأرباح{% else %}Earnings Dashboard{% endif %}
-          </div>
-          <h2 class="saaf-section-title mb-1" style="font-size:1.65rem;">
-            {% if LANGUAGE_CODE == 'ar' %}مرحباً،{% else %}Welcome back,{% endif %}
-            {{ request.user.get_full_name|default:request.user.username }}
-          </h2>
-          <p class="mb-0" style="font-size:.88rem;color:var(--saaf-text-muted);">
-            {% if LANGUAGE_CODE == 'ar' %}نظرة عامة على أرباحك ومدفوعاتك{% else %}Here's your financial overview at a glance{% endif %}
-          </p>
+          {% if stripe_connected %}
+            {% if stripe_payouts_enabled %}
+              <p class="mb-1 fw-bold" style="color:var(--saaf-heading);font-size:.92rem;">{% if LANGUAGE_CODE == 'ar' %}حساب Stripe جاهز لاستقبال الدفعات.{% else %}Your Stripe account is ready to receive payouts.{% endif %}</p>
+              <p class="mb-0 small text-muted">{% if LANGUAGE_CODE == 'ar' %}يمكنك فتح Stripe لإدارة الدفعات.{% else %}Open Stripe to manage payouts and banking details.{% endif %}</p>
+            {% else %}
+              <p class="mb-1 fw-bold" style="color:var(--saaf-heading);font-size:.92rem;">{% if LANGUAGE_CODE == 'ar' %}حساب Stripe يحتاج معلومات إضافية.{% else %}Your Stripe account needs additional information.{% endif %}</p>
+              <p class="mb-0 small text-muted">{{ stripe_status_message }}</p>
+            {% endif %}
+          {% else %}
+            <p class="mb-1 fw-bold" style="color:var(--saaf-heading);font-size:.92rem;">{% if LANGUAGE_CODE == 'ar' %}اربط Stripe لتلقي الأرباح.{% else %}Connect Stripe to receive earnings to your bank.{% endif %}</p>
+            <p class="mb-0 small text-muted">{% if LANGUAGE_CODE == 'ar' %}سيتم توجيهك إلى Stripe لإعداد حسابك.{% else %}You'll be redirected to Stripe to complete setup.{% endif %}</p>
+          {% endif %}
         </div>
-        <div class="d-flex gap-2 align-items-center flex-wrap" style="position:relative;z-index:1;">
-          <a href="#" class="btn btn-saaf-outline rounded-pill" style="font-size:.87rem;">
-            <i class="bi bi-download me-1"></i>
-            {% if LANGUAGE_CODE == 'ar' %}تصدير{% else %}Export{% endif %}
-          </a>
+        <div class="flex-shrink-0">
+          {% if stripe_connected %}
+            {% if stripe_payouts_enabled %}
+              <a href="{% url 'account:artisan_connect_stripe_view' %}" class="btn btn-saaf-primary rounded-pill"><i class="bi bi-box-arrow-up-right me-1"></i>{% if LANGUAGE_CODE == 'ar' %}فتح Stripe{% else %}Open Stripe{% endif %}</a>
+            {% else %}
+              <a href="{% url 'account:artisan_connect_stripe_refresh_view' %}" class="btn btn-saaf-primary rounded-pill"><i class="bi bi-arrow-repeat me-1"></i>{% if LANGUAGE_CODE == 'ar' %}متابعة الإعداد{% else %}Continue Setup{% endif %}</a>
+            {% endif %}
+          {% else %}
+            <a href="{% url 'account:artisan_connect_stripe_view' %}" class="btn btn-saaf-primary rounded-pill"><i class="bi bi-stripe me-1"></i>{% if LANGUAGE_CODE == 'ar' %}ربط Stripe{% else %}Connect Stripe{% endif %}</a>
+          {% endif %}
         </div>
       </div>
     </div>
 
-    <!-- ── Stat Cards ────────────────────── -->
-    <div class="row g-3 mb-4">
+    <!-- ── Page header ── -->
+    <div class="saaf-how-works-box mb-4">
+      <div class="d-flex align-items-start justify-content-between flex-wrap gap-3">
+        <div>
+          <p class="saaf-eyebrow mb-1"><i class="bi bi-bar-chart-line me-1"></i>{% if LANGUAGE_CODE == 'ar' %}لوحة الأرباح{% else %}Earnings Dashboard{% endif %}</p>
+          <h2 class="saaf-section-title mb-1" style="font-size:1.5rem;">
+            {% if LANGUAGE_CODE == 'ar' %}مرحباً،{% else %}Welcome back,{% endif %} {{ request.user.get_full_name|default:request.user.username }}
+          </h2>
+          <p class="text-muted mb-0 small">{% if LANGUAGE_CODE == 'ar' %}نظرة عامة على أرباحك ومدفوعاتك{% else %}Here's your financial overview at a glance{% endif %}</p>
+        </div>
+        <a href="#" class="btn btn-saaf-outline rounded-pill" style="font-size:.85rem;"><i class="bi bi-download me-1"></i>{% if LANGUAGE_CODE == 'ar' %}تصدير{% else %}Export{% endif %}</a>
+      </div>
+    </div>
 
-      <div class="col-6 col-lg-3">
+    <!-- ── Stat Cards ── -->
+    <div class="row row-cols-2 row-cols-lg-4 g-3 mb-4">
+      <div class="col">
         <div class="rev-stat-card">
           <div class="rev-stat-icon"><i class="bi bi-wallet2"></i></div>
           <div class="rev-stat-value">{{ current_balance|floatformat:2 }}</div>
-          <div class="rev-stat-label">
-            {% if LANGUAGE_CODE == 'ar' %}الرصيد الحالي{% else %}Current Balance{% endif %}
-          </div>
-          <span class="rev-stat-badge rbadge-up">
-            <i class="bi bi-check-circle me-1"></i>{% if LANGUAGE_CODE == 'ar' %}متاح{% else %}Available{% endif %}
-          </span>
+          <div class="rev-stat-label">{% if LANGUAGE_CODE == 'ar' %}الرصيد الحالي{% else %}Current Balance{% endif %}</div>
+          <span class="rev-stat-badge rbadge-up"><i class="bi bi-check-circle"></i> {% if LANGUAGE_CODE == 'ar' %}متاح{% else %}Available{% endif %}</span>
         </div>
       </div>
-
-      <div class="col-6 col-lg-3">
+      <div class="col">
         <div class="rev-stat-card accent-green">
           <div class="rev-stat-icon"><i class="bi bi-currency-dollar"></i></div>
           <div class="rev-stat-value">{{ total_earned|floatformat:2 }}</div>
-          <div class="rev-stat-label">
-            {% if LANGUAGE_CODE == 'ar' %}إجمالي الأرباح{% else %}Total Earned{% endif %}
-          </div>
+          <div class="rev-stat-label">{% if LANGUAGE_CODE == 'ar' %}إجمالي الأرباح{% else %}Total Earned{% endif %}</div>
         </div>
       </div>
-
-      <div class="col-6 col-lg-3">
+      <div class="col">
         <div class="rev-stat-card accent-blue">
           <div class="rev-stat-icon"><i class="bi bi-send-check-fill"></i></div>
           <div class="rev-stat-value">{{ total_paid|floatformat:2 }}</div>
-          <div class="rev-stat-label">
-            {% if LANGUAGE_CODE == 'ar' %}إجمالي المدفوع{% else %}Total Paid Out{% endif %}
-          </div>
-          <span class="rev-stat-badge rbadge-info">
-            {% if LANGUAGE_CODE == 'ar' %}محول{% else %}Transferred{% endif %}
-          </span>
+          <div class="rev-stat-label">{% if LANGUAGE_CODE == 'ar' %}إجمالي المدفوع{% else %}Total Paid Out{% endif %}</div>
+          <span class="rev-stat-badge rbadge-info">{% if LANGUAGE_CODE == 'ar' %}محول{% else %}Transferred{% endif %}</span>
         </div>
       </div>
-
-      <div class="col-6 col-lg-3">
+      <div class="col">
         <div class="rev-stat-card accent-amber">
           <div class="rev-stat-icon"><i class="bi bi-calendar2-week-fill"></i></div>
           <div class="rev-stat-value">{{ this_month_total|floatformat:2 }}</div>
-          <div class="rev-stat-label">
-            {% if LANGUAGE_CODE == 'ar' %}هذا الشهر{% else %}This Month{% endif %}
-          </div>
-          <span class="rev-stat-badge" style="background:rgba(212,169,45,.13);color:#7a5a00;">
-            {{ this_month_jobs }}
-            {% if LANGUAGE_CODE == 'ar' %}عمل{% else %}job{{ this_month_jobs|pluralize }}{% endif %}
-          </span>
+          <div class="rev-stat-label">{% if LANGUAGE_CODE == 'ar' %}هذا الشهر{% else %}This Month{% endif %}</div>
+          <span class="rev-stat-badge" style="background:rgba(212,169,45,.13);color:#7a5a00;">{{ this_month_jobs }} {% if LANGUAGE_CODE == 'ar' %}عمل{% else %}job{{ this_month_jobs|pluralize }}{% endif %}</span>
         </div>
       </div>
-
     </div>
 
-    <!-- ── Chart + Quick Stats ───────────── -->
+    <!-- ── Chart + Quick Stats ── -->
     <div class="row g-3 mb-4">
-
       <div class="col-12 col-lg-8">
         <div class="rev-panel h-100">
           <div class="rev-panel-title">
-            <span>
-              <i class="bi bi-graph-up me-1" style="color:var(--saaf-btn);"></i>
-              {% if LANGUAGE_CODE == 'ar' %}الأرباح الشهرية{% else %}Monthly Revenue{% endif %}
-            </span>
+            <span><i class="bi bi-graph-up me-1" style="color:var(--saaf-btn);"></i>{% if LANGUAGE_CODE == 'ar' %}الأرباح الشهرية{% else %}Monthly Revenue{% endif %}</span>
             <small>{% if LANGUAGE_CODE == 'ar' %}آخر 12 شهر{% else %}Last 12 months{% endif %}</small>
           </div>
-          <div style="position:relative;height:230px;">
-            <canvas id="revChart"></canvas>
-          </div>
+          <div style="position:relative;height:210px;"><canvas id="revChart"></canvas></div>
         </div>
       </div>
-
       <div class="col-12 col-lg-4">
-        <div class="rev-panel h-100 d-flex flex-column" style="gap:1.2rem;">
-
+        <div class="rev-panel h-100 d-flex flex-column" style="gap:1rem;">
           <div>
             <div class="d-flex justify-content-between align-items-center mb-1">
-              <span style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--saaf-text-muted);">
-                {% if LANGUAGE_CODE == 'ar' %}نسبة السحب{% else %}Payout Progress{% endif %}
-              </span>
-              <span style="font-size:.8rem;color:var(--saaf-btn);font-weight:700;">
-                {% if total_earned > 0 %}{{ total_paid|floatformat:0 }} / {{ total_earned|floatformat:0 }}{% else %}—{% endif %}
-              </span>
+              <span style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--saaf-text-muted);">{% if LANGUAGE_CODE == 'ar' %}نسبة السحب{% else %}Payout Progress{% endif %}</span>
+              <span style="font-size:.76rem;color:var(--saaf-btn);font-weight:700;">{% if total_earned > 0 %}{{ total_paid|floatformat:0 }} / {{ total_earned|floatformat:0 }}{% else %}—{% endif %}</span>
             </div>
-            <div class="rev-goal-bar">
-              <div class="rev-goal-fill" id="payoutBar" style="width:0%;"></div>
-            </div>
-            <div style="font-size:.74rem;color:var(--saaf-text-muted);">
-              {% if total_earned > 0 %}
-                {{ total_paid|floatformat:2 }} {% if LANGUAGE_CODE == 'ar' %}من أصل{% else %}of{% endif %} {{ total_earned|floatformat:2 }}
-              {% else %}
-                {% if LANGUAGE_CODE == 'ar' %}لا توجد أرباح بعد{% else %}No earnings yet{% endif %}
-              {% endif %}
-            </div>
+            <div class="rev-goal-bar"><div class="rev-goal-fill" id="payoutBar" style="width:0%;"></div></div>
+            <p class="text-muted mb-0" style="font-size:.7rem;">
+              {% if total_earned > 0 %}{{ total_paid|floatformat:2 }} {% if LANGUAGE_CODE == 'ar' %}من أصل{% else %}of{% endif %} {{ total_earned|floatformat:2 }}
+              {% else %}{% if LANGUAGE_CODE == 'ar' %}لا توجد أرباح بعد{% else %}No earnings yet{% endif %}{% endif %}
+            </p>
           </div>
-
           <div>
-            <div class="rev-panel-title" style="margin-bottom:.75rem;font-size:.88rem;">
-              {% if LANGUAGE_CODE == 'ar' %}ملخص الشهر الحالي{% else %}This Month at a Glance{% endif %}
-            </div>
-            <div>
-              <div class="rev-qs-row">
-                <span>{% if LANGUAGE_CODE == 'ar' %}الأعمال المكتملة{% else %}Completed Jobs{% endif %}</span>
-                <strong style="color:var(--saaf-btn);">{{ this_month_jobs }}</strong>
-              </div>
-              <div class="rev-qs-row">
-                <span>{% if LANGUAGE_CODE == 'ar' %}الأرباح{% else %}Revenue{% endif %}</span>
-                <strong style="color:var(--saaf-btn);">{{ this_month_total|floatformat:2 }}</strong>
-              </div>
-              <div class="rev-qs-row">
-                <span>{% if LANGUAGE_CODE == 'ar' %}الرصيد المعلق{% else %}Pending Balance{% endif %}</span>
-                <strong>{{ current_balance|floatformat:2 }}</strong>
-              </div>
-              <div class="rev-qs-row">
-                <span>{% if LANGUAGE_CODE == 'ar' %}إجمالي المدفوع{% else %}Total Paid Out{% endif %}</span>
-                <strong>{{ total_paid|floatformat:2 }}</strong>
-              </div>
-            </div>
+            <div class="rev-panel-title" style="margin-bottom:.5rem;font-size:.85rem;">{% if LANGUAGE_CODE == 'ar' %}ملخص الشهر{% else %}This Month{% endif %}</div>
+            <div class="rev-qs-row"><span>{% if LANGUAGE_CODE == 'ar' %}الأعمال{% else %}Jobs{% endif %}</span><strong style="color:var(--saaf-btn);">{{ this_month_jobs }}</strong></div>
+            <div class="rev-qs-row"><span>{% if LANGUAGE_CODE == 'ar' %}الأرباح{% else %}Revenue{% endif %}</span><strong style="color:var(--saaf-btn);">{{ this_month_total|floatformat:2 }}</strong></div>
+            <div class="rev-qs-row"><span>{% if LANGUAGE_CODE == 'ar' %}المعلق{% else %}Pending{% endif %}</span><strong>{{ current_balance|floatformat:2 }}</strong></div>
+            <div class="rev-qs-row"><span>{% if LANGUAGE_CODE == 'ar' %}المدفوع{% else %}Paid Out{% endif %}</span><strong>{{ total_paid|floatformat:2 }}</strong></div>
           </div>
-
         </div>
       </div>
-
     </div>
-        <!-- Active Requests -->
+
+    <!-- ── Active Requests ── -->
     <div class="rev-panel mb-4">
       <div class="rev-panel-title">
-        <span>
-          <i class="bi bi-hourglass-split me-1" style="color:var(--saaf-btn);"></i>
-          {% if LANGUAGE_CODE == 'ar' %}الطلبات النشطة{% else %}Active Requests{% endif %}
-        </span>
+        <span><i class="bi bi-hourglass-split me-1" style="color:var(--saaf-btn);"></i>{% if LANGUAGE_CODE == 'ar' %}الطلبات النشطة{% else %}Active Requests{% endif %}</span>
         <small>{{ active_requests|length }}</small>
       </div>
-
       {% if active_requests %}
-        <div class="table-responsive">
-          <table class="rev-table">
-            <thead>
-              <tr>
-                <th>{% if LANGUAGE_CODE == 'ar' %}العنوان{% else %}Title{% endif %}</th>
-                <th>{% if LANGUAGE_CODE == 'ar' %}العميل{% else %}Requester{% endif %}</th>
-                <th>{% if LANGUAGE_CODE == 'ar' %}السعر{% else %}Price{% endif %}</th>
-                <th>{% if LANGUAGE_CODE == 'ar' %}الحالة{% else %}Status{% endif %}</th>
-                <th class="text-end">{% if LANGUAGE_CODE == 'ar' %}تفاصيل{% else %}Details{% endif %}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for contract in active_requests %}
-              <tr>
-                <td>
-                  <div style="font-weight:700;color:var(--saaf-heading);">
-                    {{ contract.proposal.request.title }}
-                  </div>
-                  <div style="font-size:.74rem;color:var(--saaf-text-muted);">
-                    #{{ contract.id }}
-                  </div>
-                </td>
-                <td>{{ contract.proposal.request.requester.get_full_name|default:contract.proposal.request.requester.username }}</td>
-                <td>{{ contract.proposal.price|floatformat:2 }}</td>
-                <td>
-                  <span class="rev-pill pill-pending">
-                    <span class="rev-pill-dot"></span>
-                    {% if LANGUAGE_CODE == 'ar' %}قيد التنفيذ{% else %}In Progress{% endif %}
-                  </span>
-                </td>
-                <td class="text-end">
-                  <a href="{% url 'progress:contract_detail_view' contract.id %}" class="saaf-dashboard-linkline">
-                    {% if LANGUAGE_CODE == 'ar' %}عرض{% else %}View{% endif %}
-                  </a>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      {% else %}
-        <div class="rev-empty">
-          <i class="bi bi-inbox"></i>
-          <p>{% if LANGUAGE_CODE == 'ar' %}لا توجد طلبات نشطة الآن.{% else %}No active requests right now.{% endif %}</p>
-        </div>
-      {% endif %}
-    </div>
-
-    <!-- Completed Requests -->
-    <div class="rev-panel mb-4">
-      <div class="rev-panel-title">
-        <span>
-          <i class="bi bi-check2-circle me-1" style="color:var(--saaf-btn);"></i>
-          {% if LANGUAGE_CODE == 'ar' %}الطلبات المكتملة{% else %}Completed Requests{% endif %}
-        </span>
-            <a href="{% url 'account:completed_orders_view' %}" class="saaf-dashboard-linkline" style="font-size:.83rem;">
-          {% if LANGUAGE_CODE == 'ar' %}عرض الكل{% else %}View all{% endif %}
-          <i class="bi bi-arrow-{% if LANGUAGE_CODE == 'ar' %}left{% else %}right{% endif %}"></i>
-        </a>
-
-      </div>
-
-      {% if completed_requests %}
-        <div class="table-responsive">
-          <table class="rev-table">
-            <thead>
-              <tr>
-                <th>{% if LANGUAGE_CODE == 'ar' %}العنوان{% else %}Title{% endif %}</th>
-                <th>{% if LANGUAGE_CODE == 'ar' %}العميل{% else %}Requester{% endif %}</th>
-                <th>{% if LANGUAGE_CODE == 'ar' %}السعر{% else %}Price{% endif %}</th>
-                <th>{% if LANGUAGE_CODE == 'ar' %}الحالة{% else %}Status{% endif %}</th>
-                <th class="text-end">{% if LANGUAGE_CODE == 'ar' %}تفاصيل{% else %}Details{% endif %}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for contract in completed_requests %}
-              <tr>
-                <td>
-                  <div style="font-weight:700;color:var(--saaf-heading);">
-                    {{ contract.proposal.request.title }}
-                  </div>
-                  <div style="font-size:.74rem;color:var(--saaf-text-muted);">
-                    #{{ contract.id }}
-                  </div>
-                </td>
-                <td>{{ contract.proposal.request.requester.get_full_name|default:contract.proposal.request.requester.username }}</td>
-                <td>{{ contract.proposal.price|floatformat:2 }}</td>
-                <td>
-                  <span class="rev-pill pill-paid">
-                    <span class="rev-pill-dot"></span>
-                    {% if LANGUAGE_CODE == 'ar' %}مكتمل{% else %}Completed{% endif %}
-                  </span>
-                </td>
-                <td class="text-end">
-                  <a href="{% url 'progress:contract_detail_view' contract.id %}" class="saaf-dashboard-linkline">
-                    {% if LANGUAGE_CODE == 'ar' %}عرض{% else %}View{% endif %}
-                  </a>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      {% else %}
-        <div class="rev-empty">
-          <i class="bi bi-check2-circle"></i>
-          <p>{% if LANGUAGE_CODE == 'ar' %}لا توجد طلبات مكتملة بعد.{% else %}No completed requests yet.{% endif %}</p>
-        </div>
-      {% endif %}
-    </div>
-    <!-- ── Recent Transactions ───────────── -->
-    <div class="rev-panel">
-      <div class="rev-panel-title">
-        <span>
-          <i class="bi bi-receipt me-1" style="color:var(--saaf-btn);"></i>
-          {% if LANGUAGE_CODE == 'ar' %}آخر المعاملات{% else %}Recent Transactions{% endif %}
-        </span>
-        <a href="#" class="saaf-dashboard-linkline" style="font-size:.83rem;">
-          {% if LANGUAGE_CODE == 'ar' %}عرض الكل{% else %}View all{% endif %}
-          <i class="bi bi-arrow-{% if LANGUAGE_CODE == 'ar' %}left{% else %}right{% endif %}"></i>
-        </a>
-      </div>
-
-      {% if recent_revenues %}
       <div class="table-responsive">
         <table class="rev-table">
-          <thead>
-            <tr>
-              <th>{% if LANGUAGE_CODE == 'ar' %}العقد{% else %}Contract{% endif %}</th>
-              <th>{% if LANGUAGE_CODE == 'ar' %}الصافي{% else %}Net Amount{% endif %}</th>
-              <th>{% if LANGUAGE_CODE == 'ar' %}الحالة{% else %}Status{% endif %}</th>
-              <th>{% if LANGUAGE_CODE == 'ar' %}التاريخ{% else %}Date{% endif %}</th>
-              <th class="text-end">{% if LANGUAGE_CODE == 'ar' %}تفاصيل{% else %}Details{% endif %}</th>
-            </tr>
-          </thead>
+          <thead><tr>
+            <th>{% if LANGUAGE_CODE == 'ar' %}العنوان{% else %}Title{% endif %}</th>
+            <th>{% if LANGUAGE_CODE == 'ar' %}العميل{% else %}Requester{% endif %}</th>
+            <th>{% if LANGUAGE_CODE == 'ar' %}السعر{% else %}Price{% endif %}</th>
+            <th>{% if LANGUAGE_CODE == 'ar' %}الحالة{% else %}Status{% endif %}</th>
+            <th class="text-end">{% if LANGUAGE_CODE == 'ar' %}تفاصيل{% else %}Details{% endif %}</th>
+          </tr></thead>
           <tbody>
-            {% for revenue in recent_revenues %}
+            {% for contract in active_requests %}
             <tr>
-              <td>
-                <div style="font-weight:700;color:var(--saaf-heading);">
-                  {{ revenue.contract.title|default:"—" }}
-                </div>
-                <div style="font-size:.74rem;color:var(--saaf-text-muted);">#{{ revenue.id }}</div>
-              </td>
-              <td>
-                <span style="font-size:1rem;font-weight:700;color:var(--saaf-heading);">
-                  {{ revenue.net_amount|floatformat:2 }}
-                </span>
-              </td>
-              <td>
-                {% if revenue.status == 'paid' %}
-                  <span class="rev-pill pill-paid">
-                    <span class="rev-pill-dot"></span>
-                    {% if LANGUAGE_CODE == 'ar' %}مدفوع{% else %}Paid{% endif %}
-                  </span>
-                {% elif revenue.status == 'earned' %}
-                  <span class="rev-pill pill-earned">
-                    <span class="rev-pill-dot"></span>
-                    {% if LANGUAGE_CODE == 'ar' %}مكتسب{% else %}Earned{% endif %}
-                  </span>
-                {% elif revenue.status == 'canceled' %}
-                  <span class="rev-pill" style="background:rgba(192,57,43,.12);color:#a93226;">
-                    <span class="rev-pill-dot"></span>
-                    {% if LANGUAGE_CODE == 'ar' %}ملغي{% else %}Canceled{% endif %}
-                  </span>
-                {% else %}
-                  <span class="rev-pill pill-pending">
-                    <span class="rev-pill-dot"></span>
-                    {% if LANGUAGE_CODE == 'ar' %}معلق{% else %}Pending{% endif %}
-                  </span>
-                {% endif %}
-              </td>
-              <td style="color:var(--saaf-text-muted);font-size:.82rem;white-space:nowrap;">
-                {{ revenue.created_at|date:"M d, Y" }}
-              </td>
-              <td class="text-end">
-                <a href="#" class="saaf-dashboard-linkline" style="font-size:.82rem;">
-                  {% if LANGUAGE_CODE == 'ar' %}عرض{% else %}View{% endif %}
-                  <i class="bi bi-chevron-{% if LANGUAGE_CODE == 'ar' %}left{% else %}right{% endif %}" style="font-size:.7rem;"></i>
-                </a>
-              </td>
+              <td><div style="font-weight:700;color:var(--saaf-heading);">{{ contract.proposal.request.title }}</div><div style="font-size:.72rem;color:var(--saaf-text-muted);">#{{ contract.id }}</div></td>
+              <td>{{ contract.proposal.request.requester.get_full_name|default:contract.proposal.request.requester.username }}</td>
+              <td>{{ contract.proposal.price|floatformat:2 }}</td>
+              <td><span class="rev-pill pill-pending"><span class="rev-pill-dot"></span>{% if LANGUAGE_CODE == 'ar' %}قيد التنفيذ{% else %}In Progress{% endif %}</span></td>
+              <td class="text-end"><a href="{% url 'progress:contract_detail_view' contract.id %}" class="saaf-dashboard-linkline">{% if LANGUAGE_CODE == 'ar' %}عرض{% else %}View{% endif %}</a></td>
             </tr>
             {% endfor %}
           </tbody>
         </table>
       </div>
       {% else %}
-      <div class="rev-empty">
-        <i class="bi bi-inbox"></i>
-        <p style="font-size:.88rem;">
-          {% if LANGUAGE_CODE == 'ar' %}لا توجد معاملات بعد. أكمل عقداً لتظهر أرباحك هنا.{% else %}No transactions yet. Complete a contract to see your earnings here.{% endif %}
-        </p>
-      </div>
+      <div class="rev-empty"><i class="bi bi-inbox"></i><p>{% if LANGUAGE_CODE == 'ar' %}لا توجد طلبات نشطة الآن.{% else %}No active requests right now.{% endif %}</p></div>
       {% endif %}
-
     </div>
 
-  </div>
-</div>
+    <!-- ── Completed Requests ── -->
+    <div class="rev-panel mb-4">
+      <div class="rev-panel-title">
+        <span><i class="bi bi-check2-circle me-1" style="color:var(--saaf-btn);"></i>{% if LANGUAGE_CODE == 'ar' %}الطلبات المكتملة{% else %}Completed Requests{% endif %}</span>
+        <a href="{% url 'account:completed_orders_view' %}" class="saaf-dashboard-linkline" style="font-size:.8rem;">{% if LANGUAGE_CODE == 'ar' %}عرض الكل{% else %}View all{% endif %} <i class="bi bi-arrow-{% if LANGUAGE_CODE == 'ar' %}left{% else %}right{% endif %}"></i></a>
+      </div>
+      {% if completed_requests %}
+      <div class="table-responsive">
+        <table class="rev-table">
+          <thead><tr>
+            <th>{% if LANGUAGE_CODE == 'ar' %}العنوان{% else %}Title{% endif %}</th>
+            <th>{% if LANGUAGE_CODE == 'ar' %}العميل{% else %}Requester{% endif %}</th>
+            <th>{% if LANGUAGE_CODE == 'ar' %}السعر{% else %}Price{% endif %}</th>
+            <th>{% if LANGUAGE_CODE == 'ar' %}الحالة{% else %}Status{% endif %}</th>
+            <th class="text-end">{% if LANGUAGE_CODE == 'ar' %}تفاصيل{% else %}Details{% endif %}</th>
+          </tr></thead>
+          <tbody>
+            {% for contract in completed_requests %}
+            <tr>
+              <td><div style="font-weight:700;color:var(--saaf-heading);">{{ contract.proposal.request.title }}</div><div style="font-size:.72rem;color:var(--saaf-text-muted);">#{{ contract.id }}</div></td>
+              <td>{{ contract.proposal.request.requester.get_full_name|default:contract.proposal.request.requester.username }}</td>
+              <td>{{ contract.proposal.price|floatformat:2 }}</td>
+              <td><span class="rev-pill pill-paid"><span class="rev-pill-dot"></span>{% if LANGUAGE_CODE == 'ar' %}مكتمل{% else %}Completed{% endif %}</span></td>
+              <td class="text-end"><a href="{% url 'progress:contract_detail_view' contract.id %}" class="saaf-dashboard-linkline">{% if LANGUAGE_CODE == 'ar' %}عرض{% else %}View{% endif %}</a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="rev-empty"><i class="bi bi-check2-circle"></i><p>{% if LANGUAGE_CODE == 'ar' %}لا توجد طلبات مكتملة بعد.{% else %}No completed requests yet.{% endif %}</p></div>
+      {% endif %}
+    </div>
+
+    <!-- ── Recent Transactions ── -->
+    <div class="rev-panel">
+      <div class="rev-panel-title">
+        <span><i class="bi bi-receipt me-1" style="color:var(--saaf-btn);"></i>{% if LANGUAGE_CODE == 'ar' %}آخر المعاملات{% else %}Recent Transactions{% endif %}</span>
+        <a href="#" class="saaf-dashboard-linkline" style="font-size:.8rem;">{% if LANGUAGE_CODE == 'ar' %}عرض الكل{% else %}View all{% endif %} <i class="bi bi-arrow-{% if LANGUAGE_CODE == 'ar' %}left{% else %}right{% endif %}"></i></a>
+      </div>
+      {% if recent_revenues %}
+      <div class="table-responsive">
+        <table class="rev-table">
+          <thead><tr>
+            <th>{% if LANGUAGE_CODE == 'ar' %}العقد{% else %}Contract{% endif %}</th>
+            <th>{% if LANGUAGE_CODE == 'ar' %}الصافي{% else %}Net Amount{% endif %}</th>
+            <th>{% if LANGUAGE_CODE == 'ar' %}الحالة{% else %}Status{% endif %}</th>
+            <th>{% if LANGUAGE_CODE == 'ar' %}التاريخ{% else %}Date{% endif %}</th>
+            <th class="text-end">{% if LANGUAGE_CODE == 'ar' %}تفاصيل{% else %}Details{% endif %}</th>
+          </tr></thead>
+          <tbody>
+            {% for revenue in recent_revenues %}
+            <tr>
+              <td><div style="font-weight:700;color:var(--saaf-heading);">{{ revenue.contract.title|default:"—" }}</div><div style="font-size:.72rem;color:var(--saaf-text-muted);">#{{ revenue.id }}</div></td>
+              <td><span style="font-weight:700;color:var(--saaf-heading);">{{ revenue.net_amount|floatformat:2 }}</span></td>
+              <td>
+                {% if revenue.status == 'paid' %}<span class="rev-pill pill-paid"><span class="rev-pill-dot"></span>{% if LANGUAGE_CODE == 'ar' %}مدفوع{% else %}Paid{% endif %}</span>
+                {% elif revenue.status == 'earned' %}<span class="rev-pill pill-earned"><span class="rev-pill-dot"></span>{% if LANGUAGE_CODE == 'ar' %}مكتسب{% else %}Earned{% endif %}</span>
+                {% elif revenue.status == 'canceled' %}<span class="rev-pill" style="background:rgba(192,57,43,.12);color:#a93226;"><span class="rev-pill-dot"></span>{% if LANGUAGE_CODE == 'ar' %}ملغي{% else %}Canceled{% endif %}</span>
+                {% else %}<span class="rev-pill pill-pending"><span class="rev-pill-dot"></span>{% if LANGUAGE_CODE == 'ar' %}معلق{% else %}Pending{% endif %}</span>{% endif %}
+              </td>
+              <td style="color:var(--saaf-text-muted);font-size:.78rem;white-space:nowrap;">{{ revenue.created_at|date:"M d, Y" }}</td>
+              <td class="text-end"><a href="#" class="saaf-dashboard-linkline" style="font-size:.78rem;">{% if LANGUAGE_CODE == 'ar' %}عرض{% else %}View{% endif %} <i class="bi bi-chevron-{% if LANGUAGE_CODE == 'ar' %}left{% else %}right{% endif %}" style="font-size:.66rem;"></i></a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="rev-empty"><i class="bi bi-inbox"></i><p class="small">{% if LANGUAGE_CODE == 'ar' %}لا توجد معاملات بعد.{% else %}No transactions yet. Complete a contract to see your earnings here.{% endif %}</p></div>
+      {% endif %}
+    </div>
+
+  </div>{# /container-lg #}
+</section>
 {% endblock %}
 
 {% block extra_js %}
@@ -721,92 +413,37 @@
 (function () {
   var labels = {{ chart_labels|safe }};
   var totals = {{ chart_totals|safe }};
-
-  function isDark() {
-    return document.documentElement.getAttribute('data-theme') === 'dark';
-  }
-
+  function isDark() { return document.documentElement.getAttribute('data-theme') === 'dark'; }
   function buildChart() {
     var existing = Chart.getChart('revChart');
     if (existing) existing.destroy();
-
-    var ctx  = document.getElementById('revChart').getContext('2d');
+    var ctx = document.getElementById('revChart').getContext('2d');
     var dark = isDark();
-
-    var grad = ctx.createLinearGradient(0, 0, 0, 230);
+    var grad = ctx.createLinearGradient(0, 0, 0, 210);
     grad.addColorStop(0, dark ? 'rgba(212,139,104,.28)' : 'rgba(199,122,92,.22)');
     grad.addColorStop(1, 'rgba(199,122,92,.00)');
-
     return new Chart(ctx, {
       type: 'line',
       data: {
         labels: labels.length ? labels : ['—'],
-        datasets: [{
-          label: '{% if LANGUAGE_CODE == "ar" %}الأرباح{% else %}Revenue{% endif %}',
-          data: totals.length ? totals : [0],
-          fill: true,
-          backgroundColor: grad,
-          borderColor: dark ? '#D48B68' : '#C77A5C',
-          borderWidth: 2.5,
-          pointBackgroundColor: dark ? '#D48B68' : '#C77A5C',
-          pointBorderColor: dark ? '#241B15' : '#FAF1E5',
-          pointBorderWidth: 2.5,
-          pointRadius: 5,
-          tension: 0.42
-        }]
+        datasets: [{ label: '{% if LANGUAGE_CODE == "ar" %}الأرباح{% else %}Revenue{% endif %}', data: totals.length ? totals : [0], fill: true, backgroundColor: grad, borderColor: dark ? '#D48B68' : '#C77A5C', borderWidth: 2.5, pointBackgroundColor: dark ? '#D48B68' : '#C77A5C', pointBorderColor: dark ? '#241B15' : '#FAF1E5', pointBorderWidth: 2, pointRadius: 4, tension: 0.42 }]
       },
       options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            backgroundColor: dark ? '#1B140F' : '#3F2D23',
-            titleColor: '#E9D9C3',
-            bodyColor: '#D48B68',
-            padding: 10,
-            callbacks: {
-              label: function(c) { return '  ' + c.parsed.y.toFixed(2); }
-            }
-          }
-        },
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: { backgroundColor: dark ? '#1B140F' : '#3F2D23', titleColor: '#E9D9C3', bodyColor: '#D48B68', padding: 10, callbacks: { label: function(c) { return '  ' + c.parsed.y.toFixed(2); } } } },
         scales: {
-          x: {
-            grid: { display: false },
-            ticks: { color: dark ? '#c9b79f' : '#6A5648', font: { size: 11 } }
-          },
-          y: {
-            grid: { color: dark ? 'rgba(219,191,155,.1)' : 'rgba(96,70,51,.07)' },
-            ticks: {
-              color: dark ? '#c9b79f' : '#6A5648',
-              font: { size: 11 },
-              callback: function(v) { return v.toFixed(0); }
-            }
-          }
+          x: { grid: { display: false }, ticks: { color: dark ? '#c9b79f' : '#6A5648', font: { size: 10 } } },
+          y: { grid: { color: dark ? 'rgba(219,191,155,.1)' : 'rgba(96,70,51,.07)' }, ticks: { color: dark ? '#c9b79f' : '#6A5648', font: { size: 10 }, callback: function(v) { return v.toFixed(0); } } }
         }
       }
     });
   }
-
   buildChart();
-
-  // Re-render when theme toggles
   var themeBtn = document.getElementById('saaf-theme-toggle');
-  if (themeBtn) {
-    themeBtn.addEventListener('click', function () {
-      setTimeout(buildChart, 80);
-    });
-  }
-
-  // Payout progress bar
-  var pct = 0;
-  var earned = parseFloat("{{ total_earned }}") || 0;
-  var paid   = parseFloat("{{ total_paid }}")   || 0;
+  if (themeBtn) themeBtn.addEventListener('click', function () { setTimeout(buildChart, 80); });
+  var pct = 0, earned = parseFloat("{{ total_earned }}") || 0, paid = parseFloat("{{ total_paid }}") || 0;
   if (earned > 0) pct = Math.min((paid / earned) * 100, 100);
-  setTimeout(function () {
-    var bar = document.getElementById('payoutBar');
-    if (bar) bar.style.width = pct + '%';
-  }, 300);
+  setTimeout(function () { var bar = document.getElementById('payoutBar'); if (bar) bar.style.width = pct + '%'; }, 300);
 })();
 </script>
 {% endblock %}

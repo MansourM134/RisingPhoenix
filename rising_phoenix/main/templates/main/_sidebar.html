@@ -66,7 +66,8 @@
         <i class="bi bi-shop"></i>
         {% if active == 'workshop' %}<span class="sidebar-active-indicator"></span>{% endif %}
     </a>
-    {% else %}
+    {% endif %}
+    {% if request.user.artisanprofile or request.user.profile %}
     <a href="{% url 'account:profile_view' request.user.username %}" class="sidebar-btn {% if active == 'profile' %}sidebar-btn-active{% endif %}" aria-label="{% if LANGUAGE_CODE == 'ar' %}الملف الشخصي{% else %}Profile{% endif %}" title="{% if LANGUAGE_CODE == 'ar' %}الملف الشخصي{% else %}Profile{% endif %}">
         <i class="bi bi-person-circle"></i>
         {% if active == 'profile' %}<span class="sidebar-active-indicator"></span>{% endif %}
