@@ -4,6 +4,7 @@ import mimetypes
 
 from django.conf import settings
 from django.contrib import messages
+from django.utils.translation import gettext as _
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -78,14 +79,14 @@ def contract_detail_view(request, contract_id):
     if contract.status not in allowed_statuses or not (
         contract.requester_accepted_at and contract.artisan_accepted_at
     ):
-        messages.error(request, 'This contract is not active yet. Both parties must accept the contract first.')
+        messages.error(request, _('This contract is not active yet. Both parties must accept the contract first.'))
         return redirect('main:home_view')
 
     is_artisan   = request.user == contract.artisan
     is_requester = request.user == contract.requester
 
     if not (is_artisan or is_requester):
-        messages.error(request, 'You do not have access to this project.')
+        messages.error(request, _('You do not have access to this project.'))
         return redirect('main:home_view')
 
     updates = list(
@@ -138,33 +139,33 @@ def post_update_view(request, contract_id):
     contract = get_object_or_404(Contract, id=contract_id)
 
     if request.method != 'POST':
-        messages.error(request, 'Invalid action.')
+        messages.error(request, _('Invalid action.'))
         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     if request.user != contract.artisan:
-        messages.error(request, 'Only the artisan can post progress updates.')
+        messages.error(request, _('Only the artisan can post progress updates.'))
         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     if contract.is_completed:
-        messages.error(request, 'This project is already completed.')
+        messages.error(request, _('This project is already completed.'))
         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     body = request.POST.get('body', '').strip()
     has_images = bool(request.FILES.getlist('images'))
 
     if not body and not has_images:
-        messages.error(request, 'Please add a message or at least one image.')
+        messages.error(request, _('Please add a message or at least one image.'))
         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     if body and not text_is_clean(body):
-        messages.error(request, 'Your update contains inappropriate language. Please revise it.')
+        messages.error(request, _('Your update contains inappropriate language. Please revise it.'))
         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     update = ProgressUpdate.objects.create(contract=contract, body=body)
     captions = request.POST.getlist('image_captions')
     for msg in _save_images(ProgressImage, 'update', update, request.FILES, captions):
         messages.warning(request, f'Image skipped: {msg}')
-    messages.success(request, 'Progress update posted.')
+    messages.success(request, _('Progress update posted.'))
     notify(
         contract.requester,
         Notification.NotifType.PROGRESS_UPDATE,
@@ -181,26 +182,26 @@ def add_comment_view(request, update_id):
     contract = update.contract
 
     if request.method != 'POST':
-        messages.error(request, 'Invalid action.')
+        messages.error(request, _('Invalid action.'))
         return redirect('progress:contract_detail_view', contract_id=contract.id)
 
     if request.user not in (contract.artisan, contract.requester):
-        messages.error(request, 'You do not have access to this project.')
+        messages.error(request, _('You do not have access to this project.'))
         return redirect('main:home_view')
 
     if contract.is_completed:
-        messages.error(request, 'This project is already completed.')
+        messages.error(request, _('This project is already completed.'))
         return redirect('progress:contract_detail_view', contract_id=contract.id)
 
     body = request.POST.get('body', '').strip()
     has_images = bool(request.FILES.getlist('images'))
 
     if not body and not has_images:
-        messages.error(request, 'Please add a message or at least one image.')
+        messages.error(request, _('Please add a message or at least one image.'))
         return redirect('progress:contract_detail_view', contract_id=contract.id)
 
     if body and not text_is_clean(body):
-        messages.error(request, 'Your feedback contains inappropriate language. Please revise it.')
+        messages.error(request, _('Your feedback contains inappropriate language. Please revise it.'))
         return redirect('progress:contract_detail_view', contract_id=contract.id)
 
     comment = ProgressComment.objects.create(
@@ -211,7 +212,7 @@ def add_comment_view(request, update_id):
     captions = request.POST.getlist('image_captions')
     for msg in _save_images(ProgressCommentImage, 'comment', comment, request.FILES, captions):
         messages.warning(request, f'Image skipped: {msg}')
-    messages.success(request, 'Feedback posted.')
+    messages.success(request, _('Feedback posted.'))
     other_party = contract.artisan if request.user == contract.requester else contract.requester
     notify(
         other_party,
@@ -228,24 +229,24 @@ def request_completion_view(request, contract_id):
     contract = get_object_or_404(Contract, id=contract_id)
 
     if request.method != 'POST':
-        messages.error(request, 'Invalid action.')
+        messages.error(request, _('Invalid action.'))
         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     if request.user != contract.artisan:
-        messages.error(request, 'Only the artisan can mark a project as complete.')
+        messages.error(request, _('Only the artisan can mark a project as complete.'))
         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     if not contract.is_in_progress:
-        messages.error(request, 'Completion can only be requested while the project is in progress.')
+        messages.error(request, _('Completion can only be requested while the project is in progress.'))
         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     if contract.has_open_dispute:
-        messages.error(request, 'This project has an open dispute. Completion actions are paused until staff resolves it.')
+        messages.error(request, _('This project has an open dispute. Completion actions are paused until staff resolves it.'))
         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     body = request.POST.get('body', '').strip()[:5000]
     if body and not text_is_clean(body):
-        messages.error(request, 'Your message contains inappropriate language. Please revise it.')
+        messages.error(request, _('Your message contains inappropriate language. Please revise it.'))
         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     contract.status = Contract.Status.COMPLETION_REQUESTED
@@ -259,7 +260,7 @@ def request_completion_view(request, contract_id):
     captions = request.POST.getlist('image_captions')
     for msg in _save_images(ContractEventImage, 'event', event, request.FILES, captions):
         messages.warning(request, f'Image skipped: {msg}')
-    messages.success(request, 'Completion requested. Waiting for the requester to confirm.')
+    messages.success(request, _('Completion requested. Waiting for the requester to confirm.'))
     notify(
         contract.requester,
         Notification.NotifType.COMPLETION_REQUESTED,
@@ -282,20 +283,20 @@ def confirm_completion_view(request, contract_id):
     )
 
     if request.user != contract.requester:
-        messages.error(request, 'Only the requester can confirm completion.')
+        messages.error(request, _('Only the requester can confirm completion.'))
         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     if not contract.is_completion_requested:
-        messages.error(request, 'There is no pending completion request.')
+        messages.error(request, _('There is no pending completion request.'))
         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     if contract.has_open_dispute:
-        messages.error(request, 'This project has an open dispute. Confirmation is paused until staff resolves it.')
+        messages.error(request, _('This project has an open dispute. Confirmation is paused until staff resolves it.'))
         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     escrow_payment = getattr(contract, 'escrow_payment', None)
     if not escrow_payment:
-        messages.error(request, 'No payment record was found for this contract.')
+        messages.error(request, _('No payment record was found for this contract.'))
         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     gross_amount = contract.proposal.price
@@ -334,7 +335,7 @@ def confirm_completion_view(request, contract_id):
             }
         )
 
-    messages.success(request, 'Project confirmed as complete. Thank you!')
+    messages.success(request, _('Project confirmed as complete. Thank you!'))
 
     notify(
         contract.artisan,
@@ -362,11 +363,11 @@ def confirm_completion_view(request, contract_id):
 #         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
 #     if request.user != contract.requester:
-#         messages.error(request, 'Only the requester can confirm completion.')
+#         messages.error(request, _('Only the requester can confirm completion.'))
 #         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
 #     if not contract.is_completion_requested:
-#         messages.error(request, 'There is no pending completion request.')
+#         messages.error(request, _('There is no pending completion request.'))
 #         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
 #     escrow_payment = getattr(contract, 'escrow_payment', None)
@@ -424,20 +425,20 @@ def reject_completion_view(request, contract_id):
     contract = get_object_or_404(Contract, id=contract_id)
 
     if request.method != 'POST':
-        messages.error(request, 'Invalid action.')
+        messages.error(request, _('Invalid action.'))
         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     if request.user != contract.requester:
-        messages.error(request, 'Only the requester can reject a completion request.')
+        messages.error(request, _('Only the requester can reject a completion request.'))
         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     if not contract.is_completion_requested:
-        messages.error(request, 'There is no pending completion request.')
+        messages.error(request, _('There is no pending completion request.'))
         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     body = request.POST.get('body', '').strip()[:1000]
     if body and not text_is_clean(body):
-        messages.error(request, 'Your message contains inappropriate language. Please revise it.')
+        messages.error(request, _('Your message contains inappropriate language. Please revise it.'))
         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     contract.status = Contract.Status.IN_PROGRESS
@@ -451,7 +452,7 @@ def reject_completion_view(request, contract_id):
     captions = request.POST.getlist('image_captions')
     for msg in _save_images(ContractEventImage, 'event', event, request.FILES, captions):
         messages.warning(request, f'Image skipped: {msg}')
-    messages.success(request, 'Sent back. The project is back in progress.')
+    messages.success(request, _('Sent back. The project is back in progress.'))
     notify(
         contract.artisan,
         Notification.NotifType.COMPLETION_REJECTED,

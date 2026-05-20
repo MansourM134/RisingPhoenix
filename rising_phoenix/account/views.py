@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from .forms import CustomUserCreationForm, ProfileForm, ArtisanProfileForm, CustomUserUpdateForm, ReviewForm
 from django.http import HttpRequest, HttpResponse
 from django.contrib import messages
+from django.utils.translation import gettext as _
 from django.db import transaction
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -49,14 +50,14 @@ def signup_view(request: HttpRequest):
                     profile.avatar = f'images/avatars/defaults/{selected_default_avatar}'
 
                 profile.save()
-                messages.success(request, "You have been register")
+                messages.success(request, _("You have been registered."))
 
             send_welcome_email(new_user)
             return redirect('account:login_view')
         else:
             print(user_form.errors)
             print(profile_form.errors)
-            messages.error(request, "something goes Wrong")
+            messages.error(request, _("Something went wrong."))
             return render(request, 'account/signup.html', {
                 'user_form': user_form,
                 'profile_form': profile_form,
@@ -107,12 +108,12 @@ def artisan_signup_view(request:HttpRequest):
 
 
                 profile.save()
-                messages.success(request, "You have been register")
+                messages.success(request, _("You have been registered."))
             send_artisan_welcome_email(new_user)
             return redirect('account:login_view')
         else:
             print(user_form.errors)
-            messages.error(request, "something goes Wrong")
+            messages.error(request, _("Something went wrong."))
             return render(request, 'account/artisan_signup.html', {'user_form': user_form, 'profile_form': profile_form,
                 'default_avatar_choices': [
                     'avatar1.png',
@@ -148,7 +149,7 @@ def login_view(request:HttpRequest):
 
         if user:
             login(request,user)
-            messages.success(request, "Logged in successufly")
+            messages.success(request, _("Logged in successfully."))
             #redirect to the staff id the user is staff
             if user.is_staff:
                 return redirect('staff:staff_dashboard_view')
@@ -157,7 +158,7 @@ def login_view(request:HttpRequest):
                 return redirect('account:artisan_dashboard_view')
             return redirect('main:home_view')
         else:
-            messages.error(request, "Your Username or Password is wrong, try again")
+            messages.error(request, _("Your Username or Password is wrong, try again"))
             
     
     return render(request, 'account/login.html')
@@ -177,7 +178,7 @@ def is_artisan(user):
 def artisan_dashboard_view(request: HttpRequest):
     artisan = request.user
     if not is_artisan(artisan):
-        messages.error(request, "Only artisan can view this page")
+        messages.error(request, _("Only artisan can view this page"))
         return redirect('main:home_view')
     now = timezone.now()
 
@@ -316,7 +317,7 @@ def artisan_profile_view(request: HttpRequest, user_name):
         return redirect('staff:staff_profile_view')
 
     if not user.groups.filter(name='artisan').exists():
-        messages.warning(request, 'This user is not an artisan.')
+        messages.warning(request, _('This user is not an artisan.'))
         return redirect('main:home_view')
 
     artisan_profile = get_object_or_404(ArtisanProfile, user=user)
@@ -338,13 +339,13 @@ def update_profile_view(request:HttpRequest,user_name):
     if request.user.is_staff:
         return redirect('staff:update_staff_profile_view')
     if user_name != request.user.username:
-        messages.warning(request,'Your are not allowed')
+        messages.warning(request, _('You are not allowed.'))
         return redirect('main:home_view')
     user = User.objects.get(username = user_name)
     if user.is_staff:
         return redirect('staff:update_staff_profile_view')
     if user.groups.filter(name='artisan').exists():
-        messages.warning(request, 'Your are not allowed')
+        messages.warning(request, _('You are not allowed.'))
         redirect('main:home_view')
     user_profile = get_object_or_404(Profile, user=user)
     if request.method == 'POST':
@@ -361,12 +362,12 @@ def update_profile_view(request:HttpRequest,user_name):
 
                 profile.save()
 
-                messages.success(request, "Your profile has been updated")
+                messages.success(request, _("Your profile has been updated"))
 
             return redirect('account:profile_view', user_name=request.user.username)
         else:
             print(user_form.errors)
-            messages.error(request, "something goes Wrong")
+            messages.error(request, _("Something went wrong."))
             return render(request, 'account/update_profile.html', {'user_form': user_form, 'user_profile': user_profile, 'profile_form': profile_form})
     return render(request, 'account/update_profile.html',{'user_profile': user_profile})
 
@@ -375,11 +376,11 @@ def update_artisan_profile_view(request: HttpRequest, user_name):
         return redirect('staff:update_staff_profile_view')
 
     if not request.user.is_authenticated:
-        messages.warning(request, 'You need to log in first.')
+        messages.warning(request, _('You need to log in first.'))
         return redirect('account:login_view')
 
     if user_name != request.user.username:
-        messages.warning(request, 'You are not allowed.')
+        messages.warning(request, _('You are not allowed.'))
         return redirect('main:home_view')
 
     user = get_object_or_404(User, username=user_name)
@@ -388,7 +389,7 @@ def update_artisan_profile_view(request: HttpRequest, user_name):
         return redirect('staff:update_staff_profile_view')
 
     if not user.groups.filter(name='artisan').exists():
-        messages.warning(request, 'You are not allowed.')
+        messages.warning(request, _('You are not allowed.'))
         return redirect('main:home_view')
 
     artisan_profile = get_object_or_404(ArtisanProfile, user=user)
@@ -408,10 +409,10 @@ def update_artisan_profile_view(request: HttpRequest, user_name):
 
                 profile.save()
 
-            messages.success(request, "Your artisan profile has been updated.")
+            messages.success(request, _("Your artisan profile has been updated."))
             return redirect('account:artisan_profile_view', user_name=user.username)
 
-        messages.error(request, "Something went wrong. Please check the form.")
+        messages.error(request, _("Something went wrong. Please check the form."))
         return render(
             request,
             'account/update_artisan_profile.html',
@@ -440,21 +441,21 @@ def update_artisan_profile_view(request: HttpRequest, user_name):
 
 def verify_phone_view(request: HttpRequest, user_name):
     if user_name != request.user.username:
-        messages.warning(request, 'You are not allowed')
+        messages.warning(request, _('You are not allowed.'))
         return redirect('main:home_view')
 
     user = get_object_or_404(User, username=user_name)
     user_profile = user.profile
 
     if not user_profile.phone:
-        messages.error(request, 'Please add your phone number first.')
+        messages.error(request, _('Please add your phone number first.'))
         return redirect('account:update_profile_view', user_name=user.username)
 
     if request.method == 'POST':
         code = request.POST.get('code')
 
         if not code:
-            messages.error(request, 'Please enter the verification code.')
+            messages.error(request, _('Please enter the verification code.'))
             return render(request, 'account/verify_phone.html', {
                 'user_profile': user_profile
             })
@@ -471,12 +472,12 @@ def verify_phone_view(request: HttpRequest, user_name):
             if verification_check.status == 'approved':
                 user_profile.is_phone_verified = True
                 user_profile.save()
-                messages.success(request, 'Your phone number has been verified successfully.')
+                messages.success(request, _('Your phone number has been verified successfully.'))
                 return redirect('account:profile_view', user_name=user.username)
             else:
-                messages.error(request, 'Invalid verification code.')
+                messages.error(request, _('Invalid verification code.'))
         except Exception as e:
-            messages.error(request, 'Verification failed. Please try again.')
+            messages.error(request, _('Verification failed. Please try again.'))
 
     return render(request, 'account/verified_phone.html', {
         'user_profile': user_profile
@@ -485,14 +486,14 @@ def verify_phone_view(request: HttpRequest, user_name):
 
 def send_phone_verification_view(request: HttpRequest, user_name):
     if user_name != request.user.username:
-        messages.warning(request, 'You are not allowed')
+        messages.warning(request, _('You are not allowed.'))
         return redirect('main:home_view')
 
     user = get_object_or_404(User, username=user_name)
     user_profile = user.profile
 
     if not user_profile.phone:
-        messages.error(request, 'Please add your phone number first.')
+        messages.error(request, _('Please add your phone number first.'))
         return redirect('account:update_profile_view', user_name=user.username)
 
     try:
@@ -501,11 +502,11 @@ def send_phone_verification_view(request: HttpRequest, user_name):
             to=str(user_profile.phone),
             channel='sms'
         )
-        messages.success(request, 'Verification code sent to your phone.')
+        messages.success(request, _('Verification code sent to your phone.'))
         return redirect('account:verify_phone_view', user_name=user.username)
     except Exception as e:
         print(e)
-        messages.error(request, 'Failed to send verification code.')
+        messages.error(request, _('Failed to send verification code.'))
         return redirect('account:profile_view', user_name=user.username)
 
 
@@ -518,16 +519,16 @@ def submit_review_view(request: HttpRequest, contract_id):
     )
 
     if request.user != contract.requester:
-        messages.warning(request, 'You are not allowed to review this project.')
+        messages.warning(request, _('You are not allowed to review this project.'))
         return redirect('main:home_view')
 
     if not contract.is_completed:
-        messages.warning(request, 'You can only leave a review after the project is completed.')
+        messages.warning(request, _('You can only leave a review after the project is completed.'))
         return redirect('progress:contract_detail_view', contract_id=contract_id)
 
     request_obj = contract.proposal.request
     if hasattr(request_obj, 'review'):
-        messages.warning(request, 'You have already submitted a review for this project.')
+        messages.warning(request, _('You have already submitted a review for this project.'))
         return redirect('workshop:workshop_detail_view', artisan_id=contract.artisan.id)
 
     if request.method == 'POST':
@@ -538,7 +539,7 @@ def submit_review_view(request: HttpRequest, contract_id):
             review.reviews_given = request.user
             review.reviews_received = contract.artisan
             review.save()
-            messages.success(request, 'Your review has been submitted. Thank you!')
+            messages.success(request, _('Your review has been submitted. Thank you!'))
             return redirect('workshop:workshop_detail_view', artisan_id=contract.artisan.id)
     else:
         form = ReviewForm()
@@ -568,7 +569,7 @@ def password_reset_view(request: HttpRequest):
                 email_template_name='account/password_reset_email.html',
                 subject_template_name='account/password_reset_subject.txt',
             )
-            messages.success(request, "Password reset email sent.")
+            messages.success(request, _("Password reset email sent."))
             return redirect('account:password_reset_done')
     else:
         form = PasswordResetForm()
@@ -696,7 +697,7 @@ def artisan_connect_stripe_view(request):
     try:
         profile = request.user.artisanprofile
     except ArtisanProfile.DoesNotExist:
-        messages.error(request, 'Artisan profile not found.')
+        messages.error(request, _('Artisan profile not found.'))
         return redirect('main:home_view')
 
     try:
@@ -751,11 +752,11 @@ def artisan_connect_stripe_refresh_view(request):
     try:
         profile = request.user.artisanprofile
     except ArtisanProfile.DoesNotExist:
-        messages.error(request, 'Artisan profile not found.')
+        messages.error(request, _('Artisan profile not found.'))
         return redirect('main:home_view')
 
     if not profile.stripe_connected_account_id:
-        messages.error(request, 'Stripe connected account not found.')
+        messages.error(request, _('Stripe connected account not found.'))
         return redirect('account:artisan_dashboard_view')
 
     try:
@@ -780,27 +781,27 @@ def artisan_connect_stripe_return_view(request):
     try:
         profile = request.user.artisanprofile
     except ArtisanProfile.DoesNotExist:
-        messages.error(request, 'Artisan profile not found.')
+        messages.error(request, _('Artisan profile not found.'))
         return redirect('main:home_view')
 
     if not profile.stripe_connected_account_id:
-        messages.error(request, 'Stripe connected account not found.')
+        messages.error(request, _('Stripe connected account not found.'))
         return redirect('account:artisan_dashboard_view')
 
     try:
         account = stripe.Account.retrieve(profile.stripe_connected_account_id)
 
         if account.details_submitted and account.payouts_enabled:
-            messages.success(request, 'Stripe payout setup completed successfully.')
+            messages.success(request, _('Stripe payout setup completed successfully.'))
         elif account.details_submitted:
             messages.warning(
                 request,
-                'Your Stripe account details were submitted, but payouts are not enabled yet.'
+                _('Your Stripe account details were submitted, but payouts are not enabled yet.')
             )
         else:
             messages.warning(
                 request,
-                'Stripe onboarding is not complete yet. Please finish the required details.'
+                _('Stripe onboarding is not complete yet. Please finish the required details.')
             )
 
     except stripe.error.StripeError as e:

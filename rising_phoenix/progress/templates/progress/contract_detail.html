@@ -1,5 +1,5 @@
 {% extends 'main/base.html' %}
-{% load static %}
+{% load static i18n %}
 
 {% block title %}Project — {{ contract.proposal.request.title }}{% endblock %}
 
@@ -16,7 +16,7 @@
     {# ── Header ── #}
     <header class="request-hero">
       <p class="request-eyebrow">
-        Project Workspace &bull;
+        {% trans "Project Workspace" %} &bull;
         <span class="progress-status-pill progress-status-pill--{{ contract.status }}">
           {{ contract.get_status_display }}
         </span>
@@ -24,46 +24,46 @@
       <h1 class="mb-1">{{ contract.proposal.request.title }}</h1>
       <p class="request-sub">
         {{ contract.proposal.request.category.name }} &bull;
-        Artisan: <strong>{{ contract.artisan.username }}</strong> &bull;
-        Agreed price: <strong>{{ contract.proposal.price|floatformat:"-2" }} SAR</strong> &bull;
-        Timeline: <strong>{{ contract.proposal.estimated_days }} day{{ contract.proposal.estimated_days|pluralize }}</strong>
+        {% blocktrans with username=contract.artisan.username %}Artisan: <strong>{{ username }}</strong>{% endblocktrans %} &bull;
+        {% blocktrans with price=contract.proposal.price|floatformat:"-2" %}Agreed price: <strong>{{ price }} SAR</strong>{% endblocktrans %} &bull;
+        {% blocktrans with days=contract.proposal.estimated_days %}Timeline: <strong>{{ days }} day{{ days|pluralize }}</strong>{% endblocktrans %}
       </p>
       <div class="progress-header-actions progress-header-actions--split">
         <div class="progress-header-nav">
           <a href="{% url 'request:request_detail_view' contract.proposal.request.id %}" class="proposal-action-btn">
-            <i class="bi bi-arrow-left"></i> Back to Request
+            <i class="bi bi-arrow-left"></i> {% trans "Back to Request" %}
           </a>
         </div>
         <div class="progress-header-role-actions">
           {% if contract.proposal.conversation %}
             <a href="{% url 'message:conversation_detail_view' contract.proposal.conversation.id %}" class="proposal-action-btn proposal-action-btn--chat">
-              <i class="bi bi-chat-dots-fill"></i> Open Chat
+              <i class="bi bi-chat-dots-fill"></i> {% trans "Open Chat" %}
             </a>
           {% elif is_requester %}
             <a href="{% url 'message:start_conversation_view' contract.proposal.id %}" class="proposal-action-btn proposal-action-btn--chat">
-              <i class="bi bi-chat-dots-fill"></i> Start Chat
+              <i class="bi bi-chat-dots-fill"></i> {% trans "Start Chat" %}
             </a>
           {% endif %}
           {% if is_artisan and not contract.is_completed %}
             <a href="#artisan-action-form" class="proposal-action-btn">
-              <i class="bi bi-pencil-square"></i> Post Update
+              <i class="bi bi-pencil-square"></i> {% trans "Post Update" %}
             </a>
           {% endif %}
           {% if is_requester and not contract.is_completed %}
             <a href="#requester-action-form" class="proposal-action-btn">
               <i class="bi bi-chat-square-text"></i>
-              {% if contract.is_completion_requested %}Send Back{% else %}Give Feedback{% endif %}
+              {% if contract.is_completion_requested %}{% trans "Send Back" %}{% else %}{% trans "Give Feedback" %}{% endif %}
             </a>
           {% endif %}
           {% if can_raise_dispute %}
             <a href="{% url 'dispute:raise_dispute_view' contract.id %}"
                class="proposal-action-btn proposal-action-btn--danger">
-              <i class="bi bi-exclamation-octagon"></i> Raise a Dispute
+              <i class="bi bi-exclamation-octagon"></i> {% trans "Raise a Dispute" %}
             </a>
           {% elif my_open_dispute %}
             <a href="{% url 'dispute:dispute_detail_view' my_open_dispute.id %}"
                class="proposal-action-btn">
-              <i class="bi bi-exclamation-octagon-fill"></i> View My Dispute
+              <i class="bi bi-exclamation-octagon-fill"></i> {% trans "View My Dispute" %}
             </a>
           {% endif %}
         </div>
@@ -74,11 +74,11 @@
     {% if contract.has_open_dispute %}
       <div class="progress-completion-banner" style="background:#fdecea;border-color:#f5c2c0;color:#8a1f1a;">
         <i class="bi bi-exclamation-octagon-fill"></i>
-        A dispute is open on this project. Completion actions are paused until staff resolves it.
+        {% trans "A dispute is open on this project. Completion actions are paused until staff resolves it." %}
         {% if my_open_dispute %}
           <a href="{% url 'dispute:dispute_detail_view' my_open_dispute.id %}"
              class="proposal-action-btn progress-banner-action" style="margin-left:12px;">
-            View My Dispute
+            {% trans "View My Dispute" %}
           </a>
         {% endif %}
       </div>
@@ -88,16 +88,16 @@
     {% if contract.is_completed %}
       <div class="progress-completion-banner">
         <i class="bi bi-check-circle-fill"></i>
-        Project completed on {{ contract.completed_at|date:"N j, Y" }}.
+        {% blocktrans with date=contract.completed_at|date:"N j, Y" %}Project completed on {{ date }}.{% endblocktrans %}
         {% if is_requester %}
           {% if contract.proposal.request.review %}
             <span class="progress-review-submitted">
-              <i class="bi bi-check-lg"></i> Review submitted
+              <i class="bi bi-check-lg"></i> {% trans "Review submitted" %}
             </span>
           {% else %}
             <a href="{% url 'account:submit_review_view' contract.id %}"
                class="proposal-action-btn proposal-action-btn--accept progress-banner-action">
-              <i class="bi bi-star-fill"></i> Leave a Review
+              <i class="bi bi-star-fill"></i> {% trans "Leave a Review" %}
             </a>
           {% endif %}
         {% endif %}
@@ -105,7 +105,7 @@
     {% endif %}
 
     {# ── Timeline ── #}
-    <h2 class="progress-section-title">Progress Timeline</h2>
+    <h2 class="progress-section-title">{% trans "Progress Timeline" %}</h2>
 
     {% if timeline %}
       <div class="progress-timeline">
@@ -128,19 +128,19 @@
                         <div class="progress-gallery-item">
                           <button type="button" class="progress-gallery-btn"
                             data-src="{{ img.image.url }}" data-caption="{{ img.caption }}"
-                            aria-label="View image {{ forloop.counter }}">
-                            <img src="{{ img.image.url }}" alt="Progress image {{ forloop.counter }}">
+                            aria-label="{% blocktrans with n=forloop.counter %}View image {{ n }}{% endblocktrans %}">
+                            <img src="{{ img.image.url }}" alt="{% blocktrans with n=forloop.counter %}Progress image {{ n }}{% endblocktrans %}">
                             {% if img.caption %}<span class="progress-gallery-caption">{{ img.caption }}</span>{% endif %}
                           </button>
                           {% if not contract.is_completed %}
                             {% if is_artisan %}
                               <button type="button" class="progress-include-btn"
                                 data-src="{{ img.image.url }}" data-target-zone="artisan"
-                                title="Add to your update">Add</button>
+                                title="{% trans "Add to your update" %}">{% trans "Add" %}</button>
                             {% elif is_requester %}
                               <button type="button" class="progress-include-btn"
                                 data-src="{{ img.image.url }}" data-target-zone="requester"
-                                title="Add to your response">Add</button>
+                                title="{% trans "Add to your response" %}">{% trans "Add" %}</button>
                             {% endif %}
                           {% endif %}
                         </div>
@@ -165,19 +165,19 @@
                                 <div class="progress-gallery-item">
                                   <button type="button" class="progress-gallery-btn"
                                     data-src="{{ img.image.url }}" data-caption="{{ img.caption }}"
-                                    aria-label="View image {{ forloop.counter }}">
-                                    <img src="{{ img.image.url }}" alt="Comment image {{ forloop.counter }}">
+                                    aria-label="{% blocktrans with n=forloop.counter %}View image {{ n }}{% endblocktrans %}">
+                                    <img src="{{ img.image.url }}" alt="{% blocktrans with n=forloop.counter %}Comment image {{ n }}{% endblocktrans %}">
                                     {% if img.caption %}<span class="progress-gallery-caption">{{ img.caption }}</span>{% endif %}
                                   </button>
                                   {% if not contract.is_completed %}
                                     {% if is_artisan %}
                                       <button type="button" class="progress-include-btn"
                                         data-src="{{ img.image.url }}" data-target-zone="artisan"
-                                        title="Add to your update">Add</button>
+                                        title="{% trans "Add to your update" %}">{% trans "Add" %}</button>
                                     {% elif is_requester %}
                                       <button type="button" class="progress-include-btn"
                                         data-src="{{ img.image.url }}" data-target-zone="requester"
-                                        title="Add to your response">Add</button>
+                                        title="{% trans "Add to your response" %}">{% trans "Add" %}</button>
                                     {% endif %}
                                   {% endif %}
                                 </div>
@@ -207,7 +207,7 @@
                     <i class="bi bi-check-circle-fill"></i>
                   {% endif %}
                   <span class="progress-event-label">{{ event.get_event_type_display }}</span>
-                  <span class="progress-event-actor">by {{ event.actor.username }}</span>
+                  <span class="progress-event-actor">{% blocktrans with username=event.actor.username %}by {{ username }}{% endblocktrans %}</span>
                   <span class="progress-event-date">{{ event.created_at|date:"N j, Y · g:i a" }}</span>
                 </div>
 
@@ -222,19 +222,19 @@
                         <div class="progress-gallery-item">
                           <button type="button" class="progress-gallery-btn"
                             data-src="{{ img.image.url }}" data-caption="{{ img.caption }}"
-                            aria-label="View image {{ forloop.counter }}">
-                            <img src="{{ img.image.url }}" alt="Event image {{ forloop.counter }}">
+                            aria-label="{% blocktrans with n=forloop.counter %}View image {{ n }}{% endblocktrans %}">
+                            <img src="{{ img.image.url }}" alt="{% blocktrans with n=forloop.counter %}Event image {{ n }}{% endblocktrans %}">
                             {% if img.caption %}<span class="progress-gallery-caption">{{ img.caption }}</span>{% endif %}
                           </button>
                           {% if not contract.is_completed %}
                             {% if is_artisan %}
                               <button type="button" class="progress-include-btn"
                                 data-src="{{ img.image.url }}" data-target-zone="artisan"
-                                title="Add to your update">Add</button>
+                                title="{% trans "Add to your update" %}">{% trans "Add" %}</button>
                             {% elif is_requester %}
                               <button type="button" class="progress-include-btn"
                                 data-src="{{ img.image.url }}" data-target-zone="requester"
-                                title="Add to your response">Add</button>
+                                title="{% trans "Add to your response" %}">{% trans "Add" %}</button>
                             {% endif %}
                           {% endif %}
                         </div>
@@ -251,7 +251,7 @@
     {% else %}
       <div class="progress-empty">
         <i class="bi bi-clock-history"></i>
-        <p>No updates yet. {% if is_artisan %}Post your first update below.{% else %}Check back soon.{% endif %}</p>
+        <p>{% trans "No updates yet." %} {% if is_artisan %}{% trans "Post your first update below." %}{% else %}{% trans "Check back soon." %}{% endif %}</p>
       </div>
     {% endif %}
 
@@ -259,20 +259,20 @@
     {% if is_artisan and not contract.is_completed %}
       <div class="progress-post-card" id="artisan-action-form">
         <div class="progress-post-top">
-          <h2 class="progress-section-title progress-section-title--flush">Post an Update</h2>
+          <h2 class="progress-section-title progress-section-title--flush">{% trans "Post an Update" %}</h2>
         </div>
         <form id="artisan-form" method="post" enctype="multipart/form-data">
           {% csrf_token %}
           <textarea name="body" class="progress-textarea" rows="3"
-            placeholder="Describe your progress... (optional if adding images)"></textarea>
+            placeholder="{% trans "Describe your progress... (optional if adding images)" %}"></textarea>
 
-          <label class="request-label progress-upload-label" for="id_artisan_images">Images (optional)</label>
-          <p class="field-hint">Upload new images, or tap <strong>Add</strong> on any image in the timeline above to include it here.</p>
+          <label class="request-label progress-upload-label" for="id_artisan_images">{% trans "Images (optional)" %}</label>
+          <p class="field-hint">{% blocktrans %}Upload new images, or tap <strong>Add</strong> on any image in the timeline above to include it here.{% endblocktrans %}</p>
           <div class="img-upload-zone" id="artisan-img-upload-zone">
             <input type="file" id="id_artisan_images" name="images"
                    class="img-upload-input" accept="image/*" multiple>
-            <p class="img-upload-text">Click or drag images here</p>
-            <p class="img-upload-sub">Up to 5 &bull; JPEG, PNG, WebP &bull; Mark up to highlight your work</p>
+            <p class="img-upload-text">{% trans "Click or drag images here" %}</p>
+            <p class="img-upload-sub">{% trans "Up to 5 · JPEG, PNG, WebP · Mark up to highlight your work" %}</p>
           </div>
           <p id="artisan-img-count-badge" class="img-count-badge" hidden></p>
           <div id="artisan-img-preview-grid" class="img-preview-grid" hidden></div>
@@ -280,16 +280,16 @@
           <div class="progress-artisan-actions">
             <button type="submit" class="request-action"
               formaction="{% url 'progress:post_update_view' contract.id %}">
-              <i class="bi bi-send"></i> Post Update
+              <i class="bi bi-send"></i> {% trans "Post Update" %}
             </button>
             {% if contract.is_in_progress and not contract.has_open_dispute %}
               <button type="submit" class="proposal-action-btn proposal-action-btn--accept"
                 formaction="{% url 'progress:request_completion_view' contract.id %}"
                 formnovalidate
-                data-confirm-title="Mark as Complete"
-                data-confirm-body="This will ask the requester to review and confirm completion."
+                data-confirm-title="{% trans "Mark as Complete" %}"
+                data-confirm-body="{% trans "This will ask the requester to review and confirm completion." %}"
                 data-confirm-variant="accept">
-                <i class="bi bi-check-lg"></i> Mark as Complete
+                <i class="bi bi-check-lg"></i> {% trans "Mark as Complete" %}
               </button>
             {% endif %}
           </div>
@@ -307,15 +307,15 @@
             <div>
               <p class="progress-action-hint">
                 <i class="bi bi-hourglass-split"></i>
-                <strong>{{ contract.artisan.username }}</strong> has marked this project as complete.
+                {% blocktrans with username=contract.artisan.username %}<strong>{{ username }}</strong> has marked this project as complete.{% endblocktrans %}
               </p>
               <form method="post" action="{% url 'progress:confirm_completion_view' contract.id %}">
                 {% csrf_token %}
                 <button type="submit" class="proposal-action-btn proposal-action-btn--accept"
-                  data-confirm-title="Confirm Complete"
-                  data-confirm-body="This project will be marked as complete. This cannot be undone."
+                  data-confirm-title="{% trans "Confirm Complete" %}"
+                  data-confirm-body="{% trans "This project will be marked as complete. This cannot be undone." %}"
                   data-confirm-variant="accept">
-                  <i class="bi bi-check-circle"></i> Confirm Complete
+                  <i class="bi bi-check-circle"></i> {% trans "Confirm Complete" %}
                 </button>
               </form>
             </div>
@@ -325,21 +325,21 @@
 
         {# Feedback / Send Back unified form #}
         <p class="progress-action-hint">
-          {% if contract.is_completion_requested %}Something needs fixing? Leave feedback or send it back.
-          {% else %}Have feedback on the latest update?{% endif %}
+          {% if contract.is_completion_requested %}{% trans "Something needs fixing? Leave feedback or send it back." %}
+          {% else %}{% trans "Have feedback on the latest update?" %}{% endif %}
         </p>
         <form id="requester-form" method="post" enctype="multipart/form-data">
           {% csrf_token %}
           <textarea name="body" class="progress-textarea" rows="3"
-            placeholder="{% if contract.is_completion_requested %}Describe what needs to be fixed... (optional if adding images){% else %}Leave your feedback... (optional if adding images){% endif %}"></textarea>
+            placeholder="{% if contract.is_completion_requested %}{% trans "Describe what needs to be fixed... (optional if adding images)" %}{% else %}{% trans "Leave your feedback... (optional if adding images)" %}{% endif %}"></textarea>
 
-          <label class="request-label progress-upload-label" for="id_requester_images">Images (optional)</label>
-          <p class="field-hint">Upload new images, or tap <strong>Add</strong> on any image in the timeline above to include it here.</p>
+          <label class="request-label progress-upload-label" for="id_requester_images">{% trans "Images (optional)" %}</label>
+          <p class="field-hint">{% blocktrans %}Upload new images, or tap <strong>Add</strong> on any image in the timeline above to include it here.{% endblocktrans %}</p>
           <div class="img-upload-zone" id="requester-img-upload-zone">
             <input type="file" id="id_requester_images" name="images"
                    class="img-upload-input" accept="image/*" multiple>
-            <p class="img-upload-text">Click or drag images here</p>
-            <p class="img-upload-sub">Up to 5 &bull; JPEG, PNG, WebP &bull; Annotate to show exactly what to fix</p>
+            <p class="img-upload-text">{% trans "Click or drag images here" %}</p>
+            <p class="img-upload-sub">{% trans "Up to 5 · JPEG, PNG, WebP · Annotate to show exactly what to fix" %}</p>
           </div>
           <p id="requester-img-count-badge" class="img-count-badge" hidden></p>
           <div id="requester-img-preview-grid" class="img-preview-grid" hidden></div>
@@ -348,13 +348,13 @@
             {% if latest_update_id %}
               <button type="submit" class="request-action"
                 formaction="{% url 'progress:add_comment_view' latest_update_id %}">
-                <i class="bi bi-chat"></i> Leave Feedback
+                <i class="bi bi-chat"></i> {% trans "Leave Feedback" %}
               </button>
             {% endif %}
             {% if contract.is_completion_requested %}
               <button type="submit" class="proposal-action-btn proposal-action-btn--danger"
                 formaction="{% url 'progress:reject_completion_view' contract.id %}">
-                <i class="bi bi-arrow-counterclockwise"></i> Send Back
+                <i class="bi bi-arrow-counterclockwise"></i> {% trans "Send Back" %}
               </button>
             {% endif %}
           </div>
@@ -370,36 +370,36 @@
 <div class="image-editor-modal" id="progress-image-editor-modal" hidden>
   <div class="image-editor-card">
     <div class="image-editor-head">
-      <p class="mb-0">Mark Up Image</p>
-      <button type="button" class="image-editor-close" id="progress-image-editor-close" aria-label="Close">&times;</button>
+      <p class="mb-0">{% trans "Mark Up Image" %}</p>
+      <button type="button" class="image-editor-close" id="progress-image-editor-close" aria-label="{% trans "Close" %}">&times;</button>
     </div>
-    <p class="image-editor-hint">Draw or highlight areas to annotate the image.</p>
+    <p class="image-editor-hint">{% trans "Draw or highlight areas to annotate the image." %}</p>
     <div class="image-editor-controls">
       <div class="editor-tool-group">
-        <button type="button" class="editor-tool-btn is-active" id="progress-editor-mode-draw">&#9998; Draw</button>
-        <button type="button" class="editor-tool-btn" id="progress-editor-mode-highlight">&#9744; Highlight</button>
+        <button type="button" class="editor-tool-btn is-active" id="progress-editor-mode-draw">&#9998; {% trans "Draw" %}</button>
+        <button type="button" class="editor-tool-btn" id="progress-editor-mode-highlight">&#9744; {% trans "Highlight" %}</button>
       </div>
       <div class="editor-color-group" id="progress-editor-color-group">
-        <button type="button" class="editor-color-swatch is-active" data-color="#e53935" style="background:#e53935;" title="Red"></button>
-        <button type="button" class="editor-color-swatch" data-color="#ff9800" style="background:#ff9800;" title="Orange"></button>
-        <button type="button" class="editor-color-swatch" data-color="#ffeb3b" style="background:#ffeb3b;" title="Yellow"></button>
-        <button type="button" class="editor-color-swatch" data-color="#43a047" style="background:#43a047;" title="Green"></button>
-        <button type="button" class="editor-color-swatch" data-color="#1e88e5" style="background:#1e88e5;" title="Blue"></button>
-        <button type="button" class="editor-color-swatch" data-color="#1c1712" style="background:#1c1712;" title="Black"></button>
+        <button type="button" class="editor-color-swatch is-active" data-color="#e53935" style="background:#e53935;" title="{% trans "Red" %}"></button>
+        <button type="button" class="editor-color-swatch" data-color="#ff9800" style="background:#ff9800;" title="{% trans "Orange" %}"></button>
+        <button type="button" class="editor-color-swatch" data-color="#ffeb3b" style="background:#ffeb3b;" title="{% trans "Yellow" %}"></button>
+        <button type="button" class="editor-color-swatch" data-color="#43a047" style="background:#43a047;" title="{% trans "Green" %}"></button>
+        <button type="button" class="editor-color-swatch" data-color="#1e88e5" style="background:#1e88e5;" title="{% trans "Blue" %}"></button>
+        <button type="button" class="editor-color-swatch" data-color="#1c1712" style="background:#1c1712;" title="{% trans "Black" %}"></button>
       </div>
       <div class="editor-tool-group" id="progress-editor-width-group">
-        <button type="button" class="editor-tool-btn is-active" id="progress-editor-width-thin">Thin</button>
-        <button type="button" class="editor-tool-btn" id="progress-editor-width-thick">Thick</button>
+        <button type="button" class="editor-tool-btn is-active" id="progress-editor-width-thin">{% trans "Thin" %}</button>
+        <button type="button" class="editor-tool-btn" id="progress-editor-width-thick">{% trans "Thick" %}</button>
       </div>
     </div>
     <div class="image-editor-canvas-wrap">
       <div id="progress-image-editor-host"></div>
     </div>
     <div class="image-editor-toolbar">
-      <button type="button" class="image-editor-btn image-editor-btn-primary" id="progress-editor-save">Save Edits</button>
-      <button type="button" class="image-editor-btn" id="progress-editor-undo">Undo</button>
-      <button type="button" class="image-editor-btn" id="progress-editor-clear-all">Clear All</button>
-      <button type="button" class="image-editor-btn" id="progress-editor-cancel">Cancel</button>
+      <button type="button" class="image-editor-btn image-editor-btn-primary" id="progress-editor-save">{% trans "Save Edits" %}</button>
+      <button type="button" class="image-editor-btn" id="progress-editor-undo">{% trans "Undo" %}</button>
+      <button type="button" class="image-editor-btn" id="progress-editor-clear-all">{% trans "Clear All" %}</button>
+      <button type="button" class="image-editor-btn" id="progress-editor-cancel">{% trans "Cancel" %}</button>
     </div>
   </div>
 </div>

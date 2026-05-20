@@ -58,22 +58,22 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-lg-3">
                     <li class="nav-item">
-                        <a class="nav-link saaf-nav-link {% if request.path == url_home %}active{% endif %}" href="{{ url_home }}">{% if LANGUAGE_CODE == 'ar' %}الرئيسية{% else %}Home{% endif %}</a>
+                        <a class="nav-link saaf-nav-link {% if request.path == url_home %}active{% endif %}" href="{{ url_home }}">{% trans "Home" %}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link saaf-nav-link {% if request.path == url_browse %}active{% endif %}" href="{{ url_browse }}">{% if LANGUAGE_CODE == 'ar' %}تصفح الحرفيين{% else %}Browse Artisans{% endif %}</a>
+                        <a class="nav-link saaf-nav-link {% if request.path == url_browse %}active{% endif %}" href="{{ url_browse }}">{% trans "Browse Artisans" %}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link saaf-nav-link {% if request.path == url_requests %}active{% endif %}" href="{{ url_requests }}">{% if LANGUAGE_CODE == 'ar' %}الطلبات{% else %}Requests{% endif %}</a>
+                        <a class="nav-link saaf-nav-link {% if request.path == url_requests %}active{% endif %}" href="{{ url_requests }}">{% trans "Requests" %}</a>
                     </li>
 
                     {% if request.user.is_authenticated %}
                         {% if request.user.artisanprofile %}
                             <li class="nav-item">
-                                <a class="nav-link saaf-nav-link" href="{% url 'workshop:workshop_detail_view' request.user.id %}">{% if LANGUAGE_CODE == 'ar' %}ورشتي{% else %}My Workshop{% endif %}</a>
+                                <a class="nav-link saaf-nav-link" href="{% url 'workshop:workshop_detail_view' request.user.id %}">{% trans "My Workshop" %}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link saaf-nav-link" href="{% url 'proposal:my_proposals_view' %}">{% if LANGUAGE_CODE == 'ar' %}عروضي{% else %}My Proposals{% endif %}</a>
+                                <a class="nav-link saaf-nav-link" href="{% url 'proposal:my_proposals_view' %}">{% trans "My Proposals" %}</a>
                             </li>
                         {% else %}
                             <li class="nav-item">
@@ -85,7 +85,7 @@
                         {% endif %}
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link saaf-nav-link" href="{% url 'account:artisan_signup_view' %}">{% if LANGUAGE_CODE == 'ar' %}انضم كحرفي{% else %}Become an Artisan{% endif %}</a>
+                            <a class="nav-link saaf-nav-link" href="{% url 'account:artisan_signup_view' %}">{% trans "Become an Artisan" %}</a>
                         </li>
                     {% endif %}
 
@@ -93,27 +93,27 @@
                     <li class="nav-item d-lg-none"><hr class="saaf-nav-divider"></li>
                     {% if request.user.is_staff %}
                         <li class="nav-item d-lg-none">
-                            <a class="nav-link saaf-nav-link" href="{% url 'staff:staff_dashboard_view' %}">{% if LANGUAGE_CODE == 'ar' %}لوحة الموظف{% else %}Staff Dashboard{% endif %}</a>
+                            <a class="nav-link saaf-nav-link" href="{% url 'staff:staff_dashboard_view' %}">{% trans "Staff Dashboard" %}</a>
                         </li>
                         <li class="nav-item d-lg-none">
-                            <a class="nav-link saaf-nav-link" href="{% url 'staff:staff_profile_view' %}">{% if LANGUAGE_CODE == 'ar' %}الملف الشخصي{% else %}Profile{% endif %}</a>
+                            <a class="nav-link saaf-nav-link" href="{% url 'staff:staff_profile_view' %}">{% trans "Profile" %}</a>
                         </li>
                     {% elif request.user.artisanprofile %}
                         <li class="nav-item d-lg-none">
-                            <a class="nav-link saaf-nav-link" href="{% url 'account:artisan_dashboard_view' %}">{% if LANGUAGE_CODE == 'ar' %}لوحة الحرفي{% else %}Artisan Dashboard{% endif %}</a>
+                            <a class="nav-link saaf-nav-link" href="{% url 'account:artisan_dashboard_view' %}">{% trans "Artisan Dashboard" %}</a>
                         </li>
                         <li class="nav-item d-lg-none">
-                            <a class="nav-link saaf-nav-link" href="{% url 'message:conversation_list_view' %}">{% if LANGUAGE_CODE == 'ar' %}الرسائل{% else %}Messages{% endif %}</a>
+                            <a class="nav-link saaf-nav-link" href="{% url 'message:conversation_list_view' %}">{% trans "Messages" %}</a>
                         </li>
                     {% else %}
                         <li class="nav-item d-lg-none">
-                            <a class="nav-link saaf-nav-link" href="{% url 'main:dashboard_view' %}">{% if LANGUAGE_CODE == 'ar' %}لوحة التحكم{% else %}Dashboard{% endif %}</a>
+                            <a class="nav-link saaf-nav-link" href="{% url 'main:dashboard_view' %}">{% trans "Dashboard" %}</a>
                         </li>
                         <li class="nav-item d-lg-none">
-                            <a class="nav-link saaf-nav-link" href="{% url 'message:conversation_list_view' %}">{% if LANGUAGE_CODE == 'ar' %}الرسائل{% else %}Messages{% endif %}</a>
+                            <a class="nav-link saaf-nav-link" href="{% url 'message:conversation_list_view' %}">{% trans "Messages" %}</a>
                         </li>
                         <li class="nav-item d-lg-none">
-                            <a class="nav-link saaf-nav-link" href="{% url 'account:profile_view' request.user.username %}">{% if LANGUAGE_CODE == 'ar' %}الملف الشخصي{% else %}Profile{% endif %}</a>
+                            <a class="nav-link saaf-nav-link" href="{% url 'account:profile_view' request.user.username %}">{% trans "Profile" %}</a>
                         </li>
                     {% endif %}
                     {% endif %}
@@ -148,10 +148,10 @@
                                 {% endif %}
                             </button>
                         </span>
-                        <a href="{% url 'account:logout_view' %}" class="btn btn-saaf-primary rounded-pill">{% if LANGUAGE_CODE == 'ar' %}تسجيل الخروج{% else %}Log out{% endif %}</a>
+                        <a href="{% url 'account:logout_view' %}" class="btn btn-saaf-primary rounded-pill">{% trans "Log out" %}</a>
                     {% else %}
-                        <a href="{% url 'account:login_view' %}" class="btn btn-saaf-outline">{% if LANGUAGE_CODE == 'ar' %}تسجيل الدخول{% else %}Log in{% endif %}</a>
-                        <a href="{% url 'account:signup_view' %}" class="btn btn-saaf-primary rounded-pill">{% if LANGUAGE_CODE == 'ar' %}إنشاء حساب{% else %}Sign up{% endif %}</a>
+                        <a href="{% url 'account:login_view' %}" class="btn btn-saaf-outline">{% trans "Log in" %}</a>
+                        <a href="{% url 'account:signup_view' %}" class="btn btn-saaf-primary rounded-pill">{% trans "Sign up" %}</a>
                     {% endif %}
                     {% endblock %}
                 </div>
@@ -201,27 +201,27 @@
                         </div>
                         <h5 class="brand-name mb-0">Saaf</h5>
                     </div>
-                    <p class="text-muted small">{% if LANGUAGE_CODE == 'ar' %}نربط الحرفيين السعوديين بالعملاء الباحثين عن قطع يدوية مخصصة.{% else %}Connecting Saudi artisans with customers seeking custom handmade pieces.{% endif %}</p>
+                    <p class="text-muted small">{% trans "Connecting Saudi artisans with customers seeking custom handmade pieces." %}</p>
                 </div>
 
                 <!-- Platform Links -->
                 <div class="col-md-3">
-                    <h6 class="mb-3 fw-bold">{% if LANGUAGE_CODE == 'ar' %}المنصة{% else %}Platform{% endif %}</h6>
+                    <h6 class="mb-3 fw-bold">{% trans "Platform" %}</h6>
                     <ul class="list-unstyled small">
                         <li class="mb-2"><a href="{% url 'main:home_view' %}" class="text-decoration-none saaf-footer-link">Home</a></li>
                         <li class="mb-2"><a href="{% url 'main:browse_view' %}" class="text-decoration-none saaf-footer-link">Browse Artisans</a></li>
                         <li class="mb-2"><a href="{% url 'request:request_list_view' %}" class="text-decoration-none saaf-footer-link">View Requests</a></li>
                         <li class="mb-2"><a href="{% url 'request:request_create_view' %}" class="text-decoration-none saaf-footer-link">Post a Request</a></li>
                         <li class="mb-2"><a href="{% url 'account:artisan_signup_view' %}" class="text-decoration-none saaf-footer-link">Become an Artisan</a></li>
-                        <li class="mb-2"><a href="{% url 'main:about_us_view' %}" class="text-decoration-none saaf-footer-link">{% if LANGUAGE_CODE == 'ar' %}من نحن{% else %}About Us{% endif %}</a></li>
-                        <li class="mb-2"><a href="{% url 'main:members_view' %}" class="text-decoration-none saaf-footer-link">{% if LANGUAGE_CODE == 'ar' %}الأعضاء{% else %}Members{% endif %}</a></li>
-                        <li class="mb-2"><a href="{% url 'main:terms_view' %}" class="text-decoration-none saaf-footer-link">{% if LANGUAGE_CODE == 'ar' %}الشروط والأحكام{% else %}Terms{% endif %}</a></li>
+                        <li class="mb-2"><a href="{% url 'main:about_us_view' %}" class="text-decoration-none saaf-footer-link">{% trans "About Us" %}</a></li>
+                        <li class="mb-2"><a href="{% url 'main:members_view' %}" class="text-decoration-none saaf-footer-link">{% trans "Members" %}</a></li>
+                        <li class="mb-2"><a href="{% url 'main:terms_view' %}" class="text-decoration-none saaf-footer-link">{% trans "Terms" %}</a></li>
                     </ul>
                 </div>
 
                 <!-- Account Links -->
                 <div class="col-md-3">
-                    <h6 class="mb-3 fw-bold">{% if LANGUAGE_CODE == 'ar' %}الحساب{% else %}Account{% endif %}</h6>
+                    <h6 class="mb-3 fw-bold">{% trans "Account" %}</h6>
                     <ul class="list-unstyled small">
                         {% if request.user.is_authenticated %}
                             <li class="mb-2"><a href="{% url 'message:conversation_list_view' %}" class="text-decoration-none saaf-footer-link">Messages</a></li>
@@ -241,7 +241,7 @@
 
                 <!-- Social -->
                 <div class="col-md-3">
-                    <h6 class="mb-3 fw-bold">{% if LANGUAGE_CODE == 'ar' %}تابعنا{% else %}Follow Us{% endif %}</h6>
+                    <h6 class="mb-3 fw-bold">{% trans "Follow Us" %}</h6>
                     <div class="d-flex gap-2">
                         <a href="{% url 'main:home_view' %}" class="saaf-social-icon" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
                         <a href="{% url 'main:home_view' %}" class="saaf-social-icon" aria-label="Twitter X"><i class="bi bi-twitter-x"></i></a>
@@ -260,181 +260,7 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-    (function () {
-        var lang = '{{ LANGUAGE_CODE }}';
-        function getCache() {
-            try {
-                return JSON.parse(localStorage.getItem('saaf-auto-i18n-ar') || '{}');
-            } catch (e) {
-                return {};
-            }
-        }
-
-        var cache = getCache();
-        var pending = {};
-        var saveTimer = null;
-
-        function saveCacheDebounced() {
-            if (saveTimer) clearTimeout(saveTimer);
-            saveTimer = setTimeout(function () {
-                try {
-                    localStorage.setItem('saaf-auto-i18n-ar', JSON.stringify(cache));
-                } catch (e) {}
-            }, 250);
-        }
-
-        function hasArabic(text) {
-            return /[\u0600-\u06FF]/.test(text || '');
-        }
-
-        function shouldTranslateText(text) {
-            if (!text) return false;
-            var v = text.trim();
-            if (!v) return false;
-            if (hasArabic(v)) return false;
-            if (/^\d+[\d\s.,:/-]*$/.test(v)) return false;
-            if (/^https?:\/\//i.test(v)) return false;
-            return true;
-        }
-
-        function translateRemote(text) {
-            if (!shouldTranslateText(text)) return Promise.resolve(text);
-            if (cache[text]) return Promise.resolve(cache[text]);
-            if (pending[text]) return pending[text];
-
-            var url = 'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(text) + '&langpair=en|ar';
-            pending[text] = fetch(url)
-                .then(function (r) { return r.json(); })
-                .then(function (data) {
-                    var translated = (data && data.responseData && data.responseData.translatedText) ? data.responseData.translatedText : text;
-                    if (!translated || translated.trim() === '') translated = text;
-                    cache[text] = translated;
-                    saveCacheDebounced();
-                    delete pending[text];
-                    return translated;
-                })
-                .catch(function () {
-                    delete pending[text];
-                    return text;
-                });
-
-            return pending[text];
-        }
-
-        function t(text) {
-            if (lang !== 'ar') return text;
-            return cache[text] || text;
-        }
-
-        function shouldSkipNode(node) {
-            if (!node || !node.parentElement) return true;
-            var tag = node.parentElement.tagName;
-            return tag === 'SCRIPT' || tag === 'STYLE' || tag === 'CODE' || tag === 'PRE';
-        }
-
-        function translateTextNode(node) {
-            if (!node || shouldSkipNode(node)) return;
-            var raw = node.nodeValue || '';
-            var trimmed = raw.trim();
-            if (!shouldTranslateText(trimmed)) return;
-
-            var cached = t(trimmed);
-            if (cached !== trimmed) {
-                node.nodeValue = raw.replace(trimmed, cached);
-                return;
-            }
-
-            translateRemote(trimmed).then(function (translated) {
-                if (!translated || translated === trimmed) return;
-                if (!node.nodeValue) return;
-                if (node.nodeValue.indexOf(trimmed) !== -1) {
-                    node.nodeValue = node.nodeValue.replace(trimmed, translated);
-                }
-            });
-        }
-
-        function translateAttr(el, attr) {
-            var value = el.getAttribute(attr);
-            if (!shouldTranslateText(value)) return;
-            var cached = t(value);
-            if (cached !== value) {
-                el.setAttribute(attr, cached);
-                return;
-            }
-            translateRemote(value).then(function (translated) {
-                if (translated && translated !== value) el.setAttribute(attr, translated);
-            });
-        }
-
-        function translateElement(el) {
-            if (!el || el.nodeType !== 1) return;
-            ['placeholder', 'title', 'aria-label'].forEach(function (attr) {
-                translateAttr(el, attr);
-            });
-
-            if (el.tagName === 'INPUT' && /^(submit|button|reset)$/i.test(el.type || '') && shouldTranslateText(el.value)) {
-                var value = el.value;
-                var cached = t(value);
-                if (cached !== value) {
-                    el.value = cached;
-                } else {
-                    translateRemote(value).then(function (translated) {
-                        if (translated && translated !== value) el.value = translated;
-                    });
-                }
-            }
-
-            if (el.tagName === 'OPTION' && shouldTranslateText(el.textContent)) {
-                var txt = el.textContent.trim();
-                var cachedOpt = t(txt);
-                if (cachedOpt !== txt) {
-                    el.textContent = cachedOpt;
-                } else {
-                    translateRemote(txt).then(function (translated) {
-                        if (translated && translated !== txt) el.textContent = translated;
-                    });
-                }
-            }
-        }
-
-        function translateSubtree(rootEl) {
-            if (lang !== 'ar' || !rootEl) return;
-            var walker = document.createTreeWalker(rootEl, NodeFilter.SHOW_TEXT, null);
-            var node;
-            while ((node = walker.nextNode())) {
-                translateTextNode(node);
-            }
-
-            if (rootEl.nodeType === 1) {
-                translateElement(rootEl);
-                rootEl.querySelectorAll('*').forEach(function (el) { translateElement(el); });
-            }
-        }
-
-        function startAutoTranslation() {
-            if (lang !== 'ar') return;
-            translateSubtree(document.body);
-
-            var observer = new MutationObserver(function (mutations) {
-                mutations.forEach(function (m) {
-                    if (m.type === 'characterData') {
-                        translateTextNode(m.target);
-                    }
-                    m.addedNodes.forEach(function (n) {
-                        if (n.nodeType === 1) translateSubtree(n);
-                        if (n.nodeType === 3) translateTextNode(n);
-                    });
-                });
-            });
-
-            observer.observe(document.body, { childList: true, subtree: true, characterData: true });
-        }
-
-        window.saafT = t;
-        document.addEventListener('DOMContentLoaded', startAutoTranslation);
-    })();
-    </script>
+    <script>try { localStorage.removeItem('saaf-auto-i18n-ar'); } catch(e) {}</script>
     <script>
     (function () {
         var root = document.documentElement;
@@ -641,8 +467,8 @@
         <p class="saaf-confirm-title" id="saaf-confirm-title-text"></p>
         <p class="saaf-confirm-body" id="saaf-confirm-body-text"></p>
         <div class="saaf-confirm-actions">
-                    <button type="button" class="saaf-confirm-cancel" id="saaf-confirm-cancel">{% if LANGUAGE_CODE == 'ar' %}إلغاء{% else %}Cancel{% endif %}</button>
-                    <button type="button" class="saaf-confirm-ok saaf-confirm-ok--default" id="saaf-confirm-ok">{% if LANGUAGE_CODE == 'ar' %}تأكيد{% else %}Confirm{% endif %}</button>
+                    <button type="button" class="saaf-confirm-cancel" id="saaf-confirm-cancel">{% trans "Cancel" %}</button>
+                    <button type="button" class="saaf-confirm-ok saaf-confirm-ok--default" id="saaf-confirm-ok">{% trans "Confirm" %}</button>
         </div>
       </div>
     </div>
@@ -677,7 +503,7 @@
         pendingForm   = btn.closest('form');
         pendingAction = btn.getAttribute('formaction') || null;
         openConfirm(
-                    btn.dataset.confirmTitle   || (window.saafT ? window.saafT('Are you sure?') : 'Are you sure?'),
+                    btn.dataset.confirmTitle   || SAAF_I18N.areYouSure,
           btn.dataset.confirmBody    || '',
           btn.dataset.confirmVariant || 'default'
         );
@@ -703,6 +529,19 @@
         if (e.key === 'Escape' && overlay.style.display !== 'none') closeConfirm();
       });
     })();
+    </script>
+
+    <!-- Server-rendered i18n strings for JS -->
+    <script>
+    var SAAF_I18N = {
+        notifications:        "{% trans 'Notifications' %}",
+        markAllRead:          "{% trans 'Mark all read' %}",
+        notificationSettings: "{% trans 'Notification settings' %}",
+        noNotificationsYet:   "{% trans 'No notifications yet.' %}",
+        viewAllNotifications: "{% trans 'View all notifications' %}",
+        justNow:              "{% trans 'just now' %}",
+        areYouSure:           "{% trans 'Are you sure?' %}"
+    };
     </script>
 
     <!-- Notification dropdown + polling -->
@@ -732,10 +571,11 @@
 
         function ago(iso) {
             var s = Math.floor((Date.now() - new Date(iso)) / 1000);
-            if (s < 60)    return window.saafT ? window.saafT('just now') : 'just now';
-            if (s < 3600)  return (window.saafT && '{{ LANGUAGE_CODE }}' === 'ar') ? ('منذ ' + Math.floor(s / 60) + ' د') : (Math.floor(s / 60) + 'm ago');
-            if (s < 86400) return (window.saafT && '{{ LANGUAGE_CODE }}' === 'ar') ? ('منذ ' + Math.floor(s / 3600) + ' س') : (Math.floor(s / 3600) + 'h ago');
-            return (window.saafT && '{{ LANGUAGE_CODE }}' === 'ar') ? ('منذ ' + Math.floor(s / 86400) + ' ي') : (Math.floor(s / 86400) + 'd ago');
+            var lang = '{{ LANGUAGE_CODE }}';
+            if (s < 60)    return SAAF_I18N.justNow;
+            if (s < 3600)  return lang === 'ar' ? ('منذ ' + Math.floor(s / 60) + ' د') : (Math.floor(s / 60) + 'm ago');
+            if (s < 86400) return lang === 'ar' ? ('منذ ' + Math.floor(s / 3600) + ' س') : (Math.floor(s / 3600) + 'h ago');
+            return lang === 'ar' ? ('منذ ' + Math.floor(s / 86400) + ' ي') : (Math.floor(s / 86400) + 'd ago');
         }
 
         function setBadge(count) {
@@ -761,12 +601,12 @@
             d.className = 'saaf-notif-dropdown';
 
             var hdr = '<div class="saaf-notif-dd-header">' +
-                      '<span class="saaf-notif-dd-title">' + (window.saafT ? window.saafT('Notifications') : 'Notifications') + '</span>' +
+                      '<span class="saaf-notif-dd-title">' + SAAF_I18N.notifications + '</span>' +
                       '<div class="saaf-notif-dd-header-actions">';
             if (count > 0) {
-                hdr += '<button class="saaf-notif-mark-btn" id="saaf-mark-all-btn">' + (window.saafT ? window.saafT('Mark all read') : 'Mark all read') + '</button>';
+                hdr += '<button class="saaf-notif-mark-btn" id="saaf-mark-all-btn">' + SAAF_I18N.markAllRead + '</button>';
             }
-            hdr += '<a href="' + SETTINGS_URL + '" class="saaf-notif-dd-settings-btn" title="' + (window.saafT ? window.saafT('Notification settings') : 'Notification settings') + '">' +
+            hdr += '<a href="' + SETTINGS_URL + '" class="saaf-notif-dd-settings-btn" title="' + SAAF_I18N.notificationSettings + '">' +
                    '<i class="bi bi-gear"></i></a>' +
                    '</div></div>';
             d.innerHTML = hdr;
@@ -776,7 +616,7 @@
 
             if (notifs.length === 0) {
                 list.innerHTML = '<div class="saaf-notif-dd-empty">' +
-                    '<i class="bi bi-bell-slash"></i><p>' + (window.saafT ? window.saafT('No notifications yet.') : 'No notifications yet.') + '</p></div>';
+                    '<i class="bi bi-bell-slash"></i><p>' + SAAF_I18N.noNotificationsYet + '</p></div>';
             } else {
                 notifs.forEach(function (n) {
                     var tag  = n.link ? 'a' : 'div';
@@ -808,7 +648,7 @@
             var footer = document.createElement('a');
             footer.className = 'saaf-notif-dd-footer';
             footer.href = LIST_URL;
-            footer.textContent = window.saafT ? window.saafT('View all notifications') : 'View all notifications';
+            footer.textContent = SAAF_I18N.viewAllNotifications;
             d.appendChild(footer);
 
             return d;

@@ -15,7 +15,7 @@ from message.models import Conversation, Message
 # Create your views here.
 
 def home_view(request:HttpRequest):
-    categories = Category.objects.order_by('name')[:6]
+    categories = Category.objects.exclude(name='Jewelry').order_by('name')[:5]
 
     is_artisan_user = (
         request.user.is_authenticated

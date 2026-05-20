@@ -1,4 +1,5 @@
 {% extends "main/base.html" %}
+{% load i18n %}
 
 {% block sidebar %}
 {% include 'main/_sidebar.html' with active='profile' %}
@@ -54,7 +55,7 @@
     <div class="container-lg">
         <div class="saaf-dashboard-card saaf-profile-shell rounded-4 p-3 p-md-4 p-lg-5">
             <div class="saaf-profile-hero">
-                <p class="saaf-eyebrow mb-2">Profile</p>
+                <p class="saaf-eyebrow mb-2">{% trans "Profile" %}</p>
 
                 <div class="saaf-profile-hero-main">
                     <div class="saaf-profile-avatar-wrap">
@@ -68,17 +69,17 @@
                     <div class="saaf-profile-heading-block">
                         <h1 class="saaf-section-title mb-2">{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</h1>
                         <p class="saaf-profile-username mb-1">@{{ user_profile.user.username }}</p>
-                        <p class="saaf-profile-joined mb-0">Joined {{ user_profile.user.date_joined|date:"F d, Y" }}</p>
+                        <p class="saaf-profile-joined mb-0">{% blocktrans with date=user_profile.user.date_joined|date:"F d, Y" %}Joined {{ date }}{% endblocktrans %}</p>
                     </div>
 
                     <div class="saaf-profile-status-list">
                         <span class="saaf-profile-pill">
                             <i class="bi bi-star-fill"></i>
-                            {{ avg_rating|default:"No ratings yet" }}
+                            {{ avg_rating|default:_("No ratings yet") }}
                         </span>
                         <span class="saaf-profile-pill {% if user_profile.is_phone_verified %}saaf-profile-pill--ok{% endif %}">
                             <i class="bi {% if user_profile.is_phone_verified %}bi-patch-check-fill{% else %}bi-patch-exclamation{% endif %}"></i>
-                            {% if user_profile.is_phone_verified %}Phone Verified{% else %}Phone Not Verified{% endif %}
+                            {% if user_profile.is_phone_verified %}{% trans "Phone Verified" %}{% else %}{% trans "Phone Not Verified" %}{% endif %}
                         </span>
                     </div>
                 </div>
@@ -87,61 +88,61 @@
             <div class="row g-3 g-md-4 mt-1">
                 <div class="col-sm-6 col-lg-3">
                     <div class="saaf-info-card saaf-profile-info-card h-100">
-                        <span class="saaf-info-label">Email</span>
-                        <p class="mb-0">{{ user_profile.user.email|default:"Not provided" }}</p>
+                        <span class="saaf-info-label">{% trans "Email" %}</span>
+                        <p class="mb-0">{{ user_profile.user.email|default:_("Not provided") }}</p>
                     </div>
                 </div>
 
                 <div class="col-sm-6 col-lg-3">
                     <div class="saaf-info-card saaf-profile-info-card h-100">
-                        <span class="saaf-info-label">Phone</span>
-                        <p class="mb-0">{{ user_profile.phone|default:"Not provided" }}</p>
+                        <span class="saaf-info-label">{% trans "Phone" %}</span>
+                        <p class="mb-0">{{ user_profile.phone|default:_("Not provided") }}</p>
                     </div>
                 </div>
 
                 <div class="col-sm-6 col-lg-3">
                     <div class="saaf-info-card saaf-profile-info-card h-100">
-                        <span class="saaf-info-label">City</span>
-                        <p class="mb-0">{{ user_profile.city|default:"Not provided" }}</p>
+                        <span class="saaf-info-label">{% trans "City" %}</span>
+                        <p class="mb-0">{{ user_profile.city|default:_("Not provided") }}</p>
                     </div>
                 </div>
 
                 <div class="col-sm-6 col-lg-3">
                     <div class="saaf-info-card saaf-profile-info-card h-100">
-                        <span class="saaf-info-label">Average Rating</span>
-                        <p class="mb-0">{{ avg_rating|default:"No ratings yet" }}</p>
+                        <span class="saaf-info-label">{% trans "Average Rating" %}</span>
+                        <p class="mb-0">{{ avg_rating|default:_("No ratings yet") }}</p>
                     </div>
                 </div>
             </div>
 
             <div class="saaf-profile-bio-card mt-4">
-                <h2 class="saaf-profile-subtitle mb-2">About</h2>
-                <p class="mb-0">{{ user_profile.bio|default:"No bio added yet." }}</p>
+                <h2 class="saaf-profile-subtitle mb-2">{% trans "About" %}</h2>
+                <p class="mb-0">{{ user_profile.bio|default:_("No bio added yet.") }}</p>
             </div>
 
             <div class="d-flex flex-wrap gap-2 mt-4 pt-1">
                 {% if request.user == user_profile.user %}
                 <a href="{% url 'account:update_profile_view' request.user.username %}" class="btn btn-saaf-primary rounded-pill d-inline-flex align-items-center gap-2">
                     <i class="bi bi-pencil-square"></i>
-                    Edit Profile
+                    {% trans "Edit Profile" %}
                 </a>
 
                 <a href="{% url 'payment:my_cards' %}" class="btn btn-saaf-outline rounded-pill d-inline-flex align-items-center gap-2">
                     <i class="bi bi-credit-card-2-front"></i>
-                    My Cards
+                    {% trans "My Cards" %}
                 </a>
 
                 {% if user_profile.phone and not user_profile.is_phone_verified %}
                 <a href="{% url 'account:send_phone_verification' request.user.username %}" class="btn btn-saaf-outline rounded-pill d-inline-flex align-items-center gap-2">
                     <i class="bi bi-patch-check"></i>
-                    Verify Phone
+                    {% trans "Verify Phone" %}
                 </a>
                 {% endif %}
                 {% endif %}
 
                 <a href="{% url 'main:dashboard_view' %}" class="btn btn-saaf-outline rounded-pill d-inline-flex align-items-center gap-2">
                     <i class="bi bi-arrow-left"></i>
-                    Back to Dashboard
+                    {% trans "Back to Dashboard" %}
                 </a>
             </div>
         </div>

@@ -1,4 +1,5 @@
 {% extends "main/base.html" %}
+{% load i18n %}
 
 {% block content %}
 <section class="py-5">
@@ -7,18 +8,18 @@
             <div class="col-md-6">
                 <div class="card shadow-sm border-0">
                     <div class="card-body p-4">
-                        <h1 class="h4 mb-3">Verify Phone</h1>
+                        <h1 class="h4 mb-3">{% trans "Verify Phone" %}</h1>
                         <p class="text-muted">
-                            We sent a verification code to <strong>{{ user_profile.phone }}</strong>.
+                            {% blocktrans with phone=user_profile.phone %}We sent a verification code to <strong>{{ phone }}</strong>.{% endblocktrans %}
                         </p>
 
                         <form method="post">
                             {% csrf_token %}
                             <div class="mb-3">
-                                <label for="code" class="form-label">Verification Code</label>
-                                <input type="text" name="code" id="code" class="form-control" placeholder="Enter OTP">
+                                <label for="code" class="form-label">{% trans "Verification Code" %}</label>
+                                <input type="text" name="code" id="code" class="form-control" placeholder="{% trans 'Enter OTP' %}">
                             </div>
-                            <button type="submit" class="btn btn-success">Verify</button>
+                            <button type="submit" class="btn btn-success">{% trans "Verify" %}</button>
                         </form>
                     </div>
                 </div>

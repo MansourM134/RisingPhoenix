@@ -1,6 +1,7 @@
 {% extends "main/base.html" %}
+{% load i18n %}
 
-{% block title %}Submit a Report{% endblock %}
+{% block title %}{% trans "Submit a Report" %}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -108,14 +109,12 @@
 {% block content %}
 <div class="report-shell">
     <div class="report-card">
-        <p class="report-eyebrow"><i class="bi bi-flag-fill"></i> Report Content</p>
-        <h1 class="report-title">Submit a Report</h1>
-        <p class="report-sub">
-            Our team will review your report and take appropriate action. All reports are confidential.
-        </p>
+        <p class="report-eyebrow"><i class="bi bi-flag-fill"></i> {% trans "Report Content" %}</p>
+        <h1 class="report-title">{% trans "Submit a Report" %}</h1>
+        <p class="report-sub">{% trans "Our team will review your report and take appropriate action. All reports are confidential." %}</p>
 
         <div class="target-box">
-            <strong>Reporting:</strong>
+            <strong>{% trans "Reporting:" %}</strong>
             {{ content_type|title|cut:"_" }}
             —
             <span class="text-muted">
@@ -155,11 +154,9 @@
 
             <div class="report-actions">
                 <button type="submit" class="btn-submit">
-                    <i class="bi bi-flag-fill"></i> Submit Report
+                    <i class="bi bi-flag-fill"></i> {% trans "Submit Report" %}
                 </button>
-                <a href="javascript:history.back()" class="btn-cancel">
-                    Cancel
-                </a>
+                <a href="javascript:history.back()" class="btn-cancel">{% trans "Cancel" %}</a>
             </div>
         </form>
     </div>

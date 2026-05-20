@@ -1,5 +1,5 @@
 {% extends 'main/base.html' %} 
-{% load static %}
+{% load static i18n %}
 
 
 {% block title %}Requests{% endblock %}
@@ -22,9 +22,9 @@
 <section class="browse-hero py-5">
     <div class="container-fluid px-0">
         <div class="text-center mx-auto browse-hero-content">
-            <h1 class="fw-bold mb-3">Browse Requests</h1>
+            <h1 class="fw-bold mb-3">{% trans "Browse Requests" %}</h1>
             <p class="text-muted mb-0">
-                Find project requests that match your craft and filter results quickly.
+                {% trans "Find project requests that match your craft and filter results quickly." %}
             </p>
         </div>
     </div>
@@ -38,24 +38,24 @@
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <div>
-                                <h5 class="fw-bold mb-1">Filter requests</h5>
-                                <p class="text-muted small mb-0">Refine results fast</p>
+                                <h5 class="fw-bold mb-1">{% trans "Filter requests" %}</h5>
+                                <p class="text-muted small mb-0">{% trans "Refine results fast" %}</p>
                             </div>
-                            <a href="{% url 'request:request_list_view' %}" class="btn btn-sm btn-saaf-outline rounded-pill">Reset</a>
+                            <a href="{% url 'request:request_list_view' %}" class="btn btn-sm btn-saaf-outline rounded-pill">{% trans "Reset" %}</a>
                         </div>
 
                         <div class="mb-4">
-                            <label for="id_q" class="form-label fw-semibold">Search</label>
+                            <label for="id_q" class="form-label fw-semibold">{% trans "Search" %}</label>
                             <div class="search-input-wrap">
                                 <i class="bi bi-search search-input-icon"></i>
-                                <input id="id_q" type="text" name="q" value="{{ current_q }}" class="form-control rounded-3 ps-5" placeholder="Title, description, requester">
+                                <input id="id_q" type="text" name="q" value="{{ current_q }}" class="form-control rounded-3 ps-5" placeholder="{% trans "Title, description, requester" %}">
                             </div>
                         </div>
 
                         <div class="mb-4">
-                            <label for="id_category" class="form-label fw-semibold">Category</label>
+                            <label for="id_category" class="form-label fw-semibold">{% trans "Category" %}</label>
                             <select id="id_category" name="category" class="form-select rounded-3">
-                                <option value="">All categories</option>
+                                <option value="">{% trans "All categories" %}</option>
                                 {% for category_item in category_choices %}
                                 <option value="{{ category_item.id }}" {% if current_category == category_item.id|stringformat:'s' %}selected{% endif %}>{{ category_item.name }}</option>
                                 {% endfor %}
@@ -63,9 +63,9 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="id_status" class="form-label fw-semibold">Status</label>
+                            <label for="id_status" class="form-label fw-semibold">{% trans "Status" %}</label>
                             <select id="id_status" name="status" class="form-select rounded-3">
-                                <option value="">All statuses</option>
+                                <option value="">{% trans "All statuses" %}</option>
                                 {% for value, label in status_choices %}
                                 <option value="{{ value }}" {% if current_status == value %}selected{% endif %}>{{ label }}</option>
                                 {% endfor %}
@@ -73,23 +73,23 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="id_sort" class="form-label fw-semibold">Sort by</label>
+                            <label for="id_sort" class="form-label fw-semibold">{% trans "Sort by" %}</label>
                             <select id="id_sort" name="sort" class="form-select rounded-3">
-                                <option value="newest" {% if current_sort == 'newest' %}selected{% endif %}>Newest first</option>
-                                <option value="oldest" {% if current_sort == 'oldest' %}selected{% endif %}>Oldest first</option>
-                                <option value="deadline_soon" {% if current_sort == 'deadline_soon' %}selected{% endif %}>Deadline soonest</option>
-                                <option value="budget_high" {% if current_sort == 'budget_high' %}selected{% endif %}>Highest budget</option>
-                                <option value="budget_low" {% if current_sort == 'budget_low' %}selected{% endif %}>Lowest budget</option>
+                                <option value="newest" {% if current_sort == 'newest' %}selected{% endif %}>{% trans "Newest first" %}</option>
+                                <option value="oldest" {% if current_sort == 'oldest' %}selected{% endif %}>{% trans "Oldest first" %}</option>
+                                <option value="deadline_soon" {% if current_sort == 'deadline_soon' %}selected{% endif %}>{% trans "Deadline soonest" %}</option>
+                                <option value="budget_high" {% if current_sort == 'budget_high' %}selected{% endif %}>{% trans "Highest budget" %}</option>
+                                <option value="budget_low" {% if current_sort == 'budget_low' %}selected{% endif %}>{% trans "Lowest budget" %}</option>
                             </select>
                         </div>
 
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-saaf-primary rounded-pill py-2">Apply Filters</button>
+                            <button type="submit" class="btn btn-saaf-primary rounded-pill py-2">{% trans "Apply Filters" %}</button>
                             {% if user.is_authenticated %}
                                 {% if current_mine == '1' %}
-                                <a href="{% url 'request:request_list_view' %}" class="btn btn-saaf-outline rounded-pill py-2">Show All Requests</a>
+                                <a href="{% url 'request:request_list_view' %}" class="btn btn-saaf-outline rounded-pill py-2">{% trans "Show All Requests" %}</a>
                                 {% else %}
-                                <a href="{% url 'request:request_list_view' %}?mine=1" class="btn btn-saaf-outline rounded-pill py-2">My Requests</a>
+                                <a href="{% url 'request:request_list_view' %}?mine=1" class="btn btn-saaf-outline rounded-pill py-2">{% trans "My Requests" %}</a>
                                 {% endif %}
                             {% endif %}
                         </div>
@@ -101,11 +101,11 @@
                 <div class="results-toolbar card border-0 shadow-sm rounded-4 mb-4">
                     <div class="card-body p-3 p-lg-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
                         <div>
-                            <h5 class="fw-bold mb-1">Available requests</h5>
-                            <p class="text-muted mb-0">{{ total_count }} result{{ total_count|pluralize }}</p>
+                            <h5 class="fw-bold mb-1">{% trans "Available requests" %}</h5>
+                            <p class="text-muted mb-0">{% blocktrans with count=total_count %}{{ count }} result{{ count|pluralize }}{% endblocktrans %}</p>
                         </div>
                         <div class="d-flex flex-wrap gap-2">
-                            {% if current_category %}<span class="badge rounded-pill active-filter-chip px-3 py-2">Category selected</span>{% endif %}
+                            {% if current_category %}<span class="badge rounded-pill active-filter-chip px-3 py-2">{% trans "Category selected" %}</span>{% endif %}
                             {% if current_status %}<span class="badge rounded-pill active-filter-chip px-3 py-2">{{ current_status }}</span>{% endif %}
                             {% if current_q %}<span class="badge rounded-pill active-filter-chip px-3 py-2">“{{ current_q }}”</span>{% endif %}
                         </div>
@@ -143,7 +143,7 @@
                                 </div>
 
                                 <h5 class="fw-bold mb-2">{{ project_request.title|truncatechars:60 }}</h5>
-                                <p class="text-muted small mb-2">by {{ project_request.requester.username }}</p>
+                                <p class="text-muted small mb-2">{% blocktrans with username=project_request.requester.username %}by {{ username }}{% endblocktrans %}</p>
                                 <p class="text-muted small mb-3">{{ project_request.description|truncatewords:16 }}</p>
 
                                 <div class="d-flex justify-content-between align-items-center small text-muted mb-3">
@@ -151,17 +151,17 @@
                                         {% if project_request.budget_max %}
                                         {{ project_request.budget_max|floatformat:"-2" }} SAR
                                         {% else %}
-                                        Budget flexible
+                                        {% trans "Budget flexible" %}
                                         {% endif %}
                                     </span>
-                                    <span>{{ project_request.proposal_count }} proposal{{ project_request.proposal_count|pluralize }}</span>
+                                    <span>{% blocktrans with count=project_request.proposal_count %}{{ count }} proposal{{ count|pluralize }}{% endblocktrans %}</span>
                                 </div>
 
                                 <div class="mt-auto d-grid gap-2">
                                     {% if user.is_authenticated and user == project_request.requester and project_request.status != 'closed' and project_request.status != 'time_ended' %}
-                                    <a href="{% url 'request:request_edit_view' project_request.id %}" class="btn btn-saaf-outline rounded-pill">Edit Request</a>
+                                    <a href="{% url 'request:request_edit_view' project_request.id %}" class="btn btn-saaf-outline rounded-pill">{% trans "Edit Request" %}</a>
                                     {% endif %}
-                                    <a href="{% url 'request:request_detail_view' project_request.id %}" class="btn btn-saaf-primary rounded-pill">View Details</a>
+                                    <a href="{% url 'request:request_detail_view' project_request.id %}" class="btn btn-saaf-primary rounded-pill">{% trans "View Details" %}</a>
                                 </div>
                             </div>
                         </div>
@@ -172,9 +172,9 @@
                 <div class="card border-0 shadow-sm rounded-4">
                     <div class="card-body text-center py-5 px-4">
                         <div class="mb-3"><i class="bi bi-search text-muted" style="font-size: 2.5rem;"></i></div>
-                        <h4 class="fw-bold mb-2">No requests found</h4>
-                        <p class="text-muted mb-3">Try changing your search terms or filters.</p>
-                        <a href="{% url 'request:request_list_view' %}" class="btn btn-saaf-outline rounded-pill px-4">Clear filters</a>
+                        <h4 class="fw-bold mb-2">{% trans "No requests found" %}</h4>
+                        <p class="text-muted mb-3">{% trans "Try changing your search terms or filters." %}</p>
+                        <a href="{% url 'request:request_list_view' %}" class="btn btn-saaf-outline rounded-pill px-4">{% trans "Clear filters" %}</a>
                     </div>
                 </div>
                 {% endif %}
@@ -182,24 +182,24 @@
                 {% if page_obj.has_other_pages %}
                 <div class="proposal-pagination-wrap mt-4">
                     <p class="proposal-pagination-count">
-                        Showing {{ page_obj.start_index }}–{{ page_obj.end_index }} of {{ page_obj.paginator.count }} request{{ page_obj.paginator.count|pluralize }}
+                        {% blocktrans with start=page_obj.start_index end=page_obj.end_index count=page_obj.paginator.count %}Showing {{ start }}–{{ end }} of {{ count }} request{{ count|pluralize }}{% endblocktrans %}
                     </p>
-                <nav aria-label="Requests pages">
+                <nav aria-label="{% trans "Requests pages" %}">
                     <ul class="pagination align-items-center flex-wrap gap-1 mb-0">
                         {% if page_obj.has_previous %}
                         <li class="page-item">
                             <a class="page-link saaf-page-link" href="?q={{ current_q|urlencode }}&category={{ current_category|urlencode }}&status={{ current_status|urlencode }}&sort={{ current_sort|urlencode }}&mine={{ current_mine|urlencode }}&page=1">
-                                <i class="bi bi-chevron-double-left me-1"></i> First
+                                <i class="bi bi-chevron-double-left me-1"></i> {% trans "First" %}
                             </a>
                         </li>
                         <li class="page-item">
                             <a class="page-link saaf-page-link" href="?q={{ current_q|urlencode }}&category={{ current_category|urlencode }}&status={{ current_status|urlencode }}&sort={{ current_sort|urlencode }}&mine={{ current_mine|urlencode }}&page={{ page_obj.previous_page_number }}">
-                                <i class="bi bi-chevron-left me-1"></i> Previous
+                                <i class="bi bi-chevron-left me-1"></i> {% trans "Previous" %}
                             </a>
                         </li>
                         {% else %}
-                        <li class="page-item disabled"><span class="page-link saaf-page-link"><i class="bi bi-chevron-double-left me-1"></i> First</span></li>
-                        <li class="page-item disabled"><span class="page-link saaf-page-link"><i class="bi bi-chevron-left me-1"></i> Previous</span></li>
+                        <li class="page-item disabled"><span class="page-link saaf-page-link"><i class="bi bi-chevron-double-left me-1"></i> {% trans "First" %}</span></li>
+                        <li class="page-item disabled"><span class="page-link saaf-page-link"><i class="bi bi-chevron-left me-1"></i> {% trans "Previous" %}</span></li>
                         {% endif %}
 
                         {% for num in page_obj.paginator.page_range %}
@@ -214,23 +214,23 @@
                             {% endif %}
                         {% endfor %}
                         <li class="page-item disabled d-none d-md-block">
-                            <span class="page-link saaf-page-link saaf-page-status">of {{ page_obj.paginator.num_pages }}</span>
+                            <span class="page-link saaf-page-link saaf-page-status">{% blocktrans with total=page_obj.paginator.num_pages %}of {{ total }}{% endblocktrans %}</span>
                         </li>
 
                         {% if page_obj.has_next %}
                         <li class="page-item">
                             <a class="page-link saaf-page-link" href="?q={{ current_q|urlencode }}&category={{ current_category|urlencode }}&status={{ current_status|urlencode }}&sort={{ current_sort|urlencode }}&mine={{ current_mine|urlencode }}&page={{ page_obj.next_page_number }}">
-                                Next <i class="bi bi-chevron-right ms-1"></i>
+                                {% trans "Next" %} <i class="bi bi-chevron-right ms-1"></i>
                             </a>
                         </li>
                         <li class="page-item">
                             <a class="page-link saaf-page-link" href="?q={{ current_q|urlencode }}&category={{ current_category|urlencode }}&status={{ current_status|urlencode }}&sort={{ current_sort|urlencode }}&mine={{ current_mine|urlencode }}&page={{ page_obj.paginator.num_pages }}">
-                                Last <i class="bi bi-chevron-double-right ms-1"></i>
+                                {% trans "Last" %} <i class="bi bi-chevron-double-right ms-1"></i>
                             </a>
                         </li>
                         {% else %}
-                        <li class="page-item disabled"><span class="page-link saaf-page-link">Next <i class="bi bi-chevron-right ms-1"></i></span></li>
-                        <li class="page-item disabled"><span class="page-link saaf-page-link">Last <i class="bi bi-chevron-double-right ms-1"></i></span></li>
+                        <li class="page-item disabled"><span class="page-link saaf-page-link">{% trans "Next" %} <i class="bi bi-chevron-right ms-1"></i></span></li>
+                        <li class="page-item disabled"><span class="page-link saaf-page-link">{% trans "Last" %} <i class="bi bi-chevron-double-right ms-1"></i></span></li>
                         {% endif %}
                     </ul>
                 </nav>

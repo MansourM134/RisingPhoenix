@@ -1,7 +1,7 @@
 {% extends "main/base.html" %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Review Contract{% endblock %}
+{% block title %}{% trans "Review Contract" %}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -116,23 +116,23 @@
                 <div class="card-body p-4 p-lg-5">
                     <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
                         <div>
-                            <p class="text-uppercase small text-muted fw-semibold mb-2">Contract Review</p>
-                            <h2 class="fw-bold mb-1">Review the contract details</h2>
+                            <p class="text-uppercase small text-muted fw-semibold mb-2">{% trans "Contract Review" %}</p>
+                            <h2 class="fw-bold mb-1">{% trans "Review the contract details" %}</h2>
                             <p class="text-muted mb-0">
-                                Review the requester’s original request and the accepted proposal details before approving the contract and starting the project.
+                                {% trans "Review the requester's original request and the accepted proposal details before approving the contract and starting the project." %}
                             </p>
                         </div>
 
                         <a href="{% url 'request:request_detail_view' request_id=project_request.id %}"
                            class="btn btn-outline-secondary rounded-pill">
-                            Back
+                            {% trans "Back" %}
                         </a>
                     </div>
 
                     <div class="border rounded-4 p-4 mb-4 bg-light-subtle">
                         <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
                             <div>
-                                <p class="text-muted small mb-2">Request</p>
+                                <p class="text-muted small mb-2">{% trans "Request" %}</p>
                                 <h4 class="fw-bold mb-2">{{ project_request.title }}</h4>
                                 {% if project_request.description %}
                                     <p class="text-muted mb-0">{{ project_request.description }}</p>
@@ -140,14 +140,14 @@
                             </div>
 
                             <span class="badge rounded-pill text-bg-light px-3 py-2">
-                                Contract #{{ contract.id }}
+                                {% blocktrans with id=contract.id %}Contract #{{ id }}{% endblocktrans %}
                             </span>
                         </div>
 
                         <div class="row g-3 mt-1">
                             <div class="col-md-4">
                                 <div class="border rounded-4 p-3 h-100 bg-white">
-                                    <p class="text-muted small mb-1">Requester</p>
+                                    <p class="text-muted small mb-1">{% trans "Requester" %}</p>
                                     <div class="fw-semibold">
                                         {{ project_request.requester.get_full_name|default:project_request.requester.username }}
                                     </div>
@@ -157,7 +157,7 @@
 
                             <div class="col-md-4">
                                 <div class="border rounded-4 p-3 h-100 bg-white">
-                                    <p class="text-muted small mb-1">Category</p>
+                                    <p class="text-muted small mb-1">{% trans "Category" %}</p>
                                     <div class="fw-semibold">{{ project_request.category.name }}</div>
                                 </div>
                             </div>
@@ -165,7 +165,7 @@
                             {% if project_request.deadline %}
                             <div class="col-md-4">
                                 <div class="border rounded-4 p-3 h-100 bg-white">
-                                    <p class="text-muted small mb-1">Deadline</p>
+                                    <p class="text-muted small mb-1">{% trans "Deadline" %}</p>
                                     <div class="fw-semibold">{{ project_request.deadline }}</div>
                                 </div>
                             </div>
@@ -176,13 +176,13 @@
                     {% with request_imgs=project_request.images.all %}
                         {% if request_imgs %}
                             <div class="mb-4">
-                                <p class="text-muted small mb-3">Request images</p>
+                                <p class="text-muted small mb-3">{% trans "Request images" %}</p>
                                 <div class="row g-3">
                                     {% for img in request_imgs %}
                                         <div class="col-6 col-md-4">
                                             <a href="{{ img.image.url }}" target="_blank" rel="noopener noreferrer" class="d-block text-decoration-none">
                                                 <img src="{{ img.image.url }}"
-                                                     alt="{{ img.caption|default:'Request image' }}"
+                                                     alt="{{ img.caption|default:_('Request image') }}"
                                                      class="img-fluid rounded-4 border"
                                                      style="width: 100%; height: 180px; object-fit: cover;">
                                             </a>
@@ -199,7 +199,7 @@
                     <div class="border rounded-4 p-4 mb-4">
                         <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
                             <div>
-                                <p class="text-muted small mb-2">Accepted proposal</p>
+                                <p class="text-muted small mb-2">{% trans "Accepted proposal" %}</p>
                                 <h5 class="fw-bold mb-1">
                                     {{ proposal.artisan.get_full_name|default:proposal.artisan.username }}
                                 </h5>
@@ -214,16 +214,16 @@
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <div class="border rounded-4 p-3 h-100 bg-light-subtle">
-                                    <p class="text-muted small mb-1">Estimated completion</p>
+                                    <p class="text-muted small mb-1">{% trans "Estimated completion" %}</p>
                                     <div class="fw-semibold">
-                                        {{ proposal.estimated_days }} day{{ proposal.estimated_days|pluralize }}
+                                        {% blocktrans with days=proposal.estimated_days %}{{ days }} day{{ days|pluralize }}{% endblocktrans %}
                                     </div>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="border rounded-4 p-3 h-100 bg-light-subtle">
-                                    <p class="text-muted small mb-1">Approved amount</p>
+                                    <p class="text-muted small mb-1">{% trans "Approved amount" %}</p>
                                     <div class="fw-semibold">
                                         {{ proposal.price|floatformat:2 }} SAR
                                     </div>
@@ -232,7 +232,7 @@
                         </div>
 
                         <div class="border rounded-4 p-4 bg-body-tertiary">
-                            <p class="text-muted small mb-2">Service details</p>
+                            <p class="text-muted small mb-2">{% trans "Service details" %}</p>
                             <div class="fw-medium" style="white-space: pre-wrap;">
                                 {{ proposal.message }}
                             </div>
@@ -242,13 +242,13 @@
                     {% with proposal_imgs=proposal.images.all %}
                         {% if proposal_imgs %}
                             <div class="mb-4">
-                                <p class="text-muted small mb-3">Proposal images</p>
+                                <p class="text-muted small mb-3">{% trans "Proposal images" %}</p>
                                 <div class="row g-3">
                                     {% for img in proposal_imgs %}
                                         <div class="col-6 col-md-4">
                                             <a href="{{ img.image.url }}" target="_blank" rel="noopener noreferrer" class="d-block text-decoration-none">
                                                 <img src="{{ img.image.url }}"
-                                                     alt="{{ img.caption|default:'Proposal image' }}"
+                                                     alt="{{ img.caption|default:_('Proposal image') }}"
                                                      class="img-fluid rounded-4 border"
                                                      style="width: 100%; height: 180px; object-fit: cover;">
                                             </a>
@@ -263,20 +263,19 @@
                     {% endwith %}
 
                     <div class="border rounded-4 p-4 mb-4 bg-light-subtle">
-                        <p class="text-muted small mb-2">Contract terms</p>
+                        <p class="text-muted small mb-2">{% trans "Contract terms" %}</p>
                         <p class="mb-2">
-                            The requester
-                            <strong>{{ project_request.requester.get_full_name|default:project_request.requester.username }}</strong>
-                            has approved this contract for the request
-                            "<strong>{{ project_request.title }}</strong>".
+                            {% blocktrans with requester=project_request.requester.get_full_name|default:project_request.requester.username title=project_request.title %}
+                            The requester <strong>{{ requester }}</strong> has approved this contract for the request "<strong>{{ title }}</strong>".
+                            {% endblocktrans %}
                         </p>
                         <p class="mb-2">
-                            You are expected to complete the agreed work within
-                            <strong>{{ proposal.estimated_days }} day{{ proposal.estimated_days|pluralize }}</strong>
-                            for <strong>{{ proposal.price|floatformat:2 }} SAR</strong>.
+                            {% blocktrans with days=proposal.estimated_days price=proposal.price|floatformat:2 %}
+                            You are expected to complete the agreed work within <strong>{{ days }} day{{ days|pluralize }}</strong> for <strong>{{ price }} SAR</strong>.
+                            {% endblocktrans %}
                         </p>
                         <p class="mb-0">
-                            If you accept, the contract will become active and work may begin under these terms.
+                            {% trans "If you accept, the contract will become active and work may begin under these terms." %}
                         </p>
                     </div>
 
@@ -284,10 +283,9 @@
                         <div class="d-flex gap-3 align-items-start">
                             <i class="bi bi-shield-check fs-4"></i>
                             <div>
-                                <h6 class="fw-bold mb-1">Before you accept</h6>
+                                <h6 class="fw-bold mb-1">{% trans "Before you accept" %}</h6>
                                 <p class="mb-0 small">
-                                    The requester has already approved this contract and authorized the payment hold.
-                                    If you accept, the contract becomes active and the project can begin.
+                                    {% trans "The requester has already approved this contract and authorized the payment hold. If you accept, the contract becomes active and the project can begin." %}
                                 </p>
                             </div>
                         </div>
@@ -299,43 +297,43 @@
         <div class="col-lg-4">
             <div class="card border-0 shadow-sm rounded-4 mb-4">
                 <div class="card-body p-4">
-                    <h5 class="fw-bold mb-4">Contract summary</h5>
+                    <h5 class="fw-bold mb-4">{% trans "Contract summary" %}</h5>
 
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="text-muted">Project budget</span>
+                        <span class="text-muted">{% trans "Project budget" %}</span>
                         <span class="fw-semibold">{{ proposal.price|floatformat:2 }} SAR</span>
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="text-muted">Estimated duration</span>
+                        <span class="text-muted">{% trans "Estimated duration" %}</span>
                         <span class="fw-semibold">
-                            {{ proposal.estimated_days }} day{{ proposal.estimated_days|pluralize }}
+                            {% blocktrans with days=proposal.estimated_days %}{{ days }} day{{ days|pluralize }}{% endblocktrans %}
                         </span>
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="text-muted">Payment status</span>
-                        <span class="fw-semibold text-success">Authorized</span>
+                        <span class="text-muted">{% trans "Payment status" %}</span>
+                        <span class="fw-semibold text-success">{% trans "Authorized" %}</span>
                     </div>
 
                     <hr>
 
                     <p class="text-muted small mb-0">
-                        The requester’s payment is currently on hold and reserved for this contract. It has not been captured yet.
+                        {% trans "The requester's payment is currently on hold and reserved for this contract. It has not been captured yet." %}
                     </p>
                 </div>
             </div>
 
             <div class="card border-0 shadow-sm rounded-4">
                 <div class="card-body p-4">
-                    <h5 class="fw-bold mb-3">Contract action</h5>
+                    <h5 class="fw-bold mb-3">{% trans "Contract action" %}</h5>
                     <p class="text-muted small mb-4">
-                        Accept this contract to confirm the project terms and begin the work, or reject it to cancel the payment hold.
+                        {% trans "Accept this contract to confirm the project terms and begin the work, or reject it to cancel the payment hold." %}
                     </p>
 
                     <div class="alert alert-warning border-0 rounded-4 mb-4">
                         <p class="mb-0 small">
-                            If you reject this contract, the requester’s payment hold will be canceled and the contract will not move forward.
+                            {% trans "If you reject this contract, the requester's payment hold will be canceled and the contract will not move forward." %}
                         </p>
                     </div>
 
@@ -350,12 +348,12 @@
                                    id="accept_terms"
                                    required>
                             <label class="form-check-label small text-muted" for="accept_terms">
-                                I have reviewed the contract details and agree to proceed with this project.
+                                {% trans "I have reviewed the contract details and agree to proceed with this project." %}
                             </label>
                         </div>
 
                         <button type="submit" class="btn btn-primary w-100 rounded-pill py-3 fw-semibold">
-                            Accept Contract
+                            {% trans "Accept Contract" %}
                         </button>
                     </form>
 
@@ -364,8 +362,8 @@
                         <button
                             type="submit"
                             class="btn btn-outline-danger w-100 rounded-pill py-3 fw-semibold"
-                            onclick="return confirm('Are you sure you want to reject this contract? This will cancel the payment hold.')">
-                            Reject Contract
+                            onclick="return confirm('{% trans "Are you sure you want to reject this contract? This will cancel the payment hold." %}')">
+                            {% trans "Reject Contract" %}
                         </button>
                     </form>
                 </div>

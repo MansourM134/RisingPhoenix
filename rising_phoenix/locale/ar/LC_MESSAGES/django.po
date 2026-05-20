@@ -1,0 +1,3382 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: RisingPhoenix 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-20 13:11\n"
+"PO-Revision-Date: 2026-05-20 13:11\n"
+"Last-Translator: \n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+msgid "..."
+msgstr "..."
+
+msgid "1. Acceptance of Terms"
+msgstr "1. قبول الشروط"
+
+msgid "2. Platform Usage"
+msgstr "2. استخدام المنصة"
+
+msgid "3. Accounts and Information"
+msgstr "3. الحسابات والمعلومات"
+
+msgid "4. Requests and Transactions"
+msgstr "4. الطلبات والمعاملات"
+
+msgid "5. Content and Intellectual Property"
+msgstr "5. المحتوى والملكية الفكرية"
+
+msgid "6. Prohibited Conduct"
+msgstr "6. السلوك المحظور"
+
+msgid "7. Limitation of Liability"
+msgstr "7. تحديد المسؤولية"
+
+msgid "8. Terms Updates"
+msgstr "8. تحديثات الشروط"
+
+msgid ""
+"A cleaner control center for your next steps, account shortcuts, and "
+"marketplace activity."
+msgstr "مركز تحكم أوضح لخطواتك التالية واختصارات الحساب ونشاط السوق."
+
+msgid "A dispute can only be opened on an active project."
+msgstr "لا يمكن فتح نزاع إلا على مشروع نشط."
+
+msgid ""
+"A dispute is open on this project. Completion actions are paused until staff"
+" resolves it."
+msgstr ""
+"هناك نزاع مفتوح على هذا المشروع. إجراءات الإكمال موقوفة حتى يحله الفريق."
+
+msgid ""
+"A tighter command center for moderation, artisan management, reporting, and "
+"category maintenance."
+msgstr "مركز تحكم متكامل للإشراف وإدارة الحرفيين والتقارير والفئات."
+
+msgid "AI Suggestion Review"
+msgstr "مراجعة اقتراح الذكاء الاصطناعي"
+
+msgid "AI suggestion (editable)"
+msgstr "اقتراح الذكاء الاصطناعي (قابل للتعديل)"
+
+msgid "About"
+msgstr "عن المنصة"
+
+msgid "About Us"
+msgstr "من نحن"
+
+msgid "About Workshop"
+msgstr "عن الورشة"
+
+msgid "Accept"
+msgstr "قبول"
+
+msgid "Accept Contract"
+msgstr "قبول العقد"
+
+msgid ""
+"Accept this contract to confirm the project terms and begin the work, or "
+"reject it to cancel the payment hold."
+msgstr ""
+"اقبل هذا العقد لتأكيد شروط المشروع والبدء في العمل، أو ارفضه لإلغاء حجز "
+"الدفع."
+
+msgid "Acceptance Record"
+msgstr "سجل القبول"
+
+msgid "Accepted proposal"
+msgstr "عرض مقبول"
+
+msgid "Account"
+msgstr "الحساب"
+
+msgid "Account Focus"
+msgstr "محور الحساب"
+
+msgid "Action"
+msgstr "الإجراء"
+
+msgid "Active"
+msgstr "نشط"
+
+msgid "Active Orders"
+msgstr "الطلبات النشطة"
+
+msgid "Active Requests"
+msgstr "الطلبات النشطة"
+
+msgid "Active orders"
+msgstr "الطلبات النشطة"
+
+msgid "Add"
+msgstr "إضافة"
+
+msgid "Add Card"
+msgstr "إضافة بطاقة"
+
+msgid "Add Category"
+msgstr "إضافة فئة"
+
+msgid "Add New Card"
+msgstr "إضافة بطاقة جديدة"
+
+msgid "Add New Images"
+msgstr "إضافة صور جديدة"
+
+msgid "Add Your First Card"
+msgstr "أضف بطاقتك الأولى"
+
+msgid "Add a Card"
+msgstr "إضافة بطاقة"
+
+msgid ""
+"Add a bio, portfolio images, and your craft categories to stand out to "
+"requesters."
+msgstr "أضف نبذة عنك وصور أعمالك وفئات حرفتك لتبرز أمام أصحاب الطلبات."
+
+msgid ""
+"Add a card now so you can use it later during checkout and contract "
+"payments."
+msgstr "أضف بطاقة الآن لاستخدامها لاحقاً عند الدفع وسداد قيمة العقود."
+
+msgid "Add a payment method to authorize the payment hold and continue."
+msgstr "أضف طريقة دفع لتفويض حجز الدفع والمتابعة."
+
+msgid "Add images"
+msgstr "إضافة صور"
+
+msgid "Add images (optional)"
+msgstr "إضافة صور (اختياري)"
+
+msgid "Add new card"
+msgstr "إضافة بطاقة جديدة"
+
+msgid "Add to your response"
+msgstr "أضف إلى ردك"
+
+msgid "Add to your update"
+msgstr "أضف إلى تحديثك"
+
+msgid "Admin"
+msgstr "المشرف"
+
+msgid "After"
+msgstr "بعد"
+
+msgid ""
+"After you approve this contract, the agreed amount will be authorized on "
+"your card as a payment hold. The artisan must still review and accept the "
+"contract before the project officially begins."
+msgstr ""
+"بعد موافقتك على هذا العقد، سيُفوَّض المبلغ المتفق عليه على بطاقتك كحجز "
+"للدفع. يجب على الحرفي مراجعة العقد وقبوله قبل البدء الرسمي في المشروع."
+
+msgid "Agreed Price"
+msgstr "السعر المتفق عليه"
+
+msgid "Agreed amount"
+msgstr "المبلغ المتفق عليه"
+
+msgid "All"
+msgstr "الكل"
+
+msgid "All categories"
+msgstr "جميع الفئات"
+
+msgid "All caught up"
+msgstr "اطلعت على كل شيء"
+
+msgid "All cities"
+msgstr "جميع المدن"
+
+msgid "All closed requests linked to your accepted proposals."
+msgstr "جميع الطلبات المغلقة المرتبطة بعروضك المقبولة."
+
+msgid ""
+"All payments are held securely and released only after your approval of the "
+"finished work."
+msgstr ""
+"جميع المدفوعات محتجزة بأمان ولا تُحرر إلا بعد موافقتك على العمل المنجز."
+
+msgid ""
+"All platform branding, designs, and content are protected by intellectual "
+"property rights. Reuse or reproduction without prior permission is not "
+"allowed."
+msgstr ""
+"جميع العلامات التجارية والتصاميم والمحتوى الخاص بالمنصة محمية بحقوق الملكية "
+"الفكرية. لا يُسمح بإعادة الاستخدام أو الاستنساخ دون إذن مسبق."
+
+msgid "All requester accounts"
+msgstr "جميع حسابات أصحاب الطلبات"
+
+msgid "All statuses"
+msgstr "جميع الحالات"
+
+msgid "All the custom requests you have posted."
+msgstr "جميع الطلبات المخصصة التي نشرتها."
+
+msgid "Already have an account?"
+msgstr "لديك حساب بالفعل؟"
+
+msgid "Amount"
+msgstr "المبلغ"
+
+msgid "Amount to authorize"
+msgstr "المبلغ المراد تفويضه"
+
+msgid "Another was selected"
+msgstr "تم اختيار آخر"
+
+msgid "Appear in the bell icon in the navbar."
+msgstr "تظهر في أيقونة الجرس في شريط التنقل."
+
+msgid "Apply Filters"
+msgstr "تطبيق الفلاتر"
+
+msgid "Approve Contract & Authorize Hold"
+msgstr "الموافقة على العقد وتفويض الحجز"
+
+msgid "Approved amount"
+msgstr "المبلغ المعتمد"
+
+msgid "Approved artisan profiles"
+msgstr "ملفات الحرفيين المعتمدة"
+
+msgid "Arabic"
+msgstr "العربية"
+
+msgid "Are you a Saudi craftsperson?"
+msgstr "هل أنت حرفي سعودي؟"
+
+msgid "Are you sure you want to delete this image?"
+msgstr "هل أنت متأكد أنك تريد حذف هذه الصورة؟"
+
+msgid ""
+"Are you sure you want to reject this contract? This will cancel the payment "
+"hold."
+msgstr "هل أنت متأكد أنك تريد رفض هذا العقد؟ سيؤدي ذلك إلى إلغاء حجز الدفع."
+
+msgid "Are you sure?"
+msgstr "هل أنت متأكد؟"
+
+msgid "Are your artisan?"
+msgstr "هل أنت حرفي؟"
+
+msgid "Artisan"
+msgstr "حرفي"
+
+msgid "Artisan (Service Provider)"
+msgstr "الحرفي (مقدم الخدمة)"
+
+msgid "Artisan Acceptance"
+msgstr "قبول الحرفي"
+
+msgid "Artisan Account"
+msgstr "حساب الحرفي"
+
+msgid "Artisan Dashboard"
+msgstr "لوحة تحكم الحرفي"
+
+msgid "Artisan Profile"
+msgstr "ملف الحرفي"
+
+msgid "Artisan Sign Up"
+msgstr "تسجيل الحرفي"
+
+msgid "Artisan payout actions"
+msgstr "إجراءات صرف مستحقات الحرفي"
+
+msgid "Artisan profile not found."
+msgstr "لم يُعثر على ملف الحرفي."
+
+msgid "Artisan proposal"
+msgstr "عرض الحرفي"
+
+msgid "Artisan:"
+msgstr "الحرفي:"
+
+msgid "Artisans"
+msgstr "الحرفيون"
+
+msgid "Attach image"
+msgstr "إرفاق صورة"
+
+msgid "Authorized"
+msgstr "مُفوَّض"
+
+msgid "Available"
+msgstr "متاح"
+
+msgid "Available artisans"
+msgstr "الحرفيون المتاحون"
+
+msgid "Available requests"
+msgstr "الطلبات المتاحة"
+
+msgid "Avatar"
+msgstr "الصورة الشخصية"
+
+msgid "Average Rating"
+msgstr "متوسط التقييم"
+
+msgid "Average rating"
+msgstr "متوسط التقييم"
+
+msgid "Awaiting Confirmation"
+msgstr "في انتظار التأكيد"
+
+msgid "Awaiting staff resolution"
+msgstr "في انتظار حل الفريق"
+
+msgid "Back"
+msgstr "رجوع"
+
+msgid "Back to Conversations"
+msgstr "العودة إلى المحادثات"
+
+msgid "Back to Dashboard"
+msgstr "العودة إلى لوحة التحكم"
+
+msgid "Back to Login"
+msgstr "العودة إلى تسجيل الدخول"
+
+msgid "Back to My Workshop"
+msgstr "العودة إلى ورشتي"
+
+msgid "Back to Profile"
+msgstr "العودة إلى الملف الشخصي"
+
+msgid "Back to Request"
+msgstr "العودة إلى الطلب"
+
+msgid "Back to Workshop"
+msgstr "العودة إلى الورشة"
+
+msgid "Back to browse"
+msgstr "العودة إلى التصفح"
+
+msgid "Back to disputes"
+msgstr "العودة إلى النزاعات"
+
+msgid "Back to login"
+msgstr "العودة إلى تسجيل الدخول"
+
+msgid "Back to notifications"
+msgstr "العودة إلى الإشعارات"
+
+msgid "Back to project"
+msgstr "العودة إلى المشروع"
+
+msgid "Ban"
+msgstr "حظر"
+
+msgid "Ban Action"
+msgstr "إجراء الحظر"
+
+msgid "Ban Reason"
+msgstr "سبب الحظر"
+
+msgid "Ban and restore access when needed."
+msgstr "احظر واستعد الوصول عند الحاجة."
+
+msgid "Banned"
+msgstr "محظور"
+
+msgid "Banned Artisans"
+msgstr "الحرفيون المحظورون"
+
+msgid "Banned Users"
+msgstr "المستخدمون المحظورون"
+
+msgid "Become an Artisan"
+msgstr "انضم كحرفي"
+
+msgid "Become an artisan"
+msgstr "انضم كحرفي"
+
+msgid "Before"
+msgstr "قبل"
+
+msgid "Before you accept"
+msgstr "قبل أن تقبل"
+
+msgid "Bio"
+msgstr "نبذة شخصية"
+
+msgid "Black"
+msgstr "أسود"
+
+msgid "Blue"
+msgstr "أزرق"
+
+msgid "Browse Artisans"
+msgstr "تصفح الحرفيين"
+
+msgid "Browse Requests"
+msgstr "تصفح الطلبات"
+
+msgid "Browse Workshops"
+msgstr "تصفح الورش"
+
+msgid "Browse active customer requests and spot the next fit for your craft."
+msgstr "تصفح طلبات العملاء النشطة واعثر على الطلب المناسب لحرفتك."
+
+msgid "Browse all"
+msgstr "تصفح الكل"
+
+msgid "Browse artisans pages"
+msgstr "تصفح صفحات الحرفيين"
+
+msgid ""
+"Browse open requests from clients across Saudi Arabia, submit your proposal "
+"with a price and timeline, and get paid securely once delivery is confirmed."
+msgstr ""
+"تصفح الطلبات المفتوحة من العملاء في جميع أنحاء المملكة العربية السعودية، "
+"وقدّم عرضك بسعر وجدول زمني، واحصل على دفعتك بأمان عند تأكيد التسليم."
+
+msgid "Browse requests"
+msgstr "تصفح الطلبات"
+
+msgid "Budget"
+msgstr "الميزانية"
+
+msgid "Budget flexible"
+msgstr "الميزانية مرنة"
+
+msgid ""
+"By continuing, you approve these terms and authorize a payment hold. The "
+"artisan will review the contract next before work begins."
+msgstr ""
+"بالمتابعة، توافق على هذه الشروط وتُفوّض حجز الدفع. سيراجع الحرفي العقد بعد "
+"ذلك قبل البدء في العمل."
+
+msgid ""
+"By using Saaf, you agree to comply with these Terms and Conditions. If you "
+"do not agree with any part, you should stop using the platform."
+msgstr ""
+"باستخدامك لسعف، توافق على الالتزام بهذه الشروط والأحكام. إذا لم توافق على أي"
+" جزء، يجب عليك التوقف عن استخدام المنصة."
+
+msgid "Cancel"
+msgstr "إلغاء"
+
+msgid "Canceled"
+msgstr "ملغى"
+
+msgid "Caption"
+msgstr "التسمية التوضيحية"
+
+msgid "Caption contains inappropriate language. Please revise it."
+msgstr "التسمية التوضيحية تحتوي على لغة غير لائقة. يرجى مراجعتها."
+
+msgid "Card number"
+msgstr "رقم البطاقة"
+
+msgid "Card removed successfully."
+msgstr "تمت إزالة البطاقة بنجاح."
+
+msgid "Catalog"
+msgstr "الكتالوج"
+
+msgid "Categories"
+msgstr "الفئات"
+
+msgid "Category"
+msgstr "الفئة"
+
+msgid "Category name"
+msgstr "اسم الفئة"
+
+msgid "Category name cannot be empty."
+msgstr "لا يمكن أن يكون اسم الفئة فارغاً."
+
+msgid "Category selected"
+msgstr "تم اختيار الفئة"
+
+msgid "Change Password"
+msgstr "تغيير كلمة المرور"
+
+msgid "Check Your Email"
+msgstr "تحقق من بريدك الإلكتروني"
+
+msgid "Check back soon."
+msgstr "تفقد المنصة قريباً."
+
+msgid "Choose Your Artisan"
+msgstr "اختر حرفيك"
+
+msgid "Choose a username"
+msgstr "اختر اسم مستخدم"
+
+msgid "Choose how and when you want to be notified."
+msgstr "اختر كيف ومتى تريد أن تُبلَّغ."
+
+msgid "City"
+msgstr "المدينة"
+
+msgid "City A-Z"
+msgstr "المدينة أ-ي"
+
+msgid "City Z-A"
+msgstr "المدينة ي-أ"
+
+msgid "Clear"
+msgstr "مسح"
+
+msgid "Clear All"
+msgstr "مسح الكل"
+
+msgid "Clear filters"
+msgstr "مسح الفلاتر"
+
+msgid "Click or drag images here"
+msgstr "انقر أو اسحب الصور هنا"
+
+msgid "Close"
+msgstr "إغلاق"
+
+msgid "Closed"
+msgstr "مغلق"
+
+msgid "Closed Requests"
+msgstr "الطلبات المغلقة"
+
+msgid ""
+"Commission something made for you, by a real <span class=\"saaf-text-"
+"accent\">artisan</span>."
+msgstr ""
+"اطلب شيئاً مصنوعاً خصيصاً لك، بيد <span class=\"saaf-text-"
+"accent\">حرفي</span> حقيقي."
+
+msgid "Complete Your Profile"
+msgstr "أكمل ملفك الشخصي"
+
+msgid "Completed"
+msgstr "مكتمل"
+
+msgid "Completed Jobs"
+msgstr "الأعمال المكتملة"
+
+msgid "Completed Orders"
+msgstr "الطلبات المكتملة"
+
+msgid "Completed Projects"
+msgstr "المشاريع المكتملة"
+
+msgid "Completed Requests"
+msgstr "الطلبات المكتملة"
+
+msgid "Completed orders"
+msgstr "الطلبات المكتملة"
+
+msgid "Completed project created. You can now upload project images."
+msgstr "تم إنشاء المشروع المكتمل. يمكنك الآن رفع صور المشروع."
+
+msgid "Completion can only be requested while the project is in progress."
+msgstr "لا يمكن طلب الإكمال إلا عندما يكون المشروع قيد التنفيذ."
+
+msgid "Completion requested. Waiting for the requester to confirm."
+msgstr "تم طلب الإكمال. في انتظار تأكيد صاحب الطلب."
+
+msgid "Confirm"
+msgstr "تأكيد"
+
+msgid "Confirm Complete"
+msgstr "تأكيد الإكمال"
+
+msgid "Confirm Password"
+msgstr "تأكيد كلمة المرور"
+
+msgid "Confirm new password"
+msgstr "تأكيد كلمة المرور الجديدة"
+
+msgid "Confirm password"
+msgstr "تأكيد كلمة المرور"
+
+msgid "Confirm your password"
+msgstr "أكد كلمة مرورك"
+
+msgid "Connect Stripe"
+msgstr "ربط Stripe"
+
+msgid "Connect Stripe to receive earnings and payouts to your bank account."
+msgstr "اربط Stripe لاستلام أرباحك ومدفوعاتك في حسابك البنكي."
+
+msgid ""
+"Connecting Saudi artisans with customers seeking custom handmade pieces."
+msgstr "نربط الحرفيين السعوديين بالعملاء الباحثين عن قطع يدوية مخصصة."
+
+msgid "Continue Setup"
+msgstr "متابعة الإعداد"
+
+msgid "Contract"
+msgstr "العقد"
+
+msgid "Contract Confirmed"
+msgstr "تم تأكيد العقد"
+
+msgid "Contract Review"
+msgstr "مراجعة العقد"
+
+msgid "Contract Terms"
+msgstr "شروط العقد"
+
+msgid "Contract accepted and payment captured successfully."
+msgstr "تم قبول العقد والاستيلاء على الدفعة بنجاح."
+
+msgid "Contract accepted, but the PDF email could not be sent."
+msgstr "تم قبول العقد، لكن تعذّر إرسال بريد PDF."
+
+msgid "Contract action"
+msgstr "إجراء العقد"
+
+msgid "Contract rejected and payment hold canceled."
+msgstr "تم رفض العقد وإلغاء حجز الدفع."
+
+msgid "Contract summary"
+msgstr "ملخص العقد"
+
+msgid "Contract terms"
+msgstr "شروط العقد"
+
+msgid "Conversation"
+msgstr "المحادثة"
+
+msgid "Conversation closed."
+msgstr "تم إغلاق المحادثة."
+
+msgid "Conversation image"
+msgstr "صورة المحادثة"
+
+msgid "Conversation started successfully."
+msgstr "تم بدء المحادثة بنجاح."
+
+msgid "Conversations"
+msgstr "المحادثات"
+
+msgid "Could not remove this card right now. Please try again."
+msgstr "تعذّر إزالة هذه البطاقة الآن. يرجى المحاولة مرة أخرى."
+
+msgid "Cover Image"
+msgstr "صورة الغلاف"
+
+msgid "Craft categories for custom work"
+msgstr "فئات الحرف للأعمال المخصصة"
+
+msgid "Create Account"
+msgstr "إنشاء حساب"
+
+msgid "Create Artisan Account"
+msgstr "إنشاء حساب حرفي"
+
+msgid "Create Completed Project"
+msgstr "إنشاء مشروع مكتمل"
+
+msgid "Create Project"
+msgstr "إنشاء مشروع"
+
+msgid "Create Request"
+msgstr "إنشاء طلب"
+
+msgid "Create Workshop"
+msgstr "إنشاء ورشة"
+
+msgid "Create Workshop Profile"
+msgstr "إنشاء ملف الورشة"
+
+msgid "Create a New Request"
+msgstr "إنشاء طلب جديد"
+
+msgid "Create now"
+msgstr "أنشئ الآن"
+
+msgid "Create your account in a few simple steps."
+msgstr "أنشئ حسابك في خطوات بسيطة."
+
+msgid "Current Balance"
+msgstr "الرصيد الحالي"
+
+msgid "Current Month"
+msgstr "الشهر الحالي"
+
+msgid "Current Portfolio"
+msgstr "المعرض الحالي"
+
+msgid "Current description"
+msgstr "الوصف الحالي"
+
+msgid "Current images"
+msgstr "الصور الحالية"
+
+msgid "Dashboard"
+msgstr "لوحة التحكم"
+
+msgid "Date"
+msgstr "التاريخ"
+
+msgid "Deadline"
+msgstr "الموعد النهائي"
+
+msgid "Deadline soonest"
+msgstr "الأقرب موعداً"
+
+msgid "Deadline:"
+msgstr "الموعد النهائي:"
+
+msgid "Default"
+msgstr "افتراضي"
+
+msgid "Default avatar"
+msgstr "الصورة الشخصية الافتراضية"
+
+msgid "Delete"
+msgstr "حذف"
+
+msgid "Delete image"
+msgstr "حذف الصورة"
+
+msgid "Delete this image?"
+msgstr "حذف هذه الصورة؟"
+
+msgid "Deliver & Get Paid"
+msgstr "سلّم واحصل على دفعتك"
+
+msgid "Deliver Work"
+msgstr "تسليم العمل"
+
+msgid "Delivery"
+msgstr "التسليم"
+
+msgid "Describe what needs to be fixed... (optional if adding images)"
+msgstr "صف ما يحتاج إلى إصلاح... (اختياري إذا أضفت صوراً)"
+
+msgid "Describe what you want and receive proposals from skilled artisans."
+msgstr "صف ما تريد واستقبل عروضاً من حرفيين مهرة."
+
+msgid ""
+"Describe your custom piece, upload reference images, and set a budget — or "
+"leave it flexible."
+msgstr "صف قطعتك المخصصة، وارفع صور مرجعية، وحدد ميزانية — أو اتركها مرنة."
+
+msgid "Describe your progress... (optional if adding images)"
+msgstr "صف تقدمك... (اختياري إذا أضفت صوراً)"
+
+msgid "Description"
+msgstr "الوصف"
+
+msgid "Details"
+msgstr "التفاصيل"
+
+msgid "Discover"
+msgstr "اكتشف"
+
+msgid ""
+"Discover Saudi artisans, compare workshops, and narrow your search by "
+"category, city, and average rating."
+msgstr ""
+"اكتشف الحرفيين السعوديين، وقارن الورش، وضيّق بحثك حسب الفئة والمدينة ومتوسط "
+"التقييم."
+
+msgid "Dismiss"
+msgstr "رفض"
+
+msgid "Dismissed"
+msgstr "مرفوض"
+
+msgid "Display Name"
+msgstr "الاسم المعروض"
+
+msgid "Dispute"
+msgstr "النزاع"
+
+msgid "Dispute Management"
+msgstr "إدارة النزاعات"
+
+msgid "Dispute summary"
+msgstr "ملخص النزاع"
+
+msgid "Disputes"
+msgstr "النزاعات"
+
+msgid "Disputes you have opened or are a party to, with their current status."
+msgstr "النزاعات التي فتحتها أو أنت طرف فيها مع حالتها الحالية."
+
+msgid "Don't have an account?"
+msgstr "ليس لديك حساب؟"
+
+msgid "Download image"
+msgstr "تنزيل الصورة"
+
+msgid "Draw"
+msgstr "رسم"
+
+msgid "Draw or highlight areas to annotate the image."
+msgstr "ارسم أو ظلّل المناطق لتحديد الصورة."
+
+msgid ""
+"Draw or highlight the parts relevant to the project. Annotations are saved "
+"with the image."
+msgstr ""
+"ارسم أو ظلّل الأجزاء المتعلقة بالمشروع. يتم حفظ التعليقات التوضيحية مع "
+"الصورة."
+
+msgid ""
+"Draw or highlight the parts you want changed. Annotations are saved with the"
+" image."
+msgstr ""
+"ارسم أو ظلّل الأجزاء التي تريد تغييرها. يتم حفظ التعليقات التوضيحية مع "
+"الصورة."
+
+msgid "Duration"
+msgstr "المدة"
+
+msgid ""
+"Each user is responsible for providing accurate registration details, "
+"keeping information updated, and protecting account credentials from "
+"unauthorized use."
+msgstr ""
+"كل مستخدم مسؤول عن تقديم بيانات تسجيل دقيقة والحفاظ على تحديث المعلومات "
+"وحماية بيانات الاعتماد من الاستخدام غير المصرح به."
+
+msgid "Earned"
+msgstr "المكتسب"
+
+msgid "Earnings Dashboard"
+msgstr "لوحة الأرباح"
+
+msgid "Edit"
+msgstr "تعديل"
+
+msgid "Edit & add to your uploads"
+msgstr "عدّل وأضف إلى مرفوعاتك"
+
+msgid "Edit Details"
+msgstr "تعديل التفاصيل"
+
+msgid "Edit Profile"
+msgstr "تعديل الملف الشخصي"
+
+msgid "Edit Proposal"
+msgstr "تعديل العرض"
+
+msgid "Edit Request"
+msgstr "تعديل الطلب"
+
+msgid "Edit Workshop"
+msgstr "تعديل الورشة"
+
+msgid "Edit Workshop Details"
+msgstr "تعديل تفاصيل الورشة"
+
+msgid "Edit description"
+msgstr "تعديل الوصف"
+
+msgid "Edit request"
+msgstr "تعديل الطلب"
+
+msgid "Email"
+msgstr "البريد الإلكتروني"
+
+msgid "Email Notifications"
+msgstr "إشعارات البريد الإلكتروني"
+
+msgid "Email address"
+msgstr "عنوان البريد الإلكتروني"
+
+msgid "English"
+msgstr "الإنجليزية"
+
+msgid "Enter OTP"
+msgstr "أدخل رمز OTP"
+
+msgid "Enter a valid phone number, for example +966501234567"
+msgstr "أدخل رقم هاتف صحيحاً، مثلاً +966501234567"
+
+msgid "Enter your email"
+msgstr "أدخل بريدك الإلكتروني"
+
+msgid ""
+"Enter your email address and we'll send you a link to reset your password."
+msgstr ""
+"أدخل عنوان بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور."
+
+msgid "Enter your first name"
+msgstr "أدخل اسمك الأول"
+
+msgid "Enter your last name"
+msgstr "أدخل اسمك الأخير"
+
+msgid "Enter your password"
+msgstr "أدخل كلمة مرورك"
+
+msgid "Enter your username"
+msgstr "أدخل اسم المستخدم"
+
+msgid "Escrow status"
+msgstr "حالة الضمان"
+
+msgid "Est. Completion"
+msgstr "التاريخ المتوقع للإنجاز"
+
+msgid "Est. completion"
+msgstr "التاريخ المتوقع للإنجاز"
+
+msgid "Estimated completion"
+msgstr "الإنجاز المتوقع"
+
+msgid "Estimated duration"
+msgstr "المدة التقديرية"
+
+msgid "Existing images"
+msgstr "الصور الموجودة"
+
+msgid "Existing reference image"
+msgstr "صورة مرجعية موجودة"
+
+msgid "Expires"
+msgstr "تنتهي"
+
+msgid "Explain the action taken..."
+msgstr "اشرح الإجراء المتخذ..."
+
+msgid "Explain the outcome..."
+msgstr "اشرح النتيجة..."
+
+msgid "Explore completed requests by {{ name }}"
+msgstr "استعرض الطلبات المكتملة بواسطة {{ name }}"
+
+msgid "Explore listings"
+msgstr "استعرض القوائم"
+
+msgid ""
+"Explore marketplace requests and artisans with a cleaner starting point."
+msgstr "استعرض طلبات السوق والحرفيين من نقطة بداية أوضح."
+
+msgid ""
+"Explore open commission requests from clients. Filter by craft category, "
+"budget, and deadline."
+msgstr ""
+"استعرض طلبات التكليف المفتوحة من العملاء. تصفية حسب فئة الحرفة والميزانية "
+"والموعد النهائي."
+
+msgid "Explore verified artisan profiles, portfolios, and past work."
+msgstr "استعرض ملفات الحرفيين الموثوقة ومعارضهم وأعمالهم السابقة."
+
+msgid "Export"
+msgstr "تصدير"
+
+msgid "Failed to send verification code."
+msgstr "فشل إرسال رمز التحقق."
+
+msgid "Feature"
+msgstr "تمييز"
+
+msgid "Feature Action"
+msgstr "إجراء التمييز"
+
+msgid "Featured"
+msgstr "مميز"
+
+msgid "Featured Artisan"
+msgstr "حرفي مميز"
+
+msgid "Feedback posted."
+msgstr "تم نشر التعليق."
+
+msgid "Filter by category"
+msgstr "تصفية حسب الفئة"
+
+msgid "Filter by city"
+msgstr "تصفية حسب المدينة"
+
+msgid "Filter requests"
+msgstr "تصفية الطلبات"
+
+msgid "Filter results"
+msgstr "تصفية النتائج"
+
+msgid "Find New Request"
+msgstr "البحث عن طلب جديد"
+
+msgid "Find an Artisan"
+msgstr "ابحث عن حرفي"
+
+msgid ""
+"Find project requests that match your craft and filter results quickly."
+msgstr "ابحث عن طلبات مشاريع تناسب حرفتك وقم بتصفية النتائج بسرعة."
+
+msgid "First"
+msgstr "الأول"
+
+msgid "First Name"
+msgstr "الاسم الأول"
+
+msgid "First name"
+msgstr "الاسم الأول"
+
+msgid "First page"
+msgstr "الصفحة الأولى"
+
+msgid "Flexible"
+msgstr "مرن"
+
+msgid "Follow Us"
+msgstr "تابعنا"
+
+msgid "Follow every project discussion in one clear inbox."
+msgstr "تابع كل نقاشات المشاريع في صندوق وارد واضح."
+
+msgid ""
+"Follow photo updates from your artisan, leave feedback, and confirm "
+"delivery. Payment releases only when you're satisfied."
+msgstr ""
+"تابع تحديثات الصور من حرفيك، واترك تعليقاتك، وأكد التسليم. يُحرر الدفع فقط "
+"عند رضاك."
+
+msgid "Forgot Your Password?"
+msgstr "نسيت كلمة المرور؟"
+
+msgid ""
+"Fraudulent, abusive, or unlawful content is prohibited. Saaf may suspend or "
+"terminate accounts that violate these terms."
+msgstr ""
+"المحتوى الاحتيالي أو المسيء أو غير القانوني محظور. قد تعلّق سعف أو تُنهي "
+"الحسابات التي تنتهك هذه الشروط."
+
+msgid "From"
+msgstr "من"
+
+msgid "General Craft"
+msgstr "حرفة عامة"
+
+msgid "Generated on"
+msgstr "تم الإنشاء في"
+
+msgid "Get Started"
+msgstr "ابدأ الآن"
+
+msgid "Get Started Free"
+msgstr "ابدأ مجاناً"
+
+msgid "Give Feedback"
+msgstr "أعطِ تعليقاً"
+
+msgid "Go to Login"
+msgstr "اذهب إلى تسجيل الدخول"
+
+msgid "Green"
+msgstr "أخضر"
+
+msgid "Have feedback on the latest update?"
+msgstr "هل لديك تعليق على آخر تحديث؟"
+
+msgid "Here's your financial overview at a glance"
+msgstr "إليك نظرة عامة سريعة على وضعك المالي"
+
+msgid "Hi {{ name }},"
+msgstr "مرحباً {{ name }}،"
+
+msgid "Highest Rated"
+msgstr "الأعلى تقييماً"
+
+msgid "Highest budget"
+msgstr "الأعلى ميزانية"
+
+msgid "Highest rated workshops on Saaf"
+msgstr "أعلى الورش تقييماً على سعف"
+
+msgid "Highlight"
+msgstr "تظليل"
+
+msgid "Highlighted creators"
+msgstr "الصنّاع المميزون"
+
+msgid "Hold amount"
+msgstr "مبلغ الحجز"
+
+msgid "Home"
+msgstr "الرئيسية"
+
+msgid "How Saaf Works"
+msgstr "كيف تعمل سعف"
+
+msgid ""
+"I confirm that I reviewed my request, the artisan's proposal, and the "
+"contract terms, and I authorize a payment hold for this project."
+msgstr ""
+"أؤكد أنني راجعت طلبي وعرض الحرفي وشروط العقد، وأُفوّض حجز الدفع لهذا "
+"المشروع."
+
+msgid ""
+"I have reviewed the contract details and agree to proceed with this project."
+msgstr "لقد راجعت تفاصيل العقد وأوافق على المضي قدماً في هذا المشروع."
+
+msgid ""
+"If you accept, the contract will become active and work may begin under "
+"these terms."
+msgstr "إذا قبلت، سيصبح العقد نشطاً ويمكن بدء العمل وفق هذه الشروط."
+
+msgid ""
+"If you didn't request a password reset, you can safely ignore this email — "
+"your account is secure and your password will not change."
+msgstr ""
+"إذا لم تطلب إعادة تعيين كلمة المرور، يمكنك تجاهل هذا البريد بأمان — حسابك "
+"آمن ولن تتغير كلمة مرورك."
+
+msgid ""
+"If you reject this contract, the requester's payment hold will be canceled "
+"and the contract will not move forward."
+msgstr "إذا رفضت هذا العقد، سيُلغى حجز دفع صاحب الطلب ولن يتقدم العقد."
+
+msgid "Image caption"
+msgstr "تسمية توضيحية للصورة"
+
+msgid "Image caption updated successfully."
+msgstr "تم تحديث التسمية التوضيحية للصورة بنجاح."
+
+msgid "Image preview"
+msgstr "معاينة الصورة"
+
+msgid "Images"
+msgstr "الصور"
+
+msgid "Images (optional)"
+msgstr "الصور (اختياري)"
+
+msgid "In Progress"
+msgstr "قيد التنفيذ"
+
+msgid "In Review"
+msgstr "قيد المراجعة"
+
+msgid "In-site Notifications"
+msgstr "إشعارات داخل الموقع"
+
+msgid "Interested in this project?"
+msgstr "مهتم بهذا المشروع؟"
+
+msgid "Invalid Reset Link"
+msgstr "رابط إعادة التعيين غير صالح"
+
+msgid "Invalid action."
+msgstr "إجراء غير صالح."
+
+msgid "Invalid date format."
+msgstr "صيغة التاريخ غير صالحة."
+
+msgid "Invalid request method."
+msgstr "طريقة الطلب غير صالحة."
+
+msgid "Invalid verification code."
+msgstr "رمز التحقق غير صالح."
+
+msgid "Invite to a Request"
+msgstr "دعوة لطلب"
+
+msgid "Items still waiting for moderation review."
+msgstr "عناصر لا تزال في انتظار مراجعة الإشراف."
+
+msgid "JPEG, PNG, WebP, GIF, up to 5 MB."
+msgstr "JPEG, PNG, WebP, GIF، حتى 5 ميغابايت."
+
+msgid "Join as an Artisan"
+msgstr "انضم كحرفي"
+
+msgid ""
+"Join as an artisan and showcase your work, receive proposals, and grow your "
+"profile."
+msgstr "انضم كحرفي واعرض أعمالك واستقبل الطلبات وطوّر ملفك الشخصي."
+
+msgid "Joined"
+msgstr "انضم"
+
+msgid ""
+"Jump between moderation, categories, and user operations from one clean "
+"surface."
+msgstr "انتقل بين الإشراف والفئات وعمليات المستخدم من سطح واحد نظيف."
+
+msgid "Keep the marketplace structure clear and current."
+msgstr "حافظ على هيكل السوق واضحاً ومحدثاً."
+
+msgid "Keep your workshop active"
+msgstr "حافظ على ورشتك نشطة"
+
+msgid "Last"
+msgstr "الأخير"
+
+msgid "Last 12 months"
+msgstr "آخر 12 شهراً"
+
+msgid "Last Name"
+msgstr "الاسم الأخير"
+
+msgid "Last name"
+msgstr "الاسم الأخير"
+
+msgid "Last page"
+msgstr "الصفحة الأخيرة"
+
+msgid "Latest requests looking for an artisan"
+msgstr "أحدث الطلبات بحثاً عن حرفي"
+
+msgid "Leave Feedback"
+msgstr "اترك تعليقاً"
+
+msgid "Leave a Review"
+msgstr "اترك تقييماً"
+
+msgid "Leave blank for no deadline"
+msgstr "اتركه فارغاً إذا لم يكن هناك موعد نهائي"
+
+msgid "Leave blank if flexible"
+msgstr "اتركه فارغاً إذا كان مرناً"
+
+msgid "Leave your feedback... (optional if adding images)"
+msgstr "اترك تعليقك... (اختياري إذا أضفت صوراً)"
+
+msgid "Loading your open requests…"
+msgstr "جار تحميل طلباتك المفتوحة..."
+
+msgid "Location"
+msgstr "الموقع"
+
+msgid "Log in"
+msgstr "تسجيل الدخول"
+
+msgid "Log in to invite"
+msgstr "سجّل الدخول للدعوة"
+
+msgid "Log out"
+msgstr "تسجيل الخروج"
+
+msgid "Logged in successfully."
+msgstr "تم تسجيل الدخول بنجاح."
+
+msgid "Login"
+msgstr "تسجيل الدخول"
+
+msgid "Lowest Rated"
+msgstr "الأقل تقييماً"
+
+msgid "Lowest budget"
+msgstr "الأقل ميزانية"
+
+msgid "Make Your Offer"
+msgstr "قدّم عرضك"
+
+msgid "Manage Portfolio"
+msgstr "إدارة المعرض"
+
+msgid "Manage gallery"
+msgstr "إدارة المعرض"
+
+msgid "Manage notification preferences"
+msgstr "إدارة تفضيلات الإشعارات"
+
+msgid "Manage trust, visibility, and account access."
+msgstr "إدارة الثقة والظهور والوصول إلى الحساب."
+
+msgid "Manage your saved cards for faster checkout."
+msgstr "إدارة بطاقاتك المحفوظة لدفع أسرع."
+
+msgid "Mark Under Review"
+msgstr "وضع علامة قيد المراجعة"
+
+msgid "Mark Up Image"
+msgstr "تحديد الصورة"
+
+msgid "Mark all read"
+msgstr "تعليم الكل كمقروء"
+
+msgid "Mark as Complete"
+msgstr "وضع علامة مكتمل"
+
+msgid "Members"
+msgstr "الأعضاء"
+
+msgid "Message from {{ username }}"
+msgstr "رسالة من {{ username }}"
+
+msgid "Message sent."
+msgstr "تم إرسال الرسالة."
+
+msgid "Messages"
+msgstr "الرسائل"
+
+msgid "Moderation Surface"
+msgstr "واجهة الإشراف"
+
+msgid "Moderation and oversight"
+msgstr "الإشراف والرقابة"
+
+msgid "Monthly Revenue"
+msgstr "الإيرادات الشهرية"
+
+msgid "Move projects faster"
+msgstr "أنجز المشاريع بسرعة أكبر"
+
+msgid "My Activity"
+msgstr "نشاطي"
+
+msgid "My Cards"
+msgstr "بطاقاتي"
+
+msgid "My Disputes"
+msgstr "نزاعاتي"
+
+msgid "My Profile"
+msgstr "ملفي الشخصي"
+
+msgid "My Proposals"
+msgstr "عروضي"
+
+msgid "My Reports"
+msgstr "تقاريري"
+
+msgid "My Requests"
+msgstr "طلباتي"
+
+msgid "My Reviews"
+msgstr "تقييماتي"
+
+msgid "My Space"
+msgstr "مساحتي"
+
+msgid "My Staff Profile"
+msgstr "ملفي كموظف"
+
+msgid "My Workshop"
+msgstr "ورشتي"
+
+msgid "My requests pagination"
+msgstr "تنقل صفحات طلباتي"
+
+msgid "Name"
+msgstr "الاسم"
+
+msgid "Name A-Z"
+msgstr "الاسم أ-ي"
+
+msgid "Name Z-A"
+msgstr "الاسم ي-أ"
+
+msgid "Net Amount"
+msgstr "المبلغ الصافي"
+
+msgid "New password"
+msgstr "كلمة المرور الجديدة"
+
+msgid "Newest"
+msgstr "الأحدث"
+
+msgid "Newest first"
+msgstr "الأحدث أولاً"
+
+msgid "Next"
+msgstr "التالي"
+
+msgid "No"
+msgstr "لا"
+
+msgid "No Image"
+msgstr "لا توجد صورة"
+
+msgid "No active requests right now."
+msgstr "لا توجد طلبات نشطة حالياً."
+
+msgid "No artisans found"
+msgstr "لم يُعثر على حرفيين"
+
+msgid "No artisans found."
+msgstr "لم يُعثر على حرفيين."
+
+msgid "No authorized escrow payment was found for this contract."
+msgstr "لم يُعثر على دفعة ضمان مفوّضة لهذا العقد."
+
+msgid "No bio added yet."
+msgstr "لم تُضف نبذة شخصية بعد."
+
+msgid "No completed orders yet."
+msgstr "لا توجد طلبات مكتملة بعد."
+
+msgid "No completed projects available yet."
+msgstr "لا توجد مشاريع مكتملة متاحة بعد."
+
+msgid "No completed requests yet."
+msgstr "لا توجد طلبات مكتملة بعد."
+
+msgid "No conversation between the parties yet."
+msgstr "لا توجد محادثة بين الطرفين بعد."
+
+msgid "No conversations yet"
+msgstr "لا توجد محادثات بعد"
+
+msgid "No earnings yet"
+msgstr "لا توجد أرباح بعد"
+
+msgid "No escrow payment was found for this contract."
+msgstr "لم يُعثر على دفعة ضمان لهذا العقد."
+
+msgid "No form available."
+msgstr "لا يوجد نموذج متاح."
+
+msgid "No image"
+msgstr "لا توجد صورة"
+
+msgid "No images yet."
+msgstr "لا توجد صور بعد."
+
+msgid "No messages yet"
+msgstr "لا توجد رسائل بعد"
+
+msgid "No messages yet in this channel."
+msgstr "لا توجد رسائل بعد في هذه القناة."
+
+msgid "No messages yet. Send the first one or wait for staff to reach out."
+msgstr "لا توجد رسائل بعد. أرسل الأولى أو انتظر تواصل الفريق."
+
+msgid "No notifications yet."
+msgstr "لا توجد إشعارات بعد."
+
+msgid "No payment record was found for this contract."
+msgstr "لم يُعثر على سجل دفع لهذا العقد."
+
+msgid "No portfolio images uploaded yet."
+msgstr "لم تُرفع صور معرض بعد."
+
+msgid "No portfolio images yet."
+msgstr "لا توجد صور معرض بعد."
+
+msgid "No progress updates posted yet."
+msgstr "لم تُنشر تحديثات تقدم بعد."
+
+msgid "No published workshops yet."
+msgstr "لا توجد ورش منشورة بعد."
+
+msgid "No ratings yet"
+msgstr "لا توجد تقييمات بعد"
+
+msgid "No recent requests yet."
+msgstr "لا توجد طلبات حديثة بعد."
+
+msgid "No requests found"
+msgstr "لم يُعثر على طلبات"
+
+msgid "No saved cards"
+msgstr "لا توجد بطاقات محفوظة"
+
+msgid "No saved cards yet"
+msgstr "لا توجد بطاقات محفوظة بعد"
+
+msgid "No transactions yet. Complete a contract to see your earnings here."
+msgstr "لا توجد معاملات بعد. أكمل عقداً لترى أرباحك هنا."
+
+msgid "No updates yet."
+msgstr "لا توجد تحديثات بعد."
+
+msgid "No written review."
+msgstr "لا يوجد تقييم مكتوب."
+
+msgid "Not connected"
+msgstr "غير متصل"
+
+msgid "Not verified"
+msgstr "غير موثّق"
+
+msgid "Not yet captured — held in escrow"
+msgstr "لم يُستولَ عليه بعد — محتجز في الضمان"
+
+msgid "Notification Settings"
+msgstr "إعدادات الإشعارات"
+
+msgid "Notification preferences saved."
+msgstr "تم حفظ تفضيلات الإشعارات."
+
+msgid "Notification settings"
+msgstr "إعدادات الإشعارات"
+
+msgid "Notifications"
+msgstr "الإشعارات"
+
+msgid "Notifications pagination"
+msgstr "تنقل صفحات الإشعارات"
+
+msgid "Official agreement between requester and artisan"
+msgstr "الاتفاقية الرسمية بين صاحب الطلب والحرفي"
+
+msgid "Oldest"
+msgstr "الأقدم"
+
+msgid "Oldest first"
+msgstr "الأقدم أولاً"
+
+msgid ""
+"On the artisan side, the platform offers tools that simplify order "
+"management, proposal handling, and reputation building. On the customer "
+"side, Saaf provides a smooth journey from idea to final delivery, supported "
+"by fast notifications and a clean, easy-to-use interface."
+msgstr ""
+"على جانب الحرفي، تقدم المنصة أدوات تبسّط إدارة الطلبات والتعامل مع العروض "
+"وبناء السمعة. على جانب العميل، توفر سعف رحلة سلسة من الفكرة إلى التسليم "
+"النهائي، مدعومة بإشعارات سريعة وواجهة نظيفة وسهلة الاستخدام."
+
+msgid "Once a requester opens a chat from a proposal, it will appear here."
+msgstr "بمجرد أن يفتح صاحب الطلب محادثة من عرض، ستظهر هنا."
+
+msgid "Only artisan can view this page"
+msgstr "يمكن للحرفي فقط عرض هذه الصفحة"
+
+msgid "Only artisans can submit proposals."
+msgstr "يمكن للحرفيين فقط تقديم العروض."
+
+msgid "Only artisans have proposals."
+msgstr "الحرفيون فقط لديهم عروض."
+
+msgid "Only pending proposals can be withdrawn."
+msgstr "يمكن سحب العروض المعلّقة فقط."
+
+msgid "Only the artisan can accept this contract."
+msgstr "يمكن للحرفي فقط قبول هذا العقد."
+
+msgid "Only the artisan can mark a project as complete."
+msgstr "يمكن للحرفي فقط وضع علامة اكتمال المشروع."
+
+msgid "Only the artisan can post progress updates."
+msgstr "يمكن للحرفي فقط نشر تحديثات التقدم."
+
+msgid "Only the artisan can reject this contract."
+msgstr "يمكن للحرفي فقط رفض هذا العقد."
+
+msgid "Only the artisan can review this contract."
+msgstr "يمكن للحرفي فقط مراجعة هذا العقد."
+
+msgid "Only the requester can accept proposals."
+msgstr "يمكن لصاحب الطلب فقط قبول العروض."
+
+msgid "Only the requester can confirm completion."
+msgstr "يمكن لصاحب الطلب فقط تأكيد الاكتمال."
+
+msgid "Only the requester can pay for this proposal."
+msgstr "يمكن لصاحب الطلب فقط الدفع لهذا العرض."
+
+msgid "Only the requester can reject a completion request."
+msgstr "يمكن لصاحب الطلب فقط رفض طلب الاكتمال."
+
+msgid "Only the requester can reject proposals."
+msgstr "يمكن لصاحب الطلب فقط رفض العروض."
+
+msgid "Only the requester can reopen this request."
+msgstr "يمكن لصاحب الطلب فقط إعادة فتح هذا الطلب."
+
+msgid "Only time-ended requests can be reopened."
+msgstr "يمكن إعادة فتح الطلبات المنتهية بالوقت فقط."
+
+msgid ""
+"Only you and the moderation team can see these messages. The other party has"
+" their own separate channel."
+msgstr ""
+"أنت وفريق الإشراف فقط يمكنكم رؤية هذه الرسائل. الطرف الآخر لديه قناته "
+"المنفصلة الخاصة."
+
+msgid "Open"
+msgstr "مفتوح"
+
+msgid "Open Chat"
+msgstr "فتح المحادثة"
+
+msgid "Open Dispute"
+msgstr "فتح نزاع"
+
+msgid "Open Disputes"
+msgstr "النزاعات المفتوحة"
+
+msgid "Open Requests"
+msgstr "الطلبات المفتوحة"
+
+msgid "Open Staff Tools"
+msgstr "فتح أدوات الموظفين"
+
+msgid "Open Stripe"
+msgstr "فتح Stripe"
+
+msgid "Open a dispute on this project"
+msgstr "فتح نزاع على هذا المشروع"
+
+msgid "Open in Saaf"
+msgstr "فتح في سعف"
+
+msgid "Open moderation queue"
+msgstr "فتح قائمة انتظار الإشراف"
+
+msgid "Open profile"
+msgstr "فتح الملف الشخصي"
+
+msgid "Open workshop"
+msgstr "فتح الورشة"
+
+msgid "Opened"
+msgstr "مفتوح"
+
+msgid "Opened by"
+msgstr "فُتح بواسطة"
+
+msgid "Opened by:"
+msgstr "فُتح بواسطة:"
+
+msgid "Opened:"
+msgstr "تاريخ الفتح:"
+
+msgid "Optional image:"
+msgstr "صورة اختيارية:"
+
+msgid "Optional note"
+msgstr "ملاحظة اختيارية"
+
+msgid "Optional note for this image"
+msgstr "ملاحظة اختيارية لهذه الصورة"
+
+msgid "Or choose a default avatar"
+msgstr "أو اختر صورة افتراضية"
+
+msgid "Orange"
+msgstr "برتقالي"
+
+msgid "Other party:"
+msgstr "الطرف الآخر:"
+
+msgid ""
+"Our staff will review the conversation and progress, message you and the "
+"other party privately, and resolve the issue. Completion actions on this "
+"project are paused while a dispute is open."
+msgstr ""
+"سيراجع فريقنا المحادثة والتقدم، ويرسل لك وللطرف الآخر رسائل خاصة، ويحل "
+"المشكلة. إجراءات الإكمال على هذا المشروع موقوفة أثناء وجود نزاع مفتوح."
+
+msgid ""
+"Our team will review your report and take appropriate action. All reports "
+"are confidential."
+msgstr "سيراجع فريقنا تقريرك ويتخذ الإجراء المناسب. جميع التقارير سرية."
+
+msgid ""
+"Our vision is for Saaf to become the leading destination for customized "
+"handmade work in Saudi Arabia, opening real opportunities for talented "
+"artisans and strengthening the digital presence of local products through "
+"quality, authenticity, and creativity."
+msgstr ""
+"رؤيتنا أن تصبح سعف الوجهة الرائدة للأعمال اليدوية المخصصة في المملكة العربية"
+" السعودية، مما يفتح فرصاً حقيقية للحرفيين الموهوبين ويعزز الحضور الرقمي "
+"للمنتجات المحلية من خلال الجودة والأصالة والإبداع."
+
+msgid "Overview"
+msgstr "نظرة عامة"
+
+msgid "Paid"
+msgstr "مدفوع"
+
+msgid "Parties Involved"
+msgstr "الأطراف المعنية"
+
+msgid "Password"
+msgstr "كلمة المرور"
+
+msgid "Password Reset"
+msgstr "إعادة تعيين كلمة المرور"
+
+msgid "Password Reset Complete"
+msgstr "اكتملت إعادة تعيين كلمة المرور"
+
+msgid "Password Reset Sent"
+msgstr "تم إرسال إعادة تعيين كلمة المرور"
+
+msgid "Password Updated"
+msgstr "تم تحديث كلمة المرور"
+
+msgid "Password reset email sent."
+msgstr "تم إرسال بريد إعادة تعيين كلمة المرور."
+
+msgid "Payment & Escrow"
+msgstr "الدفع والضمان"
+
+msgid ""
+"Payment authorized successfully. The contract was sent to the artisan for "
+"approval."
+msgstr "تم تفويض الدفع بنجاح. تم إرسال العقد إلى الحرفي للموافقة."
+
+msgid "Payment captured"
+msgstr "تم الاستيلاء على الدفعة"
+
+msgid "Payment method"
+msgstr "طريقة الدفع"
+
+msgid "Payment status"
+msgstr "حالة الدفع"
+
+msgid "Payments"
+msgstr "المدفوعات"
+
+msgid "Payout Progress"
+msgstr "تقدم الصرف"
+
+msgid "Payouts"
+msgstr "المدفوعات"
+
+msgid "Payouts enabled"
+msgstr "المدفوعات مفعّلة"
+
+msgid "Pending"
+msgstr "معلّق"
+
+msgid "Pending Balance"
+msgstr "الرصيد المعلّق"
+
+msgid "Pending Reports"
+msgstr "التقارير المعلّقة"
+
+msgid "Phone"
+msgstr "الهاتف"
+
+msgid "Phone Not Verified"
+msgstr "الهاتف غير موثّق"
+
+msgid "Phone Verified"
+msgstr "الهاتف موثّق"
+
+msgid ""
+"Pick one of your open requests. The artisan will get a notification and can "
+"submit a proposal."
+msgstr "اختر أحد طلباتك المفتوحة. سيحصل الحرفي على إشعار ويمكنه تقديم عرض."
+
+msgid "Pin"
+msgstr "تثبيت"
+
+msgid "Pin image"
+msgstr "تثبيت الصورة"
+
+msgid "Pin uploaded images"
+msgstr "تثبيت الصور المرفوعة"
+
+msgid "Pinned"
+msgstr "مثبّت"
+
+msgid "Platform"
+msgstr "المنصة"
+
+msgid "Platform health at a glance"
+msgstr "صحة المنصة بلمحة"
+
+msgid "Please add a card first."
+msgstr "يرجى إضافة بطاقة أولاً."
+
+msgid "Please add a message or at least one image."
+msgstr "يرجى إضافة رسالة أو صورة واحدة على الأقل."
+
+msgid "Please add your phone number first."
+msgstr "يرجى إضافة رقم هاتفك أولاً."
+
+msgid "Please correct errors in the details form."
+msgstr "يرجى تصحيح الأخطاء في نموذج التفاصيل."
+
+msgid "Please correct the errors below."
+msgstr "يرجى تصحيح الأخطاء أدناه."
+
+msgid "Please enter a valid email address."
+msgstr "يرجى إدخال عنوان بريد إلكتروني صحيح."
+
+msgid "Please enter the verification code."
+msgstr "يرجى إدخال رمز التحقق."
+
+msgid "Please enter your new password twice so we can verify it."
+msgstr "يرجى إدخال كلمة مرورك الجديدة مرتين حتى نتمكن من التحقق منها."
+
+msgid "Please fix the errors below."
+msgstr "يرجى إصلاح الأخطاء أدناه."
+
+msgid "Please provide a new deadline."
+msgstr "يرجى تحديد موعد نهائي جديد."
+
+msgid ""
+"Please review your request, the artisan's proposal, and the contract terms "
+"before approving the payment hold."
+msgstr "يرجى مراجعة طلبك وعرض الحرفي وشروط العقد قبل الموافقة على حجز الدفع."
+
+msgid "Please select a payment method."
+msgstr "يرجى اختيار طريقة دفع."
+
+msgid "Please select at least one image to upload."
+msgstr "يرجى اختيار صورة واحدة على الأقل للرفع."
+
+msgid "Please write a message or attach an image."
+msgstr "يرجى كتابة رسالة أو إرفاق صورة."
+
+msgid "Portfolio"
+msgstr "المعرض"
+
+msgid "Portfolio Image"
+msgstr "صورة المعرض"
+
+msgid "Portfolio description updated successfully."
+msgstr "تم تحديث وصف المعرض بنجاح."
+
+msgid "Portfolio image deleted successfully."
+msgstr "تم حذف صورة المعرض بنجاح."
+
+msgid "Portfolio image not found."
+msgstr "لم يُعثر على صورة المعرض."
+
+msgid "Post New Request"
+msgstr "نشر طلب جديد"
+
+msgid "Post Update"
+msgstr "نشر تحديث"
+
+msgid "Post Your Idea"
+msgstr "انشر فكرتك"
+
+msgid "Post Your Request"
+msgstr "انشر طلبك"
+
+msgid "Post a Request"
+msgstr "انشر طلباً"
+
+msgid "Post an Update"
+msgstr "انشر تحديثاً"
+
+msgid "Post progress updates with photos and complete projects on Saaf."
+msgstr "انشر تحديثات التقدم مع الصور وأكمل المشاريع على سعف."
+
+msgid ""
+"Post progress updates with photos as you work. Payment is released to you "
+"once the client confirms delivery."
+msgstr ""
+"انشر تحديثات التقدم مع الصور أثناء عملك. يُحرر الدفع لك بمجرد تأكيد العميل "
+"للتسليم."
+
+msgid "Post request"
+msgstr "نشر الطلب"
+
+msgid ""
+"Post requests, compare artisans, and keep your account details ready for "
+"smoother project starts."
+msgstr ""
+"انشر الطلبات وقارن الحرفيين واحتفظ بتفاصيل حسابك جاهزة لبدء مشاريع أكثر "
+"سلاسة."
+
+msgid "Post your first update below."
+msgstr "انشر تحديثك الأول أدناه."
+
+msgid ""
+"Post your idea, receive proposals from skilled Saudi craftspeople, and track"
+" every step — from the first progress update to final delivery."
+msgstr ""
+"انشر فكرتك، واستقبل عروضاً من حرفيين سعوديين مهرة، وتابع كل خطوة — من أول "
+"تحديث تقدم حتى التسليم النهائي."
+
+msgid "Posted"
+msgstr "منشور"
+
+msgid "Previous"
+msgstr "السابق"
+
+msgid "Previous Month"
+msgstr "الشهر الماضي"
+
+msgid "Price"
+msgstr "السعر"
+
+msgid "Primary card"
+msgstr "البطاقة الرئيسية"
+
+msgid "Profile"
+msgstr "الملف الشخصي"
+
+msgid "Progress Timeline"
+msgstr "الجدول الزمني للتقدم"
+
+msgid "Progress update posted."
+msgstr "تم نشر تحديث التقدم."
+
+msgid "Progress updates"
+msgstr "تحديثات التقدم"
+
+msgid "Project"
+msgstr "المشروع"
+
+msgid "Project Description"
+msgstr "وصف المشروع"
+
+msgid "Project Workspace"
+msgstr "مساحة عمل المشروع"
+
+msgid "Project amount"
+msgstr "قيمة المشروع"
+
+msgid "Project budget"
+msgstr "ميزانية المشروع"
+
+msgid "Project confirmed as complete. Thank you!"
+msgstr "تم تأكيد اكتمال المشروع. شكراً!"
+
+msgid "Project not found or not published."
+msgstr "لم يُعثر على المشروع أو غير منشور."
+
+msgid "Project not found."
+msgstr "لم يُعثر على المشروع."
+
+msgid "Project:"
+msgstr "المشروع:"
+
+msgid "Proposal Details"
+msgstr "تفاصيل العرض"
+
+msgid "Proposal details"
+msgstr "تفاصيل العرض"
+
+msgid "Proposal images"
+msgstr "صور العرض"
+
+msgid "Proposal updated."
+msgstr "تم تحديث العرض."
+
+msgid "Proposals"
+msgstr "العروض"
+
+msgid "Proposals pagination"
+msgstr "تنقل صفحات العروض"
+
+msgid "Publish workshop profile"
+msgstr "نشر ملف الورشة"
+
+msgid "Raise a Dispute"
+msgstr "رفع نزاع"
+
+msgid "Rate your experience"
+msgstr "قيّم تجربتك"
+
+msgid "Rating"
+msgstr "التقييم"
+
+msgid "Re-submit Proposal"
+msgstr "إعادة تقديم العرض"
+
+msgid "Reason"
+msgstr "السبب"
+
+msgid "Reason:"
+msgstr "السبب:"
+
+msgid "Recent Transactions"
+msgstr "المعاملات الأخيرة"
+
+msgid "Red"
+msgstr "أحمر"
+
+msgid "Reference Images"
+msgstr "الصور المرجعية"
+
+msgid "Reference images"
+msgstr "الصور المرجعية"
+
+msgid "Refine artisans quickly"
+msgstr "تصفية الحرفيين بسرعة"
+
+msgid "Refine further"
+msgstr "تصفية أكثر"
+
+msgid "Refine results fast"
+msgstr "تصفية النتائج بسرعة"
+
+msgid "Refine with AI"
+msgstr "تصفية بالذكاء الاصطناعي"
+
+msgid ""
+"Refine your details, update budget/timeline, and manage reference images."
+msgstr "دقّق تفاصيلك وحدّث الميزانية والجدول الزمني وأدر الصور المرجعية."
+
+msgid "Refresh Portfolio"
+msgstr "تحديث المعرض"
+
+msgid "Registered makers"
+msgstr "الصنّاع المسجلون"
+
+msgid "Reject"
+msgstr "رفض"
+
+msgid "Reject Contract"
+msgstr "رفض العقد"
+
+msgid "Remove"
+msgstr "إزالة"
+
+msgid "Remove this card?"
+msgstr "إزالة هذه البطاقة؟"
+
+msgid "Reopen Request"
+msgstr "إعادة فتح الطلب"
+
+msgid "Report"
+msgstr "تقرير"
+
+msgid "Report Content"
+msgstr "الإبلاغ عن محتوى"
+
+msgid "Report Management"
+msgstr "إدارة التقارير"
+
+msgid "Reporter"
+msgstr "المبلّغ"
+
+msgid "Reporting:"
+msgstr "الإبلاغ عن:"
+
+msgid "Reports"
+msgstr "التقارير"
+
+msgid "Request"
+msgstr "الطلب"
+
+msgid "Request Details"
+msgstr "تفاصيل الطلب"
+
+msgid "Request New Link"
+msgstr "طلب رابط جديد"
+
+msgid "Request Payout"
+msgstr "طلب صرف"
+
+msgid "Request images"
+msgstr "صور الطلب"
+
+msgid "Request updated successfully."
+msgstr "تم تحديث الطلب بنجاح."
+
+msgid "Requester"
+msgstr "صاحب الطلب"
+
+msgid "Requester (Client)"
+msgstr "صاحب الطلب (العميل)"
+
+msgid "Requester Acceptance"
+msgstr "قبول صاحب الطلب"
+
+msgid "Requester Account"
+msgstr "حساب صاحب الطلب"
+
+msgid "Requester Dashboard"
+msgstr "لوحة تحكم صاحب الطلب"
+
+msgid "Requester accounts"
+msgstr "حسابات أصحاب الطلبات"
+
+msgid "Requester ↔ Artisan chat (read-only)"
+msgstr "محادثة صاحب الطلب ↔ الحرفي (للقراءة فقط)"
+
+msgid "Requester:"
+msgstr "صاحب الطلب:"
+
+msgid "Requests"
+msgstr "الطلبات"
+
+msgid "Requests pages"
+msgstr "صفحات الطلبات"
+
+msgid "Reset"
+msgstr "إعادة تعيين"
+
+msgid "Reset Password"
+msgstr "إعادة تعيين كلمة المرور"
+
+msgid "Resolution note"
+msgstr "ملاحظة الحل"
+
+msgid "Resolution note (optional)"
+msgstr "ملاحظة الحل (اختياري)"
+
+msgid "Resolve"
+msgstr "حل"
+
+msgid "Resolve this dispute"
+msgstr "حل هذا النزاع"
+
+msgid "Resolved"
+msgstr "محلول"
+
+msgid "Restricted artisan accounts"
+msgstr "حسابات الحرفيين المقيّدة"
+
+msgid "Restricted requester access"
+msgstr "وصول أصحاب الطلبات المقيّد"
+
+msgid "Revenue"
+msgstr "الإيرادات"
+
+msgid "Review"
+msgstr "مراجعة"
+
+msgid "Review Contract"
+msgstr "مراجعة العقد"
+
+msgid "Review Disputes"
+msgstr "مراجعة النزاعات"
+
+msgid "Review Reports"
+msgstr "مراجعة التقارير"
+
+msgid "Review and resolve disputes between requesters and artisans."
+msgstr "مراجعة وحل النزاعات بين أصحاب الطلبات والحرفيين."
+
+msgid "Review and resolve user-submitted reports"
+msgstr "مراجعة وحل التقارير المقدمة من المستخدمين"
+
+msgid "Review by {{ username }}"
+msgstr "مراجعة بواسطة {{ username }}"
+
+msgid ""
+"Review proposals from skilled craftspeople. Compare prices and timelines, "
+"then accept the best fit."
+msgstr ""
+"راجع العروض من الحرفيين المهرة. قارن الأسعار والجداول الزمنية، ثم اقبل "
+"الأنسب."
+
+msgid "Review submitted"
+msgstr "تم تقديم التقييم"
+
+msgid "Review the contract before payment authorization"
+msgstr "راجع العقد قبل تفويض الدفع"
+
+msgid "Review the contract details"
+msgstr "راجع تفاصيل العقد"
+
+msgid ""
+"Review the requester's original request and the accepted proposal details "
+"before approving the contract and starting the project."
+msgstr ""
+"راجع طلب صاحب الطلب الأصلي وتفاصيل العرض المقبول قبل الموافقة على العقد وبدء"
+" المشروع."
+
+msgid "Review your contact details, profile info, and account presence."
+msgstr "راجع بيانات التواصل ومعلومات ملفك الشخصي وحضورك في الحساب."
+
+msgid ""
+"Review your public presence, upload new work, and stay close to incoming "
+"opportunities."
+msgstr "راجع حضورك العام، وارفع أعمالاً جديدة، وابق قريباً من الفرص الواردة."
+
+msgid "Review your public workshop profile and keep your storefront sharp."
+msgstr "راجع ملف ورشتك العام واحتفظ بواجهتك في أفضل حال."
+
+msgid "Reviews"
+msgstr "التقييمات"
+
+msgid "Revise your price, timeline, message, or reference images."
+msgstr "راجع سعرك وجدولك الزمني ورسالتك وصورك المرجعية."
+
+msgid "Role"
+msgstr "الدور"
+
+msgid "Run Current Month"
+msgstr "تشغيل الشهر الحالي"
+
+msgid "Run Current Month Payout"
+msgstr "تشغيل صرف الشهر الحالي"
+
+msgid "Run Previous Month"
+msgstr "تشغيل الشهر الماضي"
+
+msgid "Run Previous Month Payout"
+msgstr "تشغيل صرف الشهر الماضي"
+
+msgid "Run payout processing manually for admin operations."
+msgstr "تشغيل معالجة الصرف يدوياً لعمليات المشرف."
+
+msgid ""
+"Saaf aims to provide a reliable service but cannot guarantee uninterrupted "
+"technical availability at all times. The platform is not liable for damages "
+"arising from improper or unauthorized use."
+msgstr ""
+"تسعى سعف إلى تقديم خدمة موثوقة لكنها لا تستطيع ضمان التوافر التقني المستمر "
+"في جميع الأوقات. المنصة غير مسؤولة عن الأضرار الناجمة عن الاستخدام غير "
+"السليم أو غير المصرح به."
+
+msgid ""
+"Saaf facilitates connections between customers and artisans. Both parties "
+"are expected to communicate requirements, timelines, and pricing clearly and"
+" fairly."
+msgstr ""
+"تُيسّر سعف التواصل بين العملاء والحرفيين. يُتوقع من كلا الطرفين التواصل بشأن"
+" المتطلبات والجداول الزمنية والأسعار بوضوح وعدالة."
+
+msgid ""
+"Saaf is a Saudi digital platform built to empower artisans by giving them a "
+"professional way to present their handmade work and connect directly with "
+"customers looking for custom, one-of-a-kind pieces. At its core, Saaf "
+"supports the local creative economy and helps traditional craftsmanship grow"
+" in a modern digital environment."
+msgstr ""
+"سعف منصة رقمية سعودية مبنية لتمكين الحرفيين من خلال منحهم طريقة احترافية "
+"لعرض أعمالهم اليدوية والتواصل المباشر مع العملاء الباحثين عن قطع مخصصة "
+"وفريدة. في جوهرها، تدعم سعف الاقتصاد الإبداعي المحلي وتساعد الحرف التقليدية "
+"على النمو في بيئة رقمية حديثة."
+
+msgid ""
+"Saaf may update these Terms and Conditions at any time. Continued use of the"
+" platform after updates means you accept the revised version."
+msgstr ""
+"قد تُحدّث سعف هذه الشروط والأحكام في أي وقت. استمرار استخدام المنصة بعد "
+"التحديثات يعني قبولك للنسخة المعدّلة."
+
+msgid "Saudi Artisan Marketplace"
+msgstr "سوق الحرفيين السعوديين"
+
+msgid "Save"
+msgstr "حفظ"
+
+msgid "Save Caption"
+msgstr "حفظ التسمية التوضيحية"
+
+msgid "Save Card"
+msgstr "حفظ البطاقة"
+
+msgid "Save Changes"
+msgstr "حفظ التغييرات"
+
+msgid "Save Edits"
+msgstr "حفظ التعديلات"
+
+msgid "Save changes"
+msgstr "حفظ التغييرات"
+
+msgid "Save preferences"
+msgstr "حفظ التفضيلات"
+
+msgid "Saved"
+msgstr "محفوظ"
+
+msgid "Saved card"
+msgstr "البطاقة المحفوظة"
+
+msgid "Search"
+msgstr "بحث"
+
+msgid "Search artisans"
+msgstr "البحث عن حرفيين"
+
+msgid "Search by name, skill, location..."
+msgstr "البحث بالاسم أو المهارة أو الموقع..."
+
+msgid "Selected image preview"
+msgstr "معاينة الصورة المحددة"
+
+msgid "Selected payment method is invalid."
+msgstr "طريقة الدفع المحددة غير صالحة."
+
+msgid "Send"
+msgstr "إرسال"
+
+msgid "Send Back"
+msgstr "إعادة الإرسال"
+
+msgid "Send Message"
+msgstr "إرسال رسالة"
+
+msgid "Send Reset Link"
+msgstr "إرسال رابط الإعادة"
+
+msgid "Send invitation"
+msgstr "إرسال دعوة"
+
+msgid "Send your price and timeline directly to the requester."
+msgstr "أرسل سعرك وجدولك الزمني مباشرة إلى صاحب الطلب."
+
+msgid ""
+"Send your price, timeline, and a message. Annotate reference images to show "
+"exactly what you can deliver."
+msgstr ""
+"أرسل سعرك وجدولك الزمني ورسالة. وضّح الصور المرجعية لتُري تحديداً ما يمكنك "
+"تسليمه."
+
+msgid "Sent back. The project is back in progress."
+msgstr "تم الإرسال مجدداً. المشروع عاد إلى مرحلة التنفيذ."
+
+msgid "Sent to your registered email address."
+msgstr "تم الإرسال إلى عنوان بريدك الإلكتروني المسجل."
+
+msgid "Service Agreement"
+msgstr "اتفاقية الخدمة"
+
+msgid "Service details"
+msgstr "تفاصيل الخدمة"
+
+msgid "Services"
+msgstr "الخدمات"
+
+msgid "Set New Password"
+msgstr "تعيين كلمة مرور جديدة"
+
+msgid "Set a new deadline to reopen:"
+msgstr "حدد موعداً نهائياً جديداً لإعادة الفتح:"
+
+msgid "Setup required"
+msgstr "الإعداد مطلوب"
+
+msgid ""
+"Share your concept, budget in SAR, and timeline so artisans can submit "
+"proposals."
+msgstr ""
+"شارك مفهومك وميزانيتك بالريال والجدول الزمني حتى يتمكن الحرفيون من تقديم "
+"عروض."
+
+msgid "Share your experience..."
+msgstr "شارك تجربتك..."
+
+msgid "Share your price, timeline, and supporting images to win this project."
+msgstr "شارك سعرك وجدولك الزمني وصورك الداعمة للفوز بهذا المشروع."
+
+msgid "Ships KSA"
+msgstr "شحن داخل المملكة"
+
+msgid "Shortcuts"
+msgstr "الاختصارات"
+
+msgid "Show All Requests"
+msgstr "عرض جميع الطلبات"
+
+msgid "Show verified artisans only"
+msgstr "عرض الحرفيين الموثوقين فقط"
+
+msgid "Show your previous work to help customers choose you confidently."
+msgstr "اعرض أعمالك السابقة لمساعدة العملاء على اختيارك بثقة."
+
+msgid ""
+"Showcase your craft on Saaf. Receive commission requests, set your own price"
+" and timeline, and get paid securely."
+msgstr ""
+"اعرض حرفتك على سعف. استقبل طلبات التكليف وحدد سعرك وجدولك الزمني واحصل على "
+"دفعتك بأمان."
+
+msgid "Sign Up"
+msgstr "إنشاء حساب"
+
+msgid "Sign in"
+msgstr "تسجيل الدخول"
+
+msgid "Sign in to your account"
+msgstr "تسجيل الدخول إلى حسابك"
+
+msgid "Sign up"
+msgstr "إنشاء حساب"
+
+msgid "Something needs fixing? Leave feedback or send it back."
+msgstr "هناك شيء يحتاج إلى إصلاح؟ اترك تعليقاً أو أعده مجدداً."
+
+msgid "Something went wrong."
+msgstr "حدث خطأ ما."
+
+msgid "Something went wrong. Please check the form."
+msgstr "حدث خطأ ما. يرجى مراجعة النموذج."
+
+msgid "Sort artisans"
+msgstr "ترتيب الحرفيين"
+
+msgid "Sort by"
+msgstr "ترتيب حسب"
+
+msgid "Staff Access"
+msgstr "وصول الموظفين"
+
+msgid "Staff Account"
+msgstr "حساب الموظف"
+
+msgid "Staff Dashboard"
+msgstr "لوحة تحكم الموظفين"
+
+msgid "Staff Profile"
+msgstr "ملف الموظف"
+
+msgid "Staff profile updated successfully."
+msgstr "تم تحديث ملف الموظف بنجاح."
+
+msgid "Start Chat"
+msgstr "بدء المحادثة"
+
+msgid "Start a new Request"
+msgstr "ابدأ طلباً جديداً"
+
+msgid ""
+"Start a new custom project request with clearer details and quicker replies."
+msgstr "ابدأ طلب مشروع مخصص جديد بتفاصيل أوضح وردود أسرع."
+
+msgid "Start browsing"
+msgstr "ابدأ التصفح"
+
+msgid "Start the conversation by sending your first message."
+msgstr "ابدأ المحادثة بإرسال أول رسالة."
+
+msgid "Status"
+msgstr "الحالة"
+
+msgid "Status:"
+msgstr "الحالة:"
+
+msgid "Stay updated with photos and updates as your commission comes to life."
+msgstr "تابع الصور والتحديثات بينما يتشكّل طلبك."
+
+msgid "Stripe Payouts"
+msgstr "مدفوعات Stripe"
+
+msgid "Stripe connected account not found."
+msgstr "لم يُعثر على حساب Stripe المرتبط."
+
+msgid ""
+"Stripe onboarding is not complete yet. Please finish the required details."
+msgstr "إعداد Stripe غير مكتمل بعد. يرجى إكمال التفاصيل المطلوبة."
+
+msgid "Stripe payout setup completed successfully."
+msgstr "تم إكمال إعداد صرف Stripe بنجاح."
+
+msgid "Submit Proposal"
+msgstr "تقديم العرض"
+
+msgid "Submit Proposals"
+msgstr "تقديم العروض"
+
+msgid "Submit Report"
+msgstr "تقديم تقرير"
+
+msgid "Submit Review"
+msgstr "تقديم تقييم"
+
+msgid "Submit a Proposal"
+msgstr "تقديم عرض"
+
+msgid "Submit a Report"
+msgstr "تقديم تقرير"
+
+msgid "Submit a proposal"
+msgstr "قدّم عرضاً"
+
+msgid "Submit proposal"
+msgstr "تقديم العرض"
+
+msgid "Submitted"
+msgstr "مقدَّم"
+
+msgid "Summary"
+msgstr "الملخص"
+
+msgid "Tagline"
+msgstr "الشعار"
+
+msgid "Target"
+msgstr "الهدف"
+
+msgid "Terms"
+msgstr "الشروط"
+
+msgid "Terms and Conditions"
+msgstr "الشروط والأحكام"
+
+msgid "Thanks for being part of Saaf."
+msgstr "شكراً لكونك جزءاً من سعف."
+
+msgid "That user is not a party to this dispute."
+msgstr "هذا المستخدم ليس طرفاً في هذا النزاع."
+
+msgid "The content you are trying to report could not be found."
+msgstr "لم يُعثر على المحتوى الذي تحاول الإبلاغ عنه."
+
+msgid "The new deadline must be in the future."
+msgstr "يجب أن يكون الموعد النهائي الجديد في المستقبل."
+
+msgid "The payment could not be captured. Please try again."
+msgstr "تعذّر الاستيلاء على الدفعة. يرجى المحاولة مرة أخرى."
+
+msgid ""
+"The requester has already approved this contract and authorized the payment "
+"hold. If you accept, the contract becomes active and the project can begin."
+msgstr ""
+"وافق صاحب الطلب بالفعل على هذا العقد وفوّض حجز الدفع. إذا قبلت، يصبح العقد "
+"نشطاً ويمكن بدء المشروع."
+
+msgid "The requester has not accepted this contract yet."
+msgstr "لم يقبل صاحب الطلب هذا العقد بعد."
+
+msgid "The requester must accept the contract first."
+msgstr "يجب على صاحب الطلب قبول العقد أولاً."
+
+msgid ""
+"The requester's payment is currently on hold and reserved for this contract."
+" It has not been captured yet."
+msgstr ""
+"دفعة صاحب الطلب محتجزة حالياً ومحجوزة لهذا العقد. لم يُستولَ عليها بعد."
+
+msgid "There is no pending completion request."
+msgstr "لا يوجد طلب إكمال معلّق."
+
+msgid "Thick"
+msgstr "سميك"
+
+msgid "Thin"
+msgstr "رفيع"
+
+msgid "This Month"
+msgstr "هذا الشهر"
+
+msgid "This Month at a Glance"
+msgstr "هذا الشهر بلمحة"
+
+msgid ""
+"This amount will be authorized on your card and held until the project is "
+"completed, canceled, or the authorization expires."
+msgstr ""
+"سيُفوَّض هذا المبلغ على بطاقتك ويُحتجز حتى اكتمال المشروع أو إلغائه أو "
+"انتهاء صلاحية التفويض."
+
+msgid "This contract does not have a valid authorized payment hold."
+msgstr "هذا العقد لا يحتوي على حجز دفع مفوَّض صالح."
+
+msgid "This contract has already been completed."
+msgstr "هذا العقد مكتمل بالفعل."
+
+msgid "This contract has been canceled."
+msgstr "تم إلغاء هذا العقد."
+
+msgid ""
+"This contract is not active yet. Both parties must accept the contract "
+"first."
+msgstr "هذا العقد غير نشط بعد. يجب على الطرفين قبول العقد أولاً."
+
+msgid "This contract is not waiting for artisan acceptance."
+msgstr "هذا العقد لا ينتظر قبول الحرفي."
+
+msgid "This conversation is closed. You can still view the message history."
+msgstr "هذه المحادثة مغلقة. لا يزال بإمكانك عرض سجل الرسائل."
+
+msgid "This dispute is already resolved."
+msgstr "هذا النزاع محلول بالفعل."
+
+msgid "This dispute is closed. You can no longer send messages."
+msgstr "هذا النزاع مغلق. لم يعد بإمكانك إرسال الرسائل."
+
+msgid ""
+"This document was generated automatically by <span class=\"footer-"
+"brand\">Saaf</span> and serves as the official contract record for this "
+"project."
+msgstr ""
+"تم إنشاء هذه الوثيقة تلقائياً بواسطة <span class=\"footer-brand\">سعف</span>"
+" وتُعدّ السجل الرسمي للعقد لهذا المشروع."
+
+msgid "This escrow payment is not in a valid authorized state."
+msgstr "دفعة الضمان هذه ليست في حالة تفويض صالحة."
+
+msgid ""
+"This link expires in 3 days. If you did not request a reset, you can safely "
+"ignore this email — your password will not change."
+msgstr ""
+"ينتهي هذا الرابط خلال 3 أيام. إذا لم تطلب الإعادة، يمكنك تجاهل هذا البريد "
+"بأمان — لن تتغير كلمة مرورك."
+
+msgid ""
+"This link expires in <strong>3 days</strong>. If the button above doesn't "
+"work, copy and paste this URL into your browser:"
+msgstr ""
+"ينتهي هذا الرابط خلال <strong>3 أيام</strong>. إذا لم يعمل الزر أعلاه، انسخ "
+"هذا الرابط والصقه في متصفحك:"
+
+msgid "This password reset link is invalid or has already been used."
+msgstr "رابط إعادة تعيين كلمة المرور هذا غير صالح أو تم استخدامه بالفعل."
+
+msgid ""
+"This payment hold expired after 7 days. The contract can no longer be "
+"accepted."
+msgstr "انتهت صلاحية حجز الدفع هذا بعد 7 أيام. لم يعد بالإمكان قبول العقد."
+
+msgid ""
+"This project has an open dispute. Completion actions are paused until staff "
+"resolves it."
+msgstr "هذا المشروع لديه نزاع مفتوح. إجراءات الإكمال موقوفة حتى يحله الفريق."
+
+msgid ""
+"This project has an open dispute. Confirmation is paused until staff "
+"resolves it."
+msgstr "هذا المشروع لديه نزاع مفتوح. التأكيد موقوف حتى يحله الفريق."
+
+msgid "This project is already completed."
+msgstr "هذا المشروع مكتمل بالفعل."
+
+msgid "This project will be marked as complete. This cannot be undone."
+msgstr "سيُوضع علامة اكتمال على هذا المشروع. لا يمكن التراجع عن هذا."
+
+msgid "This proposal is no longer available for payment."
+msgstr "هذا العرض لم يعد متاحاً للدفع."
+
+msgid "This proposal is no longer pending."
+msgstr "هذا العرض لم يعد معلّقاً."
+
+msgid "This request has ended."
+msgstr "انتهى هذا الطلب."
+
+msgid "This request is already closed."
+msgstr "هذا الطلب مغلق بالفعل."
+
+msgid "This request is no longer accepting proposals."
+msgstr "هذا الطلب لم يعد يقبل العروض."
+
+msgid "This request is no longer editable."
+msgstr "هذا الطلب لم يعد قابلاً للتعديل."
+
+msgid "This request is not available."
+msgstr "هذا الطلب غير متاح."
+
+msgid ""
+"This step approves the contract terms and places the agreed amount on hold "
+"until the artisan reviews the contract."
+msgstr ""
+"هذه الخطوة توافق على شروط العقد وتضع المبلغ المتفق عليه في حجز حتى يراجع "
+"الحرفي العقد."
+
+msgid "This user is not an artisan."
+msgstr "هذا المستخدم ليس حرفياً."
+
+msgid "This will ask the requester to review and confirm completion."
+msgstr "سيطلب هذا من صاحب الطلب مراجعة وتأكيد الاكتمال."
+
+msgid "Time Ended"
+msgstr "انتهى الوقت"
+
+msgid "Title"
+msgstr "العنوان"
+
+msgid "Title, description, requester"
+msgstr "العنوان والوصف وصاحب الطلب"
+
+msgid "To"
+msgstr "إلى"
+
+msgid "To set a new password, visit the link below:"
+msgstr "لتعيين كلمة مرور جديدة، قم بزيارة الرابط أدناه:"
+
+msgid "To strengthen your request, consider answering:"
+msgstr "لتعزيز طلبك، فكّر في الإجابة عن:"
+
+msgid "Toggle all"
+msgstr "تبديل الكل"
+
+msgid "Toggle all email notifications"
+msgstr "تبديل جميع إشعارات البريد الإلكتروني"
+
+msgid "Toggle all in-site notifications"
+msgstr "تبديل جميع الإشعارات داخل الموقع"
+
+msgid "Total Earned"
+msgstr "إجمالي المكتسب"
+
+msgid "Total Paid Out"
+msgstr "إجمالي المدفوع"
+
+msgid "Track & Confirm"
+msgstr "تتبّع وأكّد"
+
+msgid "Track Progress"
+msgstr "تتبّع التقدم"
+
+msgid "Track Proposals"
+msgstr "تتبّع العروض"
+
+msgid "Track the status of all proposals you have submitted."
+msgstr "تتبّع حالة جميع العروض التي قدّمتها."
+
+msgid "Track the status of reports you have submitted to the moderation team."
+msgstr "تتبّع حالة التقارير التي قدّمتها لفريق الإشراف."
+
+msgid "Transferred"
+msgstr "محوَّل"
+
+msgid "Try changing your search keywords, city, category, or rating range."
+msgstr "جرّب تغيير كلمات البحث أو المدينة أو الفئة أو نطاق التقييم."
+
+msgid "Try changing your search terms or filters."
+msgstr "جرّب تغيير مصطلحات البحث أو الفلاتر."
+
+msgid "Turnaround"
+msgstr "مدة التسليم"
+
+msgid "Type"
+msgstr "النوع"
+
+msgid "Typical turnaround"
+msgstr "مدة التسليم المعتادة"
+
+msgid "Unable to cancel the payment hold right now."
+msgstr "تعذّر إلغاء حجز الدفع الآن."
+
+msgid "Unable to process payment right now."
+msgstr "تعذّر معالجة الدفع الآن."
+
+msgid "Unban"
+msgstr "رفع الحظر"
+
+msgid "Under Review"
+msgstr "قيد المراجعة"
+
+msgid "Undo"
+msgstr "تراجع"
+
+msgid "Unpin"
+msgstr "إلغاء التثبيت"
+
+msgid "Unpin image"
+msgstr "إلغاء تثبيت الصورة"
+
+msgid "Unverify"
+msgstr "إلغاء التوثيق"
+
+msgid ""
+"Up to 5 · JPEG, PNG, WebP · Annotate to highlight what you want changed"
+msgstr "حتى 5 · JPEG، PNG، WebP · حدّد ما تريد تغييره"
+
+msgid "Up to 5 · JPEG, PNG, WebP · Annotate to show exactly what to fix"
+msgstr "حتى 5 · JPEG، PNG، WebP · حدّد ما يجب إصلاحه بالضبط"
+
+msgid "Up to 5 · JPEG, PNG, WebP · Mark up to highlight what you can deliver"
+msgstr "حتى 5 · JPEG، PNG، WebP · حدّد ما يمكنك تسليمه"
+
+msgid "Up to 5 · JPEG, PNG, WebP · Mark up to highlight your work"
+msgstr "حتى 5 · JPEG، PNG، WebP · حدّد عملك"
+
+msgid "Update Artisan Profile"
+msgstr "تحديث ملف الحرفي"
+
+msgid "Update Profile"
+msgstr "تحديث الملف الشخصي"
+
+msgid "Update Workshop Profile"
+msgstr "تحديث ملف الورشة"
+
+msgid "Update Your Idea"
+msgstr "حدّث فكرتك"
+
+msgid "Update Your Offer"
+msgstr "حدّث عرضك"
+
+msgid "Update your staff profile information."
+msgstr "حدّث معلومات ملفك كموظف."
+
+msgid "Updated recently"
+msgstr "محدَّث مؤخراً"
+
+msgid "Upload"
+msgstr "رفع"
+
+msgid "Upload Images"
+msgstr "رفع الصور"
+
+msgid "Upload Images for: {{ title }}"
+msgstr "رفع صور لـ: {{ title }}"
+
+msgid "Upload Portfolio Images"
+msgstr "رفع صور المعرض"
+
+msgid "Upload Project Images"
+msgstr "رفع صور المشروع"
+
+msgid "Upload Your Avatar"
+msgstr "رفع صورتك الشخصية"
+
+msgid ""
+"Upload new images, or tap <strong>Add</strong> on any image in the timeline "
+"above to include it here."
+msgstr ""
+"ارفع صوراً جديدة، أو انقر على <strong>إضافة</strong> في أي صورة بالجدول "
+"الزمني أعلاه لتضمينها هنا."
+
+msgid "Upload new work samples and keep your strongest pieces visible."
+msgstr "ارفع عينات أعمال جديدة واحتفظ بأقوى قطعك ظاهرة."
+
+msgid "Use average rating filter"
+msgstr "استخدم فلتر متوسط التقييم"
+
+msgid "Use digits only, with optional + and country code."
+msgstr "استخدم الأرقام فقط مع رمز + ورمز البلد الاختياري."
+
+msgid "Use this for manual or test payout processing for the current month."
+msgstr "استخدم هذا لمعالجة الصرف اليدوية أو الاختبارية للشهر الحالي."
+
+msgid "Use this for the official monthly payout after the month has ended."
+msgstr "استخدم هذا للصرف الشهري الرسمي بعد انتهاء الشهر."
+
+msgid "Username"
+msgstr "اسم المستخدم"
+
+msgid "Users"
+msgstr "المستخدمون"
+
+msgid ""
+"Users must use the platform lawfully and responsibly. Any misuse, abuse, or "
+"unauthorized access attempt to system components or user data is strictly "
+"prohibited."
+msgstr ""
+"يجب على المستخدمين استخدام المنصة بشكل قانوني ومسؤول. أي إساءة استخدام أو "
+"انتهاك أو محاولة وصول غير مصرح بها إلى مكونات النظام أو بيانات المستخدم "
+"محظورة تماماً."
+
+msgid "Verification"
+msgstr "التحقق"
+
+msgid "Verification Code"
+msgstr "رمز التحقق"
+
+msgid "Verification Pending"
+msgstr "التحقق معلّق"
+
+msgid "Verification and featuring"
+msgstr "التحقق والتمييز"
+
+msgid "Verification code sent to your phone."
+msgstr "تم إرسال رمز التحقق إلى هاتفك."
+
+msgid "Verification failed. Please try again."
+msgstr "فشل التحقق. يرجى المحاولة مرة أخرى."
+
+msgid "Verified"
+msgstr "موثّق"
+
+msgid "Verified Artisan"
+msgstr "حرفي موثّق"
+
+msgid "Verified Completed Project"
+msgstr "مشروع مكتمل موثّق"
+
+msgid "Verified only"
+msgstr "الموثّقون فقط"
+
+msgid "Verify"
+msgstr "توثيق"
+
+msgid "Verify Action"
+msgstr "إجراء التوثيق"
+
+msgid "Verify Phone"
+msgstr "توثيق الهاتف"
+
+msgid "View"
+msgstr "عرض"
+
+msgid "View Details"
+msgstr "عرض التفاصيل"
+
+msgid "View My Dispute"
+msgstr "عرض نزاعي"
+
+msgid "View Project"
+msgstr "عرض المشروع"
+
+msgid "View Workshop"
+msgstr "عرض الورشة"
+
+msgid "View all"
+msgstr "عرض الكل"
+
+msgid "View all notifications"
+msgstr "عرض جميع الإشعارات"
+
+msgid "View details"
+msgstr "عرض التفاصيل"
+
+msgid "Want to work on this project?"
+msgstr "هل تريد العمل في هذا المشروع؟"
+
+msgid ""
+"We believe every handmade product carries a story. Artisans do not simply "
+"deliver an item; they deliver skill, identity, and culture. That is why Saaf"
+" is designed as a clear and trusted space where customers can discover the "
+"right artisan, submit requests, communicate directly, and complete payments "
+"in an organized workflow."
+msgstr ""
+"نعتقد أن كل منتج يدوي يحمل قصة. الحرفيون لا يسلّمون مجرد منتج؛ بل يسلّمون "
+"مهارة وهوية وثقافة. لهذا صُمّمت سعف كمساحة واضحة وموثوقة يمكن فيها للعملاء "
+"اكتشاف الحرفي المناسب وتقديم الطلبات والتواصل المباشر وإتمام المدفوعات في "
+"سير عمل منظّم."
+
+msgid ""
+"We received a request to reset the password for your Saaf account. Click the"
+" button below to choose a new password."
+msgstr ""
+"تلقينا طلباً لإعادة تعيين كلمة مرور حساب سعف الخاص بك. انقر على الزر أدناه "
+"لاختيار كلمة مرور جديدة."
+
+msgid ""
+"We've emailed you instructions for setting your password. If an account "
+"exists with the email you entered, you should receive the message shortly."
+msgstr ""
+"أرسلنا لك بالبريد الإلكتروني تعليمات لتعيين كلمة مرورك. إذا كان هناك حساب "
+"بالبريد الذي أدخلته، يجب أن تتلقى الرسالة قريباً."
+
+msgid "Welcome back,"
+msgstr "مرحباً بعودتك،"
+
+msgid "Welcome to Saaf"
+msgstr "مرحباً في سعف"
+
+msgid ""
+"Welcome to Saaf, Saudi Arabia's marketplace for handcrafted goods and "
+"skilled artisans. You can now post requests, browse artisan workshops, and "
+"commission one-of-a-kind pieces made just for you."
+msgstr ""
+"مرحباً في سعف، سوق المملكة العربية السعودية للمنتجات اليدوية والحرفيين "
+"المهرة. يمكنك الآن نشر الطلبات وتصفح ورش الحرفيين وطلب قطع فريدة مصنوعة "
+"خصيصاً لك."
+
+msgid ""
+"Welcome to Saaf. Your artisan profile is ready — you can now browse open "
+"commission requests, submit proposals, and start building your reputation on"
+" the platform."
+msgstr ""
+"مرحباً في سعف. ملفك كحرفي جاهز — يمكنك الآن تصفح طلبات التكليف المفتوحة "
+"وتقديم العروض والبدء في بناء سمعتك على المنصة."
+
+msgid "Welcome, Artisan"
+msgstr "مرحباً، أيها الحرفي"
+
+msgid "What changed"
+msgstr "ما الذي تغيّر"
+
+msgid "What happens next"
+msgstr "ماذا يحدث بعد ذلك"
+
+msgid "What was reported"
+msgstr "ما تم الإبلاغ عنه"
+
+msgid "Withdraw"
+msgstr "سحب"
+
+msgid "Withdraw Proposal"
+msgstr "سحب العرض"
+
+msgid "Workshop"
+msgstr "الورشة"
+
+msgid "Workshop A-Z"
+msgstr "الورشة أ-ي"
+
+msgid "Workshop Name"
+msgstr "اسم الورشة"
+
+msgid "Workshop Profile"
+msgstr "ملف الورشة"
+
+msgid "Workshop Z-A"
+msgstr "الورشة ي-أ"
+
+msgid "Workshop details updated successfully."
+msgstr "تم تحديث تفاصيل الورشة بنجاح."
+
+msgid "Workshop not found."
+msgstr "لم يُعثر على الورشة."
+
+msgid "Workshop profile not found."
+msgstr "لم يُعثر على ملف الورشة."
+
+msgid "Workshop profile saved successfully!"
+msgstr "تم حفظ ملف الورشة بنجاح!"
+
+msgid "Workshop, artisan, service..."
+msgstr "الورشة أو الحرفي أو الخدمة..."
+
+msgid "Workshops"
+msgstr "الورش"
+
+msgid "Write something about yourself"
+msgstr "اكتب شيئاً عن نفسك"
+
+msgid "Write your message here..."
+msgstr "اكتب رسالتك هنا..."
+
+msgid "Yellow"
+msgstr "أصفر"
+
+msgid "Yes"
+msgstr "نعم"
+
+msgid "Yes — funds released"
+msgstr "نعم — تم تحرير الأموال"
+
+msgid "You"
+msgstr "أنت"
+
+msgid "You already accepted this contract."
+msgstr "لقد قبلت هذا العقد بالفعل."
+
+msgid "You already have an open dispute on this project."
+msgstr "لديك بالفعل نزاع مفتوح على هذا المشروع."
+
+msgid "You are not allowed to review this project."
+msgstr "غير مسموح لك بمراجعة هذا المشروع."
+
+msgid "You are not allowed to start this conversation."
+msgstr "غير مسموح لك ببدء هذه المحادثة."
+
+msgid "You are not allowed."
+msgstr "غير مسموح لك."
+
+msgid "You are not part of this project."
+msgstr "لست جزءاً من هذا المشروع."
+
+msgid "You can only edit a pending proposal."
+msgstr "يمكنك تعديل العروض المعلّقة فقط."
+
+msgid "You can only edit your own proposals."
+msgstr "يمكنك تعديل عروضك الخاصة فقط."
+
+msgid "You can only edit your own requests."
+msgstr "يمكنك تعديل طلباتك الخاصة فقط."
+
+msgid "You can only leave a review after the project is completed."
+msgstr "يمكنك ترك تقييم فقط بعد اكتمال المشروع."
+
+msgid "You can only withdraw your own proposals."
+msgstr "يمكنك سحب عروضك الخاصة فقط."
+
+msgid "You can open Stripe to manage payouts, banking, and account details."
+msgstr "يمكنك فتح Stripe لإدارة المدفوعات والخدمات المصرفية وتفاصيل الحساب."
+
+msgid ""
+"You can still view the full message history, but you can't send new "
+"messages."
+msgstr ""
+"لا يزال بإمكانك عرض سجل الرسائل الكامل، لكن لا يمكنك إرسال رسائل جديدة."
+
+msgid ""
+"You can track progress, send messages, and manage this project from your "
+"Saaf dashboard at any time."
+msgstr ""
+"يمكنك تتبع التقدم وإرسال الرسائل وإدارة هذا المشروع من لوحة تحكم سعف الخاصة "
+"بك في أي وقت."
+
+msgid ""
+"You can upload your own image or choose one of the default avatars below."
+msgstr "يمكنك رفع صورتك الخاصة أو اختيار صورة افتراضية من أدناه."
+
+msgid "You cannot submit a proposal for your own request."
+msgstr "لا يمكنك تقديم عرض لطلبك الخاص."
+
+msgid "You do not have access to this dispute."
+msgstr "ليس لديك حق الوصول إلى هذا النزاع."
+
+msgid "You do not have access to this project."
+msgstr "ليس لديك حق الوصول إلى هذا المشروع."
+
+msgid "You don't have a workshop yet — create one to show your profile."
+msgstr "ليس لديك ورشة بعد — أنشئ واحدة لعرض ملفك الشخصي."
+
+msgid "You don't have permission to edit this project."
+msgstr "ليس لديك صلاحية تعديل هذا المشروع."
+
+msgid "You have already submitted a proposal for this request."
+msgstr "لقد قدّمت بالفعل عرضاً لهذا الطلب."
+
+msgid ""
+"You have already submitted a report on this content recently. Please wait "
+"before reporting again."
+msgstr ""
+"لقد قدّمت بالفعل تقريراً حول هذا المحتوى مؤخراً. يرجى الانتظار قبل الإبلاغ "
+"مرة أخرى."
+
+msgid "You have already submitted a review for this project."
+msgstr "لقد قدّمت بالفعل تقييماً لهذا المشروع."
+
+msgid "You have been registered."
+msgstr "تم تسجيلك."
+
+msgid "You have no disputes."
+msgstr "ليس لديك نزاعات."
+
+msgid "You have not posted any requests yet."
+msgstr "لم تنشر أي طلبات بعد."
+
+msgid "You have not submitted any proposals yet."
+msgstr "لم تقدّم أي عروض بعد."
+
+msgid "You haven't submitted any reports yet."
+msgstr "لم تقدّم أي تقارير بعد."
+
+msgid "You haven't submitted any reviews yet."
+msgstr "لم تقدّم أي تقييمات بعد."
+
+msgid "You must create a workshop profile first."
+msgstr "يجب عليك إنشاء ملف ورشة أولاً."
+
+msgid "You must have an artisan profile to create a workshop."
+msgstr "يجب أن يكون لديك ملف حرفي لإنشاء ورشة."
+
+msgid "You must have an artisan profile to upload portfolio images."
+msgstr "يجب أن يكون لديك ملف حرفي لرفع صور المعرض."
+
+msgid "You need to log in first."
+msgstr "تحتاج إلى تسجيل الدخول أولاً."
+
+msgid "You received this email because you have an account on Saaf."
+msgstr "تلقيت هذا البريد لأن لديك حساباً على سعف."
+
+msgid "You'll be redirected to Stripe to complete your payout setup."
+msgstr "ستُعاد توجيهك إلى Stripe لإكمال إعداد الصرف."
+
+msgid "You're all caught up — no notifications yet."
+msgstr "اطلعت على كل شيء — لا توجد إشعارات بعد."
+
+msgid ""
+"You're receiving this email because a password reset was requested for your "
+"Saaf account."
+msgstr ""
+"تتلقى هذا البريد لأنه تم طلب إعادة تعيين كلمة المرور لحساب سعف الخاص بك."
+
+msgid "Your Account"
+msgstr "حسابك"
+
+msgid "Your Proposal"
+msgstr "عرضك"
+
+msgid "Your Rating"
+msgstr "تقييمك"
+
+msgid "Your Review"
+msgstr "تقييمك"
+
+msgid ""
+"Your Stripe account details were submitted, but payouts are not enabled yet."
+msgstr "تم تقديم تفاصيل حساب Stripe الخاص بك، لكن المدفوعات غير مفعّلة بعد."
+
+msgid "Your Stripe account is ready to receive payouts."
+msgstr "حساب Stripe الخاص بك جاهز لاستلام المدفوعات."
+
+msgid "Your Stripe account needs some additional information."
+msgstr "حساب Stripe الخاص بك يحتاج إلى بعض المعلومات الإضافية."
+
+msgid "Your Username or Password is wrong, try again"
+msgstr "اسم المستخدم أو كلمة المرور خاطئة، حاول مرة أخرى"
+
+msgid "Your artisan profile has been updated."
+msgstr "تم تحديث ملفك كحرفي."
+
+msgid "Your budget"
+msgstr "ميزانيتك"
+
+msgid "Your card was declined."
+msgstr "تم رفض بطاقتك."
+
+msgid "Your contract is ready."
+msgstr "عقدك جاهز."
+
+msgid "Your description contains inappropriate language. Please revise it."
+msgstr "وصفك يحتوي على لغة غير لائقة. يرجى مراجعته."
+
+msgid "Your dispute has been opened. Our team will review it shortly."
+msgstr "تم فتح نزاعك. سيراجعه فريقنا قريباً."
+
+msgid "Your feedback contains inappropriate language. Please revise it."
+msgstr "تعليقك يحتوي على لغة غير لائقة. يرجى مراجعته."
+
+msgid "Your main actions"
+msgstr "إجراءاتك الرئيسية"
+
+msgid "Your message"
+msgstr "رسالتك"
+
+msgid "Your message contains inappropriate language. Please revise it."
+msgstr "رسالتك تحتوي على لغة غير لائقة. يرجى مراجعتها."
+
+msgid "Your next commission is <span class=\"saaf-text-accent\">waiting</span>."
+msgstr "تكليفك التالي <span class=\"saaf-text-accent\">ينتظرك</span>."
+
+msgid ""
+"Your password has been set successfully. You can now log in with your new "
+"password."
+msgstr ""
+"تم تعيين كلمة مرورك بنجاح. يمكنك الآن تسجيل الدخول بكلمة مرورك الجديدة."
+
+msgid "Your phone number has been verified successfully."
+msgstr "تم التحقق من رقم هاتفك بنجاح."
+
+msgid "Your price"
+msgstr "سعرك"
+
+msgid "Your private channel with staff"
+msgstr "قناتك الخاصة مع الفريق"
+
+msgid "Your profile has been updated"
+msgstr "تم تحديث ملفك الشخصي"
+
+msgid "Your proposal has been submitted."
+msgstr "تم تقديم عرضك."
+
+msgid "Your proposal has been withdrawn."
+msgstr "تم سحب عرضك."
+
+msgid ""
+"Your proposal will be withdrawn and you will no longer be considered for "
+"this project."
+msgstr "سيتم سحب عرضك ولن تُؤخذ بعين الاعتبار لهذا المشروع."
+
+msgid "Your report has been submitted. Our team will review it shortly."
+msgstr "تم تقديم تقريرك. سيراجعه فريقنا قريباً."
+
+msgid "Your request"
+msgstr "طلبك"
+
+msgid "Your request has been posted."
+msgstr "تم نشر طلبك."
+
+msgid "Your request has been reopened with the new deadline."
+msgstr "تمت إعادة فتح طلبك بالموعد النهائي الجديد."
+
+msgid "Your review has been submitted. Thank you!"
+msgstr "تم تقديم تقييمك. شكراً!"
+
+msgid "Your update contains inappropriate language. Please revise it."
+msgstr "تحديثك يحتوي على لغة غير لائقة. يرجى مراجعته."
+
+msgid "Your uploaded images"
+msgstr "صورك المرفوعة"
+
+msgid "[removed]"
+msgstr "[محذوف]"
+
+msgid "characters"
+msgstr "حرف"
+
+msgid "just now"
+msgstr "الآن"
+
+msgid "of"
+msgstr "من"
+
+msgid "optional"
+msgstr "اختياري"
+
+msgid "to get started."
+msgstr "للبدء."
+
+msgid "to submit a proposal."
+msgstr "لتقديم عرض."
+
+msgid "— Categories"
+msgstr "— الفئات"
+
+msgid "— For craftspeople"
+msgstr "— للحرفيين"
+
+msgid "— Open commissions"
+msgstr "— التكليفات المفتوحة"
+
+msgid "— The Saaf Team"
+msgstr "— فريق سعف"
+
+msgid "— The Saudi artisan marketplace"
+msgstr "— سوق الحرفيين السعوديين"
+
+msgid "— Top rated artisans"
+msgstr "— الحرفيون الأعلى تقييماً"
+
+msgid "✎ annotates & adds the image to your proposal · ↓ downloads a copy"
+msgstr "✎ يُضيف تعليقاً للصورة ويرفقها بعرضك · ↓ يُنزّل نسخة"
+
+msgid "Client Overview"
+msgstr "نظرة عامة على العميل"
+
+msgid "Your alerts and requests"
+msgstr "تنبيهاتك وطلباتك"
+
+msgid "Unread Notifications"
+msgstr "الإشعارات غير المقروءة"
+
+msgid "Go to notification center"
+msgstr "الذهاب إلى مركز الإشعارات"
+
+msgid "Unread Messages"
+msgstr "الرسائل غير المقروءة"
+
+msgid "Active chats"
+msgstr "المحادثات النشطة"
+
+msgid "Pending Proposals"
+msgstr "العروض المعلّقة"
+
+msgid "Total proposals"
+msgstr "إجمالي العروض"
+
+msgid "Latest Notifications"
+msgstr "أحدث الإشعارات"
+
+msgid "No recent notifications."
+msgstr "لا توجد إشعارات حديثة."
+
+msgid "My Latest Requests"
+msgstr "أحدث طلباتي"
+
+msgid "No requests found for this filter."
+msgstr "لم يُعثر على طلبات لهذا الفلتر."
+
+msgid "All closed requests linked to accepted proposals for {{ name }}."
+msgstr "جميع الطلبات المغلقة المرتبطة بالعروض المقبولة لـ {{ name }}."
+
+msgid "by"
+msgstr "بواسطة"
+
+msgid "Page"
+msgstr "صفحة"
+
+msgid "You have no open requests right now."
+msgstr "ليس لديك طلبات مفتوحة الآن."
+
+msgid "Create a new request"
+msgstr "أنشئ طلباً جديداً"
+
+msgid "Could not load your requests. Please try again."
+msgstr "تعذّر تحميل طلباتك. يرجى المحاولة مرة أخرى."
+
+msgid "Invitation sent!"
+msgstr "تم إرسال الدعوة!"
+
+msgid "The artisan will receive a notification."
+msgstr "سيتلقى الحرفي إشعاراً."
+
+msgid "You have already invited this artisan to that request."
+msgstr "لقد دعوت هذا الحرفي لذلك الطلب من قبل."
+
+msgid "Already invited"
+msgstr "تمت الدعوة بالفعل"
+
+msgid "Could not invite:"
+msgstr "تعذّرت الدعوة:"
+
+msgid "Could not send invitation."
+msgstr "تعذّر إرسال الدعوة."
+
+msgid "Sending…"
+msgstr "جار الإرسال..."
+
+msgid "Sent"
+msgstr "تم الإرسال"
+
+msgid "Network error — please try again."
+msgstr "خطأ في الشبكة — يرجى المحاولة مرة أخرى."
+
+msgid "Image pinned successfully."
+msgstr "تم تثبيت الصورة بنجاح."
+
+msgid "Image unpinned successfully."
+msgstr "تم إلغاء تثبيت الصورة بنجاح."
+
+msgid "Image skipped: %(error)s"
+msgstr "تم تخطي الصورة: %(error)s"
+
+msgid "%(count)d portfolio image(s) uploaded successfully."
+msgstr "تم رفع %(count)d صورة للمعرض بنجاح."
+
+msgid "%(count)d project image(s) uploaded successfully."
+msgstr "تم رفع %(count)d صورة للمشروع بنجاح."

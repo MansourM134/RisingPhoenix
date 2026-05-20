@@ -1,17 +1,18 @@
 {% extends "main/base.html" %}
+{% load i18n %}
 
-{% block title %}Dispute Management{% endblock %}
+{% block title %}{% trans "Dispute Management" %}{% endblock %}
 
 {% block content %}
 <div class="container py-5">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="fw-bold">Dispute Management</h1>
-            <p class="text-muted">Review and resolve disputes between requesters and artisans.</p>
+            <h1 class="fw-bold">{% trans "Dispute Management" %}</h1>
+            <p class="text-muted">{% trans "Review and resolve disputes between requesters and artisans." %}</p>
         </div>
         <a href="{% url 'staff:staff_dashboard_view' %}" class="btn btn-outline-secondary btn-sm">
-            <i class="bi bi-arrow-left"></i> Dashboard
+            <i class="bi bi-arrow-left"></i> {% trans "Dashboard" %}
         </a>
     </div>
 
@@ -36,7 +37,7 @@
     <div class="card shadow-sm border-0">
         <div class="card-header bg-dark text-white">
             <h5 class="mb-0">
-                Disputes
+                {% trans "Disputes" %}
                 <span class="badge bg-secondary ms-2">{{ disputes.count }}</span>
             </h5>
         </div>
@@ -46,13 +47,13 @@
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th>Project</th>
-                        <th>Opened by</th>
-                        <th>Requester</th>
-                        <th>Artisan</th>
-                        <th>Reason</th>
-                        <th>Opened</th>
-                        <th>Action</th>
+                        <th>{% trans "Project" %}</th>
+                        <th>{% trans "Opened by" %}</th>
+                        <th>{% trans "Requester" %}</th>
+                        <th>{% trans "Artisan" %}</th>
+                        <th>{% trans "Reason" %}</th>
+                        <th>{% trans "Opened" %}</th>
+                        <th>{% trans "Action" %}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,7 +70,7 @@
                         <td class="text-muted" style="white-space:nowrap;">{{ dispute.created_at|date:"M j, Y" }}</td>
                         <td>
                             <a href="{% url 'staff:dispute_detail_view' dispute.id %}" class="btn btn-sm btn-outline-dark">
-                                Open
+                                {% trans "Open" %}
                             </a>
                         </td>
                     </tr>
@@ -79,7 +80,7 @@
             {% else %}
             <div class="text-center py-5 text-muted">
                 <i class="bi bi-shield-check fs-1 d-block mb-3" style="color:#d9b9a8;"></i>
-                No disputes with status "{{ status_filter }}".
+                {% blocktrans with status=status_filter %}No disputes with status "{{ status }}".{% endblocktrans %}
             </div>
             {% endif %}
         </div>

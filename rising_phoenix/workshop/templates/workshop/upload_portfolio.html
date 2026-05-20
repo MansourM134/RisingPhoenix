@@ -1,4 +1,5 @@
 {% extends 'main/base.html' %}
+{% load i18n %}
 
 {% block sidebar %}
 {% include 'main/_sidebar.html' with active='portfolio' %}
@@ -8,38 +9,38 @@
 <section class="py-4 py-md-5">
     <div class="container-lg">
         <div class="saaf-dashboard-card rounded-4 p-4 p-md-5 mb-4">
-            <p class="saaf-eyebrow mb-2">Portfolio</p>
-            <h1 class="saaf-section-title mb-2">Upload Portfolio Images</h1>
-            <p class="text-muted mb-0">Show your previous work to help customers choose you confidently.</p>
+            <p class="saaf-eyebrow mb-2">{% trans "Portfolio" %}</p>
+            <h1 class="saaf-section-title mb-2">{% trans "Upload Portfolio Images" %}</h1>
+            <p class="text-muted mb-0">{% trans "Show your previous work to help customers choose you confidently." %}</p>
         </div>
 
         <div class="row g-3">
             <div class="col-lg-6">
                 <div class="saaf-dashboard-card rounded-4 p-4 h-100">
-                    <h5 class="mb-3">Add New Images</h5>
+                    <h5 class="mb-3">{% trans "Add New Images" %}</h5>
                     <form method="post" enctype="multipart/form-data" class="row g-3">
                         {% csrf_token %}
 
                         <div class="col-12">
-                            <label for="id_images" class="form-label">Images</label>
+                            <label for="id_images" class="form-label">{% trans "Images" %}</label>
                             {{ form.images }}
                         </div>
 
                         <div class="col-12">
-                            <label for="id_caption" class="form-label">Caption</label>
+                            <label for="id_caption" class="form-label">{% trans "Caption" %}</label>
                             {{ form.caption }}
                         </div>
 
                         <div class="col-12">
                             <label class="saaf-check-card">
                                 {{ form.is_pinned }}
-                                <span>Pin uploaded images</span>
+                                <span>{% trans "Pin uploaded images" %}</span>
                             </label>
                         </div>
 
                         <div class="col-12 d-flex flex-wrap gap-2">
-                            <button type="submit" class="btn btn-saaf-primary rounded-pill">Upload</button>
-                            <a href="{% url 'workshop:workshop_detail_view' request.user.id %}" class="btn btn-saaf-outline rounded-pill">Back to Workshop</a>
+                            <button type="submit" class="btn btn-saaf-primary rounded-pill">{% trans "Upload" %}</button>
+                            <a href="{% url 'workshop:workshop_detail_view' request.user.id %}" class="btn btn-saaf-outline rounded-pill">{% trans "Back to Workshop" %}</a>
                         </div>
                     </form>
                 </div>
@@ -47,7 +48,7 @@
 
             <div class="col-lg-6">
                 <div class="saaf-dashboard-card rounded-4 p-4 h-100">
-                    <h5 class="mb-3">Current Portfolio</h5>
+                    <h5 class="mb-3">{% trans "Current Portfolio" %}</h5>
                     {% if portfolio_images %}
                     <div class="row g-2">
                         {% for image in portfolio_images %}
@@ -60,18 +61,18 @@
                                         {% csrf_token %}
                                         <input type="hidden" name="toggle_pin_image_id" value="{{ image.id }}">
                                         <button type="submit" class="btn btn-sm {% if image.is_pinned %}btn-saaf-primary{% else %}btn-saaf-outline{% endif %} rounded-pill">
-                                            {% if image.is_pinned %}Pinned{% else %}Pin{% endif %}
+                                            {% if image.is_pinned %}{% trans "Pinned" %}{% else %}{% trans "Pin" %}{% endif %}
                                         </button>
                                     </form>
 
                                     <button class="btn btn-sm btn-saaf-outline rounded-pill" type="button" data-bs-toggle="collapse" data-bs-target="#edit-caption-{{ image.id }}" aria-expanded="false" aria-controls="edit-caption-{{ image.id }}">
-                                        Edit
+                                        {% trans "Edit" %}
                                     </button>
 
-                                    <form method="post" class="d-inline" onsubmit="return confirm('Delete this image?');">
+                                    <form method="post" class="d-inline" onsubmit="return confirm('{% trans "Delete this image?" %}');">
                                         {% csrf_token %}
                                         <input type="hidden" name="delete_image_id" value="{{ image.id }}">
-                                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill">Delete</button>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill">{% trans "Delete" %}</button>
                                     </form>
                                 </div>
 
@@ -79,8 +80,8 @@
                                     <form method="post" class="d-grid gap-2">
                                         {% csrf_token %}
                                         <input type="hidden" name="update_caption_image_id" value="{{ image.id }}">
-                                        <input type="text" name="caption" value="{{ image.caption }}" class="form-control form-control-sm" placeholder="Image caption">
-                                        <button type="submit" class="btn btn-sm btn-saaf-primary rounded-pill">Save Caption</button>
+                                        <input type="text" name="caption" value="{{ image.caption }}" class="form-control form-control-sm" placeholder="{% trans 'Image caption' %}">
+                                        <button type="submit" class="btn btn-sm btn-saaf-primary rounded-pill">{% trans "Save Caption" %}</button>
                                     </form>
                                 </div>
 
@@ -90,7 +91,7 @@
                         {% endfor %}
                     </div>
                     {% else %}
-                    <p class="text-muted mb-0">No portfolio images yet.</p>
+                    <p class="text-muted mb-0">{% trans "No portfolio images yet." %}</p>
                     {% endif %}
                 </div>
             </div>

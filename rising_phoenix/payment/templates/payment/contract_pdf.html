@@ -1,4 +1,4 @@
-{% load static %}
+{% load static i18n %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -365,9 +365,9 @@
                     <span class="brand-name">Saaf</span>
                 </td>
                 <td class="brand-right">
-                    <div class="doc-eyebrow">Service Agreement</div>
-                    <div class="doc-title">Contract #{{ contract.id }}</div>
-                    <div class="doc-sub">Official agreement between requester and artisan</div>
+                    <div class="doc-eyebrow">{% trans "Service Agreement" %}</div>
+                    <div class="doc-title">{% blocktrans with id=contract.id %}Contract #{{ id }}{% endblocktrans %}</div>
+                    <div class="doc-sub">{% trans "Official agreement between requester and artisan" %}</div>
                 </td>
             </tr>
         </table>
@@ -377,19 +377,19 @@
     <table class="meta-grid">
         <tr>
             <td class="meta-card meta-card-accent">
-                <span class="meta-label">Project</span>
+                <span class="meta-label">{% trans "Project" %}</span>
                 <div class="meta-value">{{ project_request.title }}</div>
             </td>
             <td class="meta-card meta-card-accent">
-                <span class="meta-label">Amount</span>
+                <span class="meta-label">{% trans "Amount" %}</span>
                 <div class="meta-value meta-value-clay">{{ proposal.price }} SAR</div>
             </td>
             <td class="meta-card">
-                <span class="meta-label">Duration</span>
-                <div class="meta-value">{{ proposal.estimated_days }} day{{ proposal.estimated_days|pluralize }}</div>
+                <span class="meta-label">{% trans "Duration" %}</span>
+                <div class="meta-value">{% blocktrans with days=proposal.estimated_days %}{{ days }} day{{ days|pluralize }}{% endblocktrans %}</div>
             </td>
             <td class="meta-card">
-                <span class="meta-label">Status</span>
+                <span class="meta-label">{% trans "Status" %}</span>
                 <div class="meta-value">
                     <span class="status-pill">{{ contract.get_status_display|default:contract.status }}</span>
                 </div>
@@ -401,17 +401,17 @@
     <div class="section">
         <div class="section-title">
             <span class="section-title-dot"></span>
-            Parties Involved
+            {% trans "Parties Involved" %}
         </div>
         <table class="parties-table">
             <tr>
                 <td class="party-card">
-                    <div class="party-role">Requester (Client)</div>
+                    <div class="party-role">{% trans "Requester (Client)" %}</div>
                     <div class="party-name">{{ project_request.requester.get_full_name|default:project_request.requester.username }}</div>
                     <div class="party-username">@{{ project_request.requester.username }}</div>
                 </td>
                 <td class="party-card">
-                    <div class="party-role">Artisan (Service Provider)</div>
+                    <div class="party-role">{% trans "Artisan (Service Provider)" %}</div>
                     <div class="party-name">{{ proposal.artisan.get_full_name|default:proposal.artisan.username }}</div>
                     <div class="party-username">@{{ proposal.artisan.username }}</div>
                 </td>
@@ -423,27 +423,27 @@
     <div class="section">
         <div class="section-title">
             <span class="section-title-dot"></span>
-            Request Details
+            {% trans "Request Details" %}
         </div>
         <div class="card">
             <table class="row-table">
                 <tr>
-                    <td class="row-label">Title</td>
+                    <td class="row-label">{% trans "Title" %}</td>
                     <td class="row-value">{{ project_request.title }}</td>
                 </tr>
                 <tr>
-                    <td class="row-label">Category</td>
+                    <td class="row-label">{% trans "Category" %}</td>
                     <td class="row-value">{{ project_request.category.name }}</td>
                 </tr>
                 {% if project_request.budget_max %}
                 <tr>
-                    <td class="row-label">Budget</td>
+                    <td class="row-label">{% trans "Budget" %}</td>
                     <td class="row-value">{{ project_request.budget_max }} SAR</td>
                 </tr>
                 {% endif %}
                 {% if project_request.deadline %}
                 <tr>
-                    <td class="row-label">Deadline</td>
+                    <td class="row-label">{% trans "Deadline" %}</td>
                     <td class="row-value">{{ project_request.deadline }}</td>
                 </tr>
                 {% endif %}
@@ -456,17 +456,17 @@
     <div class="section">
         <div class="section-title">
             <span class="section-title-dot"></span>
-            Proposal Details
+            {% trans "Proposal Details" %}
         </div>
         <div class="card">
             <table class="row-table">
                 <tr>
-                    <td class="row-label">Price</td>
+                    <td class="row-label">{% trans "Price" %}</td>
                     <td class="row-value" style="color:var(--clay);font-weight:800;">{{ proposal.price }} SAR</td>
                 </tr>
                 <tr>
-                    <td class="row-label">Est. Completion</td>
-                    <td class="row-value">{{ proposal.estimated_days }} day{{ proposal.estimated_days|pluralize }} from start</td>
+                    <td class="row-label">{% trans "Est. Completion" %}</td>
+                    <td class="row-value">{% blocktrans with days=proposal.estimated_days %}{{ days }} day{{ days|pluralize }} from start{% endblocktrans %}</td>
                 </tr>
             </table>
             <div class="description-box">{{ proposal.message }}</div>
@@ -477,23 +477,23 @@
     <div class="section">
         <div class="section-title">
             <span class="section-title-dot"></span>
-            Payment &amp; Escrow
+            {% trans "Payment & Escrow" %}
         </div>
         <div class="escrow-card">
             <table class="row-table">
                 <tr>
-                    <td class="row-label">Escrow status</td>
+                    <td class="row-label">{% trans "Escrow status" %}</td>
                     <td class="row-value">
                         <span class="escrow-badge">{{ escrow_payment.status }}</span>
                     </td>
                 </tr>
                 <tr>
-                    <td class="row-label">Payment captured</td>
+                    <td class="row-label">{% trans "Payment captured" %}</td>
                     <td class="row-value">
                         {% if escrow_payment.captured %}
-                            <span class="escrow-badge">Yes — funds released</span>
+                            <span class="escrow-badge">{% trans "Yes — funds released" %}</span>
                         {% else %}
-                            <span style="color:var(--muted);font-size:11px;">Not yet captured — held in escrow</span>
+                            <span style="color:var(--muted);font-size:11px;">{% trans "Not yet captured — held in escrow" %}</span>
                         {% endif %}
                     </td>
                 </tr>
@@ -505,24 +505,28 @@
     <div class="section">
         <div class="section-title">
             <span class="section-title-dot"></span>
-            Contract Terms
+            {% trans "Contract Terms" %}
         </div>
         <div class="terms-box">
             <p>
+                {% blocktrans with requester=project_request.requester.get_full_name|default:project_request.requester.username artisan=proposal.artisan.get_full_name|default:proposal.artisan.username title=project_request.title %}
                 This contract confirms that the requester
-                <span class="terms-bold">{{ project_request.requester.get_full_name|default:project_request.requester.username }}</span>
+                <span class="terms-bold">{{ requester }}</span>
                 has hired the artisan
-                <span class="terms-bold">{{ proposal.artisan.get_full_name|default:proposal.artisan.username }}</span>
+                <span class="terms-bold">{{ artisan }}</span>
                 to complete the work described in the request titled
-                "<span class="terms-bold">{{ project_request.title }}</span>".
+                "<span class="terms-bold">{{ title }}</span>".
+                {% endblocktrans %}
             </p>
             <p>
+                {% blocktrans with days=proposal.estimated_days price=proposal.price %}
                 The artisan agrees to complete the work within
-                <span class="terms-bold">{{ proposal.estimated_days }} day{{ proposal.estimated_days|pluralize }}</span>
+                <span class="terms-bold">{{ days }} day{{ days|pluralize }}</span>
                 for the total amount of
-                <span class="terms-bold">{{ proposal.price }} SAR</span>,
+                <span class="terms-bold">{{ price }} SAR</span>,
                 subject to the Saaf platform's payment and completion rules.
                 Funds are held in escrow and released only upon confirmation of project completion.
+                {% endblocktrans %}
             </p>
         </div>
     </div>
@@ -531,28 +535,28 @@
     <div class="section">
         <div class="section-title">
             <span class="section-title-dot"></span>
-            Acceptance Record
+            {% trans "Acceptance Record" %}
         </div>
         <table class="sig-table">
             <tr>
                 <td class="sig-box">
-                    <div class="sig-role">Requester Acceptance</div>
+                    <div class="sig-role">{% trans "Requester Acceptance" %}</div>
                     <div class="sig-name">
                         {{ project_request.requester.get_full_name|default:project_request.requester.username }}
                     </div>
                     <div class="sig-date">
                         <span class="sig-check">✓</span>
-                        Accepted at: {{ contract.requester_accepted_at }}
+                        {% blocktrans with ts=contract.requester_accepted_at %}Accepted at: {{ ts }}{% endblocktrans %}
                     </div>
                 </td>
                 <td class="sig-box">
-                    <div class="sig-role">Artisan Acceptance</div>
+                    <div class="sig-role">{% trans "Artisan Acceptance" %}</div>
                     <div class="sig-name">
                         {{ proposal.artisan.get_full_name|default:proposal.artisan.username }}
                     </div>
                     <div class="sig-date">
                         <span class="sig-check">✓</span>
-                        Accepted at: {{ contract.artisan_accepted_at }}
+                        {% blocktrans with ts=contract.artisan_accepted_at %}Accepted at: {{ ts }}{% endblocktrans %}
                     </div>
                 </td>
             </tr>
@@ -561,8 +565,8 @@
 
     <!-- ── Footer ── -->
     <div class="footer-note">
-        This document was generated automatically by <span class="footer-brand">Saaf</span> and serves as the official contract record for this project.<br>
-        Contract #{{ contract.id }} · Generated on {% now "N j, Y" %}
+        {% blocktrans %}This document was generated automatically by <span class="footer-brand">Saaf</span> and serves as the official contract record for this project.{% endblocktrans %}<br>
+        {% blocktrans with id=contract.id %}Contract #{{ id }}{% endblocktrans %} · {% trans "Generated on" %} {% now "N j, Y" %}
     </div>
 
 </div>

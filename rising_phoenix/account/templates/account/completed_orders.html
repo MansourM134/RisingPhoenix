@@ -1,8 +1,8 @@
 {% extends 'main/base.html' %}
-{% load static %}
+{% load static i18n %}
 
 {% block title %}
-Completed Orders
+{% trans "Completed Orders" %}
 {% endblock %}
 
 {% block sidebar %}
@@ -21,12 +21,12 @@ Completed Orders
         <header class="request-hero mb-3">
             <div class="request-row">
                 <div>
-                    <p class="request-eyebrow mb-1">Workshop</p>
-                    <h1 class="mb-2">Closed Requests</h1>
-                    <p class="request-sub">All closed requests linked to your accepted proposals.</p>
+                    <p class="request-eyebrow mb-1">{% trans "Workshop" %}</p>
+                    <h1 class="mb-2">{% trans "Closed Requests" %}</h1>
+                    <p class="request-sub">{% trans "All closed requests linked to your accepted proposals." %}</p>
                 </div>
                 <div>
-                    <a href="{% url 'workshop:workshop_detail_view' request.user.id %}" class="request-action">Back to My Workshop</a>
+                    <a href="{% url 'workshop:workshop_detail_view' request.user.id %}" class="request-action">{% trans "Back to My Workshop" %}</a>
                 </div>
             </div>
         </header>
@@ -102,14 +102,14 @@ Completed Orders
                             {% if project_request.budget_max %}
                             {{ project_request.budget_max|floatformat:"-2" }} SAR
                             {% else %}
-                            Budget flexible
+                            {% trans "Budget flexible" %}
                             {% endif %}
 
                         </span>
 
                         <span class="status-pill status-closed">
 
-                            Closed
+                            {% trans "Closed" %}
 
                         </span>
 
@@ -117,8 +117,8 @@ Completed Orders
 
                     <p class="mb-0">
 
-                        Deadline:
-                        {{ project_request.deadline|default:"Flexible" }}
+                        {% trans "Deadline:" %}
+                        {{ project_request.deadline|default:_("Flexible") }}
 
                     </p>
 
@@ -128,7 +128,7 @@ Completed Orders
 
                         {{ project_request.proposals.count }}
 
-                        proposal{{ project_request.proposals.count|pluralize }}
+                        {% blocktrans with count=project_request.proposals.count %}proposal{{ count|pluralize }}{% endblocktrans %}
 
                     </p>
 
@@ -136,7 +136,7 @@ Completed Orders
 
                         <a href="{% url 'request:request_detail_view' project_request.id %}" class="request-card-cta">
 
-                            View details
+                            {% trans "View details" %}
 
                         </a>
 
@@ -150,7 +150,7 @@ Completed Orders
 
             <div class="request-empty">
 
-                No completed orders yet.
+                {% trans "No completed orders yet." %}
 
             </div>
 
@@ -167,7 +167,7 @@ Completed Orders
 
             <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
 
-                Previous
+                {% trans "Previous" %}
 
             </a>
 
@@ -176,9 +176,7 @@ Completed Orders
 
             <span class="page-current">
 
-                Page {{ page_obj.number }}
-                of
-                {{ page_obj.paginator.num_pages }}
+                {% blocktrans with num=page_obj.number total=page_obj.paginator.num_pages %}Page {{ num }} of {{ total }}{% endblocktrans %}
 
             </span>
 
@@ -187,7 +185,7 @@ Completed Orders
 
             <a class="page-link" href="?page={{ page_obj.next_page_number }}">
 
-                Next
+                {% trans "Next" %}
 
             </a>
 

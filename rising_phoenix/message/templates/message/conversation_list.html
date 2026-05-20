@@ -1,6 +1,7 @@
 {% extends "main/base.html" %}
+{% load i18n %}
 
-{% block title %}Conversations{% endblock %}
+{% block title %}{% trans "Conversations" %}{% endblock %}
 
 {% block content %}
 <section class="py-4 py-lg-5 saaf-chat-page">
@@ -8,9 +9,9 @@
         <div class="row justify-content-center">
             <div class="col-12">
                 <div class="saaf-chat-list-hero mb-4">
-                    <p class="saaf-eyebrow mb-2">Messages</p>
-                    <h1 class="saaf-section-title mb-2">Conversations</h1>
-                    <p class="text-muted mb-0">Follow every project discussion in one clear inbox.</p>
+                    <p class="saaf-eyebrow mb-2">{% trans "Messages" %}</p>
+                    <h1 class="saaf-section-title mb-2">{% trans "Conversations" %}</h1>
+                    <p class="text-muted mb-0">{% trans "Follow every project discussion in one clear inbox." %}</p>
                 </div>
 
                 {% if conversations %}
@@ -40,14 +41,14 @@
                                     <p class="saaf-chat-list-title mb-1">{{ conversation.proposal.request.title }}</p>
 
                                     <div class="saaf-chat-list-meta">
-                                        <span class="saaf-chat-proposal-pill">Proposal #{{ conversation.proposal.id }}</span>
+                                        <span class="saaf-chat-proposal-pill">{% blocktrans with id=conversation.proposal.id %}Proposal #{{ id }}{% endblocktrans %}</span>
                                         <span class="saaf-chat-meta-dot"></span>
-                                        <span>Updated recently</span>
+                                        <span>{% trans "Updated recently" %}</span>
                                     </div>
                                 </div>
 
                                 <div class="saaf-chat-list-cta">
-                                    <span>Open</span>
+                                    <span>{% trans "Open" %}</span>
                                     <i class="bi bi-arrow-right"></i>
                                 </div>
                             </a>
@@ -58,9 +59,9 @@
                         <div class="mb-3">
                             <i class="bi bi-chat-dots"></i>
                         </div>
-                        <h4 class="fw-bold mb-2">No conversations yet</h4>
+                        <h4 class="fw-bold mb-2">{% trans "No conversations yet" %}</h4>
                         <p class="text-muted mb-0">
-                            Once a requester opens a chat from a proposal, it will appear here.
+                            {% trans "Once a requester opens a chat from a proposal, it will appear here." %}
                         </p>
                     </div>
                 {% endif %}

@@ -1,10 +1,11 @@
 {% extends 'main/base.html' %}
+{% load i18n %}
 
-{% block title %}Upload Project Images{% endblock %}
+{% block title %}{% trans "Upload Project Images" %}{% endblock %}
 
 {% block content %}
 <div class="container" style="max-width:1100px; margin-top:24px;">
-    <h2>Upload Images for: {{ project.title }}</h2>
+    <h2>{% blocktrans with title=project.title %}Upload Images for: {{ title }}{% endblocktrans %}</h2>
 
     {% if messages %}
     {% for message in messages %}
@@ -23,24 +24,23 @@
                     {% for err in field.errors %}<div class="text-danger">{{ err }}</div>{% endfor %}
                 </div>
                 {% endfor %}
-                <button class="btn btn-primary" type="submit">Upload Images</button>
-                <a href="{% url 'workshop:project_detail_view' project_id=project.id %}" class="btn btn-secondary">View
-                    Project</a>
+                <button class="btn btn-primary" type="submit">{% trans "Upload Images" %}</button>
+                <a href="{% url 'workshop:project_detail_view' project_id=project.id %}" class="btn btn-secondary">{% trans "View Project" %}</a>
             </form>
         </div>
         <div class="col-md-6">
-            <h5>Existing images</h5>
+            <h5>{% trans "Existing images" %}</h5>
             <div class="d-flex flex-wrap gap-2">
                 {% for img in images %}
                 <div style="width:120px;">
                     <img src="{{ img.image.url }}" alt=""
                         style="width:100%;height:80px;object-fit:cover;border-radius:6px;">
                     <small class="d-block">{{ img.caption }}</small>
-                    <small class="text-muted">{{ img.is_before|yesno:"Before,After" }}</small>
+                    <small class="text-muted">{% if img.is_before %}{% trans "Before" %}{% else %}{% trans "After" %}{% endif %}</small>
                 </div>
                 {% endfor %}
                 {% if not images %}
-                <div class="text-muted">No images yet.</div>
+                <div class="text-muted">{% trans "No images yet." %}</div>
                 {% endif %}
             </div>
         </div>

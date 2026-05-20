@@ -1,4 +1,5 @@
 {% extends 'main/base.html' %}
+{% load i18n %}
 
 {% block sidebar %}
 {% if request.user.artisanprofile %}
@@ -225,46 +226,46 @@
             <div class="saaf-dashboard-hero-grid">
                 <div>
                     <div class="saaf-dashboard-kicker-row">
-                        <p class="saaf-eyebrow mb-0">Dashboard</p>
+                        <p class="saaf-eyebrow mb-0">{% trans "Dashboard" %}</p>
                         {% if request.user.is_staff %}
-                        <span class="saaf-hero-chip"><i class="bi bi-shield-check"></i> Staff Access</span>
+                        <span class="saaf-hero-chip"><i class="bi bi-shield-check"></i> {% trans "Staff Access" %}</span>
                         {% elif request.user.artisanprofile %}
-                        <span class="saaf-hero-chip"><i class="bi bi-stars"></i> Artisan Account</span>
+                        <span class="saaf-hero-chip"><i class="bi bi-stars"></i> {% trans "Artisan Account" %}</span>
                         {% else %}
-                        <span class="saaf-hero-chip"><i class="bi bi-person-badge"></i> Requester Account</span>
+                        <span class="saaf-hero-chip"><i class="bi bi-person-badge"></i> {% trans "Requester Account" %}</span>
                         {% endif %}
                     </div>
 
-                    <h1 class="saaf-section-title mb-2">Welcome, {{ request.user.first_name|default:request.user.username }}</h1>
-                    <p class="text-muted mb-0">A cleaner control center for your next steps, account shortcuts, and marketplace activity.</p>
+                    <h1 class="saaf-section-title mb-2">{% blocktrans with name=request.user.first_name|default:request.user.username %}Welcome, {{ name }}{% endblocktrans %}</h1>
+                    <p class="text-muted mb-0">{% trans "A cleaner control center for your next steps, account shortcuts, and marketplace activity." %}</p>
 
                     <div class="saaf-dashboard-hero-actions">
                         {% if request.user.artisanprofile %}
                         <a href="{% url 'request:request_list_view' %}" class="saaf-quick-action-btn">
                             <i class="bi bi-lightning-charge"></i>
-                            Find New Request
+                            {% trans "Find New Request" %}
                         </a>
                         <a href="{% url 'proposal:my_proposals_view' %}" class="saaf-quick-action-btn">
                             <i class="bi bi-send-check"></i>
-                            Track Proposals
+                            {% trans "Track Proposals" %}
                         </a>
                         <a href="{% url 'workshop:upload_portfolio_view' %}" class="saaf-quick-action-btn saaf-quick-action-btn--soft">
                             <i class="bi bi-images"></i>
-                            Refresh Portfolio
+                            {% trans "Refresh Portfolio" %}
                         </a>
                         {% else %}
                         <a href="{% url 'request:request_create_view' %}" class="saaf-quick-action-btn">
                             <i class="bi bi-plus-circle"></i>
-                            Create Request
+                            {% trans "Create Request" %}
                         </a>
                         <a href="{% url 'main:browse_view' %}" class="saaf-quick-action-btn">
                             <i class="bi bi-search"></i>
-                            Browse Artisans
+                            {% trans "Browse Artisans" %}
                         </a>
                         {% if request.user.is_staff %}
                         <a href="{% url 'staff:staff_dashboard_view' %}" class="saaf-quick-action-btn saaf-quick-action-btn--soft">
                             <i class="bi bi-kanban"></i>
-                            Open Staff Tools
+                            {% trans "Open Staff Tools" %}
                         </a>
                         {% endif %}
                         {% endif %}
@@ -273,25 +274,25 @@
 
                 <div class="saaf-dashboard-side-panel">
                     <div class="saaf-dashboard-side-card">
-                        <span class="saaf-info-label">Account Focus</span>
+                        <span class="saaf-info-label">{% trans "Account Focus" %}</span>
                         {% if request.user.artisanprofile %}
-                        <h3 class="saaf-dashboard-side-title">Keep your workshop active</h3>
-                        <p class="mb-0 text-muted">Review your public presence, upload new work, and stay close to incoming opportunities.</p>
+                        <h3 class="saaf-dashboard-side-title">{% trans "Keep your workshop active" %}</h3>
+                        <p class="mb-0 text-muted">{% trans "Review your public presence, upload new work, and stay close to incoming opportunities." %}</p>
                         {% elif request.user.is_staff %}
-                        <h3 class="saaf-dashboard-side-title">Moderation and oversight</h3>
-                        <p class="mb-0 text-muted">Jump between moderation, categories, and user operations from one clean surface.</p>
+                        <h3 class="saaf-dashboard-side-title">{% trans "Moderation and oversight" %}</h3>
+                        <p class="mb-0 text-muted">{% trans "Jump between moderation, categories, and user operations from one clean surface." %}</p>
                         {% else %}
-                        <h3 class="saaf-dashboard-side-title">Move projects faster</h3>
-                        <p class="mb-0 text-muted">Post requests, compare artisans, and keep your account details ready for smoother project starts.</p>
+                        <h3 class="saaf-dashboard-side-title">{% trans "Move projects faster" %}</h3>
+                        <p class="mb-0 text-muted">{% trans "Post requests, compare artisans, and keep your account details ready for smoother project starts." %}</p>
                         {% endif %}
                     </div>
                     <div class="saaf-dashboard-mini-stats">
                         <div class="saaf-dashboard-mini-stat">
-                            <span class="saaf-info-label">Username</span>
+                            <span class="saaf-info-label">{% trans "Username" %}</span>
                             <strong>@{{ request.user.username }}</strong>
                         </div>
                         <div class="saaf-dashboard-mini-stat">
-                            <span class="saaf-info-label">Joined</span>
+                            <span class="saaf-info-label">{% trans "Joined" %}</span>
                             <strong>{{ request.user.date_joined|date:"M Y" }}</strong>
                         </div>
                     </div>
@@ -301,8 +302,8 @@
 
         <div class="saaf-dashboard-section-head mb-3">
             <div>
-                <p class="saaf-eyebrow mb-1">Shortcuts</p>
-                <h2 class="saaf-dashboard-section-title mb-0">Your main actions</h2>
+                <p class="saaf-eyebrow mb-1">{% trans "Shortcuts" %}</p>
+                <h2 class="saaf-dashboard-section-title mb-0">{% trans "Your main actions" %}</h2>
             </div>
         </div>
 
@@ -312,11 +313,11 @@
                 <a href="{% url 'workshop:workshop_detail_view' request.user.id %}" class="saaf-tile-link">
                     <div class="saaf-dashboard-card saaf-dashboard-feature-card rounded-4 p-4 h-100">
                         <div class="saaf-dashboard-tile-head">
-                            <h5 class="mb-0">My Workshop</h5>
+                            <h5 class="mb-0">{% trans "My Workshop" %}</h5>
                             <span class="saaf-dashboard-tile-icon"><i class="bi bi-shop"></i></span>
                         </div>
-                        <p class="text-muted mb-3">Review your public workshop profile and keep your storefront sharp.</p>
-                        <span class="saaf-dashboard-linkline">Open workshop <i class="bi bi-arrow-right-short"></i></span>
+                        <p class="text-muted mb-3">{% trans "Review your public workshop profile and keep your storefront sharp." %}</p>
+                        <span class="saaf-dashboard-linkline">{% trans "Open workshop" %} <i class="bi bi-arrow-right-short"></i></span>
                     </div>
                 </a>
             </div>
@@ -324,11 +325,11 @@
                 <a href="{% url 'workshop:upload_portfolio_view' %}" class="saaf-tile-link">
                     <div class="saaf-dashboard-card saaf-dashboard-feature-card rounded-4 p-4 h-100">
                         <div class="saaf-dashboard-tile-head">
-                            <h5 class="mb-0">Portfolio</h5>
+                            <h5 class="mb-0">{% trans "Portfolio" %}</h5>
                             <span class="saaf-dashboard-tile-icon"><i class="bi bi-images"></i></span>
                         </div>
-                        <p class="text-muted mb-3">Upload new work samples and keep your strongest pieces visible.</p>
-                        <span class="saaf-dashboard-linkline">Manage gallery <i class="bi bi-arrow-right-short"></i></span>
+                        <p class="text-muted mb-3">{% trans "Upload new work samples and keep your strongest pieces visible." %}</p>
+                        <span class="saaf-dashboard-linkline">{% trans "Manage gallery" %} <i class="bi bi-arrow-right-short"></i></span>
                     </div>
                 </a>
             </div>
@@ -336,11 +337,11 @@
                 <a href="{% url 'request:request_list_view' %}" class="saaf-tile-link">
                     <div class="saaf-dashboard-card saaf-dashboard-feature-card rounded-4 p-4 h-100">
                         <div class="saaf-dashboard-tile-head">
-                            <h5 class="mb-0">Open Requests</h5>
+                            <h5 class="mb-0">{% trans "Open Requests" %}</h5>
                             <span class="saaf-dashboard-tile-icon"><i class="bi bi-briefcase"></i></span>
                         </div>
-                        <p class="text-muted mb-3">Browse active customer requests and spot the next fit for your craft.</p>
-                        <span class="saaf-dashboard-linkline">Explore listings <i class="bi bi-arrow-right-short"></i></span>
+                        <p class="text-muted mb-3">{% trans "Browse active customer requests and spot the next fit for your craft." %}</p>
+                        <span class="saaf-dashboard-linkline">{% trans "Explore listings" %} <i class="bi bi-arrow-right-short"></i></span>
                     </div>
                 </a>
             </div>
@@ -349,11 +350,11 @@
                 <a href="{% url 'request:request_create_view' %}" class="saaf-tile-link">
                     <div class="saaf-dashboard-card saaf-dashboard-feature-card rounded-4 p-4 h-100">
                         <div class="saaf-dashboard-tile-head">
-                            <h5 class="mb-0">Post a Request</h5>
+                            <h5 class="mb-0">{% trans "Post a Request" %}</h5>
                             <span class="saaf-dashboard-tile-icon"><i class="bi bi-plus-square"></i></span>
                         </div>
-                        <p class="text-muted mb-3">Start a new custom project request with clearer details and quicker replies.</p>
-                        <span class="saaf-dashboard-linkline">Create now <i class="bi bi-arrow-right-short"></i></span>
+                        <p class="text-muted mb-3">{% trans "Start a new custom project request with clearer details and quicker replies." %}</p>
+                        <span class="saaf-dashboard-linkline">{% trans "Create now" %} <i class="bi bi-arrow-right-short"></i></span>
                     </div>
                 </a>
             </div>
@@ -361,11 +362,11 @@
                 <a href="{% url 'request:request_list_view' %}" class="saaf-tile-link">
                     <div class="saaf-dashboard-card saaf-dashboard-feature-card rounded-4 p-4 h-100">
                         <div class="saaf-dashboard-tile-head">
-                            <h5 class="mb-0">Discover</h5>
+                            <h5 class="mb-0">{% trans "Discover" %}</h5>
                             <span class="saaf-dashboard-tile-icon"><i class="bi bi-compass"></i></span>
                         </div>
-                        <p class="text-muted mb-3">Explore marketplace requests and artisans with a cleaner starting point.</p>
-                        <span class="saaf-dashboard-linkline">Start browsing <i class="bi bi-arrow-right-short"></i></span>
+                        <p class="text-muted mb-3">{% trans "Explore marketplace requests and artisans with a cleaner starting point." %}</p>
+                        <span class="saaf-dashboard-linkline">{% trans "Start browsing" %} <i class="bi bi-arrow-right-short"></i></span>
                     </div>
                 </a>
             </div>
@@ -377,11 +378,11 @@
                 {% endif %}
                     <div class="saaf-dashboard-card saaf-dashboard-feature-card rounded-4 p-4 h-100">
                         <div class="saaf-dashboard-tile-head">
-                            <h5 class="mb-0">My Profile</h5>
+                            <h5 class="mb-0">{% trans "My Profile" %}</h5>
                             <span class="saaf-dashboard-tile-icon"><i class="bi bi-person-circle"></i></span>
                         </div>
-                        <p class="text-muted mb-3">Review your contact details, profile info, and account presence.</p>
-                        <span class="saaf-dashboard-linkline">Open profile <i class="bi bi-arrow-right-short"></i></span>
+                        <p class="text-muted mb-3">{% trans "Review your contact details, profile info, and account presence." %}</p>
+                        <span class="saaf-dashboard-linkline">{% trans "Open profile" %} <i class="bi bi-arrow-right-short"></i></span>
                     </div>
                 </a>
             </div>
@@ -391,8 +392,8 @@
         {% if not request.user.artisanprofile and not request.user.is_staff %}
         <div class="saaf-dashboard-section-head mb-3 mt-4">
             <div>
-                <p class="saaf-eyebrow mb-1">Client Overview</p>
-                <h2 class="saaf-dashboard-section-title mb-0">تنبيهاتك وطلباتك</h2>
+                <p class="saaf-eyebrow mb-1">{% trans "Client Overview" %}</p>
+                <h2 class="saaf-dashboard-section-title mb-0">{% trans "Your alerts and requests" %}</h2>
             </div>
         </div>
 
@@ -400,36 +401,36 @@
             <div class="col-6 col-lg-3">
                 <a href="{% url 'request:my_requests_view' %}" class="saaf-tile-link">
                     <div class="saaf-client-overview-card">
-                        <span class="saaf-client-overview-label">My Requests</span>
+                        <span class="saaf-client-overview-label">{% trans "My Requests" %}</span>
                         <div class="saaf-client-overview-value">{{ my_requests_total|default:0 }}</div>
-                        <div class="saaf-client-overview-meta">Open {{ requests_open_total|default:0 }} • In review {{ requests_in_review_total|default:0 }}</div>
+                        <div class="saaf-client-overview-meta">{% trans "Open" %} {{ requests_open_total|default:0 }} • {% trans "In Review" %} {{ requests_in_review_total|default:0 }}</div>
                     </div>
                 </a>
             </div>
             <div class="col-6 col-lg-3">
                 <a href="{% url 'notification:notification_list_view' %}" class="saaf-tile-link">
                     <div class="saaf-client-overview-card">
-                        <span class="saaf-client-overview-label">Unread Notifications</span>
+                        <span class="saaf-client-overview-label">{% trans "Unread Notifications" %}</span>
                         <div class="saaf-client-overview-value">{{ unread_notifications_count|default:0 }}</div>
-                        <div class="saaf-client-overview-meta">Go to notification center</div>
+                        <div class="saaf-client-overview-meta">{% trans "Go to notification center" %}</div>
                     </div>
                 </a>
             </div>
             <div class="col-6 col-lg-3">
                 <a href="{% url 'message:conversation_list_view' %}" class="saaf-tile-link">
                     <div class="saaf-client-overview-card">
-                        <span class="saaf-client-overview-label">Unread Messages</span>
+                        <span class="saaf-client-overview-label">{% trans "Unread Messages" %}</span>
                         <div class="saaf-client-overview-value">{{ unread_messages_count|default:0 }}</div>
-                        <div class="saaf-client-overview-meta">Active chats {{ active_conversations_count|default:0 }}</div>
+                        <div class="saaf-client-overview-meta">{% trans "Active chats" %} {{ active_conversations_count|default:0 }}</div>
                     </div>
                 </a>
             </div>
             <div class="col-6 col-lg-3">
                 <a href="{% url 'request:my_requests_view' %}" class="saaf-tile-link">
                     <div class="saaf-client-overview-card">
-                        <span class="saaf-client-overview-label">Pending Proposals</span>
+                        <span class="saaf-client-overview-label">{% trans "Pending Proposals" %}</span>
                         <div class="saaf-client-overview-value">{{ proposals_pending_total|default:0 }}</div>
-                        <div class="saaf-client-overview-meta">Total proposals {{ proposals_total|default:0 }}</div>
+                        <div class="saaf-client-overview-meta">{% trans "Total proposals" %} {{ proposals_total|default:0 }}</div>
                     </div>
                 </a>
             </div>
@@ -439,8 +440,8 @@
             <div class="col-lg-5">
                 <div class="saaf-dashboard-card rounded-4 p-4 h-100">
                     <div class="d-flex align-items-center justify-content-between mb-3">
-                        <h5 class="mb-0">Latest Notifications</h5>
-                        <a href="{% url 'notification:notification_list_view' %}" class="saaf-dashboard-linkline">View all <i class="bi bi-arrow-right-short"></i></a>
+                        <h5 class="mb-0">{% trans "Latest Notifications" %}</h5>
+                        <a href="{% url 'notification:notification_list_view' %}" class="saaf-dashboard-linkline">{% trans "View all" %} <i class="bi bi-arrow-right-short"></i></a>
                     </div>
 
                     {% if notifications_recent %}
@@ -458,7 +459,7 @@
                         {% endfor %}
                     </div>
                     {% else %}
-                    <p class="text-muted mb-0">No recent notifications.</p>
+                    <p class="text-muted mb-0">{% trans "No recent notifications." %}</p>
                     {% endif %}
                 </div>
             </div>
@@ -466,15 +467,15 @@
             <div class="col-lg-7">
                 <div class="saaf-dashboard-card rounded-4 p-4 h-100">
                     <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
-                        <h5 class="mb-0">My Latest Requests</h5>
+                        <h5 class="mb-0">{% trans "My Latest Requests" %}</h5>
                         <form method="get" class="saaf-client-filter">
-                            <label for="request_status" class="saaf-info-label mb-0">Status</label>
+                            <label for="request_status" class="saaf-info-label mb-0">{% trans "Status" %}</label>
                             <select name="request_status" id="request_status" onchange="this.form.submit()">
-                                <option value="all" {% if request_status == 'all' %}selected{% endif %}>All</option>
-                                <option value="open" {% if request_status == 'open' %}selected{% endif %}>Open</option>
-                                <option value="in_review" {% if request_status == 'in_review' %}selected{% endif %}>In Review</option>
-                                <option value="closed" {% if request_status == 'closed' %}selected{% endif %}>Closed</option>
-                                <option value="time_ended" {% if request_status == 'time_ended' %}selected{% endif %}>Time Ended</option>
+                                <option value="all" {% if request_status == 'all' %}selected{% endif %}>{% trans "All" %}</option>
+                                <option value="open" {% if request_status == 'open' %}selected{% endif %}>{% trans "Open" %}</option>
+                                <option value="in_review" {% if request_status == 'in_review' %}selected{% endif %}>{% trans "In Review" %}</option>
+                                <option value="closed" {% if request_status == 'closed' %}selected{% endif %}>{% trans "Closed" %}</option>
+                                <option value="time_ended" {% if request_status == 'time_ended' %}selected{% endif %}>{% trans "Time Ended" %}</option>
                             </select>
                         </form>
                     </div>
@@ -484,10 +485,10 @@
                         <table class="table align-middle mb-0 saaf-requests-table">
                             <thead>
                                 <tr>
-                                    <th>Request</th>
-                                    <th>Status</th>
-                                    <th>Proposals</th>
-                                    <th class="text-end">View</th>
+                                    <th>{% trans "Request" %}</th>
+                                    <th>{% trans "Status" %}</th>
+                                    <th>{% trans "Proposals" %}</th>
+                                    <th class="text-end">{% trans "View" %}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -503,14 +504,14 @@
                                         </span>
                                     </td>
                                     <td>{{ req.proposal_count }}</td>
-                                    <td class="text-end"><a href="{% url 'request:request_detail_view' req.id %}" class="saaf-req-open-link">Open <i class="bi bi-arrow-right-short"></i></a></td>
+                                    <td class="text-end"><a href="{% url 'request:request_detail_view' req.id %}" class="saaf-req-open-link">{% trans "Open" %} <i class="bi bi-arrow-right-short"></i></a></td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
                     </div>
                     {% else %}
-                    <p class="text-muted mb-0">No requests found for this filter.</p>
+                    <p class="text-muted mb-0">{% trans "No requests found for this filter." %}</p>
                     {% endif %}
                 </div>
             </div>

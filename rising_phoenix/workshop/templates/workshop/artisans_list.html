@@ -1,6 +1,7 @@
 {% extends 'main/base.html' %}
+{% load i18n %}
 
-{% block title %}Artisans{% endblock %}
+{% block title %}{% trans "Artisans" %}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -63,16 +64,16 @@
 
 {% block content %}
 <div class="artisans-shell">
-    <h3>Find an Artisan</h3>
+    <h3>{% trans "Find an Artisan" %}</h3>
     <form method="get" class="search-row">
-        <input type="text" name="q" value="{{ q }}" placeholder="Search by name, skill, location..."
+        <input type="text" name="q" value="{{ q }}" placeholder="{% trans 'Search by name, skill, location...' %}"
             class="form-control">
-        <button class="btn btn-primary">Search</button>
-        <a href="{% url 'workshop:artisans_list_view' %}" class="btn btn-outline-secondary">Clear</a>
+        <button class="btn btn-primary">{% trans "Search" %}</button>
+        <a href="{% url 'workshop:artisans_list_view' %}" class="btn btn-outline-secondary">{% trans "Clear" %}</a>
     </form>
 
     <div class="category-list">
-        <a href="?" class="category-pill">All</a>
+        <a href="?" class="category-pill">{% trans "All" %}</a>
         {% for cat in categories %}
         <a href="?category={{ cat.id }}" class="category-pill"
             aria-pressed="{% if cat.id == selected_category %}true{% else %}false{% endif %}">{{ cat.name }}</a>
@@ -88,7 +89,7 @@
                     {% if w.cover_image %}
                     <img src="{{ w.cover_image.url }}" alt="{{ w.workshop_name }}">
                     {% else %}
-                    <div style="height:140px;display:grid;place-items:center;background:#fbf4ed;color:#a67b61;">No image
+                    <div style="height:140px;display:grid;place-items:center;background:#fbf4ed;color:#a67b61;">{% trans "No image" %}
                     </div>
                     {% endif %}
                 </div>
@@ -105,7 +106,7 @@
             </a>
         </div>
         {% empty %}
-        <div class="text-muted">No artisans found.</div>
+        <div class="text-muted">{% trans "No artisans found." %}</div>
         {% endfor %}
     </div>
 </div>

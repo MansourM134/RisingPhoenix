@@ -265,24 +265,24 @@
         <div>
           <div class="saaf-eyebrow mb-1">
             <i class="bi bi-bar-chart-line me-1"></i>
-            {% if LANGUAGE_CODE == 'ar' %}لوحة الأرباح{% else %}Earnings Dashboard{% endif %}
+            {% trans "Earnings Dashboard" %}
           </div>
           <h2 class="saaf-section-title mb-1" style="font-size:1.65rem;">
-            {% if LANGUAGE_CODE == 'ar' %}مرحباً،{% else %}Welcome back,{% endif %}
+            {% trans "Welcome back," %}
             {{ request.user.get_full_name|default:request.user.username }}
           </h2>
           <p class="mb-0" style="font-size:.88rem;color:var(--saaf-text-muted);">
-            {% if LANGUAGE_CODE == 'ar' %}نظرة عامة على أرباحك ومدفوعاتك{% else %}Here's your financial overview at a glance{% endif %}
+            {% trans "Here's your financial overview at a glance" %}
           </p>
         </div>
         <div class="d-flex gap-2 align-items-center flex-wrap" style="position:relative;z-index:1;">
           <a href="#" class="btn btn-saaf-outline rounded-pill" style="font-size:.87rem;">
             <i class="bi bi-download me-1"></i>
-            {% if LANGUAGE_CODE == 'ar' %}تصدير{% else %}Export{% endif %}
+            {% trans "Export" %}
           </a>
           <button class="btn btn-saaf-primary rounded-pill" style="font-size:.87rem;">
             <i class="bi bi-arrow-up-right-circle me-1"></i>
-            {% if LANGUAGE_CODE == 'ar' %}طلب سحب{% else %}Request Payout{% endif %}
+            {% trans "Request Payout" %}
           </button>
         </div>
       </div>
@@ -295,11 +295,9 @@
         <div class="rev-stat-card">
           <div class="rev-stat-icon"><i class="bi bi-wallet2"></i></div>
           <div class="rev-stat-value">{{ current_balance|floatformat:2 }}</div>
-          <div class="rev-stat-label">
-            {% if LANGUAGE_CODE == 'ar' %}الرصيد الحالي{% else %}Current Balance{% endif %}
-          </div>
+          <div class="rev-stat-label">{% trans "Current Balance" %}</div>
           <span class="rev-stat-badge rbadge-up">
-            <i class="bi bi-check-circle me-1"></i>{% if LANGUAGE_CODE == 'ar' %}متاح{% else %}Available{% endif %}
+            <i class="bi bi-check-circle me-1"></i>{% trans "Available" %}
           </span>
         </div>
       </div>
@@ -308,9 +306,7 @@
         <div class="rev-stat-card accent-green">
           <div class="rev-stat-icon"><i class="bi bi-currency-dollar"></i></div>
           <div class="rev-stat-value">{{ total_earned|floatformat:2 }}</div>
-          <div class="rev-stat-label">
-            {% if LANGUAGE_CODE == 'ar' %}إجمالي الأرباح{% else %}Total Earned{% endif %}
-          </div>
+          <div class="rev-stat-label">{% trans "Total Earned" %}</div>
         </div>
       </div>
 
@@ -318,12 +314,8 @@
         <div class="rev-stat-card accent-blue">
           <div class="rev-stat-icon"><i class="bi bi-send-check-fill"></i></div>
           <div class="rev-stat-value">{{ total_paid|floatformat:2 }}</div>
-          <div class="rev-stat-label">
-            {% if LANGUAGE_CODE == 'ar' %}إجمالي المدفوع{% else %}Total Paid Out{% endif %}
-          </div>
-          <span class="rev-stat-badge rbadge-info">
-            {% if LANGUAGE_CODE == 'ar' %}محول{% else %}Transferred{% endif %}
-          </span>
+          <div class="rev-stat-label">{% trans "Total Paid Out" %}</div>
+          <span class="rev-stat-badge rbadge-info">{% trans "Transferred" %}</span>
         </div>
       </div>
 
@@ -331,12 +323,9 @@
         <div class="rev-stat-card accent-amber">
           <div class="rev-stat-icon"><i class="bi bi-calendar2-week-fill"></i></div>
           <div class="rev-stat-value">{{ this_month_total|floatformat:2 }}</div>
-          <div class="rev-stat-label">
-            {% if LANGUAGE_CODE == 'ar' %}هذا الشهر{% else %}This Month{% endif %}
-          </div>
+          <div class="rev-stat-label">{% trans "This Month" %}</div>
           <span class="rev-stat-badge" style="background:rgba(212,169,45,.13);color:#7a5a00;">
-            {{ this_month_jobs }}
-            {% if LANGUAGE_CODE == 'ar' %}عمل{% else %}job{{ this_month_jobs|pluralize }}{% endif %}
+            {% blocktrans count jobs=this_month_jobs %}{{ jobs }} job{% plural %}{{ jobs }} jobs{% endblocktrans %}
           </span>
         </div>
       </div>
@@ -351,9 +340,9 @@
           <div class="rev-panel-title">
             <span>
               <i class="bi bi-graph-up me-1" style="color:var(--saaf-btn);"></i>
-              {% if LANGUAGE_CODE == 'ar' %}الأرباح الشهرية{% else %}Monthly Revenue{% endif %}
+              {% trans "Monthly Revenue" %}
             </span>
-            <small>{% if LANGUAGE_CODE == 'ar' %}آخر 12 شهر{% else %}Last 12 months{% endif %}</small>
+            <small>{% trans "Last 12 months" %}</small>
           </div>
           <div style="position:relative;height:230px;">
             <canvas id="revChart"></canvas>
@@ -367,7 +356,7 @@
           <div>
             <div class="d-flex justify-content-between align-items-center mb-1">
               <span style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--saaf-text-muted);">
-                {% if LANGUAGE_CODE == 'ar' %}نسبة السحب{% else %}Payout Progress{% endif %}
+                {% trans "Payout Progress" %}
               </span>
               <span style="font-size:.8rem;color:var(--saaf-btn);font-weight:700;">
                 {% if total_earned > 0 %}{{ total_paid|floatformat:0 }} / {{ total_earned|floatformat:0 }}{% else %}—{% endif %}
@@ -378,32 +367,32 @@
             </div>
             <div style="font-size:.74rem;color:var(--saaf-text-muted);">
               {% if total_earned > 0 %}
-                {{ total_paid|floatformat:2 }} {% if LANGUAGE_CODE == 'ar' %}من أصل{% else %}of{% endif %} {{ total_earned|floatformat:2 }}
+                {{ total_paid|floatformat:2 }} {% trans "of" %} {{ total_earned|floatformat:2 }}
               {% else %}
-                {% if LANGUAGE_CODE == 'ar' %}لا توجد أرباح بعد{% else %}No earnings yet{% endif %}
+                {% trans "No earnings yet" %}
               {% endif %}
             </div>
           </div>
 
           <div>
             <div class="rev-panel-title" style="margin-bottom:.75rem;font-size:.88rem;">
-              {% if LANGUAGE_CODE == 'ar' %}ملخص الشهر الحالي{% else %}This Month at a Glance{% endif %}
+              {% trans "This Month at a Glance" %}
             </div>
             <div>
               <div class="rev-qs-row">
-                <span>{% if LANGUAGE_CODE == 'ar' %}الأعمال المكتملة{% else %}Completed Jobs{% endif %}</span>
+                <span>{% trans "Completed Jobs" %}</span>
                 <strong style="color:var(--saaf-btn);">{{ this_month_jobs }}</strong>
               </div>
               <div class="rev-qs-row">
-                <span>{% if LANGUAGE_CODE == 'ar' %}الأرباح{% else %}Revenue{% endif %}</span>
+                <span>{% trans "Revenue" %}</span>
                 <strong style="color:var(--saaf-btn);">{{ this_month_total|floatformat:2 }}</strong>
               </div>
               <div class="rev-qs-row">
-                <span>{% if LANGUAGE_CODE == 'ar' %}الرصيد المعلق{% else %}Pending Balance{% endif %}</span>
+                <span>{% trans "Pending Balance" %}</span>
                 <strong>{{ current_balance|floatformat:2 }}</strong>
               </div>
               <div class="rev-qs-row">
-                <span>{% if LANGUAGE_CODE == 'ar' %}إجمالي المدفوع{% else %}Total Paid Out{% endif %}</span>
+                <span>{% trans "Total Paid Out" %}</span>
                 <strong>{{ total_paid|floatformat:2 }}</strong>
               </div>
             </div>
@@ -418,7 +407,7 @@
       <div class="rev-panel-title">
         <span>
           <i class="bi bi-hourglass-split me-1" style="color:var(--saaf-btn);"></i>
-          {% if LANGUAGE_CODE == 'ar' %}الطلبات النشطة{% else %}Active Requests{% endif %}
+          {% trans "Active Requests" %}
         </span>
         <small>{{ active_requests|length }}</small>
       </div>
@@ -428,11 +417,11 @@
           <table class="rev-table">
             <thead>
               <tr>
-                <th>{% if LANGUAGE_CODE == 'ar' %}العنوان{% else %}Title{% endif %}</th>
-                <th>{% if LANGUAGE_CODE == 'ar' %}العميل{% else %}Requester{% endif %}</th>
-                <th>{% if LANGUAGE_CODE == 'ar' %}السعر{% else %}Price{% endif %}</th>
-                <th>{% if LANGUAGE_CODE == 'ar' %}الحالة{% else %}Status{% endif %}</th>
-                <th class="text-end">{% if LANGUAGE_CODE == 'ar' %}تفاصيل{% else %}Details{% endif %}</th>
+                <th>{% trans "Title" %}</th>
+                <th>{% trans "Requester" %}</th>
+                <th>{% trans "Price" %}</th>
+                <th>{% trans "Status" %}</th>
+                <th class="text-end">{% trans "Details" %}</th>
               </tr>
             </thead>
             <tbody>
@@ -451,12 +440,12 @@
                 <td>
                   <span class="rev-pill pill-pending">
                     <span class="rev-pill-dot"></span>
-                    {% if LANGUAGE_CODE == 'ar' %}قيد التنفيذ{% else %}In Progress{% endif %}
+                    {% trans "In Progress" %}
                   </span>
                 </td>
                 <td class="text-end">
                   <a href="{% url 'progress:contract_detail_view' contract.id %}" class="saaf-dashboard-linkline">
-                    {% if LANGUAGE_CODE == 'ar' %}عرض{% else %}View{% endif %}
+                    {% trans "View" %}
                   </a>
                 </td>
               </tr>
@@ -467,7 +456,7 @@
       {% else %}
         <div class="rev-empty">
           <i class="bi bi-inbox"></i>
-          <p>{% if LANGUAGE_CODE == 'ar' %}لا توجد طلبات نشطة الآن.{% else %}No active requests right now.{% endif %}</p>
+          <p>{% trans "No active requests right now." %}</p>
         </div>
       {% endif %}
     </div>
@@ -477,10 +466,10 @@
       <div class="rev-panel-title">
         <span>
           <i class="bi bi-check2-circle me-1" style="color:var(--saaf-btn);"></i>
-          {% if LANGUAGE_CODE == 'ar' %}الطلبات المكتملة{% else %}Completed Requests{% endif %}
+          {% trans "Completed Requests" %}
         </span>
             <a href="{% url 'account:completed_orders_view' %}" class="saaf-dashboard-linkline" style="font-size:.83rem;">
-          {% if LANGUAGE_CODE == 'ar' %}عرض الكل{% else %}View all{% endif %}
+          {% trans "View all" %}
           <i class="bi bi-arrow-{% if LANGUAGE_CODE == 'ar' %}left{% else %}right{% endif %}"></i>
         </a>
 
@@ -491,11 +480,11 @@
           <table class="rev-table">
             <thead>
               <tr>
-                <th>{% if LANGUAGE_CODE == 'ar' %}العنوان{% else %}Title{% endif %}</th>
-                <th>{% if LANGUAGE_CODE == 'ar' %}العميل{% else %}Requester{% endif %}</th>
-                <th>{% if LANGUAGE_CODE == 'ar' %}السعر{% else %}Price{% endif %}</th>
-                <th>{% if LANGUAGE_CODE == 'ar' %}الحالة{% else %}Status{% endif %}</th>
-                <th class="text-end">{% if LANGUAGE_CODE == 'ar' %}تفاصيل{% else %}Details{% endif %}</th>
+                <th>{% trans "Title" %}</th>
+                <th>{% trans "Requester" %}</th>
+                <th>{% trans "Price" %}</th>
+                <th>{% trans "Status" %}</th>
+                <th class="text-end">{% trans "Details" %}</th>
               </tr>
             </thead>
             <tbody>
@@ -514,12 +503,12 @@
                 <td>
                   <span class="rev-pill pill-paid">
                     <span class="rev-pill-dot"></span>
-                    {% if LANGUAGE_CODE == 'ar' %}مكتمل{% else %}Completed{% endif %}
+                    {% trans "Completed" %}
                   </span>
                 </td>
                 <td class="text-end">
                   <a href="{% url 'progress:contract_detail_view' contract.id %}" class="saaf-dashboard-linkline">
-                    {% if LANGUAGE_CODE == 'ar' %}عرض{% else %}View{% endif %}
+                    {% trans "View" %}
                   </a>
                 </td>
               </tr>
@@ -530,7 +519,7 @@
       {% else %}
         <div class="rev-empty">
           <i class="bi bi-check2-circle"></i>
-          <p>{% if LANGUAGE_CODE == 'ar' %}لا توجد طلبات مكتملة بعد.{% else %}No completed requests yet.{% endif %}</p>
+          <p>{% trans "No completed requests yet." %}</p>
         </div>
       {% endif %}
     </div>
@@ -539,10 +528,10 @@
       <div class="rev-panel-title">
         <span>
           <i class="bi bi-receipt me-1" style="color:var(--saaf-btn);"></i>
-          {% if LANGUAGE_CODE == 'ar' %}آخر المعاملات{% else %}Recent Transactions{% endif %}
+          {% trans "Recent Transactions" %}
         </span>
         <a href="#" class="saaf-dashboard-linkline" style="font-size:.83rem;">
-          {% if LANGUAGE_CODE == 'ar' %}عرض الكل{% else %}View all{% endif %}
+          {% trans "View all" %}
           <i class="bi bi-arrow-{% if LANGUAGE_CODE == 'ar' %}left{% else %}right{% endif %}"></i>
         </a>
       </div>
@@ -552,11 +541,11 @@
         <table class="rev-table">
           <thead>
             <tr>
-              <th>{% if LANGUAGE_CODE == 'ar' %}العقد{% else %}Contract{% endif %}</th>
-              <th>{% if LANGUAGE_CODE == 'ar' %}الصافي{% else %}Net Amount{% endif %}</th>
-              <th>{% if LANGUAGE_CODE == 'ar' %}الحالة{% else %}Status{% endif %}</th>
-              <th>{% if LANGUAGE_CODE == 'ar' %}التاريخ{% else %}Date{% endif %}</th>
-              <th class="text-end">{% if LANGUAGE_CODE == 'ar' %}تفاصيل{% else %}Details{% endif %}</th>
+              <th>{% trans "Contract" %}</th>
+              <th>{% trans "Net Amount" %}</th>
+              <th>{% trans "Status" %}</th>
+              <th>{% trans "Date" %}</th>
+              <th class="text-end">{% trans "Details" %}</th>
             </tr>
           </thead>
           <tbody>
@@ -577,22 +566,22 @@
                 {% if revenue.status == 'paid' %}
                   <span class="rev-pill pill-paid">
                     <span class="rev-pill-dot"></span>
-                    {% if LANGUAGE_CODE == 'ar' %}مدفوع{% else %}Paid{% endif %}
+                    {% trans "Paid" %}
                   </span>
                 {% elif revenue.status == 'earned' %}
                   <span class="rev-pill pill-earned">
                     <span class="rev-pill-dot"></span>
-                    {% if LANGUAGE_CODE == 'ar' %}مكتسب{% else %}Earned{% endif %}
+                    {% trans "Earned" %}
                   </span>
                 {% elif revenue.status == 'canceled' %}
                   <span class="rev-pill" style="background:rgba(192,57,43,.12);color:#a93226;">
                     <span class="rev-pill-dot"></span>
-                    {% if LANGUAGE_CODE == 'ar' %}ملغي{% else %}Canceled{% endif %}
+                    {% trans "Canceled" %}
                   </span>
                 {% else %}
                   <span class="rev-pill pill-pending">
                     <span class="rev-pill-dot"></span>
-                    {% if LANGUAGE_CODE == 'ar' %}معلق{% else %}Pending{% endif %}
+                    {% trans "Pending" %}
                   </span>
                 {% endif %}
               </td>
@@ -601,7 +590,7 @@
               </td>
               <td class="text-end">
                 <a href="#" class="saaf-dashboard-linkline" style="font-size:.82rem;">
-                  {% if LANGUAGE_CODE == 'ar' %}عرض{% else %}View{% endif %}
+                  {% trans "View" %}
                   <i class="bi bi-chevron-{% if LANGUAGE_CODE == 'ar' %}left{% else %}right{% endif %}" style="font-size:.7rem;"></i>
                 </a>
               </td>
@@ -614,7 +603,7 @@
       <div class="rev-empty">
         <i class="bi bi-inbox"></i>
         <p style="font-size:.88rem;">
-          {% if LANGUAGE_CODE == 'ar' %}لا توجد معاملات بعد. أكمل عقداً لتظهر أرباحك هنا.{% else %}No transactions yet. Complete a contract to see your earnings here.{% endif %}
+          {% trans "No transactions yet. Complete a contract to see your earnings here." %}
         </p>
       </div>
       {% endif %}
@@ -652,7 +641,7 @@
       data: {
         labels: labels.length ? labels : ['—'],
         datasets: [{
-          label: '{% if LANGUAGE_CODE == "ar" %}الأرباح{% else %}Revenue{% endif %}',
+          label: '{% trans "Revenue" %}',
           data: totals.length ? totals : [0],
           fill: true,
           backgroundColor: grad,

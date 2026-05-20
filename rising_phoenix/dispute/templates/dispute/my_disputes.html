@@ -1,6 +1,7 @@
 {% extends "main/base.html" %}
+{% load i18n %}
 
-{% block title %}My Disputes{% endblock %}
+{% block title %}{% trans "My Disputes" %}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -25,9 +26,9 @@
 
 {% block content %}
 <div class="page-shell">
-    <p class="page-eyebrow"><i class="bi bi-exclamation-octagon-fill"></i> My Activity</p>
-    <h1 class="page-title">My Disputes</h1>
-    <p class="page-sub">Disputes you have opened or are a party to, with their current status.</p>
+    <p class="page-eyebrow"><i class="bi bi-exclamation-octagon-fill"></i> {% trans "My Activity" %}</p>
+    <h1 class="page-title">{% trans "My Disputes" %}</h1>
+    <p class="page-sub">{% trans "Disputes you have opened or are a party to, with their current status." %}</p>
 
     {% if messages %}
         {% for message in messages %}
@@ -44,12 +45,12 @@
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th>Project</th>
-                        <th>Opened by</th>
-                        <th>Reason</th>
-                        <th>Status</th>
-                        <th>Opened</th>
-                        <th>Resolution note</th>
+                        <th>{% trans "Project" %}</th>
+                        <th>{% trans "Opened by" %}</th>
+                        <th>{% trans "Reason" %}</th>
+                        <th>{% trans "Status" %}</th>
+                        <th>{% trans "Opened" %}</th>
+                        <th>{% trans "Resolution note" %}</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -61,19 +62,19 @@
                         <td>{{ dispute.get_reason_display }}</td>
                         <td>
                             {% if dispute.status == 'open' %}
-                                <span class="badge bg-warning text-dark">Open</span>
+                                <span class="badge bg-warning text-dark">{% trans "Open" %}</span>
                             {% elif dispute.status == 'in_review' %}
-                                <span class="badge bg-info text-dark">Under Review</span>
+                                <span class="badge bg-info text-dark">{% trans "Under Review" %}</span>
                             {% elif dispute.status == 'resolved' %}
-                                <span class="badge bg-success">Resolved</span>
+                                <span class="badge bg-success">{% trans "Resolved" %}</span>
                             {% elif dispute.status == 'dismissed' %}
-                                <span class="badge bg-secondary">Dismissed</span>
+                                <span class="badge bg-secondary">{% trans "Dismissed" %}</span>
                             {% endif %}
                         </td>
                         <td class="text-muted" style="white-space:nowrap;">{{ dispute.created_at|date:"M j, Y" }}</td>
                         <td class="text-muted" style="font-size:0.875rem;">{{ dispute.resolution_note|default:"—"|truncatechars:80 }}</td>
                         <td>
-                            <a href="{% url 'dispute:dispute_detail_view' dispute.id %}" class="btn btn-sm btn-outline-dark">View</a>
+                            <a href="{% url 'dispute:dispute_detail_view' dispute.id %}" class="btn btn-sm btn-outline-dark">{% trans "View" %}</a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -83,7 +84,7 @@
         {% else %}
         <div class="empty-state">
             <i class="bi bi-exclamation-octagon"></i>
-            <p class="mb-0">You have no disputes.</p>
+            <p class="mb-0">{% trans "You have no disputes." %}</p>
         </div>
         {% endif %}
     </div>

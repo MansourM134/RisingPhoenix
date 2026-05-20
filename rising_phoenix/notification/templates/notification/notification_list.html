@@ -1,7 +1,7 @@
 {% extends 'main/base.html' %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Notifications — Saaf{% endblock %}
+{% block title %}{% trans "Notifications" %} — Saaf{% endblock %}
 
 {% block extra_css %}
 <link href="{% static 'css/request.css' %}" rel="stylesheet">
@@ -13,18 +13,18 @@
 <div class="request-container">
 
     <header class="request-hero">
-        <p class="request-eyebrow">Your Account</p>
+        <p class="request-eyebrow">{% trans "Your Account" %}</p>
         <div class="notif-hero-row">
-            <h1 class="mb-0">Notifications</h1>
-            <a href="{% url 'notification:notification_settings_view' %}" class="notif-settings-link" title="Notification settings">
+            <h1 class="mb-0">{% trans "Notifications" %}</h1>
+            <a href="{% url 'notification:notification_settings_view' %}" class="notif-settings-link" title="{% trans 'Notification settings' %}">
                 <i class="bi bi-gear"></i>
             </a>
         </div>
         <p class="request-sub">
             {% if unread_count %}
-                {{ unread_count }} unread
+                {% blocktrans with count=unread_count %}{{ count }} unread{% endblocktrans %}
             {% elif page_obj.paginator.count %}
-                All caught up
+                {% trans "All caught up" %}
             {% endif %}
         </p>
     </header>
@@ -41,11 +41,11 @@
                     {% if n.body %}
                         <p class="notif-body">{{ n.body }}</p>
                     {% endif %}
-                    <span class="notif-date">{{ n.created_at|timesince }} ago</span>
+                    <span class="notif-date">{% blocktrans with time=n.created_at|timesince %}{{ time }} ago{% endblocktrans %}</span>
                 </div>
                 {% if n.link %}
                     <a href="{{ n.link }}" class="notif-view-btn">
-                        View <i class="bi bi-arrow-right"></i>
+                        {% trans "View" %} <i class="bi bi-arrow-right"></i>
                     </a>
                 {% endif %}
             </div>
@@ -55,20 +55,20 @@
         {% if page_obj.has_other_pages %}
             <div class="notif-pagination-wrap">
                 <p class="notif-pagination-count">
-                    Showing {{ page_obj.start_index }}–{{ page_obj.end_index }} of {{ page_obj.paginator.count }} notification{{ page_obj.paginator.count|pluralize }}
+                    {% blocktrans with start=page_obj.start_index end=page_obj.end_index count=page_obj.paginator.count %}Showing {{ start }}–{{ end }} of {{ count }} notification{{ count|pluralize }}{% endblocktrans %}
                 </p>
-                <nav aria-label="Notifications pagination">
+                <nav aria-label="{% trans 'Notifications pagination' %}">
                     <ul class="pagination align-items-center flex-wrap gap-1 mb-0">
 
                         {% if page_obj.has_previous %}
                             <li class="page-item">
-                                <a class="page-link notif-page-link" href="?page=1" title="First page">
+                                <a class="page-link notif-page-link" href="?page=1" title="{% trans 'First page' %}">
                                     <i class="bi bi-chevron-double-left"></i>
                                 </a>
                             </li>
                             <li class="page-item">
                                 <a class="page-link notif-page-link" href="?page={{ page_obj.previous_page_number }}">
-                                    <i class="bi bi-chevron-left me-1"></i> Previous
+                                    <i class="bi bi-chevron-left me-1"></i> {% trans "Previous" %}
                                 </a>
                             </li>
                         {% else %}
@@ -76,7 +76,7 @@
                                 <span class="page-link notif-page-link"><i class="bi bi-chevron-double-left"></i></span>
                             </li>
                             <li class="page-item disabled">
-                                <span class="page-link notif-page-link"><i class="bi bi-chevron-left me-1"></i> Previous</span>
+                                <span class="page-link notif-page-link"><i class="bi bi-chevron-left me-1"></i> {% trans "Previous" %}</span>
                             </li>
                         {% endif %}
 
@@ -93,23 +93,23 @@
                         {% endfor %}
 
                         <li class="page-item disabled">
-                            <span class="page-link notif-page-link notif-page-status">of {{ page_obj.paginator.num_pages }}</span>
+                            <span class="page-link notif-page-link notif-page-status">{% blocktrans with total=page_obj.paginator.num_pages %}of {{ total }}{% endblocktrans %}</span>
                         </li>
 
                         {% if page_obj.has_next %}
                             <li class="page-item">
                                 <a class="page-link notif-page-link" href="?page={{ page_obj.next_page_number }}">
-                                    Next <i class="bi bi-chevron-right ms-1"></i>
+                                    {% trans "Next" %} <i class="bi bi-chevron-right ms-1"></i>
                                 </a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link notif-page-link" href="?page={{ page_obj.paginator.num_pages }}" title="Last page">
+                                <a class="page-link notif-page-link" href="?page={{ page_obj.paginator.num_pages }}" title="{% trans 'Last page' %}">
                                     <i class="bi bi-chevron-double-right"></i>
                                 </a>
                             </li>
                         {% else %}
                             <li class="page-item disabled">
-                                <span class="page-link notif-page-link">Next <i class="bi bi-chevron-right ms-1"></i></span>
+                                <span class="page-link notif-page-link">{% trans "Next" %} <i class="bi bi-chevron-right ms-1"></i></span>
                             </li>
                             <li class="page-item disabled">
                                 <span class="page-link notif-page-link"><i class="bi bi-chevron-double-right"></i></span>
@@ -123,7 +123,7 @@
     {% else %}
         <div class="notif-empty">
             <i class="bi bi-bell-slash"></i>
-            <p>You're all caught up — no notifications yet.</p>
+            <p>{% trans "You're all caught up — no notifications yet." %}</p>
         </div>
     {% endif %}
 

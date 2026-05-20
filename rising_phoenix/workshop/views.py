@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
+from django.utils.translation import gettext as _
 from django.conf import settings
 from django.db import transaction
 from account.models import ArtisanProfile
@@ -44,7 +45,7 @@ def create_workshop_view(request):
     try:
         artisan_profile = ArtisanProfile.objects.get(user=request.user)
     except ArtisanProfile.DoesNotExist:
-        messages.error(request, "You must have an artisan profile to create a workshop.")
+        messages.error(request, _("You must have an artisan profile to create a workshop."))
         return redirect('main:home_view')
     
     # Check if workshop already exists
@@ -63,10 +64,10 @@ def create_workshop_view(request):
                 workshop_profile.save()
                 # Save ManyToMany fields (categories)
                 form.save_m2m()
-                messages.success(request, "Workshop profile saved successfully!")
+                messages.success(request, _("Workshop profile saved successfully!"))
                 return redirect('workshop:workshop_detail_view', artisan_id=artisan_profile.user.id)
         else:
-            messages.error(request, "Please correct the errors below.")
+            messages.error(request, _("Please correct the errors below."))
     else:
         form = WorkshopProfileForm(instance=workshop)
     
@@ -95,7 +96,7 @@ def workshop_detail_view(request, artisan_id):
 
         messages.error(
             request,
-            "Artisan profile not found."
+            _("Artisan profile not found.")
         )
 
         return redirect(
@@ -111,7 +112,7 @@ def workshop_detail_view(request, artisan_id):
 
             messages.info(
                 request,
-                "You don't have a workshop yet — create one to show your profile."
+                _("You don't have a workshop yet — create one to show your profile.")
             )
 
             return redirect(
@@ -120,7 +121,7 @@ def workshop_detail_view(request, artisan_id):
 
         messages.error(
             request,
-            "Workshop profile not found."
+            _("Workshop profile not found.")
         )
 
         return redirect(
@@ -163,16 +164,16 @@ def workshop_detail_view(request, artisan_id):
                     update_fields=['is_pinned']
                 )
 
-                messages.success(
-                    request,
-                    f"Image {'pinned' if portfolio_image.is_pinned else 'unpinned'} successfully."
-                )
+                if portfolio_image.is_pinned:
+                    messages.success(request, _("Image pinned successfully."))
+                else:
+                    messages.success(request, _("Image unpinned successfully."))
 
             else:
 
                 messages.error(
                     request,
-                    "Portfolio image not found."
+                    _("Portfolio image not found.")
                 )
 
             return redirect(
@@ -210,14 +211,14 @@ def workshop_detail_view(request, artisan_id):
 
                 messages.success(
                     request,
-                    "Portfolio description updated successfully."
+                    _("Portfolio description updated successfully.")
                 )
 
             else:
 
                 messages.error(
                     request,
-                    "Portfolio image not found."
+                    _("Portfolio image not found.")
                 )
 
             return redirect(
@@ -246,16 +247,16 @@ def workshop_detail_view(request, artisan_id):
                     update_fields=['is_pinned']
                 )
 
-                messages.success(
-                    request,
-                    f"Image {'pinned' if portfolio_image.is_pinned else 'unpinned'} successfully."
-                )
+                if portfolio_image.is_pinned:
+                    messages.success(request, _("Image pinned successfully."))
+                else:
+                    messages.success(request, _("Image unpinned successfully."))
 
             else:
 
                 messages.error(
                     request,
-                    "Portfolio image not found."
+                    _("Portfolio image not found.")
                 )
 
             return redirect(
@@ -282,14 +283,14 @@ def workshop_detail_view(request, artisan_id):
 
                 messages.success(
                     request,
-                    "Portfolio image deleted successfully."
+                    _("Portfolio image deleted successfully.")
                 )
 
             else:
 
                 messages.error(
                     request,
-                    "Portfolio image not found."
+                    _("Portfolio image not found.")
                 )
 
             return redirect(
@@ -305,9 +306,9 @@ def workshop_detail_view(request, artisan_id):
                 detail = form.save(commit=False)
                 detail.workshop = workshop
                 detail.save()
-                messages.success(request, 'Workshop details updated successfully.')
+                messages.success(request, _('Workshop details updated successfully.'))
             else:
-                messages.error(request, 'Please correct errors in the details form.')
+                messages.error(request, _('Please correct errors in the details form.'))
 
             return redirect('workshop:workshop_detail_view', artisan_id=artisan_id)
 
@@ -431,7 +432,7 @@ def closed_requests_view(request, artisan_id):
         artisan_profile = ArtisanProfile.objects.get(user_id=artisan_id)
         workshop = WorkshopProfile.objects.get(artisan=artisan_profile)
     except (ArtisanProfile.DoesNotExist, WorkshopProfile.DoesNotExist):
-        messages.error(request, "Workshop not found.")
+        messages.error(request, _("Workshop not found."))
         return redirect('main:home_view')
 
     completed_requests = (
@@ -473,7 +474,7 @@ def portfolio_list_view(request, artisan_id):
 
         messages.error(
             request,
-            "Artisan profile not found."
+            _("Artisan profile not found.")
         )
 
         return redirect(
@@ -484,7 +485,7 @@ def portfolio_list_view(request, artisan_id):
 
         messages.error(
             request,
-            "Workshop profile not found."
+            _("Workshop profile not found.")
         )
 
         return redirect(
@@ -518,16 +519,16 @@ def portfolio_list_view(request, artisan_id):
                     update_fields=['is_pinned']
                 )
 
-                messages.success(
-                    request,
-                    f"Image {'pinned' if portfolio_image.is_pinned else 'unpinned'} successfully."
-                )
+                if portfolio_image.is_pinned:
+                    messages.success(request, _("Image pinned successfully."))
+                else:
+                    messages.success(request, _("Image unpinned successfully."))
 
             else:
 
                 messages.error(
                     request,
-                    "Portfolio image not found."
+                    _("Portfolio image not found.")
                 )
 
             return redirect(
@@ -553,14 +554,14 @@ def portfolio_list_view(request, artisan_id):
 
                 messages.success(
                     request,
-                    "Portfolio image deleted successfully."
+                    _("Portfolio image deleted successfully.")
                 )
 
             else:
 
                 messages.error(
                     request,
-                    "Portfolio image not found."
+                    _("Portfolio image not found.")
                 )
 
             return redirect(
@@ -604,10 +605,10 @@ def upload_portfolio_view(request):
         artisan_profile = ArtisanProfile.objects.get(user=request.user)
         workshop = WorkshopProfile.objects.get(artisan=artisan_profile)
     except ArtisanProfile.DoesNotExist:
-        messages.error(request, "You must have an artisan profile to upload portfolio images.")
+        messages.error(request, _("You must have an artisan profile to upload portfolio images."))
         return redirect('main:home_view')
     except WorkshopProfile.DoesNotExist:
-        messages.error(request, "You must create a workshop profile first.")
+        messages.error(request, _("You must create a workshop profile first."))
         return redirect('workshop:create_workshop_view')
 
     if request.method == 'POST':
@@ -617,16 +618,16 @@ def upload_portfolio_view(request):
             portfolio_image = workshop.portfolio_images.filter(id=image_id).first()
 
             if not portfolio_image:
-                messages.error(request, 'Portfolio image not found.')
+                messages.error(request, _('Portfolio image not found.'))
                 return redirect('workshop:upload_portfolio_view')
 
             if new_caption and not text_is_clean(new_caption):
-                messages.error(request, 'Caption contains inappropriate language. Please revise it.')
+                messages.error(request, _('Caption contains inappropriate language. Please revise it.'))
                 return redirect('workshop:upload_portfolio_view')
 
             portfolio_image.caption = new_caption
             portfolio_image.save(update_fields=['caption'])
-            messages.success(request, 'Image caption updated successfully.')
+            messages.success(request, _('Image caption updated successfully.'))
             return redirect('workshop:upload_portfolio_view')
 
         if 'delete_image_id' in request.POST:
@@ -634,9 +635,9 @@ def upload_portfolio_view(request):
             portfolio_image = workshop.portfolio_images.filter(id=image_id).first()
             if portfolio_image:
                 portfolio_image.delete()
-                messages.success(request, 'Portfolio image deleted successfully.')
+                messages.success(request, _('Portfolio image deleted successfully.'))
             else:
-                messages.error(request, 'Portfolio image not found.')
+                messages.error(request, _('Portfolio image not found.'))
             return redirect('workshop:upload_portfolio_view')
 
         if 'toggle_pin_image_id' in request.POST:
@@ -645,9 +646,12 @@ def upload_portfolio_view(request):
             if portfolio_image:
                 portfolio_image.is_pinned = not portfolio_image.is_pinned
                 portfolio_image.save(update_fields=['is_pinned'])
-                messages.success(request, f"Image {'pinned' if portfolio_image.is_pinned else 'unpinned'} successfully.")
+                if portfolio_image.is_pinned:
+                    messages.success(request, _("Image pinned successfully."))
+                else:
+                    messages.success(request, _("Image unpinned successfully."))
             else:
-                messages.error(request, "Portfolio image not found.")
+                messages.error(request, _("Portfolio image not found."))
             return redirect('workshop:upload_portfolio_view')
 
         form = PortfolioImageForm(request.POST, request.FILES)
@@ -658,7 +662,7 @@ def upload_portfolio_view(request):
             is_pinned = form.cleaned_data.get('is_pinned', False)
 
             if not images:
-                messages.error(request, "Please select at least one image to upload.")
+                messages.error(request, _("Please select at least one image to upload."))
             else:
                 if caption and not text_is_clean(caption):
                     caption = ''
@@ -667,7 +671,7 @@ def upload_portfolio_view(request):
                     for image in images:
                         error = _validate_workshop_image(image)
                         if error:
-                            messages.warning(request, f'Image skipped: {error}')
+                            messages.warning(request, _("Image skipped: %(error)s") % {"error": error})
                             continue
                         PortfolioImage.objects.create(
                             workshop=workshop,
@@ -678,10 +682,10 @@ def upload_portfolio_view(request):
                         saved_count += 1
 
                 if saved_count:
-                    messages.success(request, f"{saved_count} portfolio image(s) uploaded successfully.")
+                    messages.success(request, _("%(count)d portfolio image(s) uploaded successfully.") % {"count": saved_count})
                 return redirect('workshop:upload_portfolio_view')
         else:
-            messages.error(request, "Please correct the errors below.")
+            messages.error(request, _("Please correct the errors below."))
     else:
         form = PortfolioImageForm()
 
@@ -703,7 +707,7 @@ def create_project_view(request):
         artisan_profile = ArtisanProfile.objects.get(user=request.user)
         workshop = WorkshopProfile.objects.get(artisan=artisan_profile)
     except (ArtisanProfile.DoesNotExist, WorkshopProfile.DoesNotExist):
-        messages.error(request, "You must create a workshop profile first.")
+        messages.error(request, _("You must create a workshop profile first."))
         return redirect('workshop:create_workshop_view')
 
     if request.method == 'POST':
@@ -715,10 +719,10 @@ def create_project_view(request):
             project = form.save(commit=False)
             project.workshop = workshop
             project.save()
-            messages.success(request, "Completed project created. You can now upload project images.")
+            messages.success(request, _("Completed project created. You can now upload project images."))
             return redirect('workshop:upload_project_images_view', project_id=project.id)
         else:
-            messages.error(request, "Please correct the errors below.")
+            messages.error(request, _("Please correct the errors below."))
     else:
         form = CompletedProjectForm()
         form.fields['request'].queryset = Request.objects.filter(proposals__artisan=request.user, proposals__status=Proposal.Status.ACCEPTED).distinct()
@@ -735,13 +739,13 @@ def upload_project_images_view(request, project_id):
         artisan_profile = ArtisanProfile.objects.get(user=request.user)
         # ensure project belongs to this artisan
         if project.workshop.artisan != artisan_profile:
-            messages.error(request, "You don't have permission to edit this project.")
+            messages.error(request, _("You don't have permission to edit this project."))
             return redirect('workshop:workshop_detail_view', artisan_id=request.user.id)
     except CompletedProject.DoesNotExist:
-        messages.error(request, "Project not found.")
+        messages.error(request, _("Project not found."))
         return redirect('main:home_view')
     except ArtisanProfile.DoesNotExist:
-        messages.error(request, "Artisan profile not found.")
+        messages.error(request, _("Artisan profile not found."))
         return redirect('main:home_view')
 
     if request.method == 'POST':
@@ -752,7 +756,7 @@ def upload_project_images_view(request, project_id):
             is_before = form.cleaned_data.get('is_before', False)
 
             if not images:
-                messages.error(request, "Please select at least one image to upload.")
+                messages.error(request, _("Please select at least one image to upload."))
             else:
                 if caption and not text_is_clean(caption):
                     caption = ''
@@ -761,7 +765,7 @@ def upload_project_images_view(request, project_id):
                     for img in images:
                         error = _validate_workshop_image(img)
                         if error:
-                            messages.warning(request, f'Image skipped: {error}')
+                            messages.warning(request, _("Image skipped: %(error)s") % {"error": error})
                             continue
                         CompletedProjectImage.objects.create(
                             project=project,
@@ -771,10 +775,10 @@ def upload_project_images_view(request, project_id):
                         )
                         saved_count += 1
                 if saved_count:
-                    messages.success(request, f"{saved_count} project image(s) uploaded successfully.")
+                    messages.success(request, _("%(count)d project image(s) uploaded successfully.") % {"count": saved_count})
                 return redirect('workshop:project_detail_view', project_id=project.id)
         else:
-            messages.error(request, "Please correct the errors below.")
+            messages.error(request, _("Please correct the errors below."))
     else:
         form = ProjectImageUploadForm()
 
@@ -791,7 +795,7 @@ def project_detail_view(request, project_id):
     try:
         project = CompletedProject.objects.get(id=project_id, is_published=True)
     except CompletedProject.DoesNotExist:
-        messages.error(request, "Project not found or not published.")
+        messages.error(request, _("Project not found or not published."))
         return redirect('main:home_view')
 
     # group images by pair_group for before/after display
@@ -814,7 +818,7 @@ def project_detail_view(request, project_id):
 #         artisan_profile = ArtisanProfile.objects.get(user_id=artisan_id)
 #         workshop = WorkshopProfile.objects.get(artisan=artisan_profile)
 #     except (ArtisanProfile.DoesNotExist, WorkshopProfile.DoesNotExist):
-#         messages.error(request, "Workshop not found.")
+#         messages.error(request, _("Workshop not found."))
 #         return redirect('main:home_view')
 
 #     projects = workshop.completed_projects.filter(is_published=True).order_by('-is_featured', '-date_completed')
@@ -828,7 +832,7 @@ def projects_list_view(request, artisan_id):
         workshop = WorkshopProfile.objects.get(artisan=artisan_profile)
 
     except (ArtisanProfile.DoesNotExist, WorkshopProfile.DoesNotExist):
-        messages.error(request, "Workshop not found.")
+        messages.error(request, _("Workshop not found."))
         return redirect('main:home_view')
 
     projects = workshop.completed_projects.filter(

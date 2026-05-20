@@ -7,6 +7,7 @@ from workshop.models import Category, WorkshopProfile
 from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
+from django.utils.translation import gettext as _
 from django.db.models import Count
 from django.utils import timezone
 from django.urls import reverse
@@ -89,9 +90,9 @@ def update_staff_profile_view(request: HttpRequest):
         form = StaffProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Staff profile updated successfully.')
+            messages.success(request, _('Staff profile updated successfully.'))
             return redirect('staff:staff_profile_view')
-        messages.error(request, 'Please fix the errors below.')
+        messages.error(request, _('Please fix the errors below.'))
     else:
         form = StaffProfileForm(instance=profile)
 
@@ -184,7 +185,7 @@ def add_category_view(request: HttpRequest):
         Category.objects.create(name=name, description=description)
         messages.success(request, f'Category "{name}" has been added.')
     else:
-        messages.error(request, 'Category name cannot be empty.')
+        messages.error(request, _('Category name cannot be empty.'))
     return redirect('staff:staff_dashboard_view')
 
 
@@ -222,7 +223,7 @@ def submit_report_view(request: HttpRequest, content_type: str, object_id: int):
 
     target, field_name = _resolve_report_target(content_type, object_id)
     if target is None:
-        messages.error(request, 'The content you are trying to report could not be found.')
+        messages.error(request, _('The content you are trying to report could not be found.'))
         return redirect('main:home_view')
 
     def get_safe_next(url):
@@ -245,7 +246,7 @@ def submit_report_view(request: HttpRequest, content_type: str, object_id: int):
             **{field_name: target},
         ).exists()
         if existing:
-            messages.warning(request, 'You have already submitted a report on this content recently. Please wait before reporting again.')
+            messages.warning(request, _('You have already submitted a report on this content recently. Please wait before reporting again.'))
             return redirect(next_url)
 
         form = ReportForm(request.POST)
@@ -267,7 +268,7 @@ def submit_report_view(request: HttpRequest, content_type: str, object_id: int):
                     link='/staff/reports/',
                 )
 
-            messages.success(request, 'Your report has been submitted. Our team will review it shortly.')
+            messages.success(request, _('Your report has been submitted. Our team will review it shortly.'))
             return redirect(next_url)
     else:
         next_url = get_safe_next(request.META.get('HTTP_REFERER', '/'))
@@ -279,7 +280,7 @@ def submit_report_view(request: HttpRequest, content_type: str, object_id: int):
             **{field_name: target},
         ).exists()
         if existing:
-            messages.warning(request, 'You have already submitted a report on this content recently. Please wait before reporting again.')
+            messages.warning(request, _('You have already submitted a report on this content recently. Please wait before reporting again.'))
             return redirect(next_url)
 
         form = ReportForm()
@@ -317,7 +318,7 @@ def resolve_report_view(request: HttpRequest, report_id: int):
     resolution_note = request.POST.get('resolution_note', '').strip()
 
     if action not in (Report.Status.RESOLVED, Report.Status.DISMISSED, Report.Status.REVIEWED):
-        messages.error(request, 'Invalid action.')
+        messages.error(request, _('Invalid action.'))
         return redirect('staff:report_list_view')
 
     report.status = action
@@ -438,7 +439,7 @@ def staff_dispute_message_view(request: HttpRequest, dispute_id: int, party_id: 
     dispute = get_object_or_404(Dispute, id=dispute_id)
 
     if not dispute.is_open:
-        messages.error(request, 'This dispute is already resolved.')
+        messages.error(request, _('This dispute is already resolved.'))
         return redirect('staff:dispute_detail_view', dispute_id=dispute.id)
 
     contract = dispute.contract
@@ -447,17 +448,17 @@ def staff_dispute_message_view(request: HttpRequest, dispute_id: int, party_id: 
     elif party_id == contract.artisan.id:
         party = contract.artisan
     else:
-        messages.error(request, 'That user is not a party to this dispute.')
+        messages.error(request, _('That user is not a party to this dispute.'))
         return redirect('staff:dispute_detail_view', dispute_id=dispute.id)
 
     body = (request.POST.get('body') or '').strip()
     image = request.FILES.get('image')
 
     if not body and not image:
-        messages.error(request, 'Please write a message or attach an image.')
+        messages.error(request, _('Please write a message or attach an image.'))
         return redirect('staff:dispute_detail_view', dispute_id=dispute.id)
     if body and not text_is_clean(body):
-        messages.error(request, 'Your message contains inappropriate language. Please revise it.')
+        messages.error(request, _('Your message contains inappropriate language. Please revise it.'))
         return redirect('staff:dispute_detail_view', dispute_id=dispute.id)
 
     cleaned_image, image_error = _staff_validate_image(image)
@@ -497,7 +498,7 @@ def resolve_dispute_view(request: HttpRequest, dispute_id: int):
     resolution_note = (request.POST.get('resolution_note') or '').strip()
 
     if action not in (Dispute.Status.IN_REVIEW, Dispute.Status.RESOLVED, Dispute.Status.DISMISSED):
-        messages.error(request, 'Invalid action.')
+        messages.error(request, _('Invalid action.'))
         return redirect('staff:dispute_detail_view', dispute_id=dispute.id)
 
     dispute.status = action

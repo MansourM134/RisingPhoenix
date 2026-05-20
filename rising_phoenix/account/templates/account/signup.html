@@ -1,5 +1,5 @@
 {% extends "main/base.html" %}
-{% load static %}
+{% load static i18n %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -13,8 +13,8 @@
                 <div class="card saaf-auth-card shadow-sm border-0">
                     <div class="card-body p-4 p-md-5">
                         <div class="text-center mb-4">
-                            <h1 class="h3 mb-2">Sign Up</h1>
-                            <p class="text-muted mb-0">Create your account in a few simple steps.</p>
+                            <h1 class="h3 mb-2">{% trans "Sign Up" %}</h1>
+                            <p class="text-muted mb-0">{% trans "Create your account in a few simple steps." %}</p>
                         </div>
 
                         <form action="" method="post" enctype="multipart/form-data" class="row g-3">
@@ -40,13 +40,13 @@
                             {% endif %}
 
                             <div class="col-md-6">
-                                <label for="first_name" class="form-label">First Name</label>
+                                <label for="first_name" class="form-label">{% trans "First Name" %}</label>
                                 <input
                                     type="text"
                                     class="form-control {% if user_form.first_name.errors %}is-invalid{% endif %}"
                                     id="first_name"
                                     name="first_name"
-                                    placeholder="Enter your first name"
+                                    placeholder="{% trans 'Enter your first name' %}"
                                     value="{{ user_form.first_name.value|default:'' }}"
                                 >
                                 {% for error in user_form.first_name.errors %}
@@ -55,13 +55,13 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label for="last_name" class="form-label">Last Name</label>
+                                <label for="last_name" class="form-label">{% trans "Last Name" %}</label>
                                 <input
                                     type="text"
                                     class="form-control {% if user_form.last_name.errors %}is-invalid{% endif %}"
                                     id="last_name"
                                     name="last_name"
-                                    placeholder="Enter your last name"
+                                    placeholder="{% trans 'Enter your last name' %}"
                                     value="{{ user_form.last_name.value|default:'' }}"
                                 >
                                 {% for error in user_form.last_name.errors %}
@@ -70,13 +70,13 @@
                             </div>
 
                             <div class="col-12">
-                                <label for="username" class="form-label">Username</label>
+                                <label for="username" class="form-label">{% trans "Username" %}</label>
                                 <input
                                     type="text"
                                     class="form-control {% if user_form.username.errors %}is-invalid{% endif %}"
                                     id="username"
                                     name="username"
-                                    placeholder="Choose a username"
+                                    placeholder="{% trans 'Choose a username' %}"
                                     value="{{ user_form.username.value|default:'' }}"
                                 >
                                 {% for error in user_form.username.errors %}
@@ -85,13 +85,13 @@
                             </div>
 
                             <div class="col-12">
-                                <label for="email" class="form-label">Email</label>
+                                <label for="email" class="form-label">{% trans "Email" %}</label>
                                 <input
                                     type="email"
                                     class="form-control {% if user_form.email.errors %}is-invalid{% endif %}"
                                     id="email"
                                     name="email"
-                                    placeholder="Enter your email"
+                                    placeholder="{% trans 'Enter your email' %}"
                                     value="{{ user_form.email.value|default:'' }}"
                                 >
                                 {% for error in user_form.email.errors %}
@@ -100,13 +100,13 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label for="password1" class="form-label">Password</label>
+                                <label for="password1" class="form-label">{% trans "Password" %}</label>
                                 <input
                                     type="password"
                                     class="form-control {% if user_form.password1.errors %}is-invalid{% endif %}"
                                     id="password1"
                                     name="password1"
-                                    placeholder="Enter your password"
+                                    placeholder="{% trans 'Enter your password' %}"
                                 >
                                 {% for error in user_form.password1.errors %}
                                     <div class="invalid-feedback d-block">{{ error }}</div>
@@ -114,13 +114,13 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label for="password2" class="form-label">Confirm Password</label>
+                                <label for="password2" class="form-label">{% trans "Confirm Password" %}</label>
                                 <input
                                     type="password"
                                     class="form-control {% if user_form.password2.errors %}is-invalid{% endif %}"
                                     id="password2"
                                     name="password2"
-                                    placeholder="Confirm your password"
+                                    placeholder="{% trans 'Confirm your password' %}"
                                 >
                                 {% for error in user_form.password2.errors %}
                                     <div class="invalid-feedback d-block">{{ error }}</div>
@@ -128,7 +128,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label for="phone" class="form-label">Phone</label>
+                                <label for="phone" class="form-label">{% trans "Phone" %}</label>
                                 <input
                                     type="tel"
                                     class="form-control {% if profile_form.phone.errors %}is-invalid{% endif %}"
@@ -136,10 +136,9 @@
                                     name="phone"
                                     placeholder="+966501234567"
                                     value="{{ profile_form.phone.value|default:'' }}"
-                                    
-                                    title="Enter a valid phone number, for example +966501234567"
+                                    title="{% trans 'Enter a valid phone number, for example +966501234567' %}"
                                 >
-                                <div class="form-text">Use digits only, with optional + and country code.</div>
+                                <div class="form-text">{% trans "Use digits only, with optional + and country code." %}</div>
 
                                 {% for error in profile_form.phone.errors %}
                                     <div class="invalid-feedback d-block">{{ error }}</div>
@@ -147,7 +146,7 @@
                             </div>
 
  <div class="col-md-6">
-                                <label for="avatar" class="form-label">Upload Your Avatar</label>
+                                <label for="avatar" class="form-label">{% trans "Upload Your Avatar" %}</label>
                                 <input
                                     type="file"
                                     name="avatar"
@@ -157,11 +156,11 @@
                                 {% for error in profile_form.avatar.errors %}
                                     <div class="invalid-feedback d-block">{{ error }}</div>
                                 {% endfor %}
-                                <div class="form-text">You can upload your own image or choose one of the default avatars below.</div>
+                                <div class="form-text">{% trans "You can upload your own image or choose one of the default avatars below." %}</div>
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label d-block">Or choose a default avatar</label>
+                                <label class="form-label d-block">{% trans "Or choose a default avatar" %}</label>
                                 <div class="d-flex flex-wrap gap-3">
                                     {% for avatar in default_avatar_choices %}
                                         <label class="default-avatar-option text-center">
@@ -174,7 +173,7 @@
                                             >
                                             <img
                                                 src="{% static 'images/avatars/defaults/'|add:avatar %}"
-                                                alt="Default avatar"
+                                                alt="{% trans 'Default avatar' %}"
                                                 class="rounded-circle border shadow-sm default-avatar-preview"
                                                 style="width: 72px; height: 72px; object-fit: cover; cursor: pointer;"
                                             >
@@ -183,13 +182,13 @@
                                 </div>
                             </div>
                             <div class="col-12">
-                                <label for="bio" class="form-label">Bio</label>
+                                <label for="bio" class="form-label">{% trans "Bio" %}</label>
                                 <textarea
                                     name="bio"
                                     id="bio"
                                     rows="4"
                                     class="form-control {% if profile_form.bio.errors %}is-invalid{% endif %}"
-                                    placeholder="Write something about yourself"
+                                    placeholder="{% trans 'Write something about yourself' %}"
                                 >{{ profile_form.bio.value|default:'' }}</textarea>
                                 {% for error in profile_form.bio.errors %}
                                     <div class="invalid-feedback d-block">{{ error }}</div>
@@ -197,16 +196,16 @@
                             </div>
 
                             <div class="col-12 d-grid">
-                                <button type="submit" class="btn btn-primary">Create Account</button>
+                                <button type="submit" class="btn btn-primary">{% trans "Create Account" %}</button>
                             </div>
 
                             <div class="col-12">
                                 <p class="text-center mb-0">
-                                    Already have an account?
-                                    <a href="{% url 'account:login_view' %}">Sign in</a>
+                                    {% trans "Already have an account?" %}
+                                    <a href="{% url 'account:login_view' %}">{% trans "Sign in" %}</a>
                                 </p>
                             <p class="text-center mb-0">
-                                <a href="{% url 'account:artisan_signup_view' %}">Are your artisan?</a>
+                                <a href="{% url 'account:artisan_signup_view' %}">{% trans "Are your artisan?" %}</a>
                             </p>
                             </div>
                         </form>

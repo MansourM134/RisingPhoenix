@@ -1,7 +1,7 @@
 {% extends 'main/base.html' %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Notification Settings — Saaf{% endblock %}
+{% block title %}{% trans "Notification Settings" %} — Saaf{% endblock %}
 
 {% block extra_css %}
 <link href="{% static 'css/notification.css' %}" rel="stylesheet">
@@ -12,14 +12,14 @@
 
     <div class="notif-page-header">
         <div>
-            <h2 class="notif-page-title">Notification Settings</h2>
-            <p class="notif-settings-sub">Choose how and when you want to be notified.</p>
+            <h2 class="notif-page-title">{% trans "Notification Settings" %}</h2>
+            <p class="notif-settings-sub">{% trans "Choose how and when you want to be notified." %}</p>
         </div>
         <div class="notif-settings-header-actions">
             <a href="{% url 'notification:notification_list_view' %}" class="notif-back-link">
-                <i class="bi bi-arrow-left"></i> Back to notifications
+                <i class="bi bi-arrow-left"></i> {% trans "Back to notifications" %}
             </a>
-            <button type="submit" form="notif-settings-form" class="notif-save-btn notif-save-btn--top">Save preferences</button>
+            <button type="submit" form="notif-settings-form" class="notif-save-btn notif-save-btn--top">{% trans "Save preferences" %}</button>
         </div>
     </div>
 
@@ -40,12 +40,12 @@
                         <i class="bi bi-envelope-fill"></i>
                     </div>
                     <div class="notif-settings-card-titles">
-                        <h3 class="notif-settings-card-title">Email Notifications</h3>
-                        <p class="notif-settings-card-desc">Sent to your registered email address.</p>
+                        <h3 class="notif-settings-card-title">{% trans "Email Notifications" %}</h3>
+                        <p class="notif-settings-card-desc">{% trans "Sent to your registered email address." %}</p>
                     </div>
                     <div class="notif-master-wrap ms-auto">
-                        <span class="notif-master-label">Toggle all</span>
-                        <label class="notif-master-toggle" title="Toggle all email notifications">
+                        <span class="notif-master-label">{% trans "Toggle all" %}</span>
+                        <label class="notif-master-toggle" title="{% trans 'Toggle all email notifications' %}">
                             <input type="checkbox" class="notif-master-check" data-group="email"
                                 {% if prefs.email_proposal_received and prefs.email_proposal_accepted and prefs.email_proposal_rejected and prefs.email_progress_update and prefs.email_comment_added and prefs.email_completion_requested and prefs.email_completion_confirmed and prefs.email_completion_rejected and prefs.email_message_received and prefs.email_invitation_received %}checked{% endif %}>
                             <span class="notif-master-slider"></span>
@@ -76,12 +76,12 @@
                         <i class="bi bi-bell-fill"></i>
                     </div>
                     <div class="notif-settings-card-titles">
-                        <h3 class="notif-settings-card-title">In-site Notifications</h3>
-                        <p class="notif-settings-card-desc">Appear in the bell icon in the navbar.</p>
+                        <h3 class="notif-settings-card-title">{% trans "In-site Notifications" %}</h3>
+                        <p class="notif-settings-card-desc">{% trans "Appear in the bell icon in the navbar." %}</p>
                     </div>
                     <div class="notif-master-wrap ms-auto">
-                        <span class="notif-master-label">Toggle all</span>
-                        <label class="notif-master-toggle" title="Toggle all in-site notifications">
+                        <span class="notif-master-label">{% trans "Toggle all" %}</span>
+                        <label class="notif-master-toggle" title="{% trans 'Toggle all in-site notifications' %}">
                             <input type="checkbox" class="notif-master-check" data-group="insite"
                                 {% if prefs.insite_proposal_received and prefs.insite_proposal_accepted and prefs.insite_proposal_rejected and prefs.insite_progress_update and prefs.insite_comment_added and prefs.insite_completion_requested and prefs.insite_completion_confirmed and prefs.insite_completion_rejected and prefs.insite_message_received and prefs.insite_invitation_received %}checked{% endif %}>
                             <span class="notif-master-slider"></span>
@@ -108,7 +108,7 @@
         </div>
 
         <div class="notif-settings-footer">
-            <button type="submit" class="notif-save-btn">Save preferences</button>
+            <button type="submit" class="notif-save-btn">{% trans "Save preferences" %}</button>
         </div>
     </form>
 

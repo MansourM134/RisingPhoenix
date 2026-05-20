@@ -1,6 +1,7 @@
 {% extends "main/base.html" %}
+{% load i18n %}
 
-{% block title %}My Reviews{% endblock %}
+{% block title %}{% trans "My Reviews" %}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -129,8 +130,8 @@
 
 {% block content %}
 <div class="history-shell">
-    <p class="history-eyebrow">Account</p>
-    <h1 class="history-title">My Reviews</h1>
+    <p class="history-eyebrow">{% trans "Account" %}</p>
+    <h1 class="history-title">{% trans "My Reviews" %}</h1>
 
     {% if reviews %}
         {% for review in reviews %}
@@ -157,14 +158,14 @@
             {% if review.comment %}
             <p class="review-comment">{{ review.comment }}</p>
             {% else %}
-            <p class="review-no-comment">No written review.</p>
+            <p class="review-no-comment">{% trans "No written review." %}</p>
             {% endif %}
         </div>
         {% endfor %}
     {% else %}
         <div class="empty-state">
             <i class="bi bi-star"></i>
-            <p>You haven't submitted any reviews yet.</p>
+            <p>{% trans "You haven't submitted any reviews yet." %}</p>
         </div>
     {% endif %}
 </div>

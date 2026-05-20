@@ -4,6 +4,7 @@ import logging
 import time
 
 from django.contrib import messages
+from django.utils.translation import gettext as _
 from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
 from django.core.paginator import Paginator
@@ -276,7 +277,7 @@ def request_detail_view(request: HttpRequest, request_id: int):
     # Match list-view rules: non-artisan visitors can only see CLOSED requests
     # (plus their own). Direct-URL access to OPEN/IN_REVIEW/TIME_ENDED is denied.
     if not is_artisan and not is_requester and project_request.status != Request.Status.CLOSED:
-        messages.error(request, 'This request is not available.')
+        messages.error(request, _('This request is not available.'))
         return redirect('request:request_list_view')
 
     invitations = []
@@ -330,7 +331,7 @@ def request_create_view(request: HttpRequest):
             skipped = _save_uploaded_request_images(request_instance, request.FILES, captions)
             for msg in skipped:
                 messages.warning(request, f'Image skipped: {msg}')
-            messages.success(request, 'Your request has been posted.')
+            messages.success(request, _('Your request has been posted.'))
             return redirect('request:request_list_view')
     else:
         form = RequestForm()
@@ -344,11 +345,11 @@ def request_edit_view(request: HttpRequest, request_id: int):
     request_instance = get_object_or_404(Request.objects.prefetch_related('images'), id=request_id)
 
     if request_instance.requester_id != request.user.id:
-        messages.error(request, 'You can only edit your own requests.')
+        messages.error(request, _('You can only edit your own requests.'))
         return redirect('request:request_list_view')
 
     if request_instance.status in [Request.Status.CLOSED, Request.Status.TIME_ENDED]:
-        messages.warning(request, 'This request is no longer editable.')
+        messages.warning(request, _('This request is no longer editable.'))
         return redirect('request:request_list_view')
 
     if request.method == 'POST':
@@ -369,7 +370,7 @@ def request_edit_view(request: HttpRequest, request_id: int):
             skipped = _save_uploaded_request_images(request_instance, request.FILES, captions)
             for msg in skipped:
                 messages.warning(request, f'Image skipped: {msg}')
-            messages.success(request, 'Request updated successfully.')
+            messages.success(request, _('Request updated successfully.'))
             return redirect('request:request_detail_view', request_id=request_instance.id)
     else:
         form = RequestForm(instance=request_instance)
@@ -388,30 +389,30 @@ def reopen_request_view(request: HttpRequest, request_id: int):
     request_instance = get_object_or_404(Request, id=request_id)
 
     if request.method != 'POST':
-        messages.error(request, 'Invalid action.')
+        messages.error(request, _('Invalid action.'))
         return redirect('request:request_detail_view', request_id=request_id)
 
     if request_instance.requester_id != request.user.id:
-        messages.error(request, 'Only the requester can reopen this request.')
+        messages.error(request, _('Only the requester can reopen this request.'))
         return redirect('request:request_detail_view', request_id=request_id)
 
     if request_instance.status != Request.Status.TIME_ENDED:
-        messages.error(request, 'Only time-ended requests can be reopened.')
+        messages.error(request, _('Only time-ended requests can be reopened.'))
         return redirect('request:request_detail_view', request_id=request_id)
 
     new_deadline_str = request.POST.get('new_deadline', '').strip()
     if not new_deadline_str:
-        messages.error(request, 'Please provide a new deadline.')
+        messages.error(request, _('Please provide a new deadline.'))
         return redirect('request:request_detail_view', request_id=request_id)
 
     try:
         from datetime import date
         new_deadline = date.fromisoformat(new_deadline_str)
         if new_deadline <= timezone.localdate():
-            messages.error(request, 'The new deadline must be in the future.')
+            messages.error(request, _('The new deadline must be in the future.'))
             return redirect('request:request_detail_view', request_id=request_id)
     except ValueError:
-        messages.error(request, 'Invalid date format.')
+        messages.error(request, _('Invalid date format.'))
         return redirect('request:request_detail_view', request_id=request_id)
 
     # If any proposals are still pending, go back to IN_REVIEW; otherwise OPEN
@@ -419,7 +420,7 @@ def reopen_request_view(request: HttpRequest, request_id: int):
     request_instance.deadline = new_deadline
     request_instance.status = Request.Status.IN_REVIEW if has_pending else Request.Status.OPEN
     request_instance.save(update_fields=['deadline', 'status'])
-    messages.success(request, 'Your request has been reopened with the new deadline.')
+    messages.success(request, _('Your request has been reopened with the new deadline.'))
     return redirect('request:request_detail_view', request_id=request_id)
 
 

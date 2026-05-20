@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.utils.translation import gettext as _
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import JsonResponse
@@ -79,6 +80,6 @@ def notification_settings_view(request):
         for field in _PREF_FIELDS:
             setattr(prefs, field, field in request.POST)
         prefs.save(update_fields=_PREF_FIELDS)
-        messages.success(request, 'Notification preferences saved.')
+        messages.success(request, _('Notification preferences saved.'))
         return redirect('notification:notification_settings_view')
     return render(request, 'notification/notification_settings.html', {'prefs': prefs})

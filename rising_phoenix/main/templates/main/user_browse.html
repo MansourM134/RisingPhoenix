@@ -1,7 +1,7 @@
 {% extends "main/base.html" %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Browse Artisans{% endblock %}
+{% block title %}{% trans "Browse Artisans" %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -11,9 +11,9 @@
 <section class="browse-hero py-5">
     <div class="container-fluid px-0">
         <div class="text-center mx-auto browse-hero-content">
-            <h1 class="fw-bold mb-3">Browse Artisans</h1>
+            <h1 class="fw-bold mb-3">{% trans "Browse Artisans" %}</h1>
             <p class="text-muted mb-0">
-                Discover Saudi artisans, compare workshops, and narrow your search by category, city, and average rating.
+                {% trans "Discover Saudi artisans, compare workshops, and narrow your search by category, city, and average rating." %}
             </p>
         </div>
     </div>
@@ -27,16 +27,16 @@
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <div>
-                                <h5 class="fw-bold mb-1">Filter results</h5>
-                                <p class="text-muted small mb-0">Refine artisans quickly</p>
+                                <h5 class="fw-bold mb-1">{% trans "Filter results" %}</h5>
+                                <p class="text-muted small mb-0">{% trans "Refine artisans quickly" %}</p>
                             </div>
                             <a href="{% url 'main:browse_view' %}" class="btn btn-sm btn-saaf-outline rounded-pill">
-                                Reset
+                                {% trans "Reset" %}
                             </a>
                         </div>
 
                         <div class="mb-4">
-                            <label for="q" class="form-label fw-semibold">Search</label>
+                            <label for="q" class="form-label fw-semibold">{% trans "Search" %}</label>
                             <div class="search-input-wrap">
                                 <i class="bi bi-search search-input-icon"></i>
                                 <input
@@ -44,17 +44,17 @@
                                     name="q"
                                     id="q"
                                     class="form-control rounded-3 ps-5"
-                                    placeholder="Workshop, artisan, service..."
+                                    placeholder="{% trans 'Workshop, artisan, service...' %}"
                                     value="{{ search_query|default:'' }}"
-                                    aria-label="Search artisans"
+                                    aria-label="{% trans 'Search artisans' %}"
                                 >
                             </div>
                         </div>
 
                         <div class="mb-4">
-                            <label for="category" class="form-label fw-semibold">Category</label>
-                            <select name="category" id="category" class="form-select rounded-3" aria-label="Filter by category">
-                                <option value="">All categories</option>
+                            <label for="category" class="form-label fw-semibold">{% trans "Category" %}</label>
+                            <select name="category" id="category" class="form-select rounded-3" aria-label="{% trans 'Filter by category' %}">
+                                <option value="">{% trans "All categories" %}</option>
                                 {% for category in categories %}
                                     <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"s" %}selected{% endif %}>
                                         {{ category.name }}
@@ -64,9 +64,9 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="city" class="form-label fw-semibold">City</label>
-                            <select name="city" id="city" class="form-select rounded-3" aria-label="Filter by city">
-                                <option value="">All cities</option>
+                            <label for="city" class="form-label fw-semibold">{% trans "City" %}</label>
+                            <select name="city" id="city" class="form-select rounded-3" aria-label="{% trans 'Filter by city' %}">
+                                <option value="">{% trans "All cities" %}</option>
                                 {% for city in cities %}
                                     <option value="{{ city }}" {% if selected_city == city %}selected{% endif %}>
                                         {{ city }}
@@ -76,7 +76,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="form-label fw-semibold d-block mb-2">Verification</label>
+                            <label class="form-label fw-semibold d-block mb-2">{% trans "Verification" %}</label>
                             <div class="form-check form-switch mb-0">
                                 <input
                                     class="form-check-input"
@@ -88,13 +88,13 @@
                                     {% if verified_only %}checked{% endif %}
                                 >
                                 <label class="form-check-label fw-medium" for="verified">
-                                    Show verified artisans only
+                                    {% trans "Show verified artisans only" %}
                                 </label>
                             </div>
                         </div>
 
                         <div class="mb-4">
-                            <label class="form-label fw-semibold d-block mb-3">Average rating</label>
+                            <label class="form-label fw-semibold d-block mb-3">{% trans "Average rating" %}</label>
                             <div class="form-check form-switch mb-3">
                                 <input
                                     class="form-check-input"
@@ -106,13 +106,13 @@
                                     {% if use_rating %}checked{% endif %}
                                 >
                                 <label class="form-check-label fw-medium" for="use_rating">
-                                    Use average rating filter
+                                    {% trans "Use average rating filter" %}
                                 </label>
                             </div>
                             <div class="rating-slider-card">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="text-muted small">From</span>
-                                    <span class="text-muted small">To</span>
+                                    <span class="text-muted small">{% trans "From" %}</span>
+                                    <span class="text-muted small">{% trans "To" %}</span>
                                 </div>
 
                                 <div class="range-slider-wrap">
@@ -155,24 +155,24 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="sort" class="form-label fw-semibold">Sort by</label>
-                            <select name="sort" id="sort" class="form-select rounded-3" aria-label="Sort artisans">
-                                <option value="newest" {% if selected_sort == "newest" %}selected{% endif %}>Newest</option>
-                                <option value="oldest" {% if selected_sort == "oldest" %}selected{% endif %}>Oldest</option>
-                                <option value="name_az" {% if selected_sort == "name_az" %}selected{% endif %}>Name A-Z</option>
-                                <option value="name_za" {% if selected_sort == "name_za" %}selected{% endif %}>Name Z-A</option>
-                                <option value="workshop_az" {% if selected_sort == "workshop_az" %}selected{% endif %}>Workshop A-Z</option>
-                                <option value="workshop_za" {% if selected_sort == "workshop_za" %}selected{% endif %}>Workshop Z-A</option>
-                                <option value="city_az" {% if selected_sort == "city_az" %}selected{% endif %}>City A-Z</option>
-                                <option value="city_za" {% if selected_sort == "city_za" %}selected{% endif %}>City Z-A</option>
-                                <option value="rating_high" {% if selected_sort == "rating_high" %}selected{% endif %}>Highest Rated</option>
-                                <option value="rating_low" {% if selected_sort == "rating_low" %}selected{% endif %}>Lowest Rated</option>
+                            <label for="sort" class="form-label fw-semibold">{% trans "Sort by" %}</label>
+                            <select name="sort" id="sort" class="form-select rounded-3" aria-label="{% trans 'Sort artisans' %}">
+                                <option value="newest" {% if selected_sort == "newest" %}selected{% endif %}>{% trans "Newest" %}</option>
+                                <option value="oldest" {% if selected_sort == "oldest" %}selected{% endif %}>{% trans "Oldest" %}</option>
+                                <option value="name_az" {% if selected_sort == "name_az" %}selected{% endif %}>{% trans "Name A-Z" %}</option>
+                                <option value="name_za" {% if selected_sort == "name_za" %}selected{% endif %}>{% trans "Name Z-A" %}</option>
+                                <option value="workshop_az" {% if selected_sort == "workshop_az" %}selected{% endif %}>{% trans "Workshop A-Z" %}</option>
+                                <option value="workshop_za" {% if selected_sort == "workshop_za" %}selected{% endif %}>{% trans "Workshop Z-A" %}</option>
+                                <option value="city_az" {% if selected_sort == "city_az" %}selected{% endif %}>{% trans "City A-Z" %}</option>
+                                <option value="city_za" {% if selected_sort == "city_za" %}selected{% endif %}>{% trans "City Z-A" %}</option>
+                                <option value="rating_high" {% if selected_sort == "rating_high" %}selected{% endif %}>{% trans "Highest Rated" %}</option>
+                                <option value="rating_low" {% if selected_sort == "rating_low" %}selected{% endif %}>{% trans "Lowest Rated" %}</option>
                             </select>
                         </div>
 
                         <div class="d-grid">
                             <button type="submit" class="btn btn-saaf-primary rounded-pill py-2">
-                                Apply Filters
+                                {% trans "Apply Filters" %}
                             </button>
                         </div>
                     </div>
@@ -184,22 +184,22 @@
                     <div class="results-toolbar card border-0 shadow-sm rounded-4 mb-4">
                         <div class="card-body p-3 p-lg-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
                             <div>
-                                <h5 class="fw-bold mb-1">Available artisans</h5>
-                                <p class="text-muted mb-0">{{ artisans|length }} result{{ artisans|length|pluralize }}</p>
+                                <h5 class="fw-bold mb-1">{% trans "Available artisans" %}</h5>
+                                <p class="text-muted mb-0">{% blocktrans with count=artisans|length %}{{ count }} result{{ count|pluralize }}{% endblocktrans %}</p>
                             </div>
 
                             <div class="d-flex flex-wrap gap-2">
                                 {% if selected_category %}
-                                    <span class="badge rounded-pill active-filter-chip px-3 py-2">Category selected</span>
+                                    <span class="badge rounded-pill active-filter-chip px-3 py-2">{% trans "Category selected" %}</span>
                                 {% endif %}
                                 {% if selected_city %}
                                     <span class="badge rounded-pill active-filter-chip px-3 py-2">{{ selected_city }}</span>
                                 {% endif %}
                                 {% if verified_only %}
-                                    <span class="badge rounded-pill active-filter-chip px-3 py-2">Verified only</span>
+                                    <span class="badge rounded-pill active-filter-chip px-3 py-2">{% trans "Verified only" %}</span>
                                 {% endif %}
                                 {% if search_query %}
-                                    <span class="badge rounded-pill active-filter-chip px-3 py-2">“{{ search_query }}”</span>
+                                    <span class="badge rounded-pill active-filter-chip px-3 py-2">"{{ search_query }}"</span>
                                 {% endif %}
                             </div>
                         </div>
@@ -241,12 +241,12 @@
                                                 <div class="d-flex flex-wrap gap-2">
                                                     <span class="badge rounded-pill active-filter-chip px-3 py-2">
                                                         <i class="bi bi-geo-alt me-1"></i>
-                                                        {{ artisan.artisanprofile.workshop_profile.location|default:"Saudi Arabia" }}
+                                                        {{ artisan.artisanprofile.workshop_profile.location|default:_("Saudi Arabia") }}
                                                     </span>
 
                                                     {% if artisan.artisanprofile.is_phone_verified %}
                                                         <span class="badge rounded-pill bg-success px-3 py-2">
-                                                            Verified
+                                                            {% trans "Verified" %}
                                                         </span>
                                                     {% endif %}
                                                 </div>
@@ -268,7 +268,7 @@
                                             {% else %}
                                                 <div class="d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill bg-light text-muted small fw-semibold mb-2">
                                                     <i class="bi bi-star"></i>
-                                                    No ratings yet
+                                                    {% trans "No ratings yet" %}
                                                 </div>
                                             {% endif %}
                                         </div>
@@ -283,7 +283,7 @@
                                             </p>
                                         {% else %}
                                             <p class="text-muted small mb-3">
-                                                No bio added yet.
+                                                {% trans "No bio added yet." %}
                                             </p>
                                         {% endif %}
 
@@ -300,7 +300,7 @@
                                         <div class="mt-auto d-grid">
                                             <a href="{% url 'workshop:workshop_detail_view' artisan.id %}"
                                                class="btn btn-saaf-outline rounded-pill">
-                                                View Workshop
+                                                {% trans "View Workshop" %}
                                             </a>
                                         </div>
                                     </div>
@@ -314,40 +314,40 @@
                             <div class="mb-3">
                                 <i class="bi bi-search text-muted" style="font-size: 2.5rem;"></i>
                             </div>
-                            <h4 class="fw-bold mb-2">No artisans found</h4>
+                            <h4 class="fw-bold mb-2">{% trans "No artisans found" %}</h4>
                             <p class="text-muted mb-3">
-                                Try changing your search keywords, city, category, or rating range.
+                                {% trans "Try changing your search keywords, city, category, or rating range." %}
                             </p>
                             <a href="{% url 'main:browse_view' %}" class="btn btn-saaf-outline rounded-pill px-4">
-                                Clear filters
+                                {% trans "Clear filters" %}
                             </a>
                         </div>
                     </div>
                 {% endif %}
 {% if page_obj.has_other_pages %}
-<nav class="pagination-wrap mt-5" aria-label="Browse artisans pages">
+<nav class="pagination-wrap mt-5" aria-label="{% trans 'Browse artisans pages' %}">
     <ul class="pagination justify-content-center align-items-center flex-wrap gap-2 mb-0">
 
         {% if page_obj.has_previous %}
             <li class="page-item">
                 <a class="page-link saaf-page-link" href="?{% if query_params %}{{ query_params }}&{% endif %}page=1">
-                    <i class="bi bi-chevron-double-left me-1"></i> First
+                    <i class="bi bi-chevron-double-left me-1"></i> {% trans "First" %}
                 </a>
             </li>
             <li class="page-item">
                 <a class="page-link saaf-page-link" href="?{% if query_params %}{{ query_params }}&{% endif %}page={{ page_obj.previous_page_number }}">
-                    <i class="bi bi-chevron-left me-1"></i> Previous
+                    <i class="bi bi-chevron-left me-1"></i> {% trans "Previous" %}
                 </a>
             </li>
         {% else %}
             <li class="page-item disabled">
                 <span class="page-link saaf-page-link">
-                    <i class="bi bi-chevron-double-left me-1"></i> First
+                    <i class="bi bi-chevron-double-left me-1"></i> {% trans "First" %}
                 </span>
             </li>
             <li class="page-item disabled">
                 <span class="page-link saaf-page-link">
-                    <i class="bi bi-chevron-left me-1"></i> Previous
+                    <i class="bi bi-chevron-left me-1"></i> {% trans "Previous" %}
                 </span>
             </li>
         {% endif %}
@@ -360,30 +360,30 @@
 
         <li class="page-item disabled d-none d-md-block">
             <span class="page-link saaf-page-link saaf-page-status">
-                of {{ page_obj.paginator.num_pages }}
+                {% blocktrans with total=page_obj.paginator.num_pages %}of {{ total }}{% endblocktrans %}
             </span>
         </li>
 
         {% if page_obj.has_next %}
             <li class="page-item">
                 <a class="page-link saaf-page-link" href="?{% if query_params %}{{ query_params }}&{% endif %}page={{ page_obj.next_page_number }}">
-                    Next <i class="bi bi-chevron-right ms-1"></i>
+                    {% trans "Next" %} <i class="bi bi-chevron-right ms-1"></i>
                 </a>
             </li>
             <li class="page-item">
                 <a class="page-link saaf-page-link" href="?{% if query_params %}{{ query_params }}&{% endif %}page={{ page_obj.paginator.num_pages }}">
-                    Last <i class="bi bi-chevron-double-right ms-1"></i>
+                    {% trans "Last" %} <i class="bi bi-chevron-double-right ms-1"></i>
                 </a>
             </li>
         {% else %}
             <li class="page-item disabled">
                 <span class="page-link saaf-page-link">
-                    Next <i class="bi bi-chevron-right ms-1"></i>
+                    {% trans "Next" %} <i class="bi bi-chevron-right ms-1"></i>
                 </span>
             </li>
             <li class="page-item disabled">
                 <span class="page-link saaf-page-link">
-                    Last <i class="bi bi-chevron-double-right ms-1"></i>
+                    {% trans "Last" %} <i class="bi bi-chevron-double-right ms-1"></i>
                 </span>
             </li>
         {% endif %}

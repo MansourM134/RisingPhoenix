@@ -1,13 +1,13 @@
 {% extends 'notification/email/base_email.html' %}
+{% load i18n %}
 {% block body %}
 
-<p style="margin:0 0 4px;font-size:13px;color:#c2724f;text-transform:uppercase;letter-spacing:1.5px;">Welcome, Artisan</p>
+<p style="margin:0 0 4px;font-size:13px;color:#c2724f;text-transform:uppercase;letter-spacing:1.5px;">{% trans "Welcome, Artisan" %}</p>
 <h2 style="margin:12px 0 16px;font-size:26px;color:#1c1712;font-family:Georgia,serif;line-height:1.3;">
-  Your workshop is live, {{ user.first_name|default:user.username }}.
+  {% blocktrans with name=user.first_name|default:user.username %}Your workshop is live, {{ name }}.{% endblocktrans %}
 </h2>
 <p style="margin:0 0 24px;font-size:15px;color:#3d3530;line-height:1.7;">
-  Welcome to Saaf. Your artisan profile is ready &mdash; you can now browse open commission requests,
-  submit proposals, and start building your reputation on the platform.
+  {% trans "Welcome to Saaf. Your artisan profile is ready — you can now browse open commission requests, submit proposals, and start building your reputation on the platform." %}
 </p>
 
 <table cellpadding="0" cellspacing="0" style="margin:0 0 32px;">
@@ -15,7 +15,7 @@
     <td style="background:#c2724f;border-radius:8px;">
       <a href="{{ site_url }}/requests/"
          style="display:block;padding:13px 32px;color:#ffffff;text-decoration:none;font-size:14px;font-weight:bold;font-family:Georgia,serif;letter-spacing:0.5px;">
-        Browse Requests &rarr;
+        {% trans "Browse Requests" %} &rarr;
       </a>
     </td>
   </tr>
@@ -26,20 +26,20 @@
 <table cellpadding="0" cellspacing="0" width="100%">
   <tr>
     <td style="padding:0 0 14px;">
-      <p style="margin:0 0 2px;font-size:14px;color:#1c1712;font-weight:bold;">Complete Your Profile</p>
-      <p style="margin:0;font-size:13px;color:#8a7a6e;line-height:1.6;">Add a bio, portfolio images, and your craft categories to stand out to requesters.</p>
+      <p style="margin:0 0 2px;font-size:14px;color:#1c1712;font-weight:bold;">{% trans "Complete Your Profile" %}</p>
+      <p style="margin:0;font-size:13px;color:#8a7a6e;line-height:1.6;">{% trans "Add a bio, portfolio images, and your craft categories to stand out to requesters." %}</p>
     </td>
   </tr>
   <tr>
     <td style="padding:0 0 14px;">
-      <p style="margin:0 0 2px;font-size:14px;color:#1c1712;font-weight:bold;">Submit Proposals</p>
-      <p style="margin:0;font-size:13px;color:#8a7a6e;line-height:1.6;">Send your price and timeline directly to the requester.</p>
+      <p style="margin:0 0 2px;font-size:14px;color:#1c1712;font-weight:bold;">{% trans "Submit Proposals" %}</p>
+      <p style="margin:0;font-size:13px;color:#8a7a6e;line-height:1.6;">{% trans "Send your price and timeline directly to the requester." %}</p>
     </td>
   </tr>
   <tr>
     <td style="padding:0;">
-      <p style="margin:0 0 2px;font-size:14px;color:#1c1712;font-weight:bold;">Deliver Work</p>
-      <p style="margin:0;font-size:13px;color:#8a7a6e;line-height:1.6;">Post progress updates with photos and complete projects on Saaf.</p>
+      <p style="margin:0 0 2px;font-size:14px;color:#1c1712;font-weight:bold;">{% trans "Deliver Work" %}</p>
+      <p style="margin:0;font-size:13px;color:#8a7a6e;line-height:1.6;">{% trans "Post progress updates with photos and complete projects on Saaf." %}</p>
     </td>
   </tr>
 </table>

@@ -1,10 +1,11 @@
+{% load i18n %}
 <li class="notif-pref-row {% if not checked %}notif-pref-row--disabled{% endif %}">
     <div class="notif-pref-icon" style="color: {{ color }}">
         <i class="bi {{ icon }}"></i>
     </div>
     <div class="notif-pref-info">
-        <span class="notif-pref-label">{{ label }}</span>
-        <span class="notif-pref-desc">{{ desc }}</span>
+        <span class="notif-pref-label">{% trans label %}</span>
+        <span class="notif-pref-desc">{% trans desc %}</span>
     </div>
     <label class="notif-toggle">
         <input type="checkbox" name="{{ field }}"{% if checked %} checked{% endif %}>

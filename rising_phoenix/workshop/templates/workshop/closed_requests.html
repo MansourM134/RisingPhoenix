@@ -1,8 +1,8 @@
 {% extends 'main/base.html' %}
-{% load static %}
+{% load static i18n %}
 
 {% block title %}
-Closed Requests
+{% trans "Closed Requests" %}
 {% endblock %}
 
 {% block extra_css %}
@@ -16,12 +16,12 @@ Closed Requests
         <header class="request-hero mb-3">
             <div class="request-row">
                 <div>
-                    <p class="request-eyebrow mb-1">Workshop</p>
-                    <h1 class="mb-2">Closed Requests</h1>
-                    <p class="request-sub">All closed requests linked to accepted proposals for {{ workshop.workshop_name }}.</p>
+                    <p class="request-eyebrow mb-1">{% trans "Workshop" %}</p>
+                    <h1 class="mb-2">{% trans "Closed Requests" %}</h1>
+                    <p class="request-sub">{% blocktrans with name=workshop.workshop_name %}All closed requests linked to accepted proposals for {{ name }}.{% endblocktrans %}</p>
                 </div>
                 <div>
-                    <a href="{% url 'workshop:workshop_detail_view' artisan.user.id %}" class="request-action">Back to Workshop</a>
+                    <a href="{% url 'workshop:workshop_detail_view' artisan.user.id %}" class="request-action">{% trans "Back to Workshop" %}</a>
                 </div>
             </div>
         </header>
@@ -50,7 +50,7 @@ Closed Requests
                     </a>
                 </h2>
 
-                <p class="request-card-meta-by">by {{ project_request.requester.username }}</p>
+                <p class="request-card-meta-by">{% trans "by" %} {{ project_request.requester.username }}</p>
 
                 <p class="request-card-desc">{{ project_request.description|truncatewords:24 }}</p>
 
@@ -60,15 +60,16 @@ Closed Requests
                             {% if project_request.budget_max %}
                             {{ project_request.budget_max|floatformat:"-2" }} SAR
                             {% else %}
-                            Budget flexible
+                            {% trans "Budget flexible" %}
                             {% endif %}
                         </span>
 
-                        <span class="status-pill status-closed">Closed</span>
+                        <span class="status-pill status-closed">{% trans "Closed" %}</span>
                     </div>
 
+                    {% trans "Flexible" as flexible_label %}
                     <p class="mb-0">
-                        Deadline: {{ project_request.deadline|default:"Flexible" }}
+                        {% trans "Deadline:" %} {{ project_request.deadline|default:flexible_label }}
                     </p>
 
                     <p class="mb-0 request-card-proposals">
@@ -77,25 +78,25 @@ Closed Requests
                     </p>
 
                     <div class="request-card-actions">
-                        <a href="{% url 'request:request_detail_view' project_request.id %}" class="request-card-cta">View details</a>
+                        <a href="{% url 'request:request_detail_view' project_request.id %}" class="request-card-cta">{% trans "View details" %}</a>
                     </div>
                 </div>
             </article>
             {% empty %}
-            <div class="request-empty">No completed orders yet.</div>
+            <div class="request-empty">{% trans "No completed orders yet." %}</div>
             {% endfor %}
         </div>
 
         {% if page_obj.has_other_pages %}
         <nav class="browse-pagination">
             {% if page_obj.has_previous %}
-            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">{% trans "Previous" %}</a>
             {% endif %}
 
-            <span class="page-current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            <span class="page-current">{% trans "Page" %} {{ page_obj.number }} {% trans "of" %} {{ page_obj.paginator.num_pages }}</span>
 
             {% if page_obj.has_next %}
-            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">{% trans "Next" %}</a>
             {% endif %}
         </nav>
         {% endif %}
