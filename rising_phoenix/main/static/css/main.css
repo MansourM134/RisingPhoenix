@@ -1,3 +1,40 @@
+/* TheYearofHandicrafts — Arabic font */
+@font-face {
+    font-family: 'TheYearofHandicrafts';
+    src: url('../fonts/theyearofhandcrafts/TheYearofHandicrafts-Regular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'TheYearofHandicrafts';
+    src: url('../fonts/theyearofhandcrafts/TheYearofHandicrafts-Medium.otf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'TheYearofHandicrafts';
+    src: url('../fonts/theyearofhandcrafts/TheYearofHandicrafts-SemiBold.otf') format('opentype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'TheYearofHandicrafts';
+    src: url('../fonts/theyearofhandcrafts/TheYearofHandicrafts-Bold.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'TheYearofHandicrafts';
+    src: url('../fonts/theyearofhandcrafts/TheYearofHandicrafts-Black.otf') format('opentype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* ============================================
    SAAF - Color Variables & Customization
    ============================================ */
@@ -34,7 +71,50 @@
     --cream: var(--saaf-bg);
     --white: var(--saaf-white);
     --sand-dark: #D8C2A4;
+
+    /* Border-radius scale */
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+    --radius-pill: 999px;
+
+    /* Spacing scale */
+    --space-xs: 0.5rem;
+    --space-sm: 0.75rem;
+    --space-md: 1rem;
+    --space-lg: 1.25rem;
+    --space-xl: 1.5rem;
+    --space-2xl: 2rem;
+
+    /* Extra shadow token */
+    --saaf-shadow-xs: 0 2px 8px rgba(77, 52, 36, 0.08);
+
+    /* Semantic colors */
+    --saaf-success: #4f7150;
+    --saaf-warning: #9b7348;
+    --saaf-surface-dark: #2f2822;
 }
+
+/* ============================================
+   Shared Utility Classes
+   ============================================ */
+
+.empty-state {
+    text-align: center;
+    padding: var(--space-2xl) var(--space-xl);
+    border: 1.5px dashed var(--saaf-border);
+    border-radius: var(--radius-md);
+    color: var(--saaf-text-muted);
+}
+
+[data-theme="dark"] .empty-state {
+    border-color: rgba(232, 199, 164, 0.2);
+    color: var(--saaf-cream-text);
+    opacity: 0.7;
+}
+
+.text-saaf-btn    { color: var(--saaf-btn); }
+.text-saaf-heading { color: var(--saaf-heading); }
 
 /* ============================================
    Global Styles
@@ -68,7 +148,7 @@ body {
     max-height: none;
 
 :lang(ar) {
-    font-family: 'Cairo', sans-serif;
+    font-family: 'TheYearofHandicrafts', sans-serif;
 }
 
 :focus-visible {
@@ -172,10 +252,9 @@ a:hover {
 }
 
 .saaf-logo {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     border-radius: 12px;
-    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -185,7 +264,7 @@ a:hover {
 .saaf-logo-img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     display: block;
 }
 

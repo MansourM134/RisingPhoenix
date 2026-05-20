@@ -225,13 +225,13 @@
 
 .progress-timeline-dot--completion_requested,
 .progress-timeline-dot--completed {
-    background: #4f7150;
-    box-shadow: 0 0 0 2px #4f7150;
+    background: var(--saaf-success);
+    box-shadow: 0 0 0 2px var(--saaf-success);
 }
 
 .progress-timeline-dot--completion_rejected {
-    background: #9b7348;
-    box-shadow: 0 0 0 2px #9b7348;
+    background: var(--saaf-warning);
+    box-shadow: 0 0 0 2px var(--saaf-warning);
 }
 
 .progress-event-card {
@@ -300,7 +300,7 @@
     line-height: 1.6;
 }
 
-.progress-event-message--completion_requested { border-left-color: #4f7150; }
+.progress-event-message--completion_requested { border-left-color: var(--saaf-success); }
 
 .progress-update-meta {
     display: flex;
@@ -440,11 +440,6 @@
 }
 
 .progress-empty {
-    text-align: center;
-    padding: 3rem 1rem;
-    color: var(--ink-light);
-    border: 1px dashed var(--border);
-    border-radius: 12px;
 }
 
 .progress-empty i {

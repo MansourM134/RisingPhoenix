@@ -60,7 +60,7 @@
 .proposal-request-preview {
     background: var(--ink, #1c1712);
     color: var(--cream, #fdfaf5);
-    border-radius: 14px;
+    border-radius: var(--radius-md);
     padding: 1.75rem;
     position: sticky;
     top: 1.5rem;
@@ -76,7 +76,7 @@
 }
 
 .proposal-preview-title {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.4rem;
     color: var(--cream, #fdfaf5);
     margin: 0 0 0.25rem;
@@ -161,7 +161,7 @@
     padding: 0;
     background: none;
     cursor: pointer;
-    border-radius: 7px;
+    border-radius: var(--radius-sm);
     overflow: hidden;
     width: 100%;
 }
@@ -171,7 +171,7 @@
     height: 58px;
     object-fit: cover;
     display: block;
-    border-radius: 7px;
+    border-radius: var(--radius-sm);
     border: 1.5px solid rgba(255,255,255,0.12);
     transition: opacity 0.15s;
 }
@@ -210,7 +210,7 @@
 }
 
 .proposal-panel-title {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.5rem;
     color: var(--ink, #1c1712);
     margin: 0;
@@ -228,11 +228,11 @@
     color: var(--saaf-cream-text, #F2E4D1);
     font-size: 0.75rem;
     font-weight: 700;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     min-width: 1.5rem;
     height: 1.5rem;
     padding: 0 0.4rem;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 /* ── Proposal Card ── */
@@ -246,13 +246,13 @@
 .proposal-card {
     background: var(--cream, #fdfaf5);
     border: 1px solid var(--border, #d8ccba);
-    border-radius: 12px;
-    padding: 1.25rem 1.5rem;
+    border-radius: var(--radius-md);
+    padding: var(--space-lg) var(--space-xl);
     transition: box-shadow 0.2s;
 }
 
 .proposal-card:hover {
-    box-shadow: 0 4px 18px rgba(28, 23, 18, 0.07);
+    box-shadow: var(--saaf-shadow-xs);
 }
 
 .proposal-card--accepted {
@@ -337,7 +337,7 @@
     align-items: center;
     gap: 0.35rem;
     padding: 0.4rem 0.78rem;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     border: 1px solid var(--border, #d8ccba);
     background: rgba(241, 232, 213, 0.75);
     color: var(--ink, #6B4826);
@@ -406,7 +406,7 @@
 .proposal-status-pill {
     display: inline-block;
     padding: 0.25rem 0.75rem;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.06em;
@@ -467,8 +467,8 @@
 /* ── Action Buttons ── */
 .proposal-action-btn {
     display: inline-block;
-    padding: 0.45rem 1rem;
-    border-radius: 8px;
+    padding: var(--space-xs) var(--space-md);
+    border-radius: var(--radius-sm);
     font-size: 0.85rem;
     font-weight: 600;
     border: 1.5px solid var(--clay, #c2724f);
@@ -534,7 +534,7 @@
     font-weight: 500;
     margin-top: 0.75rem;
     padding: 0.5rem 0.75rem;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
 }
 
 .proposal-card-status-note--rejected {
@@ -555,7 +555,7 @@
     width: 100%;
     padding: 0.65rem 0.9rem;
     border: 1.5px solid var(--border, #d8ccba);
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     background: var(--cream, #fdfaf5);
     color: var(--ink, #1c1712);
     font-size: 0.95rem;
@@ -603,7 +603,7 @@
     padding: 0;
     background: none;
     cursor: pointer;
-    border-radius: 7px;
+    border-radius: var(--radius-sm);
     overflow: hidden;
     flex: 0 0 80px;
 }
@@ -614,7 +614,7 @@
     height: 64px;
     object-fit: cover;
     display: block;
-    border-radius: 7px;
+    border-radius: var(--radius-sm);
     border: 1.5px solid var(--border, #d8ccba);
     transition: opacity 0.15s;
 }
@@ -695,7 +695,7 @@
 .proposal-cta-box {
     background: var(--sand-dark, #eae0cc);
     border: 1px solid var(--border, #d8ccba);
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     padding: 1rem 1.5rem;
     margin-bottom: 1.5rem;
     font-size: 0.95rem;
@@ -828,98 +828,6 @@
 [data-theme="dark"] .proposal-action-btn--danger:hover {
     background: rgba(194, 114, 79, 0.4);
     color: #FFFFFF;
-}
-
-/* ── Pagination ── */
-.proposal-pagination-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1.5rem 0 0.5rem;
-    border-top: 1px solid var(--border, rgba(107, 72, 38, 0.14));
-    margin-top: 0.5rem;
-}
-
-.proposal-pagination-count {
-    font-size: 0.8rem;
-    color: var(--ink-light, #8B6841);
-    margin: 0;
-    letter-spacing: 0.02em;
-}
-
-.proposal-page-link {
-    border: none !important;
-    border-radius: 999px !important;
-    padding: 0.5rem 1rem !important;
-    min-width: 42px;
-    text-align: center;
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--ink, #6B4826) !important;
-    background-color: var(--sand, #F1E8D5) !important;
-    transition: background 0.18s, color 0.18s, transform 0.15s, box-shadow 0.15s;
-}
-
-.proposal-page-link:hover {
-    background-color: var(--clay, #C77A5C) !important;
-    color: #fff !important;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(199, 122, 92, 0.28);
-}
-
-.page-item.active .proposal-page-current {
-    background: var(--clay, #C77A5C) !important;
-    color: #fff !important;
-    box-shadow: 0 4px 14px rgba(199, 122, 92, 0.35);
-}
-
-.page-item.disabled .proposal-page-link {
-    color: var(--ink-light, #8B6841) !important;
-    opacity: 0.45;
-    background-color: var(--sand, #F1E8D5) !important;
-    cursor: default;
-    transform: none !important;
-    box-shadow: none !important;
-}
-
-.proposal-page-status {
-    background-color: transparent !important;
-    color: var(--ink-light, #8B6841) !important;
-    font-weight: 500;
-    opacity: 1 !important;
-}
-
-[data-theme="dark"] .proposal-pagination-wrap {
-    border-top-color: rgba(232, 199, 164, 0.15);
-}
-
-[data-theme="dark"] .proposal-pagination-count {
-    color: var(--saaf-cream-text, #F2E4D1);
-    opacity: 0.6;
-}
-
-[data-theme="dark"] .proposal-page-link {
-    background-color: rgba(201, 183, 159, 0.12) !important;
-    color: var(--saaf-cream-text, #F2E4D1) !important;
-}
-
-[data-theme="dark"] .proposal-page-link:hover {
-    background-color: var(--clay, #C77A5C) !important;
-    color: #fff !important;
-}
-
-[data-theme="dark"] .page-item.active .proposal-page-current {
-    background: var(--clay, #C77A5C) !important;
-}
-
-[data-theme="dark"] .page-item.disabled .proposal-page-link {
-    background-color: rgba(201, 183, 159, 0.06) !important;
-    color: var(--saaf-cream-text, #F2E4D1) !important;
-}
-
-[data-theme="dark"] .proposal-page-status {
-    color: var(--saaf-cream-text, #F2E4D1) !important;
 }
 
 /* ── Dark mode: Proposal request preview sidebar ── */

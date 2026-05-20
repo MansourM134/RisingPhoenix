@@ -180,8 +180,8 @@
                 {% endif %}
 
                 {% if page_obj.has_other_pages %}
-                <div class="proposal-pagination-wrap mt-4">
-                    <p class="proposal-pagination-count">
+                <div class="pagination-wrap mt-4">
+                    <p class="saaf-page-status">
                         {% blocktrans with start=page_obj.start_index end=page_obj.end_index count=page_obj.paginator.count %}Showing {{ start }}–{{ end }} of {{ count }} request{{ count|pluralize }}{% endblocktrans %}
                     </p>
                 <nav aria-label="{% trans "Requests pages" %}">
