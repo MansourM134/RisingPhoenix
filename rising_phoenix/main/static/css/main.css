@@ -144,8 +144,9 @@ body {
     display: grid;
     grid-template-rows: auto 1fr auto;
     line-height: 1.6;
-    text-align: left;
+    text-align: start;
     max-height: none;
+}
 
 :lang(ar) {
     font-family: 'TheYearofHandicrafts', sans-serif;
@@ -156,7 +157,7 @@ body {
     outline-offset: 2px;
 }
 
-h1, h2, h3, h4, h5, h6,
+h1, h2, h3, h4, h5, h6 {
     opacity: 1;
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
@@ -1938,6 +1939,7 @@ a.saaf-notif-dd-item {
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+     line-clamp: 2;
     -webkit-box-orient: vertical;
     line-height: 1.45;
 }
@@ -2681,6 +2683,51 @@ a.saaf-notif-dd-item {
     .saaf-profile-joined {
         font-size: 0.85rem;
     }
+
+    /* Fix 1: Hide orphaned sidebar toggle button on mobile */
+    .saaf-sidebar-toggle,
+    .saaf-sidebar-mini-toggle {
+        display: none !important;
+    }
+
+    /* Fix 2: Hero section too tall on phones */
+    .saaf-hero {
+        padding-top: 3.5rem;
+        padding-bottom: 3rem;
+        min-height: 60vh;
+        margin: 0.4rem;
+        border-radius: 16px;
+    }
+
+    /* Fix 3: Portrait image too large on phones */
+    .saaf-portrait-image {
+        width: 160px;
+        height: 160px;
+        font-size: 3.5rem;
+        border-radius: 14px;
+    }
+
+    /* Fix 4: Section padding too heavy on mobile */
+    .saaf-section {
+        padding: 2.5rem 0;
+    }
+}
+
+/* Fix 5: Sub-480px breakpoint for very small phones */
+@media (max-width: 480px) {
+    .saaf-hero-title {
+        font-size: 1.3rem;
+    }
+
+    .saaf-section-title {
+        font-size: 1.25rem;
+    }
+
+    .saaf-hero {
+        padding-top: 3rem;
+        padding-bottom: 2.5rem;
+        min-height: 50vh;
+    }
 }
 
     .saaf-dashboard-shell {
@@ -3399,20 +3446,6 @@ html[dir="rtl"] .saaf-sidebar-toggle {
     right: 12px;
 }
 
-html[dir="rtl"] .saaf-nav-wrapper .ms-auto {
-    margin-left: 0 !important;
-    margin-right: auto !important;
-}
-
-html[dir="rtl"] .saaf-nav-wrapper .ms-lg-3 {
-    margin-left: 0 !important;
-    margin-right: 1rem !important;
-}
-
-html[dir="rtl"] .saaf-nav-wrapper .navbar-collapse {
-    text-align: right;
-}
-
 html[dir="rtl"] .saaf-notif-dropdown {
     right: auto;
     left: 0;
@@ -3468,6 +3501,28 @@ html[dir="rtl"] .saaf-notif-badge {
 html[dir="rtl"] .sidebar-badge {
     left: auto;
     right: -4px;
+}
+
+/* Navbar: right-align nav links and button group in the mobile collapsed menu */
+@media (max-width: 991.98px) {
+    html[dir="rtl"] .saaf-nav-wrapper .navbar-nav {
+        align-items: flex-start;
+    }
+    html[dir="rtl"] .saaf-nav-wrapper .navbar-collapse > .d-flex {
+        align-self: flex-start;
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+}
+
+/* Hero: move text block to the right side in RTL */
+html[dir="rtl"] .saaf-hero-text {
+    margin-left: auto;
+}
+
+/* Hero: flip overlay gradient so the dark side is behind the RTL text */
+html[dir="rtl"] .saaf-hero-overlay {
+    background: linear-gradient(240deg, rgba(20, 13, 9, 0.7), rgba(20, 13, 9, 0.4));
 }
 
 /* Auth pages readability */

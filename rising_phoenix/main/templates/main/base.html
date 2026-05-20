@@ -10,7 +10,11 @@
     <title>{% block title %}Saaf{% endblock %}</title>
 
     <!-- Bootstrap CSS -->
+    {% if LANGUAGE_BIDI %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    {% else %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    {% endif %}
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Google Fonts: Poppins (English). Arabic uses TheYearofHandicrafts (self-hosted) -->
@@ -76,10 +80,10 @@
                             </li>
                         {% else %}
                             <li class="nav-item">
-                                <a class="nav-link saaf-nav-link {% if request.path == url_my_requests %}active{% endif %}" href="{{ url_my_requests }}">{% if LANGUAGE_CODE == 'ar' %}طلباتي{% else %}My Requests{% endif %}</a>
+                                <a class="nav-link saaf-nav-link {% if request.path == url_my_requests %}active{% endif %}" href="{{ url_my_requests }}">{% trans "My Requests" %}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link saaf-nav-link {% if request.path == url_post_request %}active{% endif %}" href="{{ url_post_request }}">{% if LANGUAGE_CODE == 'ar' %}أضف طلبًا{% else %}Post a Request{% endif %}</a>
+                                <a class="nav-link saaf-nav-link {% if request.path == url_post_request %}active{% endif %}" href="{{ url_post_request }}">{% trans "Post a Request" %}</a>
                             </li>
                         {% endif %}
                     {% else %}
@@ -207,11 +211,11 @@
                 <div class="col-md-3">
                     <h6 class="mb-3 fw-bold">{% trans "Platform" %}</h6>
                     <ul class="list-unstyled small">
-                        <li class="mb-2"><a href="{% url 'main:home_view' %}" class="text-decoration-none saaf-footer-link">Home</a></li>
-                        <li class="mb-2"><a href="{% url 'main:browse_view' %}" class="text-decoration-none saaf-footer-link">Browse Artisans</a></li>
-                        <li class="mb-2"><a href="{% url 'request:request_list_view' %}" class="text-decoration-none saaf-footer-link">View Requests</a></li>
-                        <li class="mb-2"><a href="{% url 'request:request_create_view' %}" class="text-decoration-none saaf-footer-link">Post a Request</a></li>
-                        <li class="mb-2"><a href="{% url 'account:artisan_signup_view' %}" class="text-decoration-none saaf-footer-link">Become an Artisan</a></li>
+                        <li class="mb-2"><a href="{% url 'main:home_view' %}" class="text-decoration-none saaf-footer-link">{% trans "Home" %}</a></li>
+                        <li class="mb-2"><a href="{% url 'main:browse_view' %}" class="text-decoration-none saaf-footer-link">{% trans "Browse Artisans" %}</a></li>
+                        <li class="mb-2"><a href="{% url 'request:request_list_view' %}" class="text-decoration-none saaf-footer-link">{% trans "Requests" %}</a></li>
+                        <li class="mb-2"><a href="{% url 'request:request_create_view' %}" class="text-decoration-none saaf-footer-link">{% trans "Post a Request" %}</a></li>
+                        <li class="mb-2"><a href="{% url 'account:artisan_signup_view' %}" class="text-decoration-none saaf-footer-link">{% trans "Become an Artisan" %}</a></li>
                         <li class="mb-2"><a href="{% url 'main:about_us_view' %}" class="text-decoration-none saaf-footer-link">{% trans "About Us" %}</a></li>
                         <li class="mb-2"><a href="{% url 'main:members_view' %}" class="text-decoration-none saaf-footer-link">{% trans "Members" %}</a></li>
                         <li class="mb-2"><a href="{% url 'main:terms_view' %}" class="text-decoration-none saaf-footer-link">{% trans "Terms" %}</a></li>
@@ -223,17 +227,17 @@
                     <h6 class="mb-3 fw-bold">{% trans "Account" %}</h6>
                     <ul class="list-unstyled small">
                         {% if request.user.is_authenticated %}
-                            <li class="mb-2"><a href="{% url 'message:conversation_list_view' %}" class="text-decoration-none saaf-footer-link">Messages</a></li>
+                            <li class="mb-2"><a href="{% url 'message:conversation_list_view' %}" class="text-decoration-none saaf-footer-link">{% trans "Messages" %}</a></li>
                             {% if request.user.artisanprofile %}
-                                <li class="mb-2"><a href="{% url 'proposal:my_proposals_view' %}" class="text-decoration-none saaf-footer-link">My Proposals</a></li>
-                                <li class="mb-2"><a href="{% url 'account:artisan_dashboard_view' %}" class="text-decoration-none saaf-footer-link">Dashboard</a></li>
+                                <li class="mb-2"><a href="{% url 'proposal:my_proposals_view' %}" class="text-decoration-none saaf-footer-link">{% trans "My Proposals" %}</a></li>
+                                <li class="mb-2"><a href="{% url 'account:artisan_dashboard_view' %}" class="text-decoration-none saaf-footer-link">{% trans "Dashboard" %}</a></li>
                             {% else %}
-                                <li class="mb-2"><a href="{% url 'main:dashboard_view' %}" class="text-decoration-none saaf-footer-link">My Dashboard</a></li>
+                                <li class="mb-2"><a href="{% url 'main:dashboard_view' %}" class="text-decoration-none saaf-footer-link">{% trans "Dashboard" %}</a></li>
                             {% endif %}
-                            <li class="mb-2"><a href="{% url 'account:logout_view' %}" class="text-decoration-none saaf-footer-link">Log out</a></li>
+                            <li class="mb-2"><a href="{% url 'account:logout_view' %}" class="text-decoration-none saaf-footer-link">{% trans "Log out" %}</a></li>
                         {% else %}
-                            <li class="mb-2"><a href="{% url 'account:login_view' %}" class="text-decoration-none saaf-footer-link">Log in</a></li>
-                            <li class="mb-2"><a href="{% url 'account:signup_view' %}" class="text-decoration-none saaf-footer-link">Sign up</a></li>
+                            <li class="mb-2"><a href="{% url 'account:login_view' %}" class="text-decoration-none saaf-footer-link">{% trans "Log in" %}</a></li>
+                            <li class="mb-2"><a href="{% url 'account:signup_view' %}" class="text-decoration-none saaf-footer-link">{% trans "Sign up" %}</a></li>
                         {% endif %}
                     </ul>
                 </div>
